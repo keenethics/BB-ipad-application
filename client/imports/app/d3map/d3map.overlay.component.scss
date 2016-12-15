@@ -1,0 +1,140 @@
+.button-align {
+    float: right;
+    margin-bottom: 8px;
+    background: red;
+    border: 1px;
+    color: white;
+    font-weight: bold;
+    margin-left: 10px;
+}
+.table-div,
+.table-div-inner {
+    float: left;
+    background: #ABABAB;
+    padding: 10px 10px 10px 10px;
+}
+.bottom-data
+{
+     width: 100%;
+    float: left; 
+}
+.table-div-inner {
+    width: 100%;
+    float: left;
+    background: white;
+    padding: 0px!important;
+}
+.row1 {
+    background: #04368C!important;
+    color: white;
+}
+.row2 {
+    background: #BEC8D2!important;
+}
+.row3 {
+    background: #5B9BD5!important;
+}
+.row4 {
+    background: #5B9BD5!important;
+}
+.row5 {
+    background: #DCE6F1!important;
+}
+.table-div-inner p {
+    text-align: center;
+}
+.table-div span {
+    color: white;
+}
+.table2 .table-div {
+    width: 60%!important;
+}
+.table2 .col-sm-4
+{
+padding-left: 0px!important;
+padding-right: 2px!important;
+}
+/*table right arrow*/
+
+.arrow_box {
+    position: relative;
+}
+.arrow_box:after {
+    border-right-color: #ABABAB;
+    border-width: 30px;
+    margin-top: -30px;
+}
+.arrow_box:before {
+    border-width: 36px;
+    margin-top: -36px;
+}
+
+.table2 .table {
+    margin-bottom: 10px!important;
+}
+
+
+.table1 .table {
+    margin-bottom: 4px!important;
+}
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+    border: 1.5px dotted white!important;
+}
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+    padding: 3px!important;
+    font-size: 10px;
+}
+.table1 .container-fluid {
+    padding-left: 44px!important;
+}
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+@media screen and (max-width: 767px) {
+    .table-responsive > .table > thead > tr > th,
+    .table-responsive > .table > tbody > tr > th,
+    .table-responsive > .table > tfoot > tr > th,
+    .table-responsive > .table > thead > tr > td,
+    .table-responsive > .table > tbody > tr > td,
+    .table-responsive > .table > tfoot > tr > td {
+        white-space: normal!important;
+    }
+}
+@media (max-width: 450px) {
+    .table1,
+    .table2,
+    .container {
+        padding-right: 0px!important;
+        padding-left: 0px!important;
+    }
+    .table > thead > tr > th,
+    .table > tbody > tr > th,
+    .table > tfoot > tr > th,
+    .table > thead > tr > td,
+    .table > tbody > tr > td,
+    .table > tfoot > tr > td {
+        padding: 0px!important;
+        line-height: 1.42857143;
+        vertical-align: middle!important;
+        border: 1.5px dotted white!important;
+    }
+    .table-responsive > .table > thead > tr > th,
+    .table-responsive > .table > tbody > tr > th,
+    .table-responsive > .table > tfoot > tr > th,
+    .table-responsive > .table > thead > tr > td,
+    .table-responsive > .table > tbody > tr > td,
+    .table-responsive > .table > tfoot > tr > td {
+        font-size: 11px!important;
+    }
+}

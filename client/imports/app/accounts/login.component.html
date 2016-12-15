@@ -1,0 +1,30 @@
+<div class="outer">
+  <div class="middle">
+    <div class="inner">
+      <div class="logo">
+         <img src="img/pc-icon.png">
+      </div>
+      <h4>Sign in your account</h4>
+      <div id="form">
+        <div class="form-group">
+          <input type="email" class="form-control" placeholder="Email" [(ngModel)]="credentials.email">
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control" [(ngModel)]="credentials.password" placeholder="Password">
+        </div>
+        <ul [hidden]="!errors || errors.length == 0">
+          <li *ngFor="let error of errors">
+            {{ error }}
+          </li>
+        </ul>
+        {{ message }}
+        <div *ngIf="message == ''">
+          <button *ngIf="!isPasswordRecovery && !isSignup" class="login-button-login" (click)="login()"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+<img src="img/1.jpg" style="position: absolute;margin: 0px;padding: 0px;border: none;width: 100%;height: 100%;max-width: none;z-index: -999999;left: 0px;top: 0px;">
+</div>

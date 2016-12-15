@@ -1,0 +1,54 @@
+<div class="table-div arrow_box" id="chart_2">
+  <span>Latest estimates: {{location}}</span>
+  <button class="button-align close_button" onClick="document.getElementsByClassName('tooltip')[0].className += ' hidden'"> X </button>
+  <button class="button-align" onClick="document.getElementsByClassName('tooltip')[0].className += ' hidden';document.getElementsByClassName('fsc')[0].style.display = 'block'"> Fact Sheet </button>
+  <div class="table-div-inner table-responsive">
+    <table class="table table-striped" style="margin-bottom:0">
+      <tr class="row5">
+        <th>in HC</th>
+        <th>LE 2017</th>
+        <th>LE 2018</th>
+        <th>LE 2019</th>
+      </tr>
+      <tbody>
+        <tr class="row1">
+          <td>Opening</td>
+          <td>{{r00}}</td>
+          <td>{{r01}}</td>
+          <td>{{r02}}</td>
+        </tr>
+        <tr class="row2">
+          <td>OUT Real Ramp down</td>
+          <td>{{r10}}</td>
+          <td>{{r11}}</td>
+          <td>{{r12}}</td>
+        </tr>
+        <tr class="row3">
+          <td>IN Real Ramp up</td>
+          <td>{{r20}}</td>
+          <td>{{r21}}</td>
+          <td>{{r22}}</td>
+        </tr>
+        <tr>
+          <td>NET Transfer</td>
+          <td>{{r30}}</td>
+          <td>{{r31}}</td>
+          <td>{{r32}}</td>
+        </tr>
+        <tr>
+          <td>NET others</td>
+          <td>{{r40}}</td>
+          <td>{{r41}}</td>
+          <td>{{r42}}</td>
+        </tr>
+        <tr class="row1">
+          <td>Landing point</td>
+          <td>{{r50}}</td>
+          <td>{{r51}}</td>
+          <td>{{r52}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin:0;font-size:9px">note: all respective Oxygen HC movments according to global Back Book categorization</p>
+  </div>
+</div>
