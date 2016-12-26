@@ -6,7 +6,7 @@ import './imports/methods/d3map.methods';
 
 Meteor.startup(() => {
   Accounts.config({
-    forbidClientAccountCreation : true
+    forbidClientAccountCreation : false
   });
   loadD3Map()
   loadUser()

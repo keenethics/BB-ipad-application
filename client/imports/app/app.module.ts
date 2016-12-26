@@ -1,4 +1,5 @@
 import { NgModule, ErrorHandler } from '@angular/core';
+import { CommonModule }      from '@angular/common';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -11,24 +12,28 @@ import { D3MAP_DECLARATIONS } from './d3map';
 import { HOME_DECLARATIONS } from './home';
 import { AUTHGUARD_PROVIDERS } from './guards/index';
 
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { HomePage } from '../pages/home/home.page';
+import { LoginPage } from '../pages/login/login.page';
 
 import 'ionic-angular/css/ionic.min.css';
 
 @NgModule({
   imports: [
+    CommonModule,
     BrowserModule,
     IonicModule.forRoot(AppComponent),
     AccountsModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     AppComponent,
     ...D3MAP_DECLARATIONS,
     ...HOME_DECLARATIONS,
-    HomePage
+    HomePage,
+    LoginPage
   ],
   bootstrap: [
     IonicApp
@@ -40,7 +45,8 @@ import 'ionic-angular/css/ionic.min.css';
   ],
   entryComponents: [
     AppComponent,
-    HomePage
+    HomePage,
+    LoginPage
   ]
 })
 export class AppModule { }
