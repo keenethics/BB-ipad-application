@@ -2,11 +2,11 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { CommonModule }      from '@angular/common';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { AuthorizationModule } from './authorization/authorization.module';
 import { AppComponent } from './app.component';
 import { D3MAP_DECLARATIONS } from './d3map';
-import { AuthorizationModule } from './authorization/authorization.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { HomePage } from '../pages/home/home.page';
 import { LoginPage } from '../pages/login/login.page';

@@ -53,7 +53,6 @@ export class Authorization {
 
   login(email: string, password: string) {
     return new Promise((resolve, reject) => {
-      debugger
       Meteor.loginWithPassword(email, password, (err: any) => {
         if (err) {
           reject(err);
