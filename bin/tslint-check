@@ -1,8 +1,10 @@
 #!/usr/bin/env sh
 
+echo "\nStart tslint check\n"
+
 STAGED_FILES=$(git diff --name-only --diff-filter=ACM | grep ".tsx\{0,1\}$")
 
-echo "\nstaged files: $STAGED_FILES\n"
+echo "\nStaged files: $STAGED_FILES\n"
 
 if [[ "$STAGED_FILES" = "" ]]; then
   exit 0

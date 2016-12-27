@@ -9,11 +9,11 @@
     "meteor:update": "meteor update --all-packages",
     "test": "meteor test --driver-package practicalmeteor:mocha",
     "test:ci": "meteor test --once --driver-package dispatch:mocha-phantomjs",
-    "precommit": "sh ./bin/tslint-check"
+    "tslint-check": "sh ./bin/tslint-check"
   },
-  "pre-commit": [
-    "precommit"
-  ],
+  "pre-commit": {
+    "run": "tslint-check"
+  },
   "devDependencies": {
     "@types/chai": "3.4.33",
     "@types/mocha": "2.2.32",
