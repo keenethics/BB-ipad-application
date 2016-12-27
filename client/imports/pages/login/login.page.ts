@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import template from './login.page.html';
 import styles from './login.page.scss';
 
-import { Authorization } from '../../app/accounts/authorization';
+import { Authorization } from '../../app/authorization/authorization';
 
 @Component({
   selector: 'login-page',
