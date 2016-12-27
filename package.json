@@ -9,7 +9,7 @@
     "meteor:update": "meteor update --all-packages",
     "test": "meteor test --driver-package practicalmeteor:mocha",
     "test:ci": "meteor test --once --driver-package dispatch:mocha-phantomjs",
-    "precommit": "sh git/hooks/pre-commit"
+    "precommit": "bash git/hooks/pre-commit"
   },
   "pre-commit": [
     "precommit"
