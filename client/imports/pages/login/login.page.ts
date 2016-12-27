@@ -55,7 +55,7 @@ export class LoginPage implements OnInit {
   }
 
   onValueChanged(data?: any) {
-    //TODO: Generate array of errors messages
+    // TODO: Generate array of errors messages
   }
 
   isFormValid(form: FormGroup): boolean {
