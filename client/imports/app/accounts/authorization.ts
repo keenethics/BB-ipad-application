@@ -4,6 +4,7 @@ import { Tracker } from 'meteor/tracker';
 import { Meteor } from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Observable } from 'rxjs/Observable';
+import { Subscriber } from 'rxjs/Subscriber';
 
 @Injectable()
 export class Authorization {
@@ -15,33 +16,33 @@ export class Authorization {
   }
 
   private initUser() {
-    let userObserver;
-    let userIdObserver;
+    let userSubscriber: Subscriber<any>;
+    let userIdSubscriber: Subscriber<any>;
 
-    this.user = new Observable(observer => {
-      userObserver = observer;
+    this.user = new Observable((sub: Subscriber<any>) => {
+      userSubscriber = sub;
     });
 
-    this.userId = new Observable(observer => {
-      userIdObserver = observer;
+    this.userId = new Observable((sub: Subscriber<any>) => {
+      userIdSubscriber = sub;
     });
 
     MeteorObservable.autorun().subscribe(() => {
       const user = Meteor.user();
 
-      if (userObserver) {
-        userObserver.next(user);
+      if (userSubscriber) {
+        userSubscriber.next(user);
       }
 
-      if (userIdObserver) {
-        userIdObserver.next(Meteor.userId());
+      if (userIdSubscriber) {
+        userIdSubscriber.next(Meteor.userId());
       }
     });
   }
 
-  signup(userOptions) {
+  signup(userOptions: any) {
     return new Promise((resolve, reject) => {
-      Accounts.createUser(userOptions, (err) => {
+      Accounts.createUser(userOptions, (err: any) => {
         if (err) {
           reject(err);
         }
@@ -50,10 +51,10 @@ export class Authorization {
     });
   }
 
-  login(email, password) {
+  login(email: string, password: string) {
     return new Promise((resolve, reject) => {
       debugger
-      Meteor.loginWithPassword(email, password, (err) => {
+      Meteor.loginWithPassword(email, password, (err: any) => {
         if (err) {
           reject(err);
         }
@@ -64,8 +65,8 @@ export class Authorization {
 
   logout() {
     return new Promise((resolve, reject) => {
-      Meteor.logout((err) => {
-        if(err){
+      Meteor.logout((err: any) => {
+        if (err) {
           reject(err);
         }
         resolve();

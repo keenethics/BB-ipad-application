@@ -1,21 +1,23 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "es6",
-      "dom"
-    ],
     "module": "commonjs",
     "moduleResolution": "node",
-    "experimentalDecorators": true,
+    "sourceMap": true,
     "emitDecoratorMetadata": true,
-    "sourceMap": true
+    "experimentalDecorators": true,
+    "lib": [
+      "es2015",
+      "dom"
+    ],
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "typeRoots": [
+      "../../node_modules/@types/"
+    ]
   },
   "exclude": [
     "node_modules"
-  ],
-  "files": [
-    "typings.d.ts"
   ],
   "compileOnSave": false,
   "angularCompilerOptions": {
