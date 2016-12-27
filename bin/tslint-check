@@ -1,0 +1,43 @@
+#!/usr/bin/env sh
+
+STAGED_FILES=$(git diff --name-only --diff-filter=ACM | grep ".tsx\{0,1\}$")
+
+echo "\nstaged files: $STAGED_FILES\n"
+
+if [[ "$STAGED_FILES" = "" ]]; then
+  exit 0
+fi
+
+PASS=true
+
+echo "\nValidating Typescript:\n"
+
+# Check for tslint
+which tslint &> /dev/null
+if [[ "$?" == 1 ]]; then
+  echo "\t\033[41mPlease install TSlint\033[0m"
+  exit 1
+fi
+
+for FILE in $STAGED_FILES
+do
+  tslint "$FILE"
+
+  if [[ "$?" == 0 ]]; then
+    echo "\t\033[32mTSLint Passed: $FILE\033[0m"
+  else
+    echo "\t\033[41mTSLint Failed: $FILE\033[0m"
+    PASS=false
+  fi
+done
+
+echo "\nTypescript validation completed!\n"
+
+if ! $PASS; then
+  echo "\033[41mCOMMIT FAILED:\033[0m Your commit contains files that should pass TSLint but do not. Please fix the TSLint errors and try again.\n"
+  exit 1
+else
+  echo "\033[42mCOMMIT SUCCEEDED\033[0m\n"
+fi
+
+exit $?
