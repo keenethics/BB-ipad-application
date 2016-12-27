@@ -12,7 +12,8 @@
     "tslint-check": "sh ./bin/tslint-check"
   },
   "pre-commit": {
-    "run": "tslint-check"
+    "run": "tslint-check",
+    "silent": true
   },
   "devDependencies": {
     "@types/chai": "3.4.33",
