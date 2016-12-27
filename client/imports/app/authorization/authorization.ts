@@ -15,7 +15,7 @@ export class Authorization {
     this.initUser();
   }
 
-  private initUser() {
+  initUser() {
     let userSubscriber: Subscriber<any>;
     let userIdSubscriber: Subscriber<any>;
 
