@@ -12,10 +12,10 @@ export class Authorization {
   public userId: Observable<any>;
 
   constructor() {
-    this.initUser();
+    this.initUserObervables();
   }
 
-  initUser() {
+  initUserObervables() {
     let userSubscriber: Subscriber<any>;
     let userIdSubscriber: Subscriber<any>;
 

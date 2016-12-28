@@ -1,26 +1,32 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, ToastController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import template from './login.page.html';
-import styles from './login.page.scss';
 
-import { Authorization } from '../../app/authorization/authorization';
+import { getEmailRegExp } from '../../common/helpers/email-regexp';
+import { ToastsManager } from '../../common/toasts-manager';
+import { LoadingManager } from '../../common/loading-manager';
+
+import template from './signin.page.html';
+import styles from './signin.page.scss';
+
+import { Authorization } from '../../authorization/authorization';
 
 @Component({
-  selector: 'login-page',
+  selector: 'signin-page',
   styles: [styles],
   template,
 })
-export class LoginPage implements OnInit {
+export class SigninPage implements OnInit {
   public loginForm: FormGroup;
   public loginCredentials: LoginCredentials;
-  public user;
+  public user: any;
 
   constructor(
     public navCtrl: NavController,
     private formBuilder: FormBuilder,
     private auth: Authorization,
-    private toastCtrl: ToastController
+    private toasts: ToastsManager,
+    private loadingManager: LoadingManager
   ) {
     this.loginCredentials = {
       email: '',
@@ -33,17 +39,18 @@ export class LoginPage implements OnInit {
   }
 
   buildLoginForm() {
-    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.loginForm = this.formBuilder.group({
       email: [
         this.loginCredentials.email,
         [
-          Validators.pattern(emailRegex)
+          Validators.required,
+          Validators.pattern(getEmailRegExp())
         ]
       ],
       password: [
         this.loginCredentials.password,
         [
+          Validators.required,
           Validators.maxLength(40),
           Validators.minLength(6)
         ]
@@ -55,7 +62,7 @@ export class LoginPage implements OnInit {
   }
 
   onValueChanged(data?: any) {
-    // TODO: Generate array of errors messages
+    // TODO: Generate array of errors messages here
   }
 
   isFormValid(form: FormGroup): boolean {
@@ -65,24 +72,16 @@ export class LoginPage implements OnInit {
   login() {
     const { email, password } = this.loginCredentials;
 
+    this.loadingManager.loading('Joining...');
     this.auth.login(email, password)
-      .then(() => {
-
-      }, (err) => {
-        this.getToast(err.reason).present();
+      .catch((err) => {
+        this.loadingManager.loadingInst.dismiss();
+        this.toasts.okToast(err.reason);
       });
-  }
-
-  private getToast(message) {
-    return this.toastCtrl.create({
-      message,
-      showCloseButton: true,
-      closeButtonText: 'Ok'
-    });
   }
 }
 
 interface LoginCredentials {
-  email: String;
-  password: String;
+  email: string;
+  password: string;
 }

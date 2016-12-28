@@ -1,15 +1,13 @@
 import { NgModule, ErrorHandler } from '@angular/core';
-import { CommonModule }      from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AuthorizationModule } from './authorization/authorization.module';
+import { CommonAppModule } from './common/common-app.module';
+import { PagesModule } from './pages/pages.module';
 import { AppComponent } from './app.component';
-import { D3MAP_DECLARATIONS } from './d3map';
-
-import { HomePage } from '../pages/home/home.page';
-import { LoginPage } from '../pages/login/login.page';
 
 import 'ionic-angular/css/ionic.min.css';
 
@@ -20,13 +18,11 @@ import 'ionic-angular/css/ionic.min.css';
     IonicModule.forRoot(AppComponent),
     FormsModule,
     ReactiveFormsModule,
-    AuthorizationModule,
+    PagesModule,
+    AuthorizationModule
   ],
   declarations: [
     AppComponent,
-    ...D3MAP_DECLARATIONS,
-    HomePage,
-    LoginPage
   ],
   bootstrap: [
     IonicApp
@@ -35,9 +31,7 @@ import 'ionic-angular/css/ionic.min.css';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
   ],
   entryComponents: [
-    AppComponent,
-    HomePage,
-    LoginPage
+    AppComponent
   ]
 })
 export class AppModule { }
