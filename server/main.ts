@@ -4,10 +4,13 @@ import { loadUser } from './imports/fixtures/users.fixtures';
 
 import './imports/methods/d3map.methods';
 
+import './imports/roles';
+import './imports/authorization';
+
 Meteor.startup(() => {
   Accounts.config({
-    forbidClientAccountCreation : false
+    forbidClientAccountCreation: false
   });
-  loadD3Map()
-  loadUser()
+  loadD3Map();
+  loadUser();
 });

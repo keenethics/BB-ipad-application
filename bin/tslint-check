@@ -23,13 +23,15 @@ fi
 
 for FILE in $STAGED_FILES
 do
-  tslint "$FILE"
+  if [[ "$FILE" == *"client"* ]] || [[ "$FILE" == *"server"* ]] || [[ "$FILE" == *"both"* ]]; then
+    tslint "$FILE"
 
-  if [[ "$?" == 0 ]]; then
-    echo "\t\033[32mTSLint Passed: $FILE\033[0m"
-  else
-    echo "\t\033[41mTSLint Failed: $FILE\033[0m"
-    PASS=false
+    if [[ "$?" == 0 ]]; then
+      echo "\t\033[32mTSLint Passed: $FILE\033[0m"
+    else
+      echo "\t\033[41mTSLint Failed: $FILE\033[0m"
+      PASS=false
+    fi
   fi
 done
 
