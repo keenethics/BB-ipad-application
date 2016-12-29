@@ -42,12 +42,24 @@ export class Authorization {
 
   signup(userOptions: any) {
     return new Promise((resolve, reject) => {
-      Accounts.createUser(userOptions, (err: any) => {
-        if (err) {
-          reject(err);
-        }
-        resolve();
-      });
+      const { email, password } = userOptions;
+
+      Meteor.call('auth.signup',
+        { email, password },
+        (err: Meteor.Error, res: string) => {
+          if (err) {
+            reject(err);
+          }
+
+          if (res) {
+            this.login(email, password)
+              .then(() => {
+                resolve();
+              }, (err) => {
+                reject(err);
+              });
+          }
+        });
     });
   }
 
