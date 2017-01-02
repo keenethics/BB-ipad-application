@@ -5,59 +5,45 @@ import { Meteor } from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Observable } from 'rxjs/Observable';
 import { Subscriber } from 'rxjs/Subscriber';
+import 'rxjs/add/operator/startWith';
 
 @Injectable()
 export class Authorization {
-  public user: Observable<any>;
-  public userId: Observable<any>;
+  public user$: Observable<any>;
+
+  private userSubscriber: Subscriber<any>;
 
   constructor() {
     this.initUserObervables();
   }
 
   initUserObervables() {
-    let userSubscriber: Subscriber<any>;
-    let userIdSubscriber: Subscriber<any>;
+    const user = Meteor.user();
 
-    this.user = new Observable((sub: Subscriber<any>) => {
-      userSubscriber = sub;
-    });
-
-    this.userId = new Observable((sub: Subscriber<any>) => {
-      userIdSubscriber = sub;
-    });
+    this.user$ = new Observable((sub: Subscriber<any>) => {
+      this.userSubscriber = sub;
+    }).startWith(user);
 
     MeteorObservable.autorun().subscribe(() => {
       const user = Meteor.user();
 
-      if (userSubscriber) {
-        userSubscriber.next(user);
-      }
-
-      if (userIdSubscriber) {
-        userIdSubscriber.next(Meteor.userId());
+      if (this.userSubscriber) {
+        this.userSubscriber.next(user);
       }
     });
   }
 
-  signup(userOptions: any) {
+  createUser(userOptions: any) {
     return new Promise((resolve, reject) => {
-      const { email, password } = userOptions;
+      const { email, password, roleId } = userOptions;
 
-      Meteor.call('auth.signup',
-        { email, password },
+      Meteor.call('auth.create-user',
+        { email, password, roleId },
         (err: Meteor.Error, res: string) => {
           if (err) {
             reject(err);
-          }
-
-          if (res) {
-            this.login(email, password)
-              .then(() => {
-                resolve();
-              }, (err) => {
-                reject(err);
-              });
+          } else {
+            resolve(res);
           }
         });
     });
@@ -87,5 +73,9 @@ export class Authorization {
 
   isLoggedIn() {
     return Boolean(Meteor.userId());
+  }
+
+  user() {
+    return Meteor.user() as any;
   }
 }

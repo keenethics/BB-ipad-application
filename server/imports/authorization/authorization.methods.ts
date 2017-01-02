@@ -1,23 +1,38 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
-export const signup = new ValidatedMethod({
-  name: 'auth.signup',
+export const createUser = new ValidatedMethod({
+  name: 'auth.create-user',
   validate: new SimpleSchema({
     email: { type: String },
-    password: { type: String }
+    password: { type: String },
+    roleId: { type: String }
   }).validator(),
-  run({ email, password }) {
-    if (this.userId) {
-      const message = 'You are logged in already.';
-      throw new Meteor.Error(message, message);
+  run({ email, password, roleId }) {
+    if (!this.userId) {
+      throw new Meteor.Error('premission denied', 'Please login first.');
+    }
+
+    if (!Roles.userIsInRole(this.userId, 'Administrator')) {
+      throw new Meteor.Error('premission denied', 'You are not an Administrator.');
     }
 
     const userId = Accounts.createUser({ email, password });
+
+    let existRole;
+    Roles.getAllRoles().forEach((item: any) => {
+      if (item._id === roleId) { existRole = item.name; };
+    });
+
     if (userId) {
-      Roles.addUsersToRoles(userId, 'user');
+      if (existRole) {
+        Roles.addUsersToRoles(userId, existRole);
+      } else {
+        Roles.addUsersToRoles(userId, 'User');
+        return 'Created user with role: "User".';
+      }
     }
 
-    return 'User created';
+    return 'User created successfully';
   }
 });

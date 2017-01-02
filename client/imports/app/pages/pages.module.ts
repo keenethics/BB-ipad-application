@@ -3,20 +3,23 @@ import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 import { MapModule } from '../d3map/map.module';
 import { CommonAppModule } from '../common/common-app.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { HomePage } from './home/home.page';
 import { SigninPage } from './signin/signin.page';
-import { SignupPage } from './signup/signup.page';
+import { CreateUserPage } from './create-user/create-user.page';
 
 const PAGES = [
   HomePage,
   SigninPage,
-  SignupPage
+  CreateUserPage
 ];
 
 @NgModule({
   imports: [
     IonicModule,
+    FormsModule,
+    ReactiveFormsModule,
     MapModule,
     CommonAppModule
   ],

@@ -8,8 +8,10 @@ import { Validator, AbstractControl, NG_VALIDATORS } from '@angular/forms';
   ]
 })
 export class EqualValidator implements Validator {
-  constructor( @Attribute('validateEqual') public validateEqual: string,
-    @Attribute('reverse') public reverse: string) {
+  constructor(
+    @Attribute('validateEqual') public validateEqual: string,
+    @Attribute('reverse') public reverse: string
+  ) {
   }
 
   private get isReverse() {
@@ -18,8 +20,8 @@ export class EqualValidator implements Validator {
   }
 
   validate(c: AbstractControl): any {
-    let v = c.value;
-    let e = c.root.get(this.validateEqual);
+    const v = c.value;
+    const e = c.root.get(this.validateEqual);
     if (e && v !== e.value && !this.isReverse) {
       return {
         validateEqual: false

@@ -11,6 +11,8 @@ import styles from './signin.page.scss';
 
 import { Authorization } from '../../authorization/authorization';
 
+import { HomePage } from '../home/home.page';
+
 @Component({
   selector: 'signin-page',
   styles: [styles],
@@ -36,6 +38,10 @@ export class SigninPage implements OnInit {
 
   ngOnInit() {
     this.buildLoginForm();
+  }
+
+  ionViewCanEnter() {
+    return !this.auth.isLoggedIn();
   }
 
   buildLoginForm() {
@@ -74,6 +80,9 @@ export class SigninPage implements OnInit {
 
     this.loadingManager.loading('Joining...');
     this.auth.login(email, password)
+      .then(() => {
+        this.navCtrl.setRoot(HomePage);
+      })
       .catch((err) => {
         this.loadingManager.loadingInst.dismiss();
         this.toasts.okToast(err.reason);

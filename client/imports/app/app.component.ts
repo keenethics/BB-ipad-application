@@ -6,7 +6,7 @@ import { Authorization } from './authorization/authorization';
 
 import { HomePage } from './pages/home/home.page';
 import { SigninPage } from './pages/signin/signin.page';
-import { SignupPage } from './pages/signup/signup.page';
+import { CreateUserPage } from './pages/create-user/create-user.page';
 
 import template from './app.component.html';
 import styles from './app.component.scss';
@@ -17,12 +17,13 @@ import styles from './app.component.scss';
   styles: [styles]
 })
 export class AppComponent {
-  @ViewChild(Nav) nav: Nav;
+  @ViewChild(Nav) navCtrl: Nav;
 
   userId: string;
   pages: Array<{title: string, component: any}>;
 
   private subscriptions: any[] = [];
+  public rootPage = this.auth.isLoggedIn() ? HomePage : SigninPage;
 
   constructor(
     public platform: Platform,
@@ -32,7 +33,7 @@ export class AppComponent {
   ) {
     this.pages = [
       { title: 'Home page', component: HomePage },
-      { title: 'Sign up', component: SignupPage }
+      { title: 'Create user', component: CreateUserPage }
     ];
   }
 
@@ -50,33 +51,16 @@ export class AppComponent {
     this.platform.ready().then(() => {
       StatusBar.styleDefault();
       Splashscreen.hide();
-      this.checkUser();
     });
-  }
-
-  checkUser() {
-    if (!this.userId) {
-      this.nav.setRoot(SigninPage, {}, {animate: true, direction: 'forward'});
-    }
-
-    const userIdSubscr = this.auth.userId.subscribe((id) => {
-      if (!id) {
-        this.userId = null;
-        this.nav.setRoot(SigninPage, {}, {animate: true, direction: 'forward'});
-      } else {
-        this.userId = id;
-        this.nav.setRoot(HomePage, {}, {animate: true, direction: 'forward'});
-      }
-    });
-
-    this.subscriptions.push(userIdSubscr);
   }
 
   openPage(page: any) {
-    this.nav.setRoot(page.component);
+    this.navCtrl.setRoot(page.component, {}, {animate: true, direction: 'forward'});
   }
 
   logout() {
-    this.auth.logout();
+    this.auth.logout().then(() => {
+      this.navCtrl.setRoot(SigninPage);
+    });
   }
 }
