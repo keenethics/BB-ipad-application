@@ -1,6 +1,7 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { BrowserModule } from '@angular/platform-browser';
+import { File } from 'ionic-native';
 
 import { AuthorizationModule } from './authorization/authorization.module';
 import { CommonAppModule } from './common/common-app.module';
@@ -24,6 +25,7 @@ import 'ionic-angular/css/ionic.min.css';
   ],
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },
+    File
   ],
   entryComponents: [
     AppComponent

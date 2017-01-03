@@ -7,9 +7,12 @@ import { Authorization } from './authorization/authorization';
 import { HomePage } from './pages/home/home.page';
 import { SigninPage } from './pages/signin/signin.page';
 import { CreateUserPage } from './pages/create-user/create-user.page';
+import { UploadDataPage } from './pages/upload-data/upload-data.page';
 
 import template from './app.component.html';
 import styles from './app.component.scss';
+
+declare const FilePicker: any;
 
 @Component({
   selector: 'app',
@@ -33,7 +36,8 @@ export class AppComponent {
   ) {
     this.pages = [
       { title: 'Home page', component: HomePage },
-      { title: 'Create user', component: CreateUserPage }
+      { title: 'Create user', component: CreateUserPage },
+      { title: 'Upload file', component: UploadDataPage }
     ];
   }
 
