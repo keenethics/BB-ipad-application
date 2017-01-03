@@ -1,14 +1,10 @@
 import { Component } from '@angular/core';
-import { File } from 'ionic-native';
-import 'babyparse/babyparse.js';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 
 import { ToastsManager } from '../../common/toasts-manager';
-
+import { DataManager } from '../../data-management/data-manager';
 import styles from './upload-data.page.scss';
 import template from './upload-data.page.html';
-
-declare const FilePicker: any;
-declare const Baby: any;
 
 @Component({
   selector: 'upload-data-page',
@@ -16,44 +12,52 @@ declare const Baby: any;
   styles: [styles]
 })
 export class UploadDataPage {
-  constructor(private toastCtrl: ToastsManager) {
+  public file: File;
+  public fileData: String;
+  public uploadFileForm: FormGroup;
 
+  constructor(
+    private toastCtrl: ToastsManager,
+    private formBuilder: FormBuilder,
+    private dataManager: DataManager
+  ) {
+    this.buildUploadFileForm();
   }
 
-  uploadData() {
-    FilePicker.pickFile(
-      (path: string) => {
-        const fileName = path.substr(path.lastIndexOf('/') + 1);
-        const filePath = path.substring(0, path.lastIndexOf('/') + 1);
-
-        File.checkFile(path, fileName)
-          .then(() => {
-            this.toastCtrl.okToast('ok');
-            console.log('ok');
-          })
-          .catch((err) => {
-            this.toastCtrl.okToast(err);
-            console.log(err);
-          });
-
-        // File.readAsText(filePath, fileName)
-        //   .then((data: string) => {
-        //     console.log(data);
-        //     this.toastCtrl.okToast(data);
-        //   })
-        //   .catch((err) => {
-        //     console.log(err);
-        //     this.toastCtrl.okToast(err.message);
-        //   });
-        // this.file.readAsText();
-      },
-      (err: any) => {
-        this.toastCtrl.okToast(err);
-      }
-    );
+  buildUploadFileForm() {
+    this.uploadFileForm = this.formBuilder.group({
+      file: [
+        this.file,
+        [
+          Validators.required
+        ]
+      ]
+    });
   }
 
-  isFilePickerEnabled() {
-    return !!FilePicker;
+  onChange(event: Event) {
+    const file = (event.srcElement as HTMLInputElement).files[0];
+    if (file.type === 'text/csv') {
+      this.file = file;
+    } else {
+      this.uploadFileForm.reset();
+      this.toastCtrl.okToast('Please select csv file');
+    }
+  }
+
+  isFileSelected() {
+    return Boolean(this.file);
+  }
+
+  uploadFile() {
+    this.dataManager.uploadData(this.file)
+      .then((res: string) => {
+        this.uploadFileForm.reset();
+        this.file = null;
+        this.toastCtrl.okToast(res);
+      })
+      .catch((err) => {
+        this.toastCtrl.okToast(err.reason || err.message || err);
+      });
   }
 };
