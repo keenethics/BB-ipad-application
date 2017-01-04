@@ -1,0 +1,11 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/meteor-typings/simple-schema/master/typings.json",
+    "raw": "github:meteor-typings/simple-schema",
+    "main": "main.d.ts",
+    "version": "1.5.3",
+    "global": true,
+    "name": "aldeed:simple-schema"
+  }
+}

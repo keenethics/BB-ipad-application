@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>User creation</ion-title>
+    <ion-buttons end>
+      <button (click)="menuToggle()" ion-button icon-only>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form [formGroup]="newUserForm" (ngSubmit)="createUser()" novalidate padding>
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Email</ion-label>
+        <ion-input [(ngModel)]="newUserCredentials.email" formControlName='email' type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Password</ion-label>
+        <ion-input [(ngModel)]="newUserCredentials.password" formControlName='password' type="password"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Confirm password</ion-label>
+        <ion-input [(ngModel)]="newUserCredentials.confPass" formControlName='confPass' type="password"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Role</ion-label>
+        <ion-select [(ngModel)]="newUserCredentials.roleId" formControlName='roleId'>
+          <ion-option *ngFor="let role of roles" [value]="role.id">{{role.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <button type="submit" ion-button block [disabled]="isFormValid(newUserForm)">Sign up</button>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>

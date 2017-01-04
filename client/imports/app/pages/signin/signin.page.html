@@ -1,0 +1,17 @@
+<ion-content>
+  <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate padding>
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Email</ion-label>
+        <ion-input [(ngModel)]="loginCredentials.email" formControlName='email' type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Password</ion-label>
+        <ion-input [(ngModel)]="loginCredentials.password" formControlName='password' type="password"></ion-input>
+      </ion-item>
+      <ion-item>
+        <button type="submit" ion-button block [disabled]="isFormValid(loginForm)">Login</button>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>

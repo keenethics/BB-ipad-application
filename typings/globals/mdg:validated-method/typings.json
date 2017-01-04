@@ -1,0 +1,11 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/meteor-typings/validated-method/5244da37df5e49812ca5afe6520642f875921665/typings.json",
+    "raw": "github:meteor-typings/validated-method#5244da37df5e49812ca5afe6520642f875921665",
+    "main": "main.d.ts",
+    "version": "1.1.0",
+    "global": true,
+    "name": "mdg:validated-method"
+  }
+}

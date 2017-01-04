@@ -1,35 +1,36 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { BrowserModule } from '@angular/platform-browser';
+import { File } from 'ionic-native';
 
-import { RouterModule } from '@angular/router';
-import { AccountsModule } from './accounts';
-
+import { AuthorizationModule } from './authorization/authorization.module';
+import { DataManagamentModule } from './data-management/data-managament.module';
+import { CommonAppModule } from './common/common-app.module';
+import { PagesModule } from './pages/pages.module';
 import { AppComponent } from './app.component';
-import { routes, ROUTES_PROVIDERS } from './app.routes';
-import { D3MAP_DECLARATIONS } from './d3map';
-import { HOME_DECLARATIONS } from './home';
-import { AUTHGUARD_PROVIDERS } from './guards/index';
 
-import { FormsModule }   from '@angular/forms';
+import 'ionic-angular/css/ionic.min.css';
 
 @NgModule({
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes),
-    AccountsModule,
-    FormsModule
+    IonicModule.forRoot(AppComponent),
+    PagesModule,
+    AuthorizationModule,
+    DataManagamentModule
   ],
   declarations: [
     AppComponent,
-    ...D3MAP_DECLARATIONS,
-    ...HOME_DECLARATIONS
   ],
   bootstrap: [
-    AppComponent
+    IonicApp
   ],
   providers: [
-    ...AUTHGUARD_PROVIDERS,
-    ...ROUTES_PROVIDERS
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    File
   ],
+  entryComponents: [
+    AppComponent
+  ]
 })
-export class AppModule {}
+export class AppModule { }
