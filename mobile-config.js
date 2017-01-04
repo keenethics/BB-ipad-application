@@ -1,6 +1,5 @@
 App.info({
   id: 'com.bbipad.test',
-  name: 'bbipad',
   website: 'https://bb-ipad.herokuapp.com/'
 });
 
