@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { Data } from '../../../both/data-managament/data.collection';
+import { Data } from '../../../both/data-management/data.collection';
 
 Meteor.publish('allData', function() {
     return Data.find({});

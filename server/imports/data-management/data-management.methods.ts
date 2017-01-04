@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { Data } from '../../../both/data-managament/data.collection';
+import { Data } from '../../../both/data-management/data.collection';
 import * as Baby from '../../../node_modules/babyparse/babyparse.js';
 
 export const uploadFile = new ValidatedMethod({

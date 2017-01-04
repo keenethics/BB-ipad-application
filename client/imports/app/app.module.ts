@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { File } from 'ionic-native';
 
 import { AuthorizationModule } from './authorization/authorization.module';
-import { DataManagamentModule } from './data-management/data-managament.module';
+import { DataManagementModule } from './data-management/data-management.module';
 import { CommonAppModule } from './common/common-app.module';
 import { PagesModule } from './pages/pages.module';
 import { AppComponent } from './app.component';
@@ -17,7 +17,7 @@ import 'ionic-angular/css/ionic.min.css';
     IonicModule.forRoot(AppComponent),
     PagesModule,
     AuthorizationModule,
-    DataManagamentModule
+    DataManagementModule
   ],
   declarations: [
     AppComponent,

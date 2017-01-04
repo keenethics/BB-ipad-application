@@ -6,5 +6,5 @@ import { DataManager } from './data-manager';
     DataManager
   ]
 })
-export class DataManagamentModule {
+export class DataManagementModule {
 }

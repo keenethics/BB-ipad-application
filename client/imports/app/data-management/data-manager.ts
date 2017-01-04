@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { MeteorObservable } from 'meteor-rxjs';
 import { Injectable } from '@angular/core';
 
-import { Data } from '../../../../both/data-managament/data.collection';
+import { Data } from '../../../../both/data-management/data.collection';
 
 @Injectable()
 export class DataManager {
