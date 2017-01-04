@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, MenuController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -30,7 +30,8 @@ export class CreateUserPage implements OnInit {
     private auth: Authorization,
     private toasts: ToastsManager,
     private loadingManager: LoadingManager,
-    private rolesCtrl: RolesController
+    private rolesCtrl: RolesController,
+    private menuCtrl: MenuController
   ) {
     this.newUserCredentials = {
       email: '',
@@ -118,6 +119,10 @@ export class CreateUserPage implements OnInit {
         this.loadingManager.loadingInst.dismiss();
         this.toasts.okToast(err.reason);
       });
+  }
+
+  menuToggle() {
+    this.menuCtrl.toggle();
   }
 }
 

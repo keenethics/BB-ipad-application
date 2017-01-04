@@ -1,3 +1,13 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Upload new data</ion-title>
+    <ion-buttons end>
+      <button (click)="menuToggle()" ion-button icon-only>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 <ion-content>
   <form [formGroup]="uploadFileForm" (ngSubmit)="uploadFile()" novalidate padding>
     <ion-list>

@@ -1,7 +1,15 @@
+import { Meteor } from 'meteor/meteor';
+import { MeteorObservable } from 'meteor-rxjs';
 import { Injectable } from '@angular/core';
+
+import { Data } from '../../../../both/data-managament/data.collection';
 
 @Injectable()
 export class DataManager {
+  constructor() {
+
+  }
+
   uploadData(file: File) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -20,5 +28,15 @@ export class DataManager {
 
       reader.readAsText(file);
     });
+  }
+
+  getAllData() {
+    return MeteorObservable.subscribe('allData')
+      .map(() => {
+        return Data.find({}).fetch().map((item: any) => {
+          delete item._id;
+          return item;
+        });
+      });
   }
 }

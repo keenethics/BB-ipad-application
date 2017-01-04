@@ -9,12 +9,13 @@ import { HomePage } from './home/home.page';
 import { SigninPage } from './signin/signin.page';
 import { CreateUserPage } from './create-user/create-user.page';
 import { UploadDataPage } from './upload-data/upload-data.page';
-
+import { TestDataPage } from './test-data/test-data.page';
 const PAGES = [
   HomePage,
   SigninPage,
   CreateUserPage,
-  UploadDataPage
+  UploadDataPage,
+  TestDataPage
 ];
 
 @NgModule({
