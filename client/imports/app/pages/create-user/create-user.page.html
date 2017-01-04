@@ -1,3 +1,13 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>User creation</ion-title>
+    <ion-buttons end>
+      <button (click)="menuToggle()" ion-button icon-only>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 <ion-content>
   <form [formGroup]="newUserForm" (ngSubmit)="createUser()" novalidate padding>
     <ion-list>

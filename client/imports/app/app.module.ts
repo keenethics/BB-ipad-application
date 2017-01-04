@@ -1,8 +1,10 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { BrowserModule } from '@angular/platform-browser';
+import { File } from 'ionic-native';
 
 import { AuthorizationModule } from './authorization/authorization.module';
+import { DataManagamentModule } from './data-management/data-managament.module';
 import { CommonAppModule } from './common/common-app.module';
 import { PagesModule } from './pages/pages.module';
 import { AppComponent } from './app.component';
@@ -14,7 +16,8 @@ import 'ionic-angular/css/ionic.min.css';
     BrowserModule,
     IonicModule.forRoot(AppComponent),
     PagesModule,
-    AuthorizationModule
+    AuthorizationModule,
+    DataManagamentModule
   ],
   declarations: [
     AppComponent,
@@ -24,6 +27,7 @@ import 'ionic-angular/css/ionic.min.css';
   ],
   providers: [
     { provide: ErrorHandler, useClass: IonicErrorHandler },
+    File
   ],
   entryComponents: [
     AppComponent

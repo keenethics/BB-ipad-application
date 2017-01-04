@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Component, ViewRef } from '@angular/core';
+import { NavController, MenuController } from 'ionic-angular';
 
 import template from './home.page.html';
 
@@ -14,11 +14,16 @@ import { SigninPage } from '../signin/signin.page';
 export class HomePage {
   constructor(
     public navCtrl: NavController,
+    private menuCtrl: MenuController,
     private auth: Authorization
   ) {
   }
 
   ionViewCanEnter() {
     return this.auth.isLoggedIn();
+  }
+
+  menuToggle() {
+    this.menuCtrl.toggle();
   }
 }
