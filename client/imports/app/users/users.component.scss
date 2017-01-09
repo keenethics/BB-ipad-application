@@ -1,0 +1,153 @@
+/*User management start*/
+
+.outer {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+.middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+.inner {
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fff;
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 0px;
+    padding-top: 20px;
+    border-radius: 4%;
+}
+.inner h2 {
+    text-align: center;
+    padding-bottom: 29px;
+    border-bottom: 1px solid #ddd;
+}
+.inner .table>tbody>tr>td {
+    vertical-align: middle;
+    border-bottom: 1px solid #ddd;
+    border-top: none;
+}
+.inner .radio label {
+    font-weight: bold;
+}
+.button-right {
+    float: right;
+    padding: 13px 0px 24px 0px;
+}
+.cancel {
+    background: white!important;
+    border: 1px solid white!important;
+    color: black!important;
+}
+.inner .table-responsive {
+    padding: 0px 50px 9px 45px;
+}
+/*User management end*/
+/*pop up start */
+
+.pop-up {
+    width: 100%;
+    margin: 0 auto;
+}
+.pop-name {
+    width: 100%;
+    float: left;
+}
+.pop-details {
+    width: 100%;
+    float: left;
+    background: #ECECEC;
+    padding: 13px 21px 17px 19px;
+}
+.pop-name h3 {
+    background: #D7D7D7;
+    padding: 16px 0px 15px 20px;
+    margin-bottom: 0px;
+}
+.pop-details .form-control {
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    border-radius: 0px;
+    box-shadow: none;
+    padding: 0px;
+}
+.box {
+    padding-left: 13px;
+    float: right;
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: hidden;
+    opacity: 0;
+}
+.overlay:target {
+    visibility: visible;
+    opacity: 1;
+}
+.popup {
+    margin: auto;
+    margin-top: 12%;
+    width: 38%;
+    position: relative;
+}
+.popup .close {
+    position: absolute;
+    top: 36px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: red;
+    opacity: 1;
+}
+/*pop up end */
+
+/*mobile media range start*/
+@media (max-width: 767px) {
+    .inner {
+        width: 96%;
+    }
+    .inner .table-responsive {
+        padding: 0px 10px 9px 10px;
+    }
+    .inner .table-responsive > .table > thead > tr > th,
+    .inner .table-responsive > .table > tbody > tr > th,
+    .inner .table-responsive > .table > tfoot > tr > th,
+    .inner .table-responsive > .table > thead > tr > td,
+    .inner .table-responsive > .table > tbody > tr > td,
+    .inner .table-responsive > .table > tfoot > tr > td {
+        white-space: normal;
+    }
+    .popup {
+        width: 90%;
+    }
+}
+@media (max-width: 437px) {
+    .inner h4 {
+        font-size: 14px;
+    }
+    .inner span {
+        font-size: 13px;
+    }
+    .inner .radio label {
+        padding-left: 0px;
+    }
+    .inner .table-responsive {
+        padding: 0px 4px 11px 0px;
+    }
+    .pop-details button {
+        width: 65px;
+    }
+}
+/*mobile media range end*/

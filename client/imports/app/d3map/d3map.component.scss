@@ -1,3 +1,11 @@
+#slider {
+  height: 100%;
+  width: 50px;
+  background: #eeeeee;
+  z-index: 9999;
+  position: absolute;
+}
+
 .dotted-spaced {
   background-image: linear-gradient(to right, #333 30%, rgba(255, 255, 255, 0) 0%);
   background-position: top;
@@ -24,7 +32,6 @@
 
 #map {    
   position: fixed;
-  left: 160px;
 }
 .feature {
   fill: #ccc;
@@ -42,11 +49,34 @@
   stroke-linejoin: round;
 }
 
-
 .sidebar {
     background-color: #eeeeee;
-    padding-top: 60px;
+    padding-top: 0px;
     height: 100%;
+    z-index: 999;
+}
+.sidebar a{
+  font-size: 25px;
+  float: right;
+}
+.sidebar a:hover{
+  text-decoration: none;
+}
+.close-section {
+  float: left;
+  width: 100%;
+  background-color: #255985;
+  height: 40px;
+  padding-right: 8px;
+}
+.close-section a{
+  color: #fff;
+  display: block;
+  transition: 0.3s;
+  text-decoration: none;
+}
+.close-section a:hover, .close-section a:focus{
+    color: #f1f1f1;
 }
 li:hover {
     background-color: #fff;
@@ -88,6 +118,10 @@ html {
     -ms-transition: left 0.4s ease-in-out;
     -o-transition: left 0.4s ease-in-out;
     transition: left 0.4s ease-in-out;
+}
+.checkbox{
+  line-height : 20px;
+  text-transform: capitalize;
 }
 .main {
     padding-left: 0px!important;
@@ -138,104 +172,43 @@ svg {
 
 }
 
-
-/* Fact Sheets Start */
-
-.fsc{
-  background: #fff;
-  padding: .5em;
-  border-radius: 2px;
-  box-shadow: 0px 0px 2px 0px #a6a6a6;
+/* Accordion HTML Start*/
+.checkbox label {
+  padding-left: 0;
+  min-height: 30px;
+  padding: 7px 3px 7px 21px;
 }
-.table-div,
-.table-div-inner {
-  width: 580px;
-  position: fixed;
-  left: 200px;
-  background: #ABABAB;
-  border: 1px solid;
-  padding: 10px 10px 10px 10px;
+.radio-hidden {
+    display: none;
 }
-.bottom-data {
-  width: 100%;
-  float: left;
-}
-.table-div-inner {
-  float: left;
-  background: white;
-  padding: 0px!important;
-}
-.button-align {
-  float: right;
-  margin-bottom: 8px;
-  background: #000;
-  border: 1px;
-  color: #fff;
-  font-weight: bold;
-}
-.close_button:hover
-{
-    background: red;
-    color: white;
-}
-.row1 {
-  background: #04368C!important;
-  color: white;
-}
-.row2 {
-  background: #BEC8D2!important;
-}
-.row3 {
-  background: #5B9BD5!important;
-}
-.row4 {
-  background: #5B9BD5!important;
-}
-.row5 {
-  background: #DCE6F1!important;
-}
-.table-div-inner p {
-  text-align: center;
-  font-size: 10px;
-}
-.table2 .table-div {
-  width: 60%!important;
-}
-.table2 .col-sm-4 {
-  padding-left: 0px!important;
-  padding-right: 2px!important;
-}
-.table > thead > tr > th,
-.table > tbody > tr > th,
-.table > tfoot > tr > th,
-.table > thead > tr > td,
-.table > tbody > tr > td,
-.table > tfoot > tr > td {
-    border: 1.5px dotted white!important;
-}
-.table > thead > tr > th,
-.table > tbody > tr > th,
-.table > tfoot > tr > th,
-.table > thead > tr > td,
-.table > tbody > tr > td,
-.table > tfoot > tr > td {
-    padding: 3px!important;
-    font-size: 10px;
-}
-.b1 {
+.ac-container article {
+  background: rgba(255, 255, 255, 0.5);
+  margin-top: -1px;
+  overflow: hidden;
+  height: 0;
   position: relative;
-  display: block;
-  top: 0;
-  bottom: 0;
-  width: 1.5em;
-  background: #D1D3D4;
-  height: 10px;
-  float: left;
+  z-index: 10;
+  -webkit-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+  -moz-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+  -o-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+  -ms-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+  transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
 }
-.b2 {
-  float: left;
-  position: relative;
-  font-size: 8px;
-  padding: 0 5px;
+.ac-container input:checked ~ article {
+  -webkit-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+  -moz-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+  -o-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+  -ms-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+  transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
 }
-/* Fact Sheets End */
+.ac-container input:checked ~ article.ac-small {
+  height: 200px;
+  line-height: 1.8;
+  overflow-y: visible;
+  padding: 0px 0px 0px 1px;
+}   
+.ac-container .checkbox:hover{
+  background:#3e64a4;
+  color:white;
+}
+/* Accordion HTML End */

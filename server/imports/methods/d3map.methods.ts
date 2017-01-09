@@ -11,16 +11,68 @@ Meteor.methods({
 
     var D3MapsCol = D3Maps.collection
     var pipeline = [
-      { $match : { Market : { $ne : "Total" } } },
-      { $group : {_id : "agg", ma : { $addToSet : "$Market" } } },
-      { $project: { ma: 1,'_id':0 }},
-      { $unwind : "$ma" },
-      { $sort : { ma : 1 } },
-      { $group : {_id : "sort_agg", result : { $push : "$ma" } } }
+      {
+        $match : {
+          'N-2':'Total',
+          'Identifier':'Market',
+          'Period':'Actuals',
+          'MovementType':'Landing point'
+        } 
+      },
+      { $project: { Market: 1,'_id':0 }},
+      { $sort : { Market : 1 } },
+      { $group : {_id : "sort_agg", result : { $push : "$Market" } } }
     ];
 
     var result = D3MapsCol.aggregate(pipeline)
-    // console.log(result[0])
+    return result[0].result
+  },
+
+  country_filter: function () {
+    let user = Meteor.user()
+    if (!user)
+      throw new Meteor.Error('403', 'No permissions!');
+
+    var D3MapsCol = D3Maps.collection
+    var pipeline = [
+      {
+        $match : {
+          'N-2':'Total',
+          'Identifier':'Country',
+          'Period':'Actuals',
+          'MovementType':'Landing point'
+        } 
+      },
+      { $project: { Country: 1,'_id':0 }},
+      { $sort : { Country : 1 } },
+      { $group : {_id : "sort_agg", result : { $push : "$Country" } } }
+    ];
+
+    var result = D3MapsCol.aggregate(pipeline)
+    return result[0].result
+  },
+
+  city_filter: function () {
+    let user = Meteor.user()
+    if (!user)
+      throw new Meteor.Error('403', 'No permissions!');
+
+    var D3MapsCol = D3Maps.collection
+    var pipeline = [
+      {
+        $match : {
+          'N-2':'Total',
+          'Identifier':'City',
+          'Period':'Actuals',
+          'MovementType':'Landing point'
+        } 
+      },
+      { $project: { City: 1,'_id':0 }},
+      { $sort : { City : 1 } },
+      { $group : {_id : "sort_agg", result : { $push : "$City" } } }
+    ];
+
+    var result = D3MapsCol.aggregate(pipeline)
     return result[0].result
   },
 
@@ -53,31 +105,7 @@ Meteor.methods({
     return result
   },
 
-  market_data: function () {
-    let user = Meteor.user()
-    if (!user)
-      throw new Meteor.Error('403', 'No permissions!');
-
-    let find = {
-      'N-2':'Total',
-      'Identifier':'Market',
-      'Period':'Actuals',
-      'MovementType':'Landing point'
-    }
-    let options = {
-      fields: {
-        "LAT": 1,
-        "LNG": 1,
-        "HC" : 1
-      },
-      limit: 5000,
-      sort: {HC: -1}
-    }
-    let result = D3Maps.find(find, options).fetch();
-    return result
-  },
-
-  country_data: function () {
+  market_data: function (market_name) {
     let user = Meteor.user()
     if (!user)
       throw new Meteor.Error('403', 'No permissions!');
@@ -88,6 +116,10 @@ Meteor.methods({
       'Period':'Actuals',
       'MovementType':'Landing point'
     }
+
+    if(market_name) find.Market = market_name
+    else find.Identifier = 'Market'
+
     let options = {
       fields: {
         "LAT": 1,
@@ -101,7 +133,7 @@ Meteor.methods({
     return result
   },
 
-  city_data: function () {
+  country_data: function (country_name) {
     let user = Meteor.user()
     if (!user)
       throw new Meteor.Error('403', 'No permissions!');
@@ -112,6 +144,34 @@ Meteor.methods({
       'Period':'Actuals',
       'MovementType':'Landing point'
     }
+    if(country_name) find.Country = country_name
+    else find.Identifier = 'Country'
+
+    let options = {
+      fields: {
+        "LAT": 1,
+        "LNG": 1,
+        "HC" : 1
+      },
+      limit: 5000,
+      sort: {HC: -1}
+    }
+    let result = D3Maps.find(find, options).fetch();
+    return result
+  },
+
+  city_data: function (city_name) {
+    let user = Meteor.user()
+    if (!user)
+      throw new Meteor.Error('403', 'No permissions!');
+
+    let find = {
+      'N-2':'Total',
+      'Identifier':'City',
+      'Period':'Actuals',
+      'MovementType':'Landing point'
+    }
+    if(city_name) find.City = city_name
     let options = {
       fields: {
         "LAT": 1,
@@ -370,6 +430,7 @@ Meteor.methods({
       "COO",
       "Commercial Management",
       "CTO",
+      "Others",
       "Business and Portfolio Integration Leadership",
       "Central Team"
     ]
@@ -408,12 +469,73 @@ Meteor.methods({
         if((obj["c_" + index + '_2'] && obj["c_" + index + '_2'] != '-') &&
           (obj["c_" + index + '_1'] && obj["c_" + index + '_1'] != '-')) {
             let val = (obj["c_" + index + '_2'] / obj["c_" + index + '_1'])
-            return val.toFixed(2) + '%'
+            return (val*100).toFixed(2) + '%'
           }
         return 'n.a.'
       })()
-    })
+
+      obj["c_" + index + '_5'] = (() => {
+        if("c_" + index + '_4' == 'n.a.') return 0
+        let val = obj["c_" + index + '_4'].split('%')[0]
+        if(parseFloat(val) <= -50) return 1
+        if(parseFloat(val) <= -25) return 2
+        if(parseFloat(val) <= -10) return 3
+        else return 0
+      })()
+
+    }) // end loop
     
+    // Others Adj
+    obj["c_10_0"] = (() => {
+      let total = 0
+      if(obj["c_11_0"] != '-') total += obj["c_11_0"]
+      if(obj["c_12_0"] != '-') total += obj["c_12_0"]
+      return (total == 0) ? '-' : total
+    })()
+
+    obj["c_10_1"] = (() => {
+      let total = 0
+      if(obj["c_11_1"] != '-') total += obj["c_11_1"]
+      if(obj["c_12_1"] != '-') total += obj["c_12_1"]
+      return (total == 0) ? '-' : total
+    })()
+    obj["c_10_2"] = (() => {
+      let total = 0
+      if(obj["c_11_2"] != '-') total += obj["c_11_2"]
+      if(obj["c_12_2"] != '-') total += obj["c_12_2"]
+      return (total == 0) ? '-' : total
+    })()
+    obj["c_10_3"] = (() => {
+      let total = 0
+      if(obj["c_11_3"] != '-') total += obj["c_11_3"]
+      if(obj["c_12_3"] != '-') total += obj["c_12_3"]
+      return (total == 0) ? '-' : total
+    })()
+    obj["c_10_4"] = (() => {
+      if((obj['c_10_2'] && obj['c_10_2'] != '-') &&
+        (obj['c_10_1'] && obj['c_10_1'] != '-')) {
+          let val = (obj['c_10_2'] / obj['c_10_1'])
+          return (val*100).toFixed(2) + '%'
+        }
+      return 'n.a.'
+    })()
+
+    obj["c_10_5"] = (() => {
+      if("c_10_4" == 'n.a.') return 0
+      let val = obj["c_10_4"].split('%')[0]
+      if(parseFloat(val) <= -50) return 1
+      if(parseFloat(val) <= -25) return 2
+      if(parseFloat(val) <= -10) return 3
+      else return 0
+    })()
+
+    // delete unneccesary data
+     _.each(["0","1","2","3","4","5"], function(key){
+      delete obj['c_11_'+ key]
+      delete obj['c_12_'+ key]
+    })
+
+    obj.location = loc.location
     return obj
   }
 })

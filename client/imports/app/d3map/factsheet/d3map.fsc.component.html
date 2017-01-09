@@ -1,0 +1,124 @@
+<!-- Fact Sheet C -->
+<div class="fsc" hidden>
+  <div class="table-whole">
+    <div class="table-div">
+      <span>BU-specific location information: {{fsc.location}}</span>
+      <button class="button-align close_button" onClick="document.getElementsByClassName('fsc')[0].style.display = 'none'"> X </button>
+      <div class="table-div-inner table-responsive">
+        <table class="table table-striped">
+          <tr>
+            <th>in HC</th>
+            <th>MN total</th>
+            <th>MN P</th>
+            <th>MN CC</th>
+            <th>GS</th>
+            <th>AMS</th>
+            <th>PPS</th>
+            <th>SPS</th>
+            <th>COO</th>
+            <th>CM</th>
+            <th>CTO</th>
+            <th>Others</th>
+          </tr>
+          <tbody>
+            <tr class="row2">
+              <td>Baseline P12/2015</td>
+              <td>{{fsc.c_0_0}}</td>
+              <td>{{fsc.c_1_0}}</td>
+              <td>{{fsc.c_2_0}}</td>
+              <td>{{fsc.c_3_0}}</td>
+              <td>{{fsc.c_4_0}}</td>
+              <td>{{fsc.c_5_0}}</td>
+              <td>{{fsc.c_6_0}}</td>
+              <td>{{fsc.c_7_0}}</td>
+              <td>{{fsc.c_8_0}}</td>
+              <td>{{fsc.c_9_0}}</td>
+              <td>{{fsc.c_10_0}}</td>
+            </tr>
+            <tr>
+              <td>P12/2016</td>
+              <td>{{fsc.c_0_1}}</td>
+              <td>{{fsc.c_1_1}}</td>
+              <td>{{fsc.c_2_1}}</td>
+              <td>{{fsc.c_3_1}}</td>
+              <td>{{fsc.c_4_1}}</td>
+              <td>{{fsc.c_5_1}}</td>
+              <td>{{fsc.c_6_1}}</td>
+              <td>{{fsc.c_7_1}}</td>
+              <td>{{fsc.c_8_1}}</td>
+              <td>{{fsc.c_9_1}}</td>
+              <td>{{fsc.c_10_1}}</td>
+            </tr>
+            <tr>
+              <td>Net down/up P12/2016-2019</td>
+              <td>{{fsc.c_0_2}}</td>
+              <td>{{fsc.c_1_2}}</td>
+              <td>{{fsc.c_2_2}}</td>
+              <td>{{fsc.c_3_2}}</td>
+              <td>{{fsc.c_4_2}}</td>
+              <td>{{fsc.c_5_2}}</td>
+              <td>{{fsc.c_6_2}}</td>
+              <td>{{fsc.c_7_2}}</td>
+              <td>{{fsc.c_8_2}}</td>
+              <td>{{fsc.c_9_2}}</td>
+              <td>{{fsc.c_10_2}}</td>
+            </tr>
+            <tr>
+              <td>Landing point 2019</td>
+              <td>{{fsc.c_0_3}}</td>
+              <td>{{fsc.c_1_3}}</td>
+              <td>{{fsc.c_2_3}}</td>
+              <td>{{fsc.c_3_3}}</td>
+              <td>{{fsc.c_4_3}}</td>
+              <td>{{fsc.c_5_3}}</td>
+              <td>{{fsc.c_6_3}}</td>
+              <td>{{fsc.c_7_3}}</td>
+              <td>{{fsc.c_8_3}}</td>
+              <td>{{fsc.c_9_3}}</td>
+              <td>{{fsc.c_10_3}}</td>
+            </tr>
+            <tr class="row2">
+              <td>in %</td>
+              <th>MN total</th>
+              <th>MN P</th>
+              <th>MN CC</th>
+              <th>GS</th>
+              <th>AMS</th>
+              <th>PPS</th>
+              <th>SPS</th>
+              <th>COO</th>
+              <th>CM</th>
+              <th>CTO</th>
+              <th>Others</th>
+            </tr>
+            <tr>
+              <td>YE 2019 vs. P12/2016</td>
+              <td [ngClass]="heatmap(fsc.c_0_5)">{{fsc.c_0_4}}</td>
+              <td [ngClass]="heatmap(fsc.c_1_5)">{{fsc.c_1_4}}</td>
+              <td [ngClass]="heatmap(fsc.c_2_5)">{{fsc.c_2_4}}</td>
+              <td [ngClass]="heatmap(fsc.c_3_5)">{{fsc.c_3_4}}</td>
+              <td [ngClass]="heatmap(fsc.c_4_5)">{{fsc.c_4_4}}</td>
+              <td [ngClass]="heatmap(fsc.c_5_5)">{{fsc.c_5_4}}</td>
+              <td [ngClass]="heatmap(fsc.c_6_5)">{{fsc.c_6_4}}</td>
+              <td [ngClass]="heatmap(fsc.c_7_5)">{{fsc.c_7_4}}</td>
+              <td [ngClass]="heatmap(fsc.c_8_5)">{{fsc.c_8_4}}</td>
+              <td [ngClass]="heatmap(fsc.c_9_5)">{{fsc.c_9_4}}</td>
+              <td [ngClass]="heatmap(fsc.c_10_5)">{{fsc.c_10_4}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="bottom-data">
+          <div class="col-sm-12">
+            <div><span class="b1 hm_3"></span><div class="b2"> More than 10% net down of P12/2016 HC</div></div>
+            <div><span class="b1 hm_2"></span><div class="b2"> More than 25% net down of P12/2016 HC</div></div>
+            <div><span class="b1 hm_1"></span><div class="b2"> More than 50% net down of P12/2016 HC</div></div>
+          </div>
+          <div class="col-sm-12">
+            <div><div class="b2"> BU not present at location in P12/2016 HC</div></div>
+            <div><div class="b2"> BU is present at location in P12/2016 but no change</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
