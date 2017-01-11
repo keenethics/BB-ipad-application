@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Data } from '../../../both/data-management/data.collection';
-import * as Baby from '../../../node_modules/babyparse/babyparse.js';
+import * as Baby from 'babyparse';
 
 export const uploadFile = new ValidatedMethod({
   name: 'data.upload',
@@ -16,7 +16,7 @@ export const uploadFile = new ValidatedMethod({
       throw new Meteor.Error('premission denied', 'You are not a data manager.');
     }
 
-    const parsedData = (Baby as any).parse(fileData).data;
+    const parsedData = Baby.parse(fileData).data;
 
     const keys: string[] = parsedData[0];
 

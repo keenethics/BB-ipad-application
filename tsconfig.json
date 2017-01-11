@@ -10,7 +10,6 @@
       "es6",
       "dom"
     ],
-    "allowJs": true,
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
     "typeRoots": [

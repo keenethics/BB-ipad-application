@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { IonicModule } from 'ionic-angular';
-import { MapModule } from '../d3map/map.module';
+import { MapModule } from '../map/map.module';
 import { CommonAppModule } from '../common/common-app.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
