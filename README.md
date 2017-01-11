@@ -14,6 +14,7 @@ Required nodejs and meteor.
 
 ## Links
 > Staging server: https://bb-ipad.herokuapp.com
+> Registered users: admin@mail.com, data@mail.com, user@mail.com . Each user have his own role. Password for all of them: 111111
 
 > Teamwork: https://keenethics.teamwork.com/#/projects/336118
 
