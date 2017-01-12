@@ -1,9 +1,18 @@
 svg {
-        g {
+        g.map {
           path {
             fill: #fff;
             stroke: #000;
-            stroke-width: 0.1;
+            stroke-linejoin: round;
+            stroke-linecap: round;
+            vector-effect: non-scaling-stroke;
+          }
+
+          circle.site {
+            fill: rgb(18, 65, 145);
+            opacity: 0.8;
+            stroke-width: 1;
+            stroke: rgb(255, 255, 255);
           }
         }
     }

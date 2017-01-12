@@ -39,4 +39,11 @@ export class DataManager {
         });
       });
   }
+
+  getDataByQuery(query: any) {
+    return MeteorObservable.subscribe('allData')
+    .map(() => {
+      return Data.find(query).fetch();
+    });
+  }
 }

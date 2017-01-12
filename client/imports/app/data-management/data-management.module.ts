@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
-import { DataManager } from './data-manager';
+import { DataProvider } from './data-provider';
+import { DataUploader } from './data-uploader';
 
 @NgModule({
   providers: [
-    DataManager
+    DataProvider,
+    DataUploader
   ]
 })
 export class DataManagementModule {

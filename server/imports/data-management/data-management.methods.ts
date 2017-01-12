@@ -24,7 +24,7 @@ export const uploadFile = new ValidatedMethod({
       if (index !== 0) {
         const doc = {};
         keys.forEach((key, i) => {
-          doc[key] = item[i];
+          doc[key.toLowerCase()] = item[i];
         });
         Data.insert(doc);
       }
