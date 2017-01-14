@@ -22,23 +22,7 @@ export class TestDataPage {
   constructor(
     private dataProvider: DataProvider,
     private menuCtrl: MenuController
-  ) {
-    this.data = [];
-  }
-
-  ngOnInit() {
-    this.dataProvider.data$.subscribe((data) => {
-      this.data = data.map((item: any) => {
-        delete item._id;
-        return item;
-      });
-      if ((!this.columnsNames) && data[0]) {
-        this.columnsNames = Object.keys(data[0]);
-      }
-    });
-
-    this.dataProvider.query();
-  }
+  ) {}
 
   menuToggle() {
     this.menuCtrl.toggle();

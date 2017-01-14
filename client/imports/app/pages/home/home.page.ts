@@ -58,8 +58,7 @@ export class HomePage implements AfterViewInit {
     console.log(data);
   }
 
-  getFilteredData(filterValue: any) {
-    const { type, value } = filterValue;
-    this.dataProvider.query({ [type]: value });
+  getFilteredData(filterQuery: any) {
+    this.dataProvider.query(filterQuery);
   }
 }

@@ -3,21 +3,34 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { Data } from '../../../../both/data-management/data.collection';
+import {
+  BusinessData,
+  BusinessDataUnit,
+  ColumnNames,
+  ColumnNamesCollection
+} from '../../../../both/data-management';
 
 @Injectable()
 export class DataProvider {
-  private _data: BehaviorSubject<any[]> = new BehaviorSubject([]);
+  private _data: BehaviorSubject<BusinessDataUnit[]> = new BehaviorSubject([]);
+  private _columnNames: BehaviorSubject<ColumnNames> = new BehaviorSubject(null);
 
   constructor() {
-    this.initDataObservable();
+    this.subscribeToPublications();
   }
 
-  private initDataObservable() {
+  private subscribeToPublications() {
     MeteorObservable.subscribe('allData')
       .subscribe(() => {
-        const data = Data.find({}).fetch();
+        const data = BusinessData.find({}).fetch();
         this._data.next(data);
+      });
+
+    MeteorObservable.subscribe('columnNames')
+      .subscribe(() => {
+        const columnNames = ColumnNamesCollection.findOne({});
+        delete columnNames._id;
+        this._columnNames.next(columnNames);
       });
   }
 
@@ -25,8 +38,12 @@ export class DataProvider {
     return this._data.asObservable();
   }
 
+  get columnNames$() {
+    return this._columnNames.asObservable();
+  }
+
   query(queryObject: any = {}) {
-    const result = Data.find(queryObject).fetch();
+    const result = BusinessData.find(queryObject).fetch();
     this._data.next(result);
   }
 }
