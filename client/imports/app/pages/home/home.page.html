@@ -9,27 +9,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="no-scroll">
-  <world-map [map-width]="mapWidth" [map-height]="mapHeight" [data-to-draw]="data"></world-map>
-  <div class="filter" style="position: absolute; top: 0; left: 0; width: 20%">
-    <ion-list>
-      <ion-item>
-        <ion-label>Region</ion-label>
-        <ion-select>
-          <ion-option *ngFor="let market of markets">{{market}}</ion-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-label>Country</ion-label>
-        <ion-select>
-          <ion-option *ngFor="let country of countries">{{country}}</ion-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-label>City</ion-label>
-        <ion-select>
-          <ion-option *ngFor="let city of cities">{{city}}</ion-option>
-        </ion-select>
-      </ion-item>
-    </ion-list>
-  </div>
+  <world-map [map-width]="mapWidth" [map-height]="mapHeight" [zoom-on-update]="true" [data-to-draw]="dataProvider.data$ | async"
+    (data-click)="test($event)"></world-map>
+  <data-filter (onFilterChange)="getFilteredData($event)"></data-filter>
 </ion-content>

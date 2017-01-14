@@ -4,6 +4,7 @@ import { IonicModule } from 'ionic-angular';
 import { MapModule } from '../map/map.module';
 import { CommonAppModule } from '../common/common-app.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DataManagementModule } from '../data-management';
 
 import { HomePage } from './home/home.page';
 import { SigninPage } from './signin/signin.page';
@@ -24,7 +25,8 @@ const PAGES = [
     FormsModule,
     ReactiveFormsModule,
     MapModule,
-    CommonAppModule
+    CommonAppModule,
+    DataManagementModule
   ],
   declarations: PAGES,
   exports: PAGES,
