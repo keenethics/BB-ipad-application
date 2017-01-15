@@ -154,16 +154,27 @@ export class WorldMap implements OnChanges {
       const path = d3.geoPath().projection(this.projection);
 
       const markersData = map.selectAll('circle.marker').data();
-      const sitesLongs = markersData.map((item: any) => item.longitude);
-      const sitesLats = markersData.map((item: any) => item.latitude);
-      const minPoint: any = this.projection([Math.min(...sitesLongs), Math.min(...sitesLats)]);
-      const maxPoint: any = this.projection([Math.max(...sitesLongs), Math.max(...sitesLats)]);
 
-      const dx = maxPoint[0] - minPoint[0] || 1;
-      const dy = maxPoint[1] - minPoint[1] || 1;
-      const x = (minPoint[0] + maxPoint[0]) / 2;
-      const y = (maxPoint[1] + minPoint[1]) / 2;
-      const k = .2 / Math.max(dx / this.width, dy / this.height);
+      let x;
+      let y;
+      let k;
+
+      if (markersData.length > 0) {
+        const sitesLongs = markersData.map((item: any) => item.longitude);
+        const sitesLats = markersData.map((item: any) => item.latitude);
+        const minPoint = this.projection([Math.min(...sitesLongs), Math.min(...sitesLats)]);
+        const maxPoint = this.projection([Math.max(...sitesLongs), Math.max(...sitesLats)]);
+
+        const dx = maxPoint[0] - minPoint[0] || 1;
+        const dy = maxPoint[1] - minPoint[1] || 1;
+        x = (minPoint[0] + maxPoint[0]) / 2;
+        y = (maxPoint[1] + minPoint[1]) / 2;
+        k = .2 / Math.max(dx / this.width, dy / this.height);
+      } else {
+        x = this.width / 2;
+        y = this.height / 2;
+        k = 1;
+      }
 
       map.transition()
         .duration(750)

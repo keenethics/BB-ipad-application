@@ -28,7 +28,7 @@ export class HomePage implements AfterViewInit {
   private dataSubscr: Subscription;
   public mapWidth: number = 0;
   public mapHeight: number = 0;
-  public data: any[] = [];
+  public filters: any[] = [];
 
   @ViewChild(Content) content: Content;
 

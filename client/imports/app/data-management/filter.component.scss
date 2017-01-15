@@ -1,7 +1,12 @@
 data-filter {
   position: absolute;
   top: 0;
-  left: 0;
-  width: 20%;
-  display: inline-block;
+  max-width: 300px;
+
+  ion-fab.filter {
+    margin: 10px;
+  }
+  // left: 0;
+  // width: 20%;
+  // display: inline-block;
 }
