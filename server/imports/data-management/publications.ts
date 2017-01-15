@@ -1,6 +1,10 @@
 import { Meteor } from 'meteor/meteor';
-import { Data } from '../../../both/data-management/data.collection';
+import { BusinessData, ColumnNamesCollection } from '../../../both/data-management';
 
 Meteor.publish('allData', function() {
-    return Data.find({});
+    return BusinessData.find({});
+});
+
+Meteor.publish('columnNames', function() {
+    return ColumnNamesCollection.find({});
 });

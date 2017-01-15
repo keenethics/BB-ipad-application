@@ -1,6 +1,5 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Home</ion-title>
     <ion-buttons end>
       <button (click)="menuToggle()" ion-button icon-only>
         <ion-icon name="menu"></ion-icon>
@@ -8,6 +7,8 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content>
-  <d3map></d3map>
+<ion-content class="no-scroll">
+  <world-map [map-width]="mapWidth" [map-height]="mapHeight" [zoom-on-update]="true" [data-to-draw]="dataProvider.data$ | async"
+    (data-click)="test($event)"></world-map>
+  <data-filter (onFilterChange)="getFilteredData($event)"></data-filter>
 </ion-content>

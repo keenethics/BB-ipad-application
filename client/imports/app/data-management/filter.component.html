@@ -1,0 +1,22 @@
+<ion-fab class="filter" *ngIf="labels && businessData && !isFilterVisible">
+  <button ion-fab icon color="primary" (click)="isFilterVisible = !isFilterVisible">
+    <ion-icon name="funnel"></ion-icon>
+  </button>
+</ion-fab>
+<ion-card *ngIf="isFilterVisible">
+  <ion-card-content>
+    <ion-list>
+      <ion-item *ngFor="let key of labels | objAsArr:true">
+        <ion-label>{{labels[key]}}</ion-label>
+        <ion-select [(ngModel)]="filter[key]" [multiple]="true" [selectOptions]="selectOptions" (ionChange)="handleSelectChange($event)">
+          <ion-option *ngFor="let option of getOptions(key)">{{option}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <button ion-button block (click)="isFilterVisible = !isFilterVisible">
+          Hide
+        </button>
+      </ion-item>
+    </ion-list>
+  </ion-card-content>
+</ion-card>

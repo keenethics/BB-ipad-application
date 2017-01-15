@@ -1,6 +1,13 @@
 import { Meteor } from 'meteor/meteor';
-import { Data } from '../../../both/data-management/data.collection';
-import * as Baby from '../../../node_modules/babyparse/babyparse.js';
+import * as Baby from 'babyparse';
+import { toCamelCase } from '../../../both/helpers/to-camel-case';
+
+import {
+  BusinessData,
+  BusinessDataUnit,
+  ColumnNames,
+  ColumnNamesCollection
+} from '../../../both/data-management';
 
 export const uploadFile = new ValidatedMethod({
   name: 'data.upload',
@@ -16,17 +23,22 @@ export const uploadFile = new ValidatedMethod({
       throw new Meteor.Error('premission denied', 'You are not a data manager.');
     }
 
-    const parsedData = (Baby as any).parse(fileData).data;
-
+    const parsedData = Baby.parse(fileData).data;
     const keys: string[] = parsedData[0];
+
+    const columnNames = {} as ColumnNames;
+    keys.forEach((key) => {
+      columnNames[toCamelCase(key.toLowerCase())] = key;
+    });
+    ColumnNamesCollection.update({}, columnNames, { upsert: true });
 
     parsedData.forEach((item: string[], index: number) => {
       if (index !== 0) {
-        const doc = {};
+        const doc = {} as BusinessDataUnit;
         keys.forEach((key, i) => {
-          doc[key] = item[i];
+          doc[toCamelCase(key.toLowerCase())] = item[i];
         });
-        Data.insert(doc);
+        BusinessData.insert(doc);
       }
     });
 
