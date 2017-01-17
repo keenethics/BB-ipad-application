@@ -3,6 +3,7 @@ import { ToastsManager } from './toasts-manager';
 import { LoadingManager } from './loading-manager';
 
 import { ObjectAsArray } from './pipes/objectAsArray.pipe';
+import { Draggable } from './directives/draggable';
 
 @NgModule({
   providers: [
@@ -10,9 +11,11 @@ import { ObjectAsArray } from './pipes/objectAsArray.pipe';
     LoadingManager
   ],
   declarations: [
+    Draggable,
     ObjectAsArray
   ],
   exports: [
+    Draggable,
     ObjectAsArray
   ]
 })
