@@ -183,12 +183,15 @@ export class WorldMap implements OnChanges {
         .on('end', () => {
           this.isZoomingNow = false;
           const regExp = /\((.+?), (.+?)\).+\((.+?),/g;
-          const maches = regExp.exec(map.attr('transform'));
-          this.mapTransform = { x: +maches[1], y: +maches[2], k: +maches[3] };
-          const zoomIdentity = d3.zoomIdentity
-            .translate(+maches[1], +maches[2])
-            .scale(+maches[3]);
-          this.svg.call(this.zoom.transform, zoomIdentity);
+          const transform = map.attr('transform');
+          if (transform) {
+            const maches = regExp.exec(transform);
+            this.mapTransform = { x: +maches[1], y: +maches[2], k: +maches[3] };
+            const zoomIdentity = d3.zoomIdentity
+              .translate(+maches[1], +maches[2])
+              .scale(+maches[3]);
+            this.svg.call(this.zoom.transform, zoomIdentity);
+          }
         });
 
       this.renderMarkers(k);
