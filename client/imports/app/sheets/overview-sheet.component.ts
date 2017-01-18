@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 import template from './overview-sheet.component.html';
-import styles from './overview-sheet.component.scss';
+import styles from './sheets.styles.scss';
 
 @Component({
   selector: 'overview-sheet',
@@ -15,6 +15,14 @@ import styles from './overview-sheet.component.scss';
   styles: [styles]
 })
 export class OverviewSheetComponent {
-  // @Input() data: any[];
-  // @Output() onClickEmitter = new EventEmitter();
+  @Output() onClickEmitter = new EventEmitter();
+  @Output() onCloseEmitter = new EventEmitter();
+
+  public openFactSheet() {
+    this.onClickEmitter.emit();
+  }
+
+  public close() {
+    this.onCloseEmitter.emit();
+  }
 }

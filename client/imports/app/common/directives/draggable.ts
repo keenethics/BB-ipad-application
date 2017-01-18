@@ -32,7 +32,7 @@ export class Draggable implements OnInit {
     this.initLeft = event.pageX - this.nativeElement.offsetLeft;
   }
 
-  @HostListener('mouseup')
+  @HostListener('document:mouseup')
   handleMouseUp(event: MouseEvent) {
     this.isMouseDown = false;
   }

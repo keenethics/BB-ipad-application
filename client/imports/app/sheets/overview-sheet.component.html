@@ -1,6 +1,57 @@
-<ion-card>
+<ion-card draggable>
+  <ion-card-header>
+    <p>Latest estimates: GCHN</p>
+    <ion-buttons end>
+      <button (click)="openFactSheet()" ion-button small>Factsheet</button>
+      <button (click)="close()" ion-button small>X</button>
+    </ion-buttons>
+  </ion-card-header>
   <ion-card-content>
-    <button on-drag="handleDrag($event)" ion-button>Factsheet</button>
-    <button ion-button>Close</button>
+    <table>
+      <thead>
+        <tr class="row-color-1">
+          <th class="t-italic">in HC</th>
+          <th class="t-right">LE 2017</th>
+          <th class="t-right">LE 2018</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row-color-4">
+          <td>Opening</td>
+          <td class="t-right">5555</td>
+          <td class="t-right">1111</td>
+        </tr>
+        <tr class="row-color-2">
+          <td>OUT Restructing</td>
+          <td class="t-right">2131</td>
+          <td class="t-right">1233</td>
+        </tr>
+        <tr class="row-color-2">
+          <td>OUT Voluntary leaves</td>
+          <td class="t-right">123</td>
+          <td class="t-right">33</td>
+        </tr>
+        <tr class="row-color-3">
+          <td>IN New external hire</td>
+          <td class="t-right">1233</td>
+          <td class="t-right">12313</td>
+        </tr>
+        <tr class="row-color-3">
+          <td>IN Attrition replacement</td>
+          <td class="t-right">1213</td>
+          <td class="t-right">1231</td>
+        </tr>
+        <tr>
+          <td>NET Others</td>
+          <td class="t-right">5643</td>
+          <td class="t-right">2342</td>
+        </tr>
+        <tr class="row-color-4">
+          <td>Landing point</td>
+          <td class="t-right">9877</td>
+          <td class="t-right">5654</td>
+        </tr>
+      </tbody>
+    </table>
   </ion-card-content>
 </ion-card>

@@ -5,14 +5,18 @@ import {
   EventEmitter
 } from '@angular/core';
 
-// import template from './overview-sheet.component.html';
-// import styles from './overview-sheet.component.scss';
+import template from './fact-sheet.component.html';
+import styles from './sheets.styles.scss';
 
 @Component({
   selector: 'fact-sheet',
-  template: 'FACTHEET',
+  template,
+  styles: [styles]
 })
 export class FactSheetComponent {
-  @Input() data: any[];
-  @Output() onClickEmitter = new EventEmitter();
+  @Output() onCloseEmitter = new EventEmitter();
+
+  public close() {
+    this.onCloseEmitter.emit();
+  }
 }

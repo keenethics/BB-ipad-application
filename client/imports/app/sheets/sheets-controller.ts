@@ -15,17 +15,33 @@ import { BusinessDataUnit } from '../../../../both/data-management/business-data
 @Injectable()
 export class SheetsController {
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private componentFactoryResolver: ComponentFactoryResolver) {
 
-  public create(sheetType: any, vCref: ViewContainerRef): ComponentRef<SheetsPortalComponent | OverviewSheetComponent> {
+  }
+
+  public create(sheetType: any, vCref: ViewContainerRef): ComponentRef<FactSheetComponent | OverviewSheetComponent> {
     if (
       (sheetType === FactSheetComponent) ||
       (sheetType === OverviewSheetComponent)
     ) {
       const factory = this.componentFactoryResolver.resolveComponentFactory(sheetType);
       const injector = ReflectiveInjector.fromResolvedProviders([], vCref.parentInjector);
-      const componet = factory.create(injector);
+      const componet = factory.create(injector) as ComponentRef<FactSheetComponent | OverviewSheetComponent>;
+
       vCref.insert(componet.hostView);
+
+      componet.instance.onCloseEmitter.subscribe(() => {
+        componet.destroy();
+      });
+
+      if (componet.componentType === OverviewSheetComponent) {
+        (componet as ComponentRef<OverviewSheetComponent>)
+          .instance.onClickEmitter.subscribe(() => {
+            this.create(FactSheetComponent, vCref);
+            componet.destroy();
+          });
+      }
+
       return componet;
     }
 
