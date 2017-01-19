@@ -10,6 +10,6 @@
 <ion-content class="no-scroll">
   <world-map [map-width]="mapWidth" [map-height]="mapHeight" [zoom-on-update]="true" [data-to-draw]="dataProvider.data$ | async"
     (data-click)="showOverview($event)"></world-map>
-  <data-filter (onFilterChange)="getFilteredData($event)"></data-filter>
+  <data-filter [data]="dataProvider.data$ | async" (onFilterChange)="getFilteredData($event)"></data-filter>
   <sheets-portal></sheets-portal>
 </ion-content>

@@ -112,7 +112,6 @@ export class WorldMap implements OnChanges {
 
   renderMarkers(scale?: number) {
     if (this.isMapReady) {
-      // debugger
       const map = this.svg.select('g.map');
       const data = this.dataToDraw.filter((item) => {
         return Boolean(item.value);
@@ -171,7 +170,7 @@ export class WorldMap implements OnChanges {
         const dy = maxPoint[1] - minPoint[1] || 1;
         x = (minPoint[0] + maxPoint[0]) / 2;
         y = (maxPoint[1] + minPoint[1]) / 2;
-        k = .2 / Math.max(dx / this.width, dy / this.height);
+        k = Math.max(.2 / Math.max(dx / this.width, dy / this.height), 1);
       } else {
         x = this.width / 2;
         y = this.height / 2;

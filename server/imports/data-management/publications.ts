@@ -7,7 +7,7 @@ Meteor.publish('businessData', function (query: Object) {
         return this.ready();
     }
 
-    return BusinessData.find(query, { limit: 100 });
+    return BusinessData.find(query);
 });
 
 Meteor.publish('columnNames', function () {

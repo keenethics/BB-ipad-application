@@ -1,11 +1,11 @@
-<ion-fab class="filter" *ngIf="labels && businessData && !isFilterVisible">
+<ion-fab class="filter" *ngIf="data && !isFilterVisible">
   <button ion-fab icon color="primary" (click)="isFilterVisible = !isFilterVisible">
     <ion-icon name="funnel"></ion-icon>
   </button>
 </ion-fab>
 <ion-card *ngIf="isFilterVisible">
   <ion-card-header>
-    <ion-segment [(ngModel)]="category">
+    <ion-segment [(ngModel)]="category" (ionChange)="changeCategory()">
       <ion-segment-button value="market">
         MARKETS
       </ion-segment-button>
@@ -19,10 +19,10 @@
   </ion-card-header>
   <ion-card-content>
     <ion-input [(ngModel)]="searchValue" type="text" placeholder="What you search?" value=""></ion-input>
-    <applied-filters [filters]="['Dubai','Munich','Nozay']"></applied-filters>
+    <applied-filters [filters]="filters" (onFilterRemoved)="removeOption($event)"></applied-filters>
     <ion-scroll scrollY="true">
       <ion-list>
-        <button ion-item *ngFor="let option of getOptions(category) | search:searchValue">
+        <button (click)="selectOption(option)" ion-item *ngFor="let option of options | search:searchValue">
           {{option}}
         </button>
         <!--<ion-item *ngFor="let key of labels | objAsArr:true">
