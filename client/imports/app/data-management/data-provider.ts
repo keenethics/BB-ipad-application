@@ -20,7 +20,7 @@ export class DataProvider {
   }
 
   private subscribeToPublications() {
-    MeteorObservable.subscribe('allData')
+    MeteorObservable.subscribe('businessData')
       .subscribe(() => {
         const data = BusinessData.find({}).fetch();
         this._data.next(data);
@@ -29,8 +29,10 @@ export class DataProvider {
     MeteorObservable.subscribe('columnNames')
       .subscribe(() => {
         const columnNames = ColumnNamesCollection.findOne({});
-        delete columnNames._id;
-        this._columnNames.next(columnNames);
+        if (columnNames) {
+          delete columnNames._id;
+          this._columnNames.next(columnNames);
+        }
       });
   }
 
@@ -44,6 +46,10 @@ export class DataProvider {
 
   query(queryObject: any = {}) {
     const result = BusinessData.find(queryObject).fetch();
-    this._data.next(result);
+    MeteorObservable.subscribe('businessData', queryObject)
+      .subscribe(() => {
+        const data = BusinessData.find(queryObject).fetch();
+        this._data.next(data);
+      });
   }
 }

@@ -96,14 +96,5 @@ export class DataFilterComponent implements OnInit {
     return query;
   }
 
-  setFilterDefaults() {
-    this.filter = {
-      n2: ['Total MN'],
-      market: ['EUROPE', 'MEA'],
-      country: ['Total Market']
-    };
-
-    const query = this.buildQuery(this.filter);
-    this.onFilterChange.emit(query);
-  }
+  setFilterDefaults() { }
 }

@@ -23,7 +23,7 @@ export const uploadFile = new ValidatedMethod({
       throw new Meteor.Error('premission denied', 'You are not a data manager.');
     }
 
-    const parsedData = Baby.parse(fileData).data;
+    const parsedData = Baby.parse(fileData, { skipEmptyLines: true, delimiter: ';' }).data;
     const keys: string[] = parsedData[0];
 
     const columnNames = {} as ColumnNames;
