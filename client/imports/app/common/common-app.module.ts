@@ -3,6 +3,7 @@ import { ToastsManager } from './toasts-manager';
 import { LoadingManager } from './loading-manager';
 
 import { ObjectAsArray } from './pipes/objectAsArray.pipe';
+import { SearchPipe } from './pipes/search.pipe';
 
 @NgModule({
   providers: [
@@ -10,10 +11,12 @@ import { ObjectAsArray } from './pipes/objectAsArray.pipe';
     LoadingManager
   ],
   declarations: [
-    ObjectAsArray
+    ObjectAsArray,
+    SearchPipe
   ],
   exports: [
-    ObjectAsArray
+    ObjectAsArray,
+    SearchPipe
   ]
 })
 export class CommonAppModule {

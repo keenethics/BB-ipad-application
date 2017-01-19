@@ -4,19 +4,37 @@
   </button>
 </ion-fab>
 <ion-card *ngIf="isFilterVisible">
+  <ion-card-header>
+    <ion-segment [(ngModel)]="category">
+      <ion-segment-button value="market">
+        MARKETS
+      </ion-segment-button>
+      <ion-segment-button value="country">
+        COUNTRIES
+      </ion-segment-button>
+      <ion-segment-button value="city">
+        CITIES
+      </ion-segment-button>
+    </ion-segment>
+  </ion-card-header>
   <ion-card-content>
-    <ion-list>
-      <ion-item *ngFor="let key of labels | objAsArr:true">
+    <ion-input [(ngModel)]="searchValue" type="text" placeholder="What you search?" value=""></ion-input>
+    <applied-filters [filters]="['Dubai','Munich','Nozay']"></applied-filters>
+    <ion-scroll scrollY="true">
+      <ion-list>
+        <button ion-item *ngFor="let option of getOptions(category) | search:searchValue">
+          {{option}}
+        </button>
+        <!--<ion-item *ngFor="let key of labels | objAsArr:true">
         <ion-label>{{labels[key]}}</ion-label>
         <ion-select [(ngModel)]="filter[key]" [multiple]="true" [selectOptions]="selectOptions" (ionChange)="handleSelectChange($event)">
           <ion-option *ngFor="let option of getOptions(key)">{{option}}</ion-option>
         </ion-select>
-      </ion-item>
-      <ion-item>
-        <button ion-button block (click)="isFilterVisible = !isFilterVisible">
+      </ion-item>-->
+      </ion-list>
+    </ion-scroll>
+    <button ion-button block small (click)="isFilterVisible = !isFilterVisible">
           Hide
-        </button>
-      </ion-item>
-    </ion-list>
+    </button>
   </ion-card-content>
 </ion-card>

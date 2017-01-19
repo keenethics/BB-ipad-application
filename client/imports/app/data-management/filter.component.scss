@@ -2,9 +2,18 @@ data-filter {
   position: absolute;
   top: 0;
   max-width: 300px;
+  width: 300px;
+  height: 100%;
 
   ion-fab.filter {
     margin: 10px;
+  }
+
+  ion-card {
+    ion-scroll {
+      height: 300px;
+      margin: 10px 0;
+    }
   }
   // left: 0;
   // width: 20%;

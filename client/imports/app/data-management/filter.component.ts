@@ -28,6 +28,9 @@ export class DataFilterComponent implements OnInit {
   private businessData: BusinessDataUnit[];
   private filter: any = {};
 
+  public searchValue = '';
+  public category = 'city';
+
   public isFilterVisible = false;
 
   @Input() exludedFields: string[];
