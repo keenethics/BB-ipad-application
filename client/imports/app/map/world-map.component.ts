@@ -112,6 +112,7 @@ export class WorldMap implements OnChanges {
 
   renderMarkers(scale?: number) {
     if (this.isMapReady) {
+      // debugger
       const map = this.svg.select('g.map');
       const data = this.dataToDraw.filter((item) => {
         return Boolean(item.value);
@@ -128,17 +129,18 @@ export class WorldMap implements OnChanges {
       scale = scale || this.mapTransform.k;
 
       const markers = map.selectAll('circle.marker')
-        .data(data)
-        .attr('transform', (d: any) => `translate(${this.projection([d.longitude, d.latitude])})`)
-        .attr('r', (d: any) => getRadius(parseInt(d.value)) / scale);
+        .data(data);
 
       markers.exit().remove();
+
+      markers.attr('transform', (d: any) => `translate(${this.projection([d.longitude, d.latitude])})`)
+        .attr('r', (d: any) => getRadius(parseInt(d.value) | 1) / scale);
 
       markers.enter()
         .append('circle')
         .attr('class', 'marker')
         .attr('transform', (d: any) => `translate(${this.projection([d.longitude, d.latitude])})`)
-        .attr('r', (d: any) => getRadius(parseInt(d.value)) / scale)
+        .attr('r', (d: any) => getRadius(parseInt(d.value) | 1) / scale)
         .on('click', (d: any) => {
           this.onDataClick.emit(d);
         });

@@ -4,6 +4,7 @@ import { LoadingManager } from './loading-manager';
 
 import { ObjectAsArray } from './pipes/objectAsArray.pipe';
 import { SearchPipe } from './pipes/search.pipe';
+import { Draggable } from './directives/draggable';
 
 @NgModule({
   providers: [
@@ -12,11 +13,13 @@ import { SearchPipe } from './pipes/search.pipe';
   ],
   declarations: [
     ObjectAsArray,
-    SearchPipe
+    SearchPipe,
+    Draggable
   ],
   exports: [
     ObjectAsArray,
-    SearchPipe
+    SearchPipe,
+    Draggable
   ]
 })
 export class CommonAppModule {

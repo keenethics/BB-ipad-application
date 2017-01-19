@@ -5,6 +5,7 @@ import { MapModule } from '../map/map.module';
 import { CommonAppModule } from '../common/common-app.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataManagementModule } from '../data-management';
+import { SheetsModule } from '../sheets';
 
 import { HomePage } from './home/home.page';
 import { SigninPage } from './signin/signin.page';
@@ -26,7 +27,8 @@ const PAGES = [
     ReactiveFormsModule,
     MapModule,
     CommonAppModule,
-    DataManagementModule
+    DataManagementModule,
+    SheetsModule
   ],
   declarations: PAGES,
   exports: PAGES,

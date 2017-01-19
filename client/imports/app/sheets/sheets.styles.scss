@@ -1,0 +1,78 @@
+$window-color: #d9d9d9;
+$window-buttons-color: #ABABAB;
+
+$row-color-1: #DCE6F1;
+$row-color-2: #BEC8D2;
+$row-color-3: #5B9BD5;
+$row-color-4: #04368C;
+
+:host {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  
+  ion-card {
+    margin: 0;
+    width: initial;
+    background: $window-color;
+
+    ion-card-header {
+      padding: 10px 10px 0;
+      display: flex;
+      justify-content: space-between;
+
+      p {
+        margin: 0 20px 0 0;
+        font-weight: bold;
+        align-self: center;
+      }
+
+      button {
+        background-color: $window-buttons-color;
+      }
+    }
+
+    ion-card-content {
+      padding: 10px ;
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+
+        th, td {
+          text-align: left;
+          padding: 0 4px;
+          border: 1.5px dotted $window-buttons-color;
+        }
+
+        th.t-italic {
+          font-weight: 100;
+          font-style: italic;
+        }
+
+        th.t-right, td.t-right {
+          text-align: right;
+        }
+
+        .row-color-1 {
+          background-color: $row-color-1;
+        }
+
+        .row-color-2 {
+          background-color: $row-color-2;
+        }
+
+        .row-color-3 {
+          background-color: $row-color-3;
+        }
+
+        .row-color-4 {
+          color: #FFF;
+          background-color: $row-color-4;
+        }
+      }
+    }
+  }
+}

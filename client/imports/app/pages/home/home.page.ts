@@ -5,7 +5,8 @@ import {
   ViewChild,
   ViewEncapsulation,
   OnInit,
-  OnDestroy
+  OnDestroy,
+  ViewContainerRef
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { NavController, MenuController, Content } from 'ionic-angular';
@@ -15,6 +16,7 @@ import styles from './home.page.scss';
 
 import { Authorization } from '../../authorization/authorization';
 import { DataProvider, DataFilterComponent } from '../../data-management';
+import { SheetsController, OverviewSheetComponent, SheetsPortalComponent } from '../../sheets';
 
 import { SigninPage } from '../signin/signin.page';
 
@@ -31,12 +33,14 @@ export class HomePage implements AfterViewInit {
   public filters: any[] = [];
 
   @ViewChild(Content) content: Content;
+  @ViewChild(SheetsPortalComponent, { read: ViewContainerRef }) sheetsPortal: ViewContainerRef;
 
   constructor(
     private navCtrl: NavController,
     private menuCtrl: MenuController,
     private auth: Authorization,
-    private dataProvider: DataProvider
+    private dataProvider: DataProvider,
+    private sheetsCtrl: SheetsController
   ) {
   }
 
@@ -54,8 +58,8 @@ export class HomePage implements AfterViewInit {
     this.menuCtrl.toggle();
   }
 
-  test(data: any) {
-    console.log(data);
+  showOverview(data: any) {
+    this.sheetsCtrl.create(OverviewSheetComponent, this.sheetsPortal);
   }
 
   getFilteredData(filterQuery: any) {
