@@ -59,7 +59,7 @@ export class HomePage implements AfterViewInit {
   }
 
   showOverview(data: any) {
-    this.sheetsCtrl.create(OverviewSheetComponent, this.sheetsPortal);
+    this.sheetsCtrl.create(OverviewSheetComponent, this.sheetsPortal, data);
   }
 
   getFilteredData(filterQuery: any) {

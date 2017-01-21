@@ -6,23 +6,92 @@ import {
   HostListener
 } from '@angular/core';
 
+import { DataProvider } from '../data-management';
+import { BusinessDataUnit, toOverviewTable } from '../../../../both/data-management';
+
 import template from './overview-sheet.component.html';
 import styles from './sheets.styles.scss';
 
 @Component({
   selector: 'overview-sheet',
   template,
-  styles: [styles]
+  styles: [styles],
+  providers: [DataProvider]
 })
 export class OverviewSheetComponent {
+  @Input() selectedItem: any;
+  @Input() rowsDescs: any[];
+  @Input() excludedPeriods: number[];
   @Output() onClickEmitter = new EventEmitter();
   @Output() onCloseEmitter = new EventEmitter();
 
-  public openFactSheet() {
+  public periods: number[];
+  private businessData: BusinessDataUnit[];
+
+  constructor(private dataProvider: DataProvider) {
+    if (!this.rowsDescs) {
+      this.rowsDescs = [
+        { title: 'Opening', dataSources: ['Landing point'], color: 'row-color-4' },
+        { title: 'OUT Real Ramp down', dataSources: ['Ramp down'], color: 'row-color-2' },
+        { title: 'IN Real Ramp up', dataSources: ['Ramp up'], color: 'row-color-2' },
+        { title: 'NET Transfer', dataSources: ['Transfer in', 'Transfer out'], color: 'row-color-3' },
+        { title: 'NET Others', dataSources: ['Other in', 'Other out'], color: 'row-color-3' },
+        { title: 'Landing point', dataSources: ['Landing point'], color: 'row-color-4' }
+      ];
+    }
+
+    if (!this.excludedPeriods) {
+      this.excludedPeriods = [2016, 2019];
+    }
+
+    this.dataProvider.data$.subscribe((data) => {
+      this.businessData = data;
+      this.periods = data
+        .map(item => item.period)
+        .filter(item => Number(item))
+        .reduce((acc, item) => {
+          const year = Number(item);
+          if (acc.indexOf(year) === -1) {
+            acc.push(Number(year));
+          }
+          return acc;
+        }, []).sort();
+    });
+  }
+
+  ngOnInit() {
+    this.getTableData();
+  }
+
+  getTableData() {
+    const entityKey = this.selectedItem.identifier.toLowerCase();
+    const query = {
+      n2: 'Total',
+      [entityKey]: this.selectedItem[entityKey],
+      identifier: this.selectedItem.identifier
+    };
+    this.dataProvider.query(query);
+  }
+
+  openFactSheet() {
     this.onClickEmitter.emit();
   }
 
-  public close() {
+  close() {
     this.onCloseEmitter.emit();
+  }
+
+  getCellValue(sources: string[], period: number, fromPrev: boolean) {
+    period = fromPrev ? period - 1 : period;
+    return this.businessData.reduce((acc, item) => {
+      if (item.period === String(period)) {
+        for (let i = 0; i < sources.length; i++) {
+          if (sources[i] === item.highLevelCategory) {
+            return acc + Number(item.value);
+          }
+        }
+      }
+      return acc;
+    }, 0);
   }
 }

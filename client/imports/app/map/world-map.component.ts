@@ -10,7 +10,9 @@ import {
   Output,
   EventEmitter,
   ViewEncapsulation,
-  Renderer
+  Renderer,
+  NgZone,
+  HostListener
 } from '@angular/core';
 import * as d3 from 'd3';
 import * as topojson from 'topojson';
@@ -47,9 +49,15 @@ export class WorldMap implements OnChanges {
   @Output('markers-rendered') onMarkersRendered = new EventEmitter();
   @Output('map-rendered') onMapRendered = new EventEmitter();
 
-  constructor(private renderer: Renderer) {
+  constructor(private renderer: Renderer, private zone: NgZone) {
     this.mapTransform = { x: 0, y: 0, k: 1 };
   }
+
+  // @HostListener('click', ['$event'])
+  // dataClick(e: any) {
+  //   alert();
+  //   console.log(e);
+  // }
 
   ngOnChanges(changes: any) {
     if (
