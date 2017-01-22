@@ -1,6 +1,6 @@
 <ion-card draggable>
   <ion-card-header>
-    <p>France GS Factsheet</p>
+    <p>{{selectedItem[entityKey]}} Factsheet</p>
     <ion-buttons end>
       <button (click)="close()" ion-button small>X</button>
     </ion-buttons>
@@ -10,145 +10,25 @@
       <thead>
         <tr class="row-color-1">
           <th class="t-italic">In HC</th>
-          <th class="t-right">MN Total</th>
-          <th class="t-right">MN P</th>
-          <th class="t-right">MN CC</th>
-          <th class="t-right">GS</th>
-          <th class="t-right">AMS</th>
-          <th class="t-right">PPS</th>
-          <th class="t-right">SPS</th>
-          <th class="t-right">COO</th>
-          <th class="t-right">CM</th>
-          <th class="t-right">CTO</th>
-          <th class="t-right">Other[1]</th>
+          <th *ngFor="let col of columnsDescs" class="t-right">
+            {{col.title}}
+          </th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td class="t-right">Baseline P12/2016</td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
+        <tr *ngFor="let row of rowsDescs | exclude:excludedRowsDescs">
+          <td>{{row.title}}</td>
+          <td *ngFor="let col of columnsDescs">
+            {{getCellValue(row, col)}}
+          </td>
         </tr>
-        <tr class="row-color-4">
-          <td class="t-right">Opening</td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
+        <tr class="row-color-1">
+          <th>in %</th>
+          <th *ngFor="let col of columnsDescs" class="t-right">{{col.title}}</th>
         </tr>
-        <tr class="row-color-2">
-          <td class="t-right">OUT Restructuring</td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-        </tr>
-        <tr class="row-color-2">
-          <td class="t-right">OUT Voluntary leave</td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-        </tr>
-        <tr class="row-color-3">
-          <td class="t-right">IN New external hire</td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-        </tr>
-        <tr class="row-color-3">
-          <td class="t-right">IN Attrition replacement</td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-        </tr>
-        <tr>
-          <td class="t-right">NET Others</td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-        </tr>
-        <tr class="row-color-4">
-          <td class="t-right">Landing point</td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-        </tr>
-        <tr>
-          <td class="t-right">% net change</td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
-          <td class="t-right"></td>
+        <tr *ngFor="let row of excludedRowsDescs">
+          <td class="t-italic">{{row.title}}</td>
+          <td [colored]="getCellValue(row, col)" *ngFor="let col of columnsDescs;">{{getCellValue(row, col)|percentage}}</td>
         </tr>
       </tbody>
     </table>

@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 import { DataProvider } from '../data-management';
-import { BusinessDataUnit, toOverviewTable } from '../../../../both/data-management';
+import { BusinessDataUnit } from '../../../../both/data-management';
 
 import template from './overview-sheet.component.html';
 import styles from './sheets.styles.scss';
@@ -26,6 +26,7 @@ export class OverviewSheetComponent {
   @Output() onCloseEmitter = new EventEmitter();
 
   public periods: number[];
+  public entityKey: string;
   private businessData: BusinessDataUnit[];
 
   constructor(private dataProvider: DataProvider) {
@@ -64,10 +65,10 @@ export class OverviewSheetComponent {
   }
 
   getTableData() {
-    const entityKey = this.selectedItem.identifier.toLowerCase();
+    this.entityKey = this.selectedItem.identifier.toLowerCase();
     const query = {
       n2: 'Total',
-      [entityKey]: this.selectedItem[entityKey],
+      [this.entityKey]: this.selectedItem[this.entityKey],
       identifier: this.selectedItem.identifier
     };
     this.dataProvider.query(query);

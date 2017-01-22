@@ -7,6 +7,8 @@ import { OverviewSheetComponent } from './overview-sheet.component';
 import { FactSheetComponent } from './fact-sheet.component';
 import { SheetsPortalComponent } from './sheets-portal.component';
 import { SheetsController } from './sheets-controller';
+import { PercentagePipe } from './percentage.pipe';
+import { ColoredDirective } from './colored.directive';
 
 const COMPONENTS = [
   OverviewSheetComponent,
@@ -14,10 +16,18 @@ const COMPONENTS = [
   SheetsPortalComponent
 ];
 
+const PIPES = [
+  PercentagePipe
+];
+
+const DIRECTIVES = [
+  ColoredDirective
+];
+
 @NgModule({
   imports: [IonicModule, CommonAppModule],
-  declarations: [...COMPONENTS],
-  exports: [...COMPONENTS],
+  declarations: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
+  exports: [...COMPONENTS, ...PIPES, ...DIRECTIVES],
   entryComponents: [...COMPONENTS],
   providers: [SheetsController]
 })
