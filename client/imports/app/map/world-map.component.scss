@@ -1,19 +1,20 @@
 svg {
-        g.map {
-          path {
-            fill: #EEE;
-            stroke: #999;
-            stroke-linejoin: round;
-            stroke-linecap: round;
-            vector-effect: non-scaling-stroke;
-          }
-
-          circle.marker {
-            fill: rgb(18, 65, 145);
-            opacity: 0.8;
-            stroke-width: 1;
-            stroke: rgb(255, 255, 255);
-            vector-effect: non-scaling-stroke;
-          }
-        }
+  g.map {
+    path {
+      fill: #EEE;
+      stroke: #999;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+      vector-effect: non-scaling-stroke;
     }
+
+    circle.marker {
+      pointer-events: all;
+      fill: rgb(18, 65, 145);
+      opacity: 0.8;
+      stroke-width: 1;
+      stroke: rgb(255, 255, 255);
+      vector-effect: non-scaling-stroke;
+    }
+  }
+}

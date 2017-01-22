@@ -19,30 +19,64 @@ export class SheetsController {
 
   }
 
-  public create(sheetType: any, vCref: ViewContainerRef, dataUnit: BusinessDataUnit): ComponentRef<FactSheetComponent | OverviewSheetComponent> {
+  private overviewSheets: ComponentRef<OverviewSheetComponent>[] = [];
+  private factSheets: ComponentRef<FactSheetComponent>[] = [];
+
+  public create(sheetType: any, vCref: ViewContainerRef, eventData: { data: BusinessDataUnit, element: HTMLElement }): ComponentRef<FactSheetComponent | OverviewSheetComponent> {
     if (
       (sheetType === FactSheetComponent) ||
       (sheetType === OverviewSheetComponent)
     ) {
-      const factory = this.componentFactoryResolver.resolveComponentFactory(sheetType);
-      const injector = ReflectiveInjector.fromResolvedProviders([], vCref.parentInjector);
-      const componet = factory.create(injector) as ComponentRef<FactSheetComponent | OverviewSheetComponent>;
-      componet.instance.selectedItem = dataUnit;
-      vCref.insert(componet.hostView);
 
-      componet.instance.onCloseEmitter.subscribe(() => {
-        componet.destroy();
-      });
-
-      if (componet.componentType === OverviewSheetComponent) {
-        (componet as ComponentRef<OverviewSheetComponent>)
-          .instance.onClickEmitter.subscribe(() => {
-            this.create(FactSheetComponent, vCref, dataUnit);
-            componet.destroy();
-          });
+      if (sheetType === OverviewSheetComponent &&
+        this.overviewSheets.length) {
+        this.overviewSheets[0].destroy();
+        this.overviewSheets.pop();
       }
 
-      return componet;
+      if (this.factSheets.length) {
+        this.factSheets[0].instance.selectedItem = eventData.data;
+        this.factSheets[0].instance.getTableData();
+      }
+
+      const factory = this.componentFactoryResolver.resolveComponentFactory(sheetType);
+      const injector = ReflectiveInjector.fromResolvedProviders([], vCref.parentInjector);
+      const component = factory.create(injector) as ComponentRef<FactSheetComponent | OverviewSheetComponent>;
+
+      const { left, top, width, height } = eventData.element.getBoundingClientRect();
+      component.instance.selectedItem = eventData.data;
+      component.instance.options = { top: top + height, left: left + width };
+
+      vCref.insert(component.hostView);
+
+      component.instance.onCloseEmitter.subscribe(() => {
+        if (component.componentType === FactSheetComponent &&
+          this.factSheets.length) {
+          this.factSheets.pop();
+        }
+        component.destroy();
+      });
+
+      if (component.componentType === OverviewSheetComponent) {
+        (component as ComponentRef<OverviewSheetComponent>)
+          .instance.onClickEmitter.subscribe(() => {
+            if (this.factSheets.length) {
+              this.factSheets[0].instance.selectedItem = eventData.data;
+              this.factSheets[0].instance.getTableData();
+            } else {
+              this.create(FactSheetComponent, vCref, eventData);
+              component.destroy();
+            }
+          });
+
+        this.overviewSheets.push(component as ComponentRef<OverviewSheetComponent>);
+      }
+
+      if (component.componentType === FactSheetComponent) {
+        this.factSheets.push(component as ComponentRef<FactSheetComponent>);
+      }
+
+      return component;
     }
 
     return null;

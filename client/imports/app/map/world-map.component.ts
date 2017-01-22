@@ -49,15 +49,9 @@ export class WorldMap implements OnChanges {
   @Output('markers-rendered') onMarkersRendered = new EventEmitter();
   @Output('map-rendered') onMapRendered = new EventEmitter();
 
-  constructor(private renderer: Renderer, private zone: NgZone) {
+  constructor(private elRef: ElementRef) {
     this.mapTransform = { x: 0, y: 0, k: 1 };
   }
-
-  // @HostListener('click', ['$event'])
-  // dataClick(e: any) {
-  //   alert();
-  //   console.log(e);
-  // }
 
   ngOnChanges(changes: any) {
     if (
@@ -143,13 +137,14 @@ export class WorldMap implements OnChanges {
       markers.attr('transform', (d: any) => `translate(${this.projection([d.longitude, d.latitude])})`)
         .attr('r', (d: any) => getRadius(parseInt(d.value) | 1) / scale);
 
+      const { onDataClick } = this;
       markers.enter()
         .append('circle')
         .attr('class', 'marker')
         .attr('transform', (d: any) => `translate(${this.projection([d.longitude, d.latitude])})`)
         .attr('r', (d: any) => getRadius(parseInt(d.value) | 1) / scale)
-        .on('click', (d: any) => {
-          this.onDataClick.emit(d);
+        .on('click', function (d: any){
+          onDataClick.emit({ data: d, element: this });
         });
 
       this.onMarkersRendered.emit();
@@ -190,16 +185,21 @@ export class WorldMap implements OnChanges {
         .attr('transform', `translate(${this.width / 2}, ${this.height / 2})` +
         `scale(${k})translate(${[-x, -y]})`)
         .on('end', () => {
-          this.isZoomingNow = false;
-          const regExp = /\((.+?), (.+?)\).+\((.+?),/g;
-          const transform = map.attr('transform');
-          if (transform) {
-            const maches = regExp.exec(transform);
-            this.mapTransform = { x: +maches[1], y: +maches[2], k: +maches[3] };
-            const zoomIdentity = d3.zoomIdentity
-              .translate(+maches[1], +maches[2])
-              .scale(+maches[3]);
-            this.svg.call(this.zoom.transform, zoomIdentity);
+          try {
+            this.isZoomingNow = false;
+            const regExp = /\((.+?), (.+?)\).+\((.+?),/g;
+            const transform = map.attr('transform');
+            if (transform) {
+              const maches = regExp.exec(transform);
+              this.mapTransform = { x: +maches[1], y: +maches[2], k: +maches[3] };
+              const zoomIdentity = d3.zoomIdentity
+                .translate(+maches[1], +maches[2])
+                .scale(+maches[3]);
+              this.svg.call(this.zoom.transform, zoomIdentity);
+            }
+          } catch (err) {
+            if (err instanceof TypeError) return;
+            throw err;
           }
         });
 

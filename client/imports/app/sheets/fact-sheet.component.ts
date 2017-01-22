@@ -19,6 +19,7 @@ import styles from './sheets.styles.scss';
 })
 export class FactSheetComponent {
   @Input() selectedItem: any;
+  @Input() options: any;
   @Input() columnsDescs: any[];
   @Input() rowsDescs: any[];
   @Output() onCloseEmitter = new EventEmitter();

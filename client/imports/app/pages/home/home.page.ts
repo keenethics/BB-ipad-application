@@ -65,4 +65,8 @@ export class HomePage implements AfterViewInit {
   getFilteredData(filterQuery: any) {
     this.dataProvider.query(filterQuery);
   }
+
+  t() {
+    alert('WORDK');
+  }
 }

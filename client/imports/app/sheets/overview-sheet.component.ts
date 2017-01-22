@@ -20,6 +20,7 @@ import styles from './sheets.styles.scss';
 })
 export class OverviewSheetComponent {
   @Input() selectedItem: any;
+  @Input() options: any;
   @Input() rowsDescs: any[];
   @Input() excludedPeriods: number[];
   @Output() onClickEmitter = new EventEmitter();

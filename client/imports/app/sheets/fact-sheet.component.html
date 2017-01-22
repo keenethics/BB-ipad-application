@@ -1,4 +1,4 @@
-<ion-card draggable>
+<ion-card draggable init-top="67" init-left="300">
   <ion-card-header>
     <p>{{selectedItem[entityKey]}} Factsheet</p>
     <ion-buttons end>
@@ -23,11 +23,11 @@
           </td>
         </tr>
         <tr class="row-color-1">
-          <th>in %</th>
+          <th class="t-italic">in %</th>
           <th *ngFor="let col of columnsDescs" class="t-right">{{col.title}}</th>
         </tr>
         <tr *ngFor="let row of excludedRowsDescs">
-          <td class="t-italic">{{row.title}}</td>
+          <td>{{row.title}}</td>
           <td [colored]="getCellValue(row, col)" *ngFor="let col of columnsDescs;">{{getCellValue(row, col)|percentage}}</td>
         </tr>
       </tbody>

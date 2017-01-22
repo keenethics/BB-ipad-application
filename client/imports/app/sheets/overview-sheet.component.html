@@ -1,4 +1,4 @@
-<ion-card draggable>
+<ion-card draggable [init-left]="options.left" [init-top]="options.top">
   <ion-card-header>
     <p>Latest estimates: {{selectedItem[entityKey]}}</p>
     <ion-buttons end>
