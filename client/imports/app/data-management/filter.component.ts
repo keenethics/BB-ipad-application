@@ -83,8 +83,15 @@ export class DataFilterComponent implements OnInit {
     if (option && this.filters.indexOf(option) === -1) {
       this.filters.push(option);
     }
-
+    // const query = Object.assign({}, this.query);
     this.query[this.category] = { $in: this.filters };
+
+    switch (this.category) {
+      case 'market': this.query.identifier = 'Country'; break;
+      case 'country': this.query.identifier = 'City'; break;
+      case 'city': this.query.identifier = 'City'; break;
+    }
+
     this.onFilterChange.emit(this.query);
   }
 
@@ -95,6 +102,11 @@ export class DataFilterComponent implements OnInit {
 
     if (this.filters.length === 0) {
       delete this.query[this.category];
+      switch (this.category) {
+        case 'market': this.query.identifier = 'Market'; break;
+        case 'country': this.query.identifier = 'Country'; break;
+        case 'city': this.query.identifier = 'City'; break;
+      }
     } else {
       this.query[this.category] = { $in: this.filters };
     }
