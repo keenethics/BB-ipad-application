@@ -143,7 +143,7 @@ export class WorldMap implements OnChanges {
         .attr('class', 'marker')
         .attr('transform', (d: any) => `translate(${this.projection([d.longitude, d.latitude])})`)
         .attr('r', (d: any) => getRadius(parseInt(d.value) | 1) / scale)
-        .on('click', function (d: any){
+        .on('mousedown', function (d: any){
           onDataClick.emit({ data: d, element: this });
         });
 
