@@ -15,6 +15,7 @@ import {
   HostListener
 } from '@angular/core';
 import * as d3 from 'd3';
+import * as d3proj from 'd3-geo-projection';
 import * as topojson from 'topojson';
 
 import * as mapTopoJson from './json/world.json';
@@ -77,7 +78,7 @@ export class WorldMap implements OnChanges {
     if (!this.isMapReady) {
       this.svg = d3.select('svg#map');
 
-      this.projection = d3.geoMercator()
+      this.projection = d3proj.geoPatterson()
         .scale((this.svgWidth() - 1) / 2 / Math.PI)
         .translate([this.svgWidth() / 2, this.svgHeight() / 2]);
 
