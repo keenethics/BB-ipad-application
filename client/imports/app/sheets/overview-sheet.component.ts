@@ -43,7 +43,7 @@ export class OverviewSheetComponent {
     }
 
     if (!this.excludedPeriods) {
-      this.excludedPeriods = [2016, 2019];
+      this.excludedPeriods = [2016];
     }
 
     this.dataProvider.data$.subscribe((data) => {
