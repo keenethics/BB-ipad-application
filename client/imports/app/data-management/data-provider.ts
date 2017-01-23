@@ -13,6 +13,7 @@ import {
 @Injectable()
 export class DataProvider {
   private _data: BehaviorSubject<BusinessDataUnit[]> = new BehaviorSubject([]);
+  private _subscription: any;
   private _columnNames: BehaviorSubject<ColumnNames> = new BehaviorSubject(null);
 
   constructor() {
@@ -20,17 +21,13 @@ export class DataProvider {
   }
 
   private subscribeToPublications() {
-    MeteorObservable.subscribe('allData')
-      .subscribe(() => {
-        const data = BusinessData.find({}).fetch();
-        this._data.next(data);
-      });
-
     MeteorObservable.subscribe('columnNames')
       .subscribe(() => {
         const columnNames = ColumnNamesCollection.findOne({});
-        delete columnNames._id;
-        this._columnNames.next(columnNames);
+        if (columnNames) {
+          delete columnNames._id;
+          this._columnNames.next(columnNames);
+        }
       });
   }
 
@@ -44,6 +41,15 @@ export class DataProvider {
 
   query(queryObject: any = {}) {
     const result = BusinessData.find(queryObject).fetch();
-    this._data.next(result);
+
+    if (this._subscription) {
+      this._subscription.unsubscribe();
+    }
+
+    this._subscription = MeteorObservable.subscribe('businessData', queryObject)
+      .subscribe(() => {
+        const data = BusinessData.find(queryObject).fetch();
+        this._data.next(data);
+      });
   }
 }

@@ -24,52 +24,30 @@ import { BusinessDataUnit, ColumnNames } from '../../../../both/data-management'
   encapsulation: ViewEncapsulation.None
 })
 export class DataFilterComponent implements OnInit {
-  private labels: any;
   private businessData: BusinessDataUnit[];
-  private filter: any = {};
+  private filters: string[] = [];
+  private query: any;
 
+  public options: string[] = [];
+  public searchValue = '';
+  public category = 'market';
   public isFilterVisible = false;
 
-  @Input() exludedFields: string[];
+  @Input() data: BusinessDataUnit[];
   @Output() onFilterChange = new EventEmitter();
 
-  constructor(
-    private fromBuilder: FormBuilder,
-    private dataProvider: DataProvider,
-  ) { }
-
   ngOnInit() {
-    if (!this.exludedFields) {
-      this.exludedFields = [
-        '_id',
-        'value',
-        'longitude',
-        'latitude'
-      ];
-    }
-
-    this.dataProvider.columnNames$.subscribe((names) => {
-      this.buildFilterForm(names);
-    });
-
-    this.dataProvider.data$.subscribe((data) => {
-      this.businessData = data;
-      this.setFilterDefaults();
-    });
+    this.changeCategory();
   }
 
-  buildFilterForm(columnNames: ColumnNames) {
-    if (!columnNames) return;
-    this.labels = {};
-    Object.keys(columnNames).forEach((key) => {
-      if (this.exludedFields.indexOf(key) === -1) {
-        this.labels[key] = columnNames[key];
-      }
-    });
+  ngOnChanges(changes: any) {
+    if (changes.data.currentValue.length > 0 && this.options.length === 0) {
+      this.options = this.getOptions(this.category);
+    }
   }
 
   getOptions(key: string) {
-    return this.businessData
+    const res = this.data
       .reduce((acc, item) => {
         if (item[key] && acc.indexOf(item[key]) === -1) {
           acc.push(item[key]);
@@ -78,32 +56,49 @@ export class DataFilterComponent implements OnInit {
           return acc;
         }
       }, []).sort();
+    return res;
   }
 
-  handleSelectChange() {
-    const query = this.buildQuery(this.filter);
-    this.onFilterChange.emit(query);
-  }
-
-  buildQuery(filter: any) {
-    const query = {};
-    Object.keys(filter)
-      .forEach((key) => {
-        if (filter[key].length > 0) {
-          query[key] = { $in: filter[key] };
-        }
-      });
-    return query;
-  }
-
-  setFilterDefaults() {
-    this.filter = {
-      n2: ['Total MN'],
-      market: ['EUROPE', 'MEA'],
-      country: ['Total Market']
+  changeCategory() {
+    const query = {
+      n2: 'Total',
+      identifier: '',
+      highLevelCategory: 'Landing point',
+      period: 'Actuals'
     };
 
-    const query = this.buildQuery(this.filter);
+    switch (this.category) {
+      case 'market': query.identifier = 'Market'; break;
+      case 'country': query.identifier = 'Country'; break;
+      case 'city': query.identifier = 'City'; break;
+    }
+
+    this.query = query;
+    this.filters = [];
+    this.options = [];
     this.onFilterChange.emit(query);
+  }
+
+  selectOption(option: string) {
+    if (option && this.filters.indexOf(option) === -1) {
+      this.filters.push(option);
+    }
+
+    this.query[this.category] = { $in: this.filters };
+    this.onFilterChange.emit(this.query);
+  }
+
+  removeOption(option: string) {
+    if (option) {
+      this.filters = this.filters.filter(item => item !== option);
+    }
+
+    if (this.filters.length === 0) {
+      delete this.query[this.category];
+    } else {
+      this.query[this.category] = { $in: this.filters };
+    }
+
+    this.onFilterChange.emit(this.query);
   }
 }

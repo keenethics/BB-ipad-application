@@ -18,7 +18,7 @@ import {
   `,
   styles: [`
     ion-chip {
-      margin: 0 4px;
+      margin: 4px;
     }
   `]
 })

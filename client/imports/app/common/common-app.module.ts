@@ -3,6 +3,9 @@ import { ToastsManager } from './toasts-manager';
 import { LoadingManager } from './loading-manager';
 
 import { ObjectAsArray } from './pipes/objectAsArray.pipe';
+import { SearchPipe } from './pipes/search.pipe';
+import { ExcludePipe } from './pipes/exclude.pipe';
+import { Draggable } from './directives/draggable';
 
 @NgModule({
   providers: [
@@ -10,10 +13,16 @@ import { ObjectAsArray } from './pipes/objectAsArray.pipe';
     LoadingManager
   ],
   declarations: [
-    ObjectAsArray
+    ObjectAsArray,
+    SearchPipe,
+    Draggable,
+    ExcludePipe
   ],
   exports: [
-    ObjectAsArray
+    ObjectAsArray,
+    SearchPipe,
+    Draggable,
+    ExcludePipe
   ]
 })
 export class CommonAppModule {

@@ -1,0 +1,27 @@
+<ion-card draggable [init-left]="options.left" [init-top]="options.top">
+  <ion-card-header>
+    <p>Latest estimates: {{selectedItem[entityKey]}}</p>
+    <ion-buttons end>
+      <button (click)="openFactSheet()" ion-button small>Factsheet</button>
+      <button (click)="close()" ion-button small>X</button>
+    </ion-buttons>
+  </ion-card-header>
+  <ion-card-content>
+    <table>
+      <thead>
+        <tr class="row-color-1">
+          <th class="t-italic">in HC</th>
+          <th *ngFor="let period of periods | exclude:excludedPeriods" class="t-right">LE {{period}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of rowsDescs; let i = index;" class="{{row.color}}">
+          <td>{{row.title}}</td>
+          <td *ngFor="let period of periods | exclude:excludedPeriods">
+            {{getCellValue(row.dataSources, period, i === 0)}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ion-card-content>
+</ion-card>

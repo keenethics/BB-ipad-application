@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/fo
 
 import { MenuController } from 'ionic-angular';
 
-import { ToastsManager } from '../../common/toasts-manager';
+import { ToastsManager, LoadingManager } from '../../common';
 import { DataUploader } from '../../data-management';
 import styles from './upload-data.page.scss';
 import template from './upload-data.page.html';
@@ -20,6 +20,7 @@ export class UploadDataPage {
 
   constructor(
     private toastCtrl: ToastsManager,
+    private loadingCtrl: LoadingManager,
     private formBuilder: FormBuilder,
     private dataUploader: DataUploader,
     private menuCtrl: MenuController
@@ -53,10 +54,12 @@ export class UploadDataPage {
   }
 
   uploadFile() {
+    this.loadingCtrl.loading('Uploading data...');
     this.dataUploader.uploadFile(this.file)
       .then((res: string) => {
         this.uploadFileForm.reset();
         this.file = null;
+        this.loadingCtrl.loadingInst.dismiss();
         this.toastCtrl.okToast(res);
       })
       .catch((err) => {

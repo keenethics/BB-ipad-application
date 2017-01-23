@@ -1,0 +1,36 @@
+<ion-card draggable init-top="67" init-left="300">
+  <ion-card-header>
+    <p>{{selectedItem[entityKey]}} Factsheet</p>
+    <ion-buttons end>
+      <button (click)="close()" ion-button small>X</button>
+    </ion-buttons>
+  </ion-card-header>
+  <ion-card-content>
+    <table>
+      <thead>
+        <tr class="row-color-1">
+          <th class="t-italic">In HC</th>
+          <th *ngFor="let col of columnsDescs" class="t-right">
+            {{col.title}}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of rowsDescs | exclude:excludedRowsDescs">
+          <td>{{row.title}}</td>
+          <td *ngFor="let col of columnsDescs">
+            {{getCellValue(row, col)}}
+          </td>
+        </tr>
+        <tr class="row-color-1">
+          <th class="t-italic">in %</th>
+          <th *ngFor="let col of columnsDescs" class="t-right">{{col.title}}</th>
+        </tr>
+        <tr *ngFor="let row of excludedRowsDescs">
+          <td>{{row.title}}</td>
+          <td [colored]="getCellValue(row, col)" *ngFor="let col of columnsDescs;">{{getCellValue(row, col)|percentage}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </ion-card-content>
+</ion-card>
