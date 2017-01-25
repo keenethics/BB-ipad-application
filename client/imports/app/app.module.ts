@@ -9,7 +9,7 @@ import { CommonAppModule } from './common/common-app.module';
 import { PagesModule } from './pages/pages.module';
 import { AppComponent } from './app.component';
 
-import 'ionic-angular/css/ionic.min.css';
+import '../../stylesheets/global.scss';
 
 @NgModule({
   imports: [
