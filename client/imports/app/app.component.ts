@@ -3,6 +3,7 @@ import { Platform, Nav, MenuController, ToastController } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
 import { Authorization } from './authorization/authorization';
+import { DataProvider } from './data-management';
 
 import { HomePage } from './pages/home/home.page';
 import { SigninPage } from './pages/signin/signin.page';
@@ -12,6 +13,7 @@ import { TestDataPage } from './pages/test-data/test-data.page';
 
 import template from './app.component.html';
 import styles from './app.component.scss';
+import theme from './theme.scss';
 
 declare const FilePicker: any;
 
@@ -33,7 +35,8 @@ export class AppComponent {
     public platform: Platform,
     private auth: Authorization,
     private menuCtrl: MenuController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    public dataProvider: DataProvider
   ) {
     this.pages = [
       { title: 'Home page', component: HomePage },
@@ -68,5 +71,9 @@ export class AppComponent {
     this.auth.logout().then(() => {
       this.navCtrl.setRoot(SigninPage);
     });
+  }
+
+  getFilteredData(filterQuery: any) {
+    this.dataProvider.query(filterQuery);
   }
 }

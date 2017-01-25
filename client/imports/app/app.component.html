@@ -4,7 +4,6 @@
       <ion-title>Menu</ion-title>
     </ion-toolbar>
   </ion-header>
-
   <ion-content>
     <ion-list>
       <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
@@ -15,7 +14,14 @@
       </button>
     </ion-list>
   </ion-content>
+</ion-menu>
 
+<ion-menu id="filter-menu" type="push" swipeEnabled="false" [content]="content">
+  <ion-content>
+    <ion-list>
+        <data-filter [data]="dataProvider.data$ | async" (onFilterChange)="getFilteredData($event)"></data-filter>
+    </ion-list>
+  </ion-content>
 </ion-menu>
 
 <ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

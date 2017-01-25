@@ -1,5 +1,10 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons>
+      <button (click)="menuToggle('filter-menu')" ion-button icon-only>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-buttons end>
       <button (click)="menuToggle()" ion-button icon-only>
         <ion-icon name="menu"></ion-icon>
@@ -10,6 +15,25 @@
 <ion-content class="no-scroll">
   <world-map [map-width]="mapWidth" [map-height]="mapHeight" [zoom-on-update]="true" [data-to-draw]="dataProvider.data$ | async"
     (data-click)="showOverview($event)"></world-map>
-  <data-filter [data]="dataProvider.data$ | async" (onFilterChange)="getFilteredData($event)"></data-filter>
   <sheets-portal></sheets-portal>
 </ion-content>
+<ion-footer>
+  <ion-footer>
+    <ion-toolbar>
+      <ion-segment>
+        <ion-segment-button value="1">
+          <ion-icon name="camera"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value="2">
+          <ion-icon name="bookmark"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value="3">
+          <ion-icon name="camera"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value="4">
+          <ion-icon name="bookmark"></ion-icon>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+  </ion-footer>
+</ion-footer>

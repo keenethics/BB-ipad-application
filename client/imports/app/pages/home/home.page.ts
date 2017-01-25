@@ -54,15 +54,11 @@ export class HomePage implements AfterViewInit {
     return this.auth.isLoggedIn();
   }
 
-  menuToggle() {
-    this.menuCtrl.toggle();
+  menuToggle(id: string) {
+    this.menuCtrl.toggle(id || '');
   }
 
   showOverview(data: any) {
     this.sheetsCtrl.create(OverviewSheetComponent, this.sheetsPortal, data);
-  }
-
-  getFilteredData(filterQuery: any) {
-    this.dataProvider.query(filterQuery);
   }
 }
