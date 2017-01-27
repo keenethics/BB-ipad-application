@@ -77,7 +77,7 @@ ion-menu#filter-menu {
     ion-content {
       background-color: map-get($colors, 'light-blue');
       &>.scroll-content{
-        overflow: hidden;
+        // overflow: hidden;
       }
     }
   }
@@ -108,6 +108,7 @@ ion-menu#filter-menu {
       .toolbar-content {
         background-color: map-get($colors, 'light-blue');
         p {
+          white-space: normal;
           font-size: 16px;
           color: map-get($colors,'secondary');
           width: 227px;
@@ -129,7 +130,7 @@ data-filter {
     // flex-direction: column;
     height: 100%;
     margin: 0 !important;
-    overflow: hidden;
+    // overflow: hidden;
     ion-item.item.item-block {
       background-color: map-get($colors, 'light-blue');
       border: none;
@@ -254,33 +255,37 @@ data-filter {
             height: 100%;
           }
         }
-          
-        ion-label {
-          height: 100%;
-          margin: 0;
-          padding-bottom: 20px;
-          ion-scroll {
-            height: 100%;
-            margin: 0 40px;
-            ion-list {
-              button.item {
-                border: none;
-                background: transparent;
-                font-size: 14px;
-                padding: 0;
-                color: map-get($colors,'light');
-                line-height: 42px;
-                ion-label {
-                  padding: 0;
-                }
 
-                .item-inner {
-                  background-image: none;
-                }
-              }
+        ion-list {
+          padding: 0 40px;
+          button.item {
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            padding: 0;
+            color: map-get($colors,'light');
+            line-height: 42px;
+            ion-label {
+              padding: 0;
+              margin: 0;
+            }
+
+            .item-inner {
+              background-image: none;
             }
           }
         }
+          
+        // ion-label {
+        //   height: 100%;
+        //   margin: 0;
+        //   padding-bottom: 20px;
+        //   ion-scroll {
+        //     height: 100%;
+        //     margin: 0 40px;
+            
+        //   }
+        // }
       }
 
       div.item-inner {

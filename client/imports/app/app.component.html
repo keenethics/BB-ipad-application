@@ -17,14 +17,6 @@
 </ion-menu>
 
 <ion-menu id="filter-menu" type="push" swipeEnabled="false" [content]="content">
-  <ion-header>
-    <ion-toolbar color="light-blue" class="header">
-      <ion-title>SEARCH</ion-title>
-    </ion-toolbar>
-    <ion-toolbar color="light-blue" class="subheader">
-      <p>Compare countries, markets or even cities. Start by choosing the search type</p>
-    </ion-toolbar>
-  </ion-header>
   <ion-content>
     <data-filter [data]="dataProvider.data$ | async" (onFilterChange)="getFilteredData($event)"></data-filter>
   </ion-content>
