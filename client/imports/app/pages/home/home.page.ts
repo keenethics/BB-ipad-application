@@ -31,6 +31,7 @@ export class HomePage implements AfterViewInit {
   public mapWidth: number = 0;
   public mapHeight: number = 0;
   public filters: any[] = [];
+  public isMenuOpen = false;
 
   @ViewChild(Content) content: Content;
   @ViewChild(SheetsPortalComponent, { read: ViewContainerRef }) sheetsPortal: ViewContainerRef;
@@ -56,6 +57,7 @@ export class HomePage implements AfterViewInit {
 
   menuToggle(id: string) {
     this.menuCtrl.toggle(id || '');
+    this.isMenuOpen = !this.isMenuOpen;
   }
 
   showOverview(data: any) {

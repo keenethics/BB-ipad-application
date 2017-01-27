@@ -124,9 +124,9 @@ data-filter {
 
   &>ion-list.list {
     background-color: map-get($colors, 'light-blue');
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: column;
+    display: block;
+    // justify-content: flex-start;
+    // flex-direction: column;
     height: 100%;
     margin: 0 !important;
     overflow: hidden;
@@ -248,6 +248,13 @@ data-filter {
 
       &.options {
         flex-grow: 1;
+        div.item-inner {
+          height: 100%;
+          div.input-wrapper {
+            height: 100%;
+          }
+        }
+          
         ion-label {
           height: 100%;
           margin: 0;

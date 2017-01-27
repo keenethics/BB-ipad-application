@@ -22,7 +22,9 @@
   <ion-item class="applied-filters">
     <applied-filters [filters]="filters" (onFilterRemoved)="removeOption($event)"></applied-filters>
   </ion-item>
-  <ion-item class="options">
+  <!--AUTO-->
+  <ion-item autho-height class="options">
+    <!--LABEL AUTO-->
     <ion-scroll scrollY="true">
       <ion-list>
         <button (click)="selectOption(option)" ion-item *ngFor="let option of options | search:searchValue">
