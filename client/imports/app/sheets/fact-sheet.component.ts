@@ -7,6 +7,7 @@ import {
 
 import { DataProvider } from '../data-management';
 import { BusinessDataUnit } from '../../../../both/data-management';
+import { OverviewSheetComponent } from './overview-sheet.component';
 
 import template from './fact-sheet.component.html';
 import styles from './sheets.styles.scss';
@@ -23,6 +24,7 @@ export class FactSheetComponent {
   @Input() options: any;
   @Input() columnsDescs: any[];
   @Input() rowsDescs: any[];
+  @Output() onClickEmitter = new EventEmitter();
   @Output() onCloseEmitter = new EventEmitter();
 
   public entityKey: string;
@@ -160,6 +162,10 @@ export class FactSheetComponent {
 
     if (!maches.length) return '-';
     return (calc ? calc(maches) : maches[0].value) || '-';
+  }
+
+  openOverviewSheet() {
+    this.onClickEmitter.emit(OverviewSheetComponent);
   }
 
   public close() {

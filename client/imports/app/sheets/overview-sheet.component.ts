@@ -8,14 +8,16 @@ import {
 
 import { DataProvider } from '../data-management';
 import { BusinessDataUnit } from '../../../../both/data-management';
+import { FactSheetComponent } from './fact-sheet.component';
 
 import template from './overview-sheet.component.html';
 import styles from './sheets.styles.scss';
+import cmpStyles from './overview-sheet.component.scss';
 
 @Component({
   selector: 'overview-sheet',
   template,
-  styles: [styles],
+  styles: [styles, cmpStyles],
   providers: [DataProvider]
 })
 export class OverviewSheetComponent {
@@ -76,7 +78,7 @@ export class OverviewSheetComponent {
   }
 
   openFactSheet() {
-    this.onClickEmitter.emit();
+    this.onClickEmitter.emit(FactSheetComponent);
   }
 
   close() {

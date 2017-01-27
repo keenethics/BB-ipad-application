@@ -1,10 +1,13 @@
-<ion-card draggable [init-left]="options.left" [init-top]="options.top">
+<div (click)="close()" class="overlay"></div>
+<ion-card>
   <ion-card-header>
-    <p>Latest estimates: {{selectedItem[entityKey]}}</p>
-    <ion-buttons end>
-      <button (click)="openFactSheet()" ion-button small>Factsheet</button>
-      <button (click)="close()" ion-button small>X</button>
-    </ion-buttons>
+    <div class="card-header">
+      <p>LE: <span class="title">{{selectedItem[entityKey]}}</span></p>
+      <ion-buttons end>
+        <button class="active" ion-button>OVERVIEW</button>
+        <button (click)="openFactSheet()" ion-button>FACT SHEET</button>
+      </ion-buttons>
+    </div>
   </ion-card-header>
   <ion-card-content>
     <table>
