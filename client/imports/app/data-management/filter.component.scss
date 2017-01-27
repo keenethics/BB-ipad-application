@@ -1,18 +1,1 @@
-data-filter {
-  position: absolute;
-  top: 0;
-  z-index: 1;
-  max-width: 300px;
-
-  ion-fab.filter {
-    margin: 10px;
-  }
-
-  ion-card.card {
-    width: 280px;
-    ion-scroll {
-      height: 300px;
-      margin: 10px 0;
-    }
-  }
-}
+@import "../../../stylesheets/global.scss";

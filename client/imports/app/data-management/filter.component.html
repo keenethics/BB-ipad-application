@@ -1,40 +1,44 @@
-<ion-fab class="filter" *ngIf="data && !isFilterVisible">
-  <button ion-fab icon color="primary" (click)="isFilterVisible = !isFilterVisible">
-    <ion-icon name="funnel"></ion-icon>
-  </button>
-</ion-fab>
-<ion-card *ngIf="isFilterVisible">
-  <ion-card-header>
+<ion-list>
+  <ion-item>
+    <ion-toolbar color="light-blue" class="header">
+      <ion-title>SEARCH</ion-title>
+    </ion-toolbar>
+    <ion-toolbar color="light-blue" class="subheader">
+      <p>Compare countries, markets or even cities. Start by choosing the search type</p>
+    </ion-toolbar>
+  </ion-item>
+  <ion-item class="categories">
     <ion-segment [(ngModel)]="category" (ionChange)="changeCategory()">
       <ion-segment-button value="market">
+        <ion-icon class="icon-bb-markets" name="icon-bb-markets"></ion-icon>
         MARKETS
       </ion-segment-button>
       <ion-segment-button value="country">
+        <ion-icon class="icon-bb-countries" name="icon-bb-countries"></ion-icon>
         COUNTRIES
       </ion-segment-button>
       <ion-segment-button value="city">
+        <ion-icon class="icon-bb-cities" name="icon-bb-cities"></ion-icon>
         CITIES
       </ion-segment-button>
     </ion-segment>
-  </ion-card-header>
-  <ion-card-content>
-    <ion-input [(ngModel)]="searchValue" type="text" placeholder="What you search?" value=""></ion-input>
+  </ion-item>
+  <ion-item class="search-input">
+    <ion-label><ion-icon class="icon-bb-search" name="icon-bb-search"></ion-icon></ion-label>
+    <ion-input [(ngModel)]="searchValue" type="text" placeholder="Start typing a country here" value=""></ion-input>
+  </ion-item>
+  <ion-item class="applied-filters">
     <applied-filters [filters]="filters" (onFilterRemoved)="removeOption($event)"></applied-filters>
-    <ion-scroll scrollY="true">
+  </ion-item>
+  <!--AUTO-->
+  <ion-item class="options">
+    <!--LABEL AUTO-->
+    <!--<ion-scroll scrollY="true">-->
       <ion-list>
         <button (click)="selectOption(option)" ion-item *ngFor="let option of options | search:searchValue">
           {{option}}
         </button>
-        <!--<ion-item *ngFor="let key of labels | objAsArr:true">
-        <ion-label>{{labels[key]}}</ion-label>
-        <ion-select [(ngModel)]="filter[key]" [multiple]="true" [selectOptions]="selectOptions" (ionChange)="handleSelectChange($event)">
-          <ion-option *ngFor="let option of getOptions(key)">{{option}}</ion-option>
-        </ion-select>
-      </ion-item>-->
       </ion-list>
-    </ion-scroll>
-    <button ion-button block small (click)="isFilterVisible = !isFilterVisible">
-          Hide
-    </button>
-  </ion-card-content>
-</ion-card>
+    <!--</ion-scroll>-->
+  </ion-item>
+</ion-list>

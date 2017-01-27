@@ -27,18 +27,6 @@ export class SheetsController {
       (sheetType === FactSheetComponent) ||
       (sheetType === OverviewSheetComponent)
     ) {
-
-      if (sheetType === OverviewSheetComponent &&
-        this.overviewSheets.length) {
-        this.overviewSheets[0].destroy();
-        this.overviewSheets.pop();
-      }
-
-      if (this.factSheets.length) {
-        this.factSheets[0].instance.selectedItem = eventData.data;
-        this.factSheets[0].instance.getTableData();
-      }
-
       const factory = this.componentFactoryResolver.resolveComponentFactory(sheetType);
       const injector = ReflectiveInjector.fromResolvedProviders([], vCref.parentInjector);
       const component = factory.create(injector) as ComponentRef<FactSheetComponent | OverviewSheetComponent>;
@@ -50,31 +38,18 @@ export class SheetsController {
       vCref.insert(component.hostView);
 
       component.instance.onCloseEmitter.subscribe(() => {
-        if (component.componentType === FactSheetComponent &&
-          this.factSheets.length) {
-          this.factSheets.pop();
-        }
         component.destroy();
       });
 
-      if (component.componentType === OverviewSheetComponent) {
-        (component as ComponentRef<OverviewSheetComponent>)
-          .instance.onClickEmitter.subscribe(() => {
-            if (this.factSheets.length) {
-              this.factSheets[0].instance.selectedItem = eventData.data;
-              this.factSheets[0].instance.getTableData();
-            } else {
-              this.create(FactSheetComponent, vCref, eventData);
-              component.destroy();
-            }
-          });
-
-        this.overviewSheets.push(component as ComponentRef<OverviewSheetComponent>);
-      }
-
-      if (component.componentType === FactSheetComponent) {
-        this.factSheets.push(component as ComponentRef<FactSheetComponent>);
-      }
+      component.instance.onClickEmitter.subscribe((type: any) => {
+        if (type === OverviewSheetComponent) {
+          this.create(OverviewSheetComponent, vCref, eventData);
+          component.destroy();
+        } else if (type === FactSheetComponent) {
+          this.create(FactSheetComponent, vCref, eventData);
+          component.destroy();
+        }
+      });
 
       return component;
     }

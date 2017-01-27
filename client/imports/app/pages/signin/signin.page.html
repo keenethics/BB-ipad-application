@@ -1,17 +1,52 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons>
+      <button ion-button icon-only>
+        <ion-icon class="icon-bb-side-menu" name="icon-bb-side-menu"></ion-icon>
+        <!--<ion-icon *ngIf="isMenuOpen" class="icon-bb-side-menu-close" name="icon-bb-side-menu-close"></ion-icon>-->
+      </button>
+    </ion-buttons>
+    <!--<ion-buttons end>
+      <button (click)="menuToggle()" ion-button icon-only>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>-->
+    <ion-title>
+      <ion-icon class="icon-bb-logo" name="icon-bb-logo"></ion-icon>
+      MN BLACK BOOK APPLICATION
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
 <ion-content>
   <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate padding>
-    <ion-list>
-      <ion-item>
-        <ion-label floating>Email</ion-label>
-        <ion-input [(ngModel)]="loginCredentials.email" formControlName='email' type="text"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label floating>Password</ion-label>
-        <ion-input [(ngModel)]="loginCredentials.password" formControlName='password' type="password"></ion-input>
-      </ion-item>
-      <ion-item>
-        <button type="submit" ion-button block [disabled]="isFormValid(loginForm)">Login</button>
-      </ion-item>
-    </ion-list>
+    <div>
+      <h1>WELCOME BACK,</h1>
+      <h2>Log into your account to start exploring and comparing markets across the globe</h2>
+    </div>
+    <div class="inputs">
+      <ion-input [(ngModel)]="loginCredentials.email" formControlName='email' type="text" placeholder="E-mail"></ion-input>
+      <ion-input [(ngModel)]="loginCredentials.password" formControlName='password' type="password" placeholder="Password"></ion-input>
+      <button type="submit" ion-button block [disabled]="isFormValid(loginForm)">SIGN IN</button>
+    </div>
   </form>
 </ion-content>
+<ion-footer>
+  <ion-footer>
+    <ion-toolbar>
+      <ion-segment>
+        <ion-segment-button value="1">
+          <ion-icon class="icon-bb-map" name="icon-bb-map"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value="2">
+          <ion-icon class="icon-bb-search" name="icon-bb-search"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value="3">
+          <ion-icon class="icon-bb-filter" name="icon-bb-filter"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value="4">
+          <ion-icon class="icon-bb-preferences" name="icon-bb-preferences"></ion-icon>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+  </ion-footer>
+</ion-footer>

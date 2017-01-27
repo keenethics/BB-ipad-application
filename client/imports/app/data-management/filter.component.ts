@@ -20,8 +20,7 @@ import { BusinessDataUnit, ColumnNames } from '../../../../both/data-management'
   selector: 'data-filter',
   template,
   styles: [styles],
-  providers: [DataProvider],
-  encapsulation: ViewEncapsulation.None
+  providers: [DataProvider]
 })
 export class DataFilterComponent implements OnInit {
   private businessData: BusinessDataUnit[];

@@ -1,15 +1,44 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons end>
+  <ion-toolbar color="primary">
+    <ion-buttons>
+      <button (click)="menuToggle('filter-menu')" ion-button icon-only>
+        <ion-icon class="icon-bb-side-menu" name="icon-bb-side-menu"></ion-icon>
+        <!--<ion-icon *ngIf="isMenuOpen" class="icon-bb-side-menu-close" name="icon-bb-side-menu-close"></ion-icon>-->
+      </button>
+    </ion-buttons>
+    <!--<ion-buttons end>
       <button (click)="menuToggle()" ion-button icon-only>
         <ion-icon name="menu"></ion-icon>
       </button>
-    </ion-buttons>
+    </ion-buttons>-->
+    <ion-title>
+      <ion-icon class="icon-bb-logo" name="icon-bb-logo"></ion-icon>
+      MN BLACK BOOK APPLICATION
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content class="no-scroll">
   <world-map [map-width]="mapWidth" [map-height]="mapHeight" [zoom-on-update]="true" [data-to-draw]="dataProvider.data$ | async"
     (data-click)="showOverview($event)"></world-map>
-  <data-filter [data]="dataProvider.data$ | async" (onFilterChange)="getFilteredData($event)"></data-filter>
   <sheets-portal></sheets-portal>
 </ion-content>
+<ion-footer>
+  <ion-footer>
+    <ion-toolbar>
+      <ion-segment>
+        <ion-segment-button value="1">
+          <ion-icon class="icon-bb-map" name="icon-bb-map"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value="2">
+          <ion-icon class="icon-bb-search" name="icon-bb-search"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value="3">
+          <ion-icon class="icon-bb-filter" name="icon-bb-filter"></ion-icon>
+        </ion-segment-button>
+        <ion-segment-button value="4">
+          <ion-icon class="icon-bb-preferences" name="icon-bb-preferences"></ion-icon>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+  </ion-footer>
+</ion-footer>

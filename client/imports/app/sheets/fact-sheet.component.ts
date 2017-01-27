@@ -7,14 +7,16 @@ import {
 
 import { DataProvider } from '../data-management';
 import { BusinessDataUnit } from '../../../../both/data-management';
+import { OverviewSheetComponent } from './overview-sheet.component';
 
 import template from './fact-sheet.component.html';
 import styles from './sheets.styles.scss';
+import componentStyles from './fact-sheet.component.scss';
 
 @Component({
   selector: 'fact-sheet',
   template,
-  styles: [styles],
+  styles: [styles, componentStyles],
   providers: [DataProvider]
 })
 export class FactSheetComponent {
@@ -22,6 +24,7 @@ export class FactSheetComponent {
   @Input() options: any;
   @Input() columnsDescs: any[];
   @Input() rowsDescs: any[];
+  @Output() onClickEmitter = new EventEmitter();
   @Output() onCloseEmitter = new EventEmitter();
 
   public entityKey: string;
@@ -44,7 +47,7 @@ export class FactSheetComponent {
   initTableDescriptions() {
     if (!this.columnsDescs) {
       this.columnsDescs = [
-        { title: 'MN Total', dataSources: { n2: 'Total' } },
+        { title: 'MN TOTAL', dataSources: { n2: 'Total' } },
         { title: 'MN P', dataSources: { n2: 'MN Products-RN' } },
         { title: 'MN CC', dataSources: { n2: 'MN Products-CC' } },
         { title: 'GS', dataSources: { n2: 'Global Services' } },
@@ -54,7 +57,7 @@ export class FactSheetComponent {
         { title: 'COO', dataSources: { n2: 'COO' } },
         { title: 'CM', dataSources: { n2: 'Commercial Management' } },
         { title: 'CTO', dataSources: { n2: 'CTO' } },
-        { title: 'Other[1]', dataSources: { n2: ['Central Team', 'Business and Portfolio Integration Leadership'] } }
+        { title: 'OTHERS', dataSources: { n2: ['Central Team', 'Business and Portfolio Integration Leadership'] } }
       ];
     }
 
@@ -72,11 +75,13 @@ export class FactSheetComponent {
     this.rowsDescs = [
       {
         title: `Baseline P12/${baseLineYear}`,
-        dataSources: { period: 'Baseline', highLevelCategory: 'Landing point' }
+        dataSources: { period: 'Baseline', highLevelCategory: 'Landing point' },
+        color: ''
       },
       {
         title: `P12/${firstPeriod}`,
-        dataSources: { period: String(firstPeriod), highLevelCategory: 'Landing point' }
+        dataSources: { period: String(firstPeriod), highLevelCategory: 'Landing point' },
+        color: 'row-color-3'
       },
       {
         title: `Net down/up P12/${firstPeriod} - ${lastPeriod}`,
@@ -88,11 +93,13 @@ export class FactSheetComponent {
             return lp.value - fp.value;
           }
           return inputs[0].value;
-        }
+        },
+        color: ''
       },
       {
         title: `Landing point ${lastPeriod}`,
-        dataSources: { period: String(lastPeriod), highLevelCategory: 'Landing point' }
+        dataSources: { period: String(lastPeriod), highLevelCategory: 'Landing point' },
+        color: 'row-color-3'
       },
       {
         title: `YE${lastPeriod} vs. P12/${firstPeriod}`,
@@ -105,7 +112,8 @@ export class FactSheetComponent {
           }
 
           return Number(inputs[0].value);
-        }
+        },
+        color: 'row-color-3'
       }
     ];
 
@@ -154,6 +162,10 @@ export class FactSheetComponent {
 
     if (!maches.length) return '-';
     return (calc ? calc(maches) : maches[0].value) || '-';
+  }
+
+  openOverviewSheet() {
+    this.onClickEmitter.emit(OverviewSheetComponent);
   }
 
   public close() {

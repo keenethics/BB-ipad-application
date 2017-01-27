@@ -1,32 +1,37 @@
-<ion-card draggable init-top="67" init-left="300">
+<div (click)="close()" class="overlay"></div>
+<ion-card>
   <ion-card-header>
-    <p>{{selectedItem[entityKey]}} Factsheet</p>
-    <ion-buttons end>
-      <button (click)="close()" ion-button small>X</button>
-    </ion-buttons>
+    <div class="card-header">
+      <p>BU-SPECIFIC LOCATION INFO: <span class="title">{{selectedItem[entityKey]}}</span></p>
+      <ion-buttons end>
+        <button (click)="openOverviewSheet()" ion-button>OVERVIEW</button>
+        <button class="active" ion-button>FACT SHEET</button>
+        <!--<button (click)="close()" ion-button small>X</button>-->
+      </ion-buttons>
+    </div>
   </ion-card-header>
   <ion-card-content>
     <table>
       <thead>
-        <tr class="row-color-1">
-          <th class="t-italic">In HC</th>
+        <tr class="row-color-4">
+          <th>In HC</th>
           <th *ngFor="let col of columnsDescs" class="t-right">
             {{col.title}}
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of rowsDescs | exclude:excludedRowsDescs">
+        <tr class="{{row.color}}" *ngFor="let row of rowsDescs | exclude:excludedRowsDescs">
           <td>{{row.title}}</td>
           <td *ngFor="let col of columnsDescs">
             {{getCellValue(row, col)}}
           </td>
         </tr>
-        <tr class="row-color-1">
-          <th class="t-italic">in %</th>
+        <!--<tr>
+          <th>in %</th>
           <th *ngFor="let col of columnsDescs" class="t-right">{{col.title}}</th>
-        </tr>
-        <tr *ngFor="let row of excludedRowsDescs">
+        </tr>-->
+        <tr class="{{row.color}}" *ngFor="let row of excludedRowsDescs">
           <td>{{row.title}}</td>
           <td [colored]="getCellValue(row, col)" *ngFor="let col of columnsDescs;">{{getCellValue(row, col)|percentage}}</td>
         </tr>
