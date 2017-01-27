@@ -2,7 +2,8 @@ import {
   Component,
   Input,
   Output,
-  EventEmitter
+  EventEmitter,
+  ViewEncapsulation
 } from '@angular/core';
 
 import { DataProvider } from '../data-management';
@@ -17,7 +18,8 @@ import componentStyles from './fact-sheet.component.scss';
   selector: 'fact-sheet',
   template,
   styles: [styles, componentStyles],
-  providers: [DataProvider]
+  providers: [DataProvider],
+  encapsulation: ViewEncapsulation.None
 })
 export class FactSheetComponent {
   @Input() selectedItem: any;

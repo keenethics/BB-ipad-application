@@ -3,7 +3,8 @@ import {
   Input,
   Output,
   EventEmitter,
-  HostListener
+  HostListener,
+  ViewEncapsulation
 } from '@angular/core';
 
 import { DataProvider } from '../data-management';
@@ -18,7 +19,8 @@ import cmpStyles from './overview-sheet.component.scss';
   selector: 'overview-sheet',
   template,
   styles: [styles, cmpStyles],
-  providers: [DataProvider]
+  providers: [DataProvider],
+  encapsulation: ViewEncapsulation.None
 })
 export class OverviewSheetComponent {
   @Input() selectedItem: any;

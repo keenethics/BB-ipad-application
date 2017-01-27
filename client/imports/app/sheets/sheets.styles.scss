@@ -1,4 +1,12 @@
-@import '../../../stylesheets/global.scss';
+$colors: (
+  primary: #0B409C,
+  secondary: #A7C1E3,
+  light: #E2E8F0,
+  dark: #47494D,
+  dark-blue: #173567,
+  light-blue: #3B65AD,
+  ui-light: #ECEFF4
+);
 
 $window-color: #d9d9d9;
 $window-buttons-color: #ABABAB;
@@ -8,7 +16,7 @@ $row-color-2: #BEC8D2;
 $row-color-3: #5B9BD5;
 $row-color-4: #04368C;
 
-:host {
+overview-sheet, fact-sheet {
   display: inline-block;
   position: absolute;
   top: 0;
@@ -82,7 +90,7 @@ $row-color-4: #04368C;
     }
   }
   
-  ion-card {
+  ion-card.card {
     margin: 0;
     width: initial;
     background: transparent;
