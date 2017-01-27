@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Platform, Nav, MenuController, ToastController } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
@@ -26,7 +26,7 @@ export class AppComponent {
   @ViewChild(Nav) navCtrl: Nav;
 
   userId: string;
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{ title: string, component: any }>;
 
   private subscriptions: any[] = [];
   public rootPage = this.auth.isLoggedIn() ? HomePage : SigninPage;
@@ -46,7 +46,7 @@ export class AppComponent {
     ];
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.initializeApp();
   }
 
@@ -64,7 +64,7 @@ export class AppComponent {
   }
 
   openPage(page: any) {
-    this.navCtrl.setRoot(page.component, {}, {animate: true, direction: 'forward'});
+    this.navCtrl.setRoot(page.component, {}, { animate: true, direction: 'forward' });
   }
 
   logout() {

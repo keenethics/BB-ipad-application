@@ -290,6 +290,7 @@ data-filter {
 ion-header {
   &>ion-toolbar.toolbar {
     min-height: 70px;
+    color: map-get($colors,'light');
     ion-buttons {
       button.bar-button {
         font-size: 7px;
@@ -297,6 +298,9 @@ ion-header {
         padding-top: 7px;
         ion-icon {
           font-size: 15px;
+        }
+        &:hover {
+          color: map-get($colors,'light');
         }
       }
     }

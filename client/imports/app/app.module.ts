@@ -14,7 +14,9 @@ import '../../stylesheets/global.scss';
 @NgModule({
   imports: [
     BrowserModule,
-    IonicModule.forRoot(AppComponent),
+    IonicModule.forRoot(AppComponent, {
+      mode: 'ios'
+    }),
     PagesModule,
     AuthorizationModule,
     DataManagementModule
