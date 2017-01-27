@@ -33,12 +33,12 @@ export class OverviewSheetComponent {
   constructor(private dataProvider: DataProvider) {
     if (!this.rowsDescs) {
       this.rowsDescs = [
-        { title: 'Opening', dataSources: ['Landing point'], color: 'row-color-4' },
-        { title: 'OUT Real Ramp down', dataSources: ['Ramp down'], color: 'row-color-2' },
-        { title: 'IN Real Ramp up', dataSources: ['Ramp up'], color: 'row-color-2' },
-        { title: 'NET Transfer', dataSources: ['Transfer in', 'Transfer out'], color: 'row-color-3' },
-        { title: 'NET Others', dataSources: ['Other in', 'Other out'], color: 'row-color-3' },
-        { title: 'Landing point', dataSources: ['Landing point'], color: 'row-color-4' }
+        { title: 'Opening', dataSources: ['Landing point'], color: 'row-color-3' },
+        { title: 'OUT Real Ramp down', dataSources: ['Ramp down'], color: '' },
+        { title: 'IN Real Ramp up', dataSources: ['Ramp up'], color: '' },
+        { title: 'NET Transfer', dataSources: ['Transfer in', 'Transfer out'], color: '' },
+        { title: 'NET Others', dataSources: ['Other in', 'Other out'], color: '' },
+        { title: 'Landing point', dataSources: ['Landing point'], color: 'row-color-3' }
       ];
     }
 

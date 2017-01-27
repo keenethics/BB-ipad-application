@@ -1,3 +1,5 @@
+@import '../../../stylesheets/global.scss';
+
 $window-color: #d9d9d9;
 $window-buttons-color: #ABABAB;
 
@@ -11,6 +13,73 @@ $row-color-4: #04368C;
   position: absolute;
   top: 0;
   left: 0;
+
+  table {
+    width: 100%;
+    border-radius: 6px;
+    border-collapse: collapse;
+    background: white;
+    white-space: nowrap;
+    font-size: 12px;
+    line-height: 65px;
+    overflow: hidden;
+
+    th, td {
+      text-align: right;
+      padding: 0 20px;
+      color: map-get($colors,'light-blue');
+    }
+
+    td:first-child, th:first-child {
+      padding-left: 30px;
+      text-align: left;
+      font-weight: normal;
+      color: #000;
+    }
+
+    tr {
+      border-top: 1px solid map-get($colors,'light');
+      border-bottom: 1px solid map-get($colors,'light');
+    }
+
+    td:last-child, th:last-child {
+      padding-right: 30px;
+    } 
+
+    th.t-italic {
+      font-weight: 100;
+      font-style: italic;
+    }
+
+    th.t-right, td.t-right {
+      text-align: right;
+    }
+
+    .row-color-1 {
+      background-color: $row-color-1;
+    }
+
+    .row-color-2 {
+      background-color: $row-color-2;
+    }
+
+    .row-color-3 {
+      background-color: map-get($colors,'light');
+      font-weight: bold;
+      color: map-get($colors,'light-blue');
+    }
+
+    .row-color-4 {
+      & {
+        th {
+          color: #FFF !important;
+          font-weight: bold;
+        }
+      }
+      color: #FFF !important;
+      background-color: map-get($colors,'light-blue');
+    }
+  }
   
   ion-card {
     margin: 0;
@@ -35,45 +104,6 @@ $row-color-4: #04368C;
 
     ion-card-content {
       padding: 10px ;
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        background: white;
-        white-space: nowrap;
-
-        th, td {
-          text-align: left;
-          padding: 0 4px;
-          border: 1.5px dotted $window-buttons-color;
-        }
-
-        th.t-italic {
-          font-weight: 100;
-          font-style: italic;
-        }
-
-        th.t-right, td.t-right {
-          text-align: right;
-        }
-
-        .row-color-1 {
-          background-color: $row-color-1;
-        }
-
-        .row-color-2 {
-          background-color: $row-color-2;
-        }
-
-        .row-color-3 {
-          background-color: $row-color-3;
-        }
-
-        .row-color-4 {
-          color: #FFF;
-          background-color: $row-color-4;
-        }
-      }
     }
   }
 }
