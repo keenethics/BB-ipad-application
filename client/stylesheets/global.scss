@@ -32,6 +32,7 @@ $colors: (
   dark: #47494D,
   dark-blue: #173567,
   light-blue: #3B65AD,
+  ui-light: #ECEFF4
 );
 
 // App iOS Variables
@@ -280,6 +281,62 @@ data-filter {
         padding: 0;
         .input-wrapper {
           display: block;
+        }
+      }
+    }
+  }
+}
+
+ion-header {
+  &>ion-toolbar.toolbar {
+    min-height: 70px;
+    ion-buttons {
+      button.bar-button {
+        font-size: 7px;
+        padding-left: 24px;
+        padding-top: 7px;
+        ion-icon {
+          font-size: 15px;
+        }
+      }
+    }
+    ion-title {
+      padding: 7px 90px 1px;
+      ion-icon {
+        margin-right: 13px;
+      }
+    }
+  }
+}
+
+ion-footer {
+  &>ion-toolbar.toolbar {
+    background-color: map-get($colors,'ui-light');
+    min-height: 70px;
+    &>div.toolbar-background {
+      border: none;
+    }
+    ion-segment.segment {
+      padding: 0 20px;
+      height: 100%;
+      ion-segment-button.segment-button {
+        border: none;
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        max-width: 60px;
+        margin: 0 20px;
+        border-radius: 0;
+        ion-icon {
+          line-height: 24px;
+          font-size: 24px;
+        }
+        &.segment-activated {
+          background: none;
+          color: map-get($colors, 'primary');
+          border-bottom: 2px solid map-get($colors, 'primary');
         }
       }
     }

@@ -2,14 +2,18 @@
   <ion-toolbar color="primary">
     <ion-buttons>
       <button (click)="menuToggle('filter-menu')" ion-button icon-only>
-        <ion-icon name="menu"></ion-icon>
+        <ion-icon class="icon-bb-side-menu" name="icon-bb-side-menu"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-buttons end>
+    <!--<ion-buttons end>
       <button (click)="menuToggle()" ion-button icon-only>
         <ion-icon name="menu"></ion-icon>
       </button>
-    </ion-buttons>
+    </ion-buttons>-->
+    <ion-title>
+      <ion-icon class="icon-bb-logo" name="icon-bb-logo"></ion-icon>
+      MN BLACK BOOK APPLICATION
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content class="no-scroll">
@@ -22,16 +26,16 @@
     <ion-toolbar>
       <ion-segment>
         <ion-segment-button value="1">
-          <ion-icon name="camera"></ion-icon>
+          <ion-icon class="icon-bb-map" name="icon-bb-map"></ion-icon>
         </ion-segment-button>
         <ion-segment-button value="2">
-          <ion-icon name="bookmark"></ion-icon>
+          <ion-icon class="icon-bb-search" name="icon-bb-search"></ion-icon>
         </ion-segment-button>
         <ion-segment-button value="3">
-          <ion-icon name="camera"></ion-icon>
+          <ion-icon class="icon-bb-filter" name="icon-bb-filter"></ion-icon>
         </ion-segment-button>
         <ion-segment-button value="4">
-          <ion-icon name="bookmark"></ion-icon>
+          <ion-icon class="icon-bb-preferences" name="icon-bb-preferences"></ion-icon>
         </ion-segment-button>
       </ion-segment>
     </ion-toolbar>
