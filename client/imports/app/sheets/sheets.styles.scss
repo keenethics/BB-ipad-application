@@ -167,10 +167,10 @@ overview-sheet, fact-sheet {
   }
 
   div.overlay {
-    position: absolute;
-    width: 300%;
-    height: 300%;
-    top: -100%;
-    left: -100%;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
   }
 }
