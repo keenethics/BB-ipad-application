@@ -16,7 +16,7 @@
   </ion-content>
 </ion-menu>
 
-<ion-menu id="filter-menu" type="push" swipeEnabled="false" [content]="content">
+<ion-menu id="filter-menu" type="push" [content]="content">
   <ion-content>
     <data-filter [data]="dataProvider.data$ | async" (onFilterChange)="getFilteredData($event)"></data-filter>
   </ion-content>
