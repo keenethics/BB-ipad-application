@@ -45,6 +45,7 @@ export class WorldMap implements OnChanges {
   @Input('map-height') svgHeight: Function;
   @Input('zoom-on-update') zoomOnUpdate: boolean;
   @Input('data-to-draw') dataToDraw: any[];
+  @Input('chart-type') chartType: string; // circle || bar
 
   @Output('data-click') onDataClick = new EventEmitter();
   @Output('markers-rendered') onMarkersRendered = new EventEmitter();
@@ -52,6 +53,7 @@ export class WorldMap implements OnChanges {
 
   constructor(private elRef: ElementRef) {
     this.mapTransform = { x: 0, y: 0, k: 1 };
+    this.chartType = 'circle';
   }
 
   ngOnChanges(changes: any) {
@@ -122,31 +124,67 @@ export class WorldMap implements OnChanges {
       const ranges = data.map((item) => {
         return parseInt(item.value);
       });
-      const getRadius = d3.scaleLinear()
+      // const getRadius = d3.scaleLinear()
+      //   .domain([d3.min(ranges), d3.max(ranges)])
+      //   .range([5, 25])
+      //   .clamp(true);
+
+      const radiusScale = d3.scaleLinear()
         .domain([d3.min(ranges), d3.max(ranges)])
         .range([5, 25])
         .clamp(true);
+
+      const barScale = d3.scaleLinear()
+        .domain(d3.extent(ranges))
+        .range([10, this.svgHeight() / 20])
+        .clamp(true);
+
       const path = d3.geoPath().projection(this.projection);
 
       scale = scale || this.mapTransform.k;
 
-      const markers = map.selectAll('circle.marker')
+      const markers = map.selectAll('.marker')
         .data(data);
 
       markers.exit().remove();
 
-      markers.attr('transform', (d: any) => `translate(${this.projection([d.longitude, d.latitude])})`)
-        .attr('r', (d: any) => getRadius(parseInt(d.value) | 1) / scale);
-
       const { onDataClick } = this;
-      markers.enter()
-        .append('circle')
-        .attr('class', 'marker')
-        .attr('transform', (d: any) => `translate(${this.projection([d.longitude, d.latitude])})`)
-        .attr('r', (d: any) => getRadius(parseInt(d.value) | 1) / scale)
-        .on('mousedown', function (d: any){
-          onDataClick.emit({ data: d, element: this });
-        });
+      if (this.chartType === 'bar') {
+        markers
+          .attr('transform', (d: any) => {
+            const position = this.projection([d.longitude, d.latitude]);
+            return `translate(${[
+             position[0] - 5,
+             position[1] - barScale(parseInt(d.value) | 1) / scale
+            ]})`;
+          })
+          .attr('height', (d: any) => barScale(parseInt(d.value) | 1) / scale)
+          .attr('width', 10 / scale);
+
+        markers.enter()
+          .append('rect')
+          .attr('class', 'marker')
+          .attr('transform', (d: any) => {
+            return `translate(${this.projection([d.longitude, d.latitude])})`;
+          })
+          .attr('width', 10)
+          .attr('height', (d: any) => barScale(parseInt(d.value) | 1) / scale)
+          .on('mousedown', function (d: any) {
+            onDataClick.emit({ data: d, element: this });
+          });
+      } else {
+        markers.attr('transform', (d: any) => `translate(${this.projection([d.longitude, d.latitude])})`)
+          .attr('r', (d: any) => radiusScale(parseInt(d.value) | 1) / scale);
+
+        markers.enter()
+          .append('circle')
+          .attr('class', 'marker')
+          .attr('transform', (d: any) => `translate(${this.projection([d.longitude, d.latitude])})`)
+          .attr('r', (d: any) => radiusScale(parseInt(d.value) | 1) / scale)
+          .on('mousedown', function (d: any) {
+            onDataClick.emit({ data: d, element: this });
+          });
+      }
 
       this.onMarkersRendered.emit();
     }
@@ -158,7 +196,7 @@ export class WorldMap implements OnChanges {
       const map = this.svg.select('g.map');
       const path = d3.geoPath().projection(this.projection);
 
-      const markersData = map.selectAll('circle.marker').data();
+      const markersData = map.selectAll('.marker').data();
 
       let x;
       let y;
