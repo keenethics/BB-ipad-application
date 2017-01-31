@@ -154,7 +154,7 @@ export class WorldMap implements OnChanges {
           .attr('transform', (d: any) => {
             const position = this.projection([d.longitude, d.latitude]);
             return `translate(${[
-             position[0] - 5,
+             position[0],
              position[1] - barScale(parseInt(d.value) | 1) / scale
             ]})`;
           })
