@@ -124,70 +124,102 @@ export class WorldMap implements OnChanges {
       const ranges = data.map((item) => {
         return parseInt(item.value);
       });
-      // const getRadius = d3.scaleLinear()
-      //   .domain([d3.min(ranges), d3.max(ranges)])
-      //   .range([5, 25])
-      //   .clamp(true);
 
       const radiusScale = d3.scaleLinear()
         .domain([d3.min(ranges), d3.max(ranges)])
         .range([5, 25])
         .clamp(true);
 
-      const barScale = d3.scaleLinear()
-        .domain(d3.extent(ranges))
-        .range([10, this.svgHeight() / 20])
-        .clamp(true);
-
       const path = d3.geoPath().projection(this.projection);
 
       scale = scale || this.mapTransform.k;
 
-      const markers = map.selectAll('.marker')
+      const placeholders = map.selectAll('g.marker')
         .data(data);
 
-      markers.exit().remove();
+      placeholders.exit().remove();
 
-      const { onDataClick } = this;
       if (this.chartType === 'bar') {
-        markers
-          .attr('transform', (d: any) => {
-            const position = this.projection([d.longitude, d.latitude]);
-            return `translate(${[
-             position[0],
-             position[1] - barScale(parseInt(d.value) | 1) / scale
-            ]})`;
-          })
-          .attr('height', (d: any) => barScale(parseInt(d.value) | 1) / scale)
-          .attr('width', 10 / scale);
-
-        markers.enter()
-          .append('rect')
-          .attr('class', 'marker')
-          .attr('transform', (d: any) => {
-            return `translate(${this.projection([d.longitude, d.latitude])})`;
-          })
-          .attr('width', 10)
-          .attr('height', (d: any) => barScale(parseInt(d.value) | 1) / scale)
-          .on('mousedown', function (d: any) {
-            onDataClick.emit({ data: d, element: this });
-          });
+        this.renderBars(ranges, scale, placeholders);
       } else {
-        markers.attr('transform', (d: any) => `translate(${this.projection([d.longitude, d.latitude])})`)
-          .attr('r', (d: any) => radiusScale(parseInt(d.value) | 1) / scale);
+        // placeholders.attr('transform', (d: any) => `translate(${this.projection([d.longitude, d.latitude])})`)
+        //   .attr('r', (d: any) => radiusScale(parseInt(d.value) | 1) / scale);
 
-        markers.enter()
-          .append('circle')
-          .attr('class', 'marker')
-          .attr('transform', (d: any) => `translate(${this.projection([d.longitude, d.latitude])})`)
-          .attr('r', (d: any) => radiusScale(parseInt(d.value) | 1) / scale)
-          .on('mousedown', function (d: any) {
-            onDataClick.emit({ data: d, element: this });
-          });
+        // placeholders.enter()
+        //   .append('circle')
+        //   .attr('class', 'marker')
+        //   .attr('transform', (d: any) => `translate(${this.projection([d.longitude, d.latitude])})`)
+        //   .attr('r', (d: any) => radiusScale(parseInt(d.value) | 1) / scale)
+        //   .on('mousedown', function (d: any) {
+        //     onDataClick.emit({ data: d, element: this });
+        //   });
       }
+
+      // this.renderLabels();
 
       this.onMarkersRendered.emit();
     }
+  }
+
+  private renderBars(ranges: any[], scale: number, placeholders: any) {
+    const barScale = d3.scaleLinear()
+        .domain(d3.extent(ranges))
+        .range([5, this.svgHeight() / 20])
+        .clamp(true);
+
+    const onDataClick = this.onDataClick;
+
+    const groupScale = placeholders
+      .attr('transform', (d: any) => {
+        const position = this.projection([d.longitude, d.latitude]);
+        return `translate(${[
+          position[0],
+          position[1] - barScale(parseInt(d.value) | 1) / scale
+        ]})`;
+      });
+
+    groupScale.select('rect')
+      .attr('height', (d: any) => barScale(parseInt(d.value) | 1) / scale)
+      .attr('width', 10 / scale);
+
+    groupScale.select('image')
+      .attr('width', 80 / scale)
+      .attr('x', -35 / scale)
+      .attr('y', -30 / scale);
+
+    groupScale.select('text')
+      .attr('font-size', 10 / scale)
+      .attr('transform', `translate(${[-8 / scale, -8 / scale]})`);
+
+    const groupEnter = placeholders.enter()
+      .append('g')
+      .attr('class', 'marker')
+      .attr('transform', (d: any) => {
+        return `translate(${this.projection([d.longitude, d.latitude])})`;
+      })
+      .on('mousedown', function (d: any) {
+        onDataClick.emit({ data: d, element: this });
+      });
+
+    groupEnter.append('rect')
+      .attr('width', 10)
+      .attr('height', (d: any) => barScale(parseInt(d.value) | 1) / scale);
+
+    groupEnter.append('image')
+      .attr('href', '/images/label.svg')
+      .attr('width', 80)
+      .attr('x', -35)
+      .attr('y', -30);
+
+    groupEnter.append('text')
+      .text((d: any) => d.value)
+      .attr('fill', 'black')
+      .attr('stroke', 'none')
+      .attr('transform', 'translate(-8, -8)');
+  }
+
+  private renderCircles() {
+
   }
 
   zoomToMarkers() {

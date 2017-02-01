@@ -1,4 +1,7 @@
 svg {
+  * {
+    vector-effect: non-scaling-stroke;
+  }
   g.map {
     path {
       fill: #EEE;
@@ -11,7 +14,6 @@ svg {
     .marker {
       pointer-events: all;
       fill: rgb(18, 65, 145);
-      opacity: 0.8;
       stroke-width: 1;
       stroke: rgb(255, 255, 255);
       vector-effect: non-scaling-stroke;
