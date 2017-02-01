@@ -83,11 +83,15 @@ ion-menu#filter-menu {
   }
 
   ion-toolbar {
-    background-color: map-get($colors, 'light-blue');
+    background-color: transparent;
     &.header {
       height: 90px;
+      div.toolbar-background {
+        border: none;
+        background: transparent;
+      }
       ion-title {
-        background-color: map-get($colors, 'light-blue');
+        background-color: transparent;
         align-items: flex-start;
         padding: 47px 40px;
         div.toolbar-title {
@@ -104,9 +108,10 @@ ion-menu#filter-menu {
       padding: 0;
       .toolbar-background {
         border: none;
+        background: transparent;
       }
       .toolbar-content {
-        background-color: map-get($colors, 'light-blue');
+        background-color: transparent;
         p {
           white-space: normal;
           font-size: 16px;
@@ -131,6 +136,18 @@ data-filter {
     height: 100%;
     margin: 0 !important;
     // overflow: hidden;
+
+    ion-item.header {
+      ion-icon {
+        position: absolute;
+        z-index: 10;
+        transform: rotateY(180deg);
+        top: -9px;
+        left: -9px;
+        font-size: 133px;
+        opacity: 0.1;
+      }
+    }
     ion-item.item.item-block {
       background-color: map-get($colors, 'light-blue');
       border: none;
@@ -207,7 +224,7 @@ data-filter {
       }
 
       &.applied-filters {
-        margin-bottom: 35px;
+        min-height: initial;
         ion-label {
           margin: 0;
           padding: 0 35px;
@@ -217,8 +234,10 @@ data-filter {
           ion-chip {
             margin: 5px;
             height: 35px;
-            background: transparent;
-            border: 1px solid map-get($colors,'secondary');
+            background: #536BD5;
+            border: 1px solid #5F89D1;
+            // background: transparent;
+            // border: 1px solid map-get($colors,'secondary');
             border-radius: 4px;
             color: map-get($colors,'light');
             ion-label {
@@ -241,6 +260,9 @@ data-filter {
                 font-size: 25px;
                 color: map-get($colors,'secondary');
                 line-height: 32px;
+                &:before {
+                  font-weight: bold;
+                }
               }
             }
           }
