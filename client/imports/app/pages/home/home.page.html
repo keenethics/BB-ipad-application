@@ -19,7 +19,7 @@
 </ion-header>
 <ion-content class="no-scroll">
   <div class="swipe-menu-overlay"></div>
-  <world-map [chart-type]="'bar'" [map-width]="mapWidth" [map-height]="mapHeight" [zoom-on-update]="true" [data-to-draw]="dataProvider.data$ | async"
+  <world-map [chart-type]="'circle'" [map-width]="mapWidth" [map-height]="mapHeight" [zoom-on-update]="true" [data-to-draw]="dataProvider.data$ | async"
     (data-click)="showOverview($event)"></world-map>
   <sheets-portal></sheets-portal>
 </ion-content>
