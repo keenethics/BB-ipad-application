@@ -17,6 +17,11 @@ svg {
       stroke-width: 1;
       stroke: rgb(255, 255, 255);
       vector-effect: non-scaling-stroke;
+
+      .label-text {
+        color: rgb(18, 65, 145);
+        font-weight: bold;
+      }
     }
   }
 }

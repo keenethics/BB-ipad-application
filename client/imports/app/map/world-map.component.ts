@@ -159,6 +159,7 @@ export class WorldMap implements OnChanges {
       const groupEnter = placeholders.enter()
         .append('g')
         .attr('class', 'marker')
+        .attr('style', 'cursor: pointer')
         .attr('transform', (d: any) => {
           return `translate(${this.projection([d.longitude, d.latitude])})`;
         })
@@ -167,45 +168,80 @@ export class WorldMap implements OnChanges {
         });
 
       groupEnter.append('rect')
+        .attr('class', 'bar')
         .attr('width', 10)
-        .attr('height', (d: any) => barScale(parseInt(d.value) | 1) / scale);
+        .attr('height', (d: any) => barScale(parseInt(d.value) | 0) / scale)
+        .attr('x', -5 / scale);
 
-      groupEnter.append('image')
-        .attr('href', '/images/label.svg')
-        .attr('width', 80)
-        .attr('x', -35)
-        .attr('y', -30);
+      groupEnter.append('rect')
+        .attr('class', 'label-bg')
+        .attr('fill', '#fff')
+        .attr('rx', 4 / scale);
 
       groupEnter.append('text')
-        .text((d: any) => `${this.getLabelText(d)} / ${d.value}`)
-        .attr('fill', 'black')
+        .text((d: any) => `${this.getLabelText(d)} • ${d.value}`)
+        .attr('class', 'label-text')
         .attr('stroke', 'none')
         .attr('font-size', 10)
-        .attr('transform', 'translate(-8, -8)');
+        .attr('transform', function (d: any) {
+          const { width, height } = this.getBoundingClientRect();
+          d.textSize = { width, height };
+          return `translate(${[
+            -(width / 2) / scale,
+            -height / scale
+          ]})`;
+        });
+
+      groupEnter.select('rect.label-bg')
+        .attr('height', (d: any) => (d.textSize.height + 8) / scale)
+        .attr('width', (d: any) => (d.textSize.width + 12) / scale)
+        .attr('transform', function (d: any) {
+          const { width, height } = this.getBoundingClientRect();
+          return `translate(${[
+            -(width / 2) / scale,
+            -(height + 4) / scale
+          ]})`;
+        });
 
       const groupScale = placeholders
         .attr('transform', (d: any) => {
           const position = this.projection([d.longitude, d.latitude]);
           return `translate(${[
             position[0],
-            position[1] - barScale(parseInt(d.value) | 1) / scale
+            position[1] - barScale(parseInt(d.value) | 0) / scale
           ]})`;
         });
 
-      groupScale.select('rect')
-        .attr('height', (d: any) => barScale(parseInt(d.value) | 1) / scale)
-        .attr('width', 10 / scale);
+      groupScale.select('rect.bar')
+        .attr('height', (d: any) => barScale(parseInt(d.value) | 0) / scale)
+        .attr('width', 10 / scale)
+        .attr('x', -5 / scale);
 
-      groupScale.select('image')
-        .attr('width', 80 / scale)
-        .attr('x', -35 / scale)
-        .attr('y', -30 / scale);
-
-      groupScale.select('text')
+      groupScale.select('text.label-text')
+        .text((d: any) => `${this.getLabelText(d)} • ${d.value}`)
         .attr('font-size', 10 / scale)
-        .attr('transform', `translate(${[-8 / scale, -8 / scale]})`);
-    } catch (err) {
+        .attr('transform', function (d: any) {
+          const { width, height } = this.getBoundingClientRect();
+          d.textSize = { width, height };
+          return `translate(${[
+            -(width / 2) / scale,
+            -height / scale
+          ]})`;
+        });
 
+      groupScale.select('rect.label-bg')
+        .attr('height', (d: any) => (d.textSize.height + 8) / scale)
+        .attr('width', (d: any) => (d.textSize.width + 12) / scale)
+        .attr('rx', 4 / scale)
+        .attr('transform', function (d: any) {
+          const { width, height } = this.getBoundingClientRect();
+          return `translate(${[
+            -(width / 2) / scale,
+            -(height + 4) / scale
+          ]})`;
+        });
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -221,6 +257,7 @@ export class WorldMap implements OnChanges {
       const groupEnter = placeholders.enter()
         .append('g')
         .attr('class', 'marker')
+        .attr('style', 'cursor: pointer')
         .attr('transform', (d: any) => {
           return `translate(${this.projection([d.longitude, d.latitude])})`;
         })
@@ -229,7 +266,7 @@ export class WorldMap implements OnChanges {
         });
 
       groupEnter.append('circle')
-        .attr('r', (d: any) => radiusScale(parseInt(d.value) | 1) / scale);
+        .attr('r', (d: any) => radiusScale(parseInt(d.value) | 0) / scale);
 
       groupEnter.append('rect')
         .attr('fill', '#fff')
@@ -237,7 +274,7 @@ export class WorldMap implements OnChanges {
 
       groupEnter.append('text')
         .text((d: any) => `${this.getLabelText(d)} • ${d.value}`)
-        .attr('fill', 'black')
+        .attr('class', 'label-text')
         .attr('stroke', 'none')
         .attr('font-size', 10)
         .attr('transform', function (d: any) {
@@ -245,18 +282,19 @@ export class WorldMap implements OnChanges {
           d.textSize = { width, height };
           return `translate(${[
             (-width / 2) / scale,
-            -radiusScale(parseInt(d.value) | 1) / scale - height / scale
+            -radiusScale(parseInt(d.value) | 0) / scale - height / scale
           ]})`;
         });
 
       groupEnter.select('rect')
+        .attr('class', 'label-bg')
         .attr('height', (d: any) => (d.textSize.height + 8) / scale)
         .attr('width', (d: any) => (d.textSize.width + 12) / scale)
         .attr('transform', function (d: any) {
           const { width, height } = this.getBoundingClientRect();
           return `translate(${[
             -width / 2 / scale,
-            -(radiusScale(parseInt(d.value) | 1) + height + 4) / scale
+            -(radiusScale(parseInt(d.value) | 0) + height + 4) / scale
           ]})`;
         });
 
@@ -267,25 +305,26 @@ export class WorldMap implements OnChanges {
           const position = this.projection([d.longitude, d.latitude]);
           return `translate(${[
             position[0],
-            position[1] - radiusScale(parseInt(d.value) | 1) / scale
+            position[1] - radiusScale(parseInt(d.value) | 0) / scale
           ]})`;
         });
 
       groupScale.select('circle')
-        .attr('r', (d: any) => radiusScale(parseInt(d.value) | 1) / scale);
+        .attr('r', (d: any) => radiusScale(parseInt(d.value) | 0) / scale);
 
-      groupScale.select('text')
+      groupScale.select('text.label-text')
+        .text((d: any) => `${this.getLabelText(d)} • ${d.value}`)
         .attr('font-size', 10 / scale)
         .attr('transform', function (d: any) {
           const { width, height } = this.getBoundingClientRect();
           d.textSize = { width, height };
           return `translate(${[
             (-width / 2) / scale,
-            -radiusScale(parseInt(d.value) | 1) / scale - height / scale
+            -radiusScale(parseInt(d.value) | 0) / scale - height / scale
           ]})`;
         });
 
-      groupScale.select('rect')
+      groupScale.select('rect.label-bg')
         .attr('height', (d: any) => (d.textSize.height + 8) / scale)
         .attr('width', (d: any) => (d.textSize.width + 12) / scale)
         .attr('rx', 4 / scale)
@@ -293,7 +332,7 @@ export class WorldMap implements OnChanges {
           const { width, height } = this.getBoundingClientRect();
           return `translate(${[
             -width / 2 / scale,
-            -(radiusScale(parseInt(d.value) | 1) + height + 4) / scale
+            -(radiusScale(parseInt(d.value) | 0) + height + 4) / scale
           ]})`;
         });
     } catch (err) {
