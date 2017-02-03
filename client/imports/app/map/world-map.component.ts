@@ -14,6 +14,8 @@ import {
   NgZone,
   HostListener
 } from '@angular/core';
+import { BusinessDataUnit } from '../../../../both/data-management/business-data.collection';
+
 import * as d3 from 'd3';
 import * as d3proj from 'd3-geo-projection';
 import * as topojson from 'topojson';
@@ -46,6 +48,8 @@ export class WorldMap implements OnChanges {
   @Input('zoom-on-update') zoomOnUpdate: boolean;
   @Input('data-to-draw') dataToDraw: any[];
   @Input('chart-type') chartType: string; // circle || bar
+  @Input('show-labels') labels: boolean;
+  @Input('show-values') values: boolean;
 
   @Output('data-click') onDataClick = new EventEmitter();
   @Output('markers-rendered') onMarkersRendered = new EventEmitter();
@@ -54,6 +58,8 @@ export class WorldMap implements OnChanges {
   constructor(private elRef: ElementRef) {
     this.mapTransform = { x: 0, y: 0, k: 1 };
     this.chartType = 'circle';
+    this.labels = false;
+    this.values = false;
   }
 
   ngOnChanges(changes: any) {
@@ -124,70 +130,241 @@ export class WorldMap implements OnChanges {
       const ranges = data.map((item) => {
         return parseInt(item.value);
       });
-      // const getRadius = d3.scaleLinear()
-      //   .domain([d3.min(ranges), d3.max(ranges)])
-      //   .range([5, 25])
-      //   .clamp(true);
 
-      const radiusScale = d3.scaleLinear()
-        .domain([d3.min(ranges), d3.max(ranges)])
-        .range([5, 25])
-        .clamp(true);
-
-      const barScale = d3.scaleLinear()
-        .domain(d3.extent(ranges))
-        .range([10, this.svgHeight() / 20])
-        .clamp(true);
 
       const path = d3.geoPath().projection(this.projection);
 
       scale = scale || this.mapTransform.k;
 
-      const markers = map.selectAll('.marker')
+      const placeholders = map.selectAll('g.marker')
         .data(data);
 
-      markers.exit().remove();
+      placeholders.exit().remove();
 
-      const { onDataClick } = this;
       if (this.chartType === 'bar') {
-        markers
-          .attr('transform', (d: any) => {
-            const position = this.projection([d.longitude, d.latitude]);
-            return `translate(${[
-             position[0],
-             position[1] - barScale(parseInt(d.value) | 1) / scale
-            ]})`;
-          })
-          .attr('height', (d: any) => barScale(parseInt(d.value) | 1) / scale)
-          .attr('width', 10 / scale);
-
-        markers.enter()
-          .append('rect')
-          .attr('class', 'marker')
-          .attr('transform', (d: any) => {
-            return `translate(${this.projection([d.longitude, d.latitude])})`;
-          })
-          .attr('width', 10)
-          .attr('height', (d: any) => barScale(parseInt(d.value) | 1) / scale)
-          .on('mousedown', function (d: any) {
-            onDataClick.emit({ data: d, element: this });
-          });
+        this.renderBars(ranges, scale, placeholders);
       } else {
-        markers.attr('transform', (d: any) => `translate(${this.projection([d.longitude, d.latitude])})`)
-          .attr('r', (d: any) => radiusScale(parseInt(d.value) | 1) / scale);
-
-        markers.enter()
-          .append('circle')
-          .attr('class', 'marker')
-          .attr('transform', (d: any) => `translate(${this.projection([d.longitude, d.latitude])})`)
-          .attr('r', (d: any) => radiusScale(parseInt(d.value) | 1) / scale)
-          .on('mousedown', function (d: any) {
-            onDataClick.emit({ data: d, element: this });
-          });
+        this.renderCircles(ranges, scale, placeholders);
       }
 
       this.onMarkersRendered.emit();
     }
+  }
+
+  private renderBars(ranges: any[], scale: number, placeholders: any) {
+    try {
+      const barScale = d3.scaleLinear()
+        .domain(d3.extent(ranges))
+        .range([5, this.svgHeight() / 20])
+        .clamp(true);
+
+      const onDataClick = this.onDataClick;
+
+      const groupEnter = placeholders.enter()
+        .append('g')
+        .attr('class', 'marker')
+        .attr('style', 'cursor: pointer')
+        .attr('transform', (d: any) => {
+          return `translate(${this.projection([d.longitude, d.latitude])})`;
+        })
+        .on('mousedown', function (d: any) {
+          onDataClick.emit({ data: d, element: this });
+        });
+
+      groupEnter.append('rect')
+        .attr('class', 'bar')
+        .attr('width', 10)
+        .attr('height', (d: any) => barScale(parseInt(d.value) | 0) / scale)
+        .attr('x', -5 / scale);
+
+      if (this.labels || this.values) {
+        groupEnter.append('rect')
+          .attr('class', 'label-bg')
+          .attr('fill', '#fff')
+          .attr('rx', 4 / scale);
+
+        groupEnter.append('text')
+          .text((d: any) => this.getLabelText(d))
+          .attr('class', 'label-text')
+          .attr('stroke', 'none')
+          .attr('font-size', 10)
+          .attr('transform', function (d: any) {
+            const { width, height } = this.getBoundingClientRect();
+            d.textSize = { width, height };
+            return `translate(${[
+              -(width / 2) / scale,
+              -height / scale
+            ]})`;
+          });
+
+        groupEnter.select('rect.label-bg')
+          .attr('height', (d: any) => (d.textSize.height + 8) / scale)
+          .attr('width', (d: any) => (d.textSize.width + 12) / scale)
+          .attr('transform', function (d: any) {
+            const { width, height } = this.getBoundingClientRect();
+            return `translate(${[
+              -(width / 2) / scale,
+              -(height + 4) / scale
+            ]})`;
+          });
+      }
+
+      const groupScale = placeholders
+        .attr('transform', (d: any) => {
+          const position = this.projection([d.longitude, d.latitude]);
+          return `translate(${[
+            position[0],
+            position[1] - barScale(parseInt(d.value) | 0) / scale
+          ]})`;
+        });
+
+      groupScale.select('rect.bar')
+        .attr('height', (d: any) => barScale(parseInt(d.value) | 0) / scale)
+        .attr('width', 10 / scale)
+        .attr('x', -5 / scale);
+
+      if (this.labels || this.values) {
+        groupScale.select('text.label-text')
+          .text((d: any) => this.getLabelText(d))
+          .attr('font-size', 10 / scale)
+          .attr('transform', function (d: any) {
+            const { width, height } = this.getBoundingClientRect();
+            d.textSize = { width, height };
+            return `translate(${[
+              -(width / 2) / scale,
+              -height / scale
+            ]})`;
+          });
+
+        groupScale.select('rect.label-bg')
+          .attr('height', (d: any) => (d.textSize.height + 8) / scale)
+          .attr('width', (d: any) => (d.textSize.width + 12) / scale)
+          .attr('rx', 4 / scale)
+          .attr('transform', function (d: any) {
+            const { width, height } = this.getBoundingClientRect();
+            return `translate(${[
+              -(width / 2) / scale,
+              -(height + 4) / scale
+            ]})`;
+          });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  private renderCircles(ranges: any[], scale: number, placeholders: any) {
+    try {
+      const radiusScale = d3.scaleLinear()
+        .domain([d3.min(ranges), d3.max(ranges)])
+        .range([5, 25])
+        .clamp(true);
+
+      const onDataClick = this.onDataClick;
+
+      const groupEnter = placeholders.enter()
+        .append('g')
+        .attr('class', 'marker')
+        .attr('style', 'cursor: pointer')
+        .attr('transform', (d: any) => {
+          return `translate(${this.projection([d.longitude, d.latitude])})`;
+        })
+        .on('mousedown', function (d: any) {
+          onDataClick.emit({ data: d, element: this });
+        });
+
+      groupEnter.append('circle')
+        .attr('r', (d: any) => radiusScale(parseInt(d.value) | 0) / scale);
+
+      if (this.labels || this.values) {
+        groupEnter.append('rect')
+          .attr('fill', '#fff')
+          .attr('rx', 4 / scale);
+
+        groupEnter.append('text')
+          .text((d: any) => this.getLabelText(d))
+          .attr('class', 'label-text')
+          .attr('stroke', 'none')
+          .attr('font-size', 10)
+          .attr('transform', function (d: any) {
+            const { width, height } = this.getBoundingClientRect();
+            d.textSize = { width, height };
+            return `translate(${[
+              (-width / 2) / scale,
+              -radiusScale(parseInt(d.value) | 0) / scale - height / scale
+            ]})`;
+          });
+
+        groupEnter.select('rect')
+          .attr('class', 'label-bg')
+          .attr('height', (d: any) => (d.textSize.height + 8) / scale)
+          .attr('width', (d: any) => (d.textSize.width + 12) / scale)
+          .attr('transform', function (d: any) {
+            const { width, height } = this.getBoundingClientRect();
+            return `translate(${[
+              -width / 2 / scale,
+              -(radiusScale(parseInt(d.value) | 0) + height + 4) / scale
+            ]})`;
+          });
+      }
+
+      const groupScale = placeholders
+        .attr('transform', (d: any) => {
+          const position = this.projection([d.longitude, d.latitude]);
+          return `translate(${[
+            position[0],
+            position[1] - radiusScale(parseInt(d.value) | 0) / scale
+          ]})`;
+        });
+
+      groupScale.select('circle')
+        .attr('r', (d: any) => radiusScale(parseInt(d.value) | 0) / scale);
+
+      if (this.labels || this.values) {
+        groupScale.select('text.label-text')
+          .text((d: any) => this.getLabelText(d))
+          .attr('font-size', 10 / scale)
+          .attr('transform', function (d: any) {
+            const { width, height } = this.getBoundingClientRect();
+            d.textSize = { width, height };
+            return `translate(${[
+              (-width / 2) / scale,
+              -radiusScale(parseInt(d.value) | 0) / scale - height / scale
+            ]})`;
+          });
+
+        groupScale.select('rect.label-bg')
+          .attr('height', (d: any) => (d.textSize.height + 8) / scale)
+          .attr('width', (d: any) => (d.textSize.width + 12) / scale)
+          .attr('rx', 4 / scale)
+          .attr('transform', function (d: any) {
+            const { width, height } = this.getBoundingClientRect();
+            return `translate(${[
+              -width / 2 / scale,
+              -(radiusScale(parseInt(d.value) | 0) + height + 4) / scale
+            ]})`;
+          });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  private getLabelText(dataUnit: BusinessDataUnit) {
+    let text = '';
+    if (dataUnit.city && dataUnit.city !== 'Total') {
+      text = dataUnit.city;
+    } else if (dataUnit.country && dataUnit.country !== 'Total') {
+      text = dataUnit.country;
+    } else if (dataUnit.market && dataUnit.market !== 'Total') {
+      text = dataUnit.market;
+    }
+
+    if (this.values && this.labels) return `${text} • ${dataUnit.value}`;
+
+    if (this.labels) return text;
+
+    if (this.values) return dataUnit.value;
   }
 
   zoomToMarkers() {
@@ -198,9 +375,9 @@ export class WorldMap implements OnChanges {
 
       const markersData = map.selectAll('.marker').data();
 
-      let x;
-      let y;
-      let k;
+      let x: number;
+      let y: number;
+      let k: number;
 
       if (markersData.length > 0) {
         const sitesLongs = markersData.map((item: any) => item.longitude);
