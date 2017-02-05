@@ -19,6 +19,7 @@ import { DataProvider, DataFilterComponent } from '../../data-management';
 import { SheetsController, OverviewSheetComponent, SheetsPortalComponent } from '../../sheets';
 
 import { SigninPage } from '../signin/signin.page';
+import { SwichersPage } from '../swichers/swichers.page';
 
 @Component({
   selector: 'home-page',
@@ -32,6 +33,7 @@ export class HomePage implements AfterViewInit {
   public mapHeight: number = 0;
   public filters: any[] = [];
   public isMenuOpen = false;
+  public mapSettings: any = {};
 
   @ViewChild(Content) content: Content;
   @ViewChild(SheetsPortalComponent, { read: ViewContainerRef }) sheetsPortal: ViewContainerRef;
@@ -41,7 +43,7 @@ export class HomePage implements AfterViewInit {
     private menuCtrl: MenuController,
     private auth: Authorization,
     private dataProvider: DataProvider,
-    private sheetsCtrl: SheetsController
+    private sheetsCtrl: SheetsController,
   ) {
   }
 
@@ -55,6 +57,11 @@ export class HomePage implements AfterViewInit {
     return this.auth.isLoggedIn();
   }
 
+  ionViewDidEnter() {
+    this.mapSettings = JSON.parse(localStorage.getItem('mapSettings')) ||
+      { charts: false, scaling: false, labels: false, values: false };
+  }
+
   menuToggle(id: string) {
     this.menuCtrl.toggle(id || '');
     this.isMenuOpen = !this.isMenuOpen;
@@ -62,5 +69,12 @@ export class HomePage implements AfterViewInit {
 
   showOverview(data: any) {
     this.sheetsCtrl.create(OverviewSheetComponent, this.sheetsPortal, data);
+  }
+
+  openPage(pageName: any) {
+    switch (pageName.value) {
+      case 'swichers': this.navCtrl.setRoot(SwichersPage); return;
+      default: return;
+    }
   }
 }
