@@ -12,12 +12,15 @@ import { SigninPage } from './signin/signin.page';
 import { CreateUserPage } from './create-user/create-user.page';
 import { UploadDataPage } from './upload-data/upload-data.page';
 import { TestDataPage } from './test-data/test-data.page';
+import { SwichersPage } from './swichers/swichers.page';
+
 const PAGES = [
   HomePage,
   SigninPage,
   CreateUserPage,
   UploadDataPage,
-  TestDataPage
+  TestDataPage,
+  SwichersPage
 ];
 
 @NgModule({

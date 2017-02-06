@@ -17,11 +17,8 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content class="no-scroll">
-  <div class="swipe-menu-overlay"></div>
-  <world-map [show-values]="!mapSettings.values" [show-labels]="!mapSettings.labels" [chart-type]="mapSettings.charts ? 'bar' : 'circles'" [map-width]="mapWidth" [map-height]="mapHeight" [zoom-on-update]="true" [data-to-draw]="dataProvider.data$ | async"
-    (data-click)="showOverview($event)"></world-map>
-  <sheets-portal></sheets-portal>
+<ion-content>
+  <map-swichers [swichersState]="swichersState" (onChanges)="applySettingsToMap($event)"></map-swichers>
 </ion-content>
 <ion-footer>
   <ion-footer>
@@ -33,10 +30,10 @@
         <ion-segment-button value="2">
           <ion-icon class="icon-bb-search" name="icon-bb-search"></ion-icon>
         </ion-segment-button>
-        <ion-segment-button value="swichers">
+        <ion-segment-button value="3">
           <ion-icon class="icon-bb-filter" name="icon-bb-filter"></ion-icon>
         </ion-segment-button>
-        <ion-segment-button value="profile-settings">
+        <ion-segment-button value="4">
           <ion-icon class="icon-bb-preferences" name="icon-bb-preferences"></ion-icon>
         </ion-segment-button>
       </ion-segment>

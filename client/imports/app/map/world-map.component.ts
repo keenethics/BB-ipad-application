@@ -57,9 +57,14 @@ export class WorldMap implements OnChanges {
 
   constructor(private elRef: ElementRef) {
     this.mapTransform = { x: 0, y: 0, k: 1 };
-    this.chartType = 'circle';
-    this.labels = false;
-    this.values = false;
+
+    // FIX THIS !!!
+    setTimeout(() => {
+      console.log('emit');
+      this.zoomToMarkers();
+      setTimeout(() => this.zoomToMarkers(), 1000);
+    }, 100);
+    // ^^^^^^^^^^^
   }
 
   ngOnChanges(changes: any) {

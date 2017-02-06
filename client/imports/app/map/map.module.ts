@@ -1,13 +1,19 @@
 import { NgModule } from '@angular/core';
-
+import { IonicModule } from 'ionic-angular';
 import { WorldMap } from './world-map.component';
+import { MapSwichers } from './swichers/swichers.component';
 
 @NgModule({
+  imports: [
+    IonicModule
+  ],
   declarations: [
-    WorldMap
+    WorldMap,
+    MapSwichers
   ],
   exports: [
-    WorldMap
+    WorldMap,
+    MapSwichers
   ]
 })
 export class MapModule {
