@@ -298,17 +298,6 @@ data-filter {
             }
           }
         }
-          
-        // ion-label {
-        //   height: 100%;
-        //   margin: 0;
-        //   padding-bottom: 20px;
-        //   ion-scroll {
-        //     height: 100%;
-        //     margin: 0 40px;
-            
-        //   }
-        // }
       }
 
       div.item-inner {
@@ -323,7 +312,7 @@ data-filter {
 }
 
 ion-header {
-  &>ion-toolbar.toolbar {
+  &>header>ion-toolbar.toolbar {
     min-height: 70px;
     color: map-get($colors,'light');
     ion-buttons {
@@ -349,7 +338,7 @@ ion-header {
 }
 
 ion-footer {
-  &>ion-toolbar.toolbar {
+  &>footer>ion-toolbar.toolbar {
     background-color: map-get($colors,'ui-light');
     min-height: 70px;
     &>div.toolbar-background {

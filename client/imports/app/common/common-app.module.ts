@@ -11,6 +11,7 @@ import { ExcludePipe } from './pipes/exclude.pipe';
 import { Draggable } from './directives/draggable';
 
 import { FooterComponent } from './components/footer/footer.component';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   imports: [
@@ -25,14 +26,16 @@ import { FooterComponent } from './components/footer/footer.component';
     SearchPipe,
     Draggable,
     ExcludePipe,
-    FooterComponent
+    FooterComponent,
+    HeaderComponent
   ],
   exports: [
     ObjectAsArray,
     SearchPipe,
     Draggable,
     ExcludePipe,
-    FooterComponent
+    FooterComponent,
+    HeaderComponent
   ]
 })
 export class CommonAppModule {
