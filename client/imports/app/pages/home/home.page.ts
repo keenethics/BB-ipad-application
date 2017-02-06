@@ -71,8 +71,8 @@ export class HomePage implements AfterViewInit {
     this.sheetsCtrl.create(OverviewSheetComponent, this.sheetsPortal, data);
   }
 
-  openPage(pageName: any) {
-    switch (pageName.value) {
+  openPage(name: any) {
+    switch (name) {
       case 'swichers': this.navCtrl.setRoot(SwichersPage); return;
       default: return;
     }

@@ -20,23 +20,4 @@
 <ion-content>
   <map-swichers [swichersState]="swichersState" (onChanges)="applySettingsToMap($event)"></map-swichers>
 </ion-content>
-<ion-footer>
-  <ion-footer>
-    <ion-toolbar>
-      <ion-segment (ionChange)="openPage($event)">
-        <ion-segment-button value="home">
-          <ion-icon class="icon-bb-map" name="icon-bb-map"></ion-icon>
-        </ion-segment-button>
-        <ion-segment-button value="2">
-          <ion-icon class="icon-bb-search" name="icon-bb-search"></ion-icon>
-        </ion-segment-button>
-        <ion-segment-button value="3">
-          <ion-icon class="icon-bb-filter" name="icon-bb-filter"></ion-icon>
-        </ion-segment-button>
-        <ion-segment-button value="4">
-          <ion-icon class="icon-bb-preferences" name="icon-bb-preferences"></ion-icon>
-        </ion-segment-button>
-      </ion-segment>
-    </ion-toolbar>
-  </ion-footer>
-</ion-footer>
+<footer [activeButtonTitle]="'swichers'" (onSelect)="openPage($event)"></footer>

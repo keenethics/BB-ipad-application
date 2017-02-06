@@ -1,13 +1,21 @@
 import { NgModule } from '@angular/core';
+import { IonicModule } from 'ionic-angular';
+
 import { ToastsManager } from './toasts-manager';
 import { LoadingManager } from './loading-manager';
 
 import { ObjectAsArray } from './pipes/objectAsArray.pipe';
 import { SearchPipe } from './pipes/search.pipe';
 import { ExcludePipe } from './pipes/exclude.pipe';
+
 import { Draggable } from './directives/draggable';
 
+import { FooterComponent } from './components/footer/footer.component';
+
 @NgModule({
+  imports: [
+    IonicModule
+  ],
   providers: [
     ToastsManager,
     LoadingManager
@@ -16,13 +24,15 @@ import { Draggable } from './directives/draggable';
     ObjectAsArray,
     SearchPipe,
     Draggable,
-    ExcludePipe
+    ExcludePipe,
+    FooterComponent
   ],
   exports: [
     ObjectAsArray,
     SearchPipe,
     Draggable,
-    ExcludePipe
+    ExcludePipe,
+    FooterComponent
   ]
 })
 export class CommonAppModule {

@@ -24,10 +24,9 @@ export class SwichersPage {
     this.navCtrl.setRoot(HomePage);
   }
 
-  openPage(pageName: any) {
-    switch (pageName.value) {
+  openPage(name: string) {
+    switch (name) {
       case 'home': this.navCtrl.setRoot(HomePage); return;
-      default: return;
     }
   }
 };
