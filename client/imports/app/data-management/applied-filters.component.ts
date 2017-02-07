@@ -10,7 +10,7 @@ import {
   selector: 'applied-filters',
   template: `
     <ion-chip *ngFor="let f of filters">
-      <ion-label>{{f}}</ion-label>
+      <ion-label>{{f.label}}</ion-label>
       <button ion-button (click)="removeFilter(f)">
         <ion-icon name="close"></ion-icon>
       </button>

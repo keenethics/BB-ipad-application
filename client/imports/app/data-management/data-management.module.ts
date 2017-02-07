@@ -8,6 +8,7 @@ import { DataUploader } from './data-uploader';
 import { DataFilterComponent } from './filter.component';
 import { AppliedFiltersComponent } from './applied-filters.component';
 import { AutoHeightDirective } from './auto-height.directive';
+import { FilterController } from './filter-controller';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { AutoHeightDirective } from './auto-height.directive';
   ],
   providers: [
     DataProvider,
-    DataUploader
+    DataUploader,
+    FilterController
   ],
   declarations: [DataFilterComponent, AppliedFiltersComponent, AutoHeightDirective],
   exports: [DataFilterComponent, AppliedFiltersComponent, AutoHeightDirective],
