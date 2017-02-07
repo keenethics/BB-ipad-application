@@ -170,7 +170,7 @@ export class WorldMap implements OnChanges {
         .attr('class', 'marker')
         .attr('style', 'cursor: pointer')
         .attr('transform', (d: any) => {
-          return `translate(${this.projection([d.longitude, d.latitude])})`;
+          return `translate(${this.projection([parseInt(d.longitude, 10) || 0, parseInt(d.latitude, 10) || 0])})`;
         })
         .on('mousedown', function (d: any) {
           onDataClick.emit({ data: d, element: this });
@@ -216,7 +216,7 @@ export class WorldMap implements OnChanges {
 
       const groupScale = placeholders
         .attr('transform', (d: any) => {
-          const position = this.projection([d.longitude, d.latitude]);
+          const position = this.projection([parseInt(d.longitude, 10) || 0, parseInt(d.latitude, 10) || 0]);
           return `translate(${[
             position[0],
             position[1] - barScale(parseInt(d.value) | 0) / scale
@@ -272,7 +272,7 @@ export class WorldMap implements OnChanges {
         .attr('class', 'marker')
         .attr('style', 'cursor: pointer')
         .attr('transform', (d: any) => {
-          return `translate(${this.projection([d.longitude, d.latitude])})`;
+          return `translate(${this.projection([parseInt(d.longitude, 10) || 0, parseInt(d.latitude, 10) || 0])})`;
         })
         .on('mousedown', function (d: any) {
           onDataClick.emit({ data: d, element: this });
@@ -315,7 +315,7 @@ export class WorldMap implements OnChanges {
 
       const groupScale = placeholders
         .attr('transform', (d: any) => {
-          const position = this.projection([d.longitude, d.latitude]);
+          const position = this.projection([parseInt(d.longitude, 10) || 0, parseInt(d.latitude, 10) || 0]);
           return `translate(${[
             position[0],
             position[1] - radiusScale(parseInt(d.value) | 0) / scale
@@ -385,8 +385,8 @@ export class WorldMap implements OnChanges {
       let k: number;
 
       if (markersData.length > 0) {
-        const sitesLongs = markersData.map((item: any) => item.longitude);
-        const sitesLats = markersData.map((item: any) => item.latitude);
+        const sitesLongs = markersData.map((item: any) => parseInt(item.longitude, 10) || 0);
+        const sitesLats = markersData.map((item: any) => parseInt(item.latitude, 10) || 0);
         const minPoint = this.projection([Math.min(...sitesLongs), Math.min(...sitesLats)]);
         const maxPoint = this.projection([Math.max(...sitesLongs), Math.max(...sitesLats)]);
 

@@ -6,9 +6,11 @@ import {
   AfterViewInit,
   Output,
   Input,
-  EventEmitter
+  EventEmitter,
+  OnDestroy
 } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 import template from './filter.component.html';
 import styles from './filter.component.scss';
@@ -22,21 +24,43 @@ import { BusinessDataUnit, ColumnNames } from '../../../../both/data-management'
   styles: [styles],
   providers: [DataProvider]
 })
-export class DataFilterComponent implements OnInit {
+export class DataFilterComponent implements OnInit, OnDestroy {
   private businessData: BusinessDataUnit[];
-  private filters: string[] = [];
+  private filters: any[] = [];
   private query: any;
+  private filterQuery: any;
+  private dataSubscr: Subscription;
 
   public options: string[] = [];
   public searchValue = '';
-  public category = 'market';
+  public category = '';
   public isFilterVisible = false;
 
   @Input() data: BusinessDataUnit[];
   @Output() onFilterChange = new EventEmitter();
 
+  constructor(private dataProvider: DataProvider) { }
+
   ngOnInit() {
+    this.query = {
+      n2: 'Total',
+      identifier: '',
+      highLevelCategory: 'Landing point',
+      period: 'Actuals'
+    };
+
+    this.filterQuery = Object.assign({}, this.query);
+
     this.changeCategory();
+
+    this.dataSubscr = this.dataProvider.data$.subscribe((data) => {
+      this.data = data;
+      this.options = this.getOptions(this.category);
+    });
+  }
+
+  ngOnDestroy() {
+    this.dataSubscr.unsubscribe();
   }
 
   ngOnChanges(changes: any) {
@@ -59,55 +83,141 @@ export class DataFilterComponent implements OnInit {
   }
 
   changeCategory() {
-    const query = {
-      n2: 'Total',
-      identifier: '',
-      highLevelCategory: 'Landing point',
-      period: 'Actuals'
-    };
-
     switch (this.category) {
-      case 'market': query.identifier = 'Market'; break;
-      case 'country': query.identifier = 'Country'; break;
-      case 'city': query.identifier = 'City'; break;
+      case 'market': {
+        this.filterQuery = {
+          n2: 'Total',
+          identifier: 'Market',
+          highLevelCategory: 'Landing point',
+          period: 'Actuals'
+        };
+        this.query.identifier = 'Market';
+        this.onFilterChange.emit(this.query);
+        break;
+      };
+      case 'country': {
+        this.filterQuery = Object.assign({}, this.query);
+        delete this.filterQuery.country;
+        delete this.filterQuery.city;
+        this.filterQuery.identifier = 'Country';
+        this.query.identifier = 'Country';
+        this.onFilterChange.emit(this.query);
+        break;
+      };
+      case 'city': {
+        this.filterQuery = Object.assign({}, this.query);
+        delete this.filterQuery.city;
+        this.filterQuery.identifier = 'City';
+        this.query.identifier = 'City';
+        this.onFilterChange.emit(this.query);
+        break;
+      }
+      default: {
+        this.query.identifier = 'Global';
+        this.category = 'market';
+        this.filterQuery.identifier = 'Market';
+        this.onFilterChange.emit(this.query);
+        break;
+      }
     }
 
-    this.query = query;
-    this.filters = [];
     this.options = [];
-    this.onFilterChange.emit(query);
+    this.dataProvider.query(this.filterQuery);
   }
 
   selectOption(option: string) {
     if (option && this.filters.indexOf(option) === -1) {
-      this.filters.push(option);
+      this.filters.push({
+        label: option,
+        category: this.category,
+        unit: this.data.filter((item) => item[this.category] === option)[0]
+      });
     }
-    // const query = Object.assign({}, this.query);
-    this.query[this.category] = { $in: this.filters };
+
+    this.query[this.category] = {
+      $in: this.filters.map((f) => f.unit.identifier.toLowerCase() === this.category ? f.label : null).filter(f => f)
+    };
 
     switch (this.category) {
-      case 'market': this.query.identifier = 'Country'; break;
-      case 'country': this.query.identifier = 'City'; break;
-      case 'city': this.query.identifier = 'City'; break;
+      case 'market': {
+        this.query.identifier = 'Country';
+        this.filterQuery = Object.assign({}, this.query);
+        break;
+      };
+      case 'country': {
+        this.query.identifier = 'City';
+        this.filterQuery = Object.assign({}, this.query);
+        break;
+      };
+      case 'city': {
+        this.query.identifier = 'City';
+        this.filterQuery = Object.assign({}, this.query);
+        delete this.filterQuery.city;
+        break;
+      };
     }
-
     this.onFilterChange.emit(this.query);
+
+    switch (this.category) {
+      case 'market': this.category = 'country'; break;
+      case 'country': this.category = 'city'; break;
+    }
+    this.dataProvider.query(this.filterQuery);
   }
 
-  removeOption(option: string) {
-    if (option) {
-      this.filters = this.filters.filter(item => item !== option);
+  removeOption(filterItem: any) {
+    if (filterItem) {
+      this.filters = this.filters.filter(f => {
+        return filterItem.unit[filterItem.category] !== f.unit[filterItem.category];
+      });
     }
 
-    if (this.filters.length === 0) {
-      delete this.query[this.category];
-      switch (this.category) {
-        case 'market': this.query.identifier = 'Market'; break;
-        case 'country': this.query.identifier = 'Country'; break;
-        case 'city': this.query.identifier = 'City'; break;
+    delete this.query.market;
+    delete this.query.country;
+    delete this.query.city;
+
+    this.filters.forEach((f) => {
+      if (f.unit.identifier === 'Market') {
+        if (this.query.market && this.query.market.$in.indexOf(f.label) === -1) {
+          this.query.market.$in.push(f.label);
+        } else {
+          this.query.market = { $in: [f.label] };
+        }
       }
-    } else {
-      this.query[this.category] = { $in: this.filters };
+
+      if (f.unit.identifier === 'Country') {
+        if (this.query.country && this.query.country.$in.indexOf(f.label) === -1) {
+          this.query.country.$in.push(f.label);
+        } else {
+          this.query.country = { $in: [f.label] };
+        }
+      }
+
+      if (f.unit.identifier === 'City') {
+        if (this.query.city && this.query.city.$in.indexOf(f.label) === -1) {
+          this.query.city.$in.push(f.label);
+        } else {
+          this.query.city = { $in: [f.label] };
+        }
+      }
+    });
+
+    switch (this.category) {
+      case 'market': {
+        this.query.identifier = 'Market';
+        this.dataProvider.query(this.query);
+        break;
+      };
+      case 'country': {
+        this.query.identifier = 'Country';
+        this.dataProvider.query(this.query);
+        break;
+      };
+      case 'city': {
+        this.query.identifier = 'City';
+        this.dataProvider.query(this.query);
+        break;
+      };
     }
 
     this.onFilterChange.emit(this.query);
