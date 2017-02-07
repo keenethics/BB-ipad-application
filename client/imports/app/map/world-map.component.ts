@@ -60,7 +60,6 @@ export class WorldMap implements OnChanges {
 
     // FIX THIS !!!
     setTimeout(() => {
-      console.log('emit');
       this.zoomToMarkers();
       setTimeout(() => this.zoomToMarkers(), 1000);
     }, 100);

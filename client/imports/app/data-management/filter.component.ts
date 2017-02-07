@@ -17,6 +17,7 @@ import styles from './filter.component.scss';
 
 import { DataProvider } from './data-provider';
 import { BusinessDataUnit, ColumnNames } from '../../../../both/data-management';
+import { FilterController } from './filter-controller';
 
 @Component({
   selector: 'data-filter',
@@ -26,20 +27,22 @@ import { BusinessDataUnit, ColumnNames } from '../../../../both/data-management'
 })
 export class DataFilterComponent implements OnInit, OnDestroy {
   private businessData: BusinessDataUnit[];
-  private filters: any[] = [];
+  private filters: any[];
   private query: any;
   private filterQuery: any;
   private dataSubscr: Subscription;
 
-  public options: string[] = [];
-  public searchValue = '';
-  public category = '';
+  public options: string[];
+  public searchValue: string;
+  public category: string;
   public isFilterVisible = false;
 
   @Input() data: BusinessDataUnit[];
   @Output() onFilterChange = new EventEmitter();
 
-  constructor(private dataProvider: DataProvider) { }
+  constructor(private dataProvider: DataProvider, private filterCtrl: FilterController) {
+    filterCtrl.setFilterComponetn(this);
+  }
 
   ngOnInit() {
     this.query = {
@@ -48,6 +51,11 @@ export class DataFilterComponent implements OnInit, OnDestroy {
       highLevelCategory: 'Landing point',
       period: 'Actuals'
     };
+
+    this.category = '';
+    this.filters = [];
+    this.options = [];
+    this.searchValue = '';
 
     this.filterQuery = Object.assign({}, this.query);
 
@@ -126,7 +134,7 @@ export class DataFilterComponent implements OnInit, OnDestroy {
   }
 
   selectOption(option: string) {
-    if (option && this.filters.indexOf(option) === -1) {
+    if (option && this.filters.filter(f => f.label === option).length === 0) {
       this.filters.push({
         label: option,
         category: this.category,

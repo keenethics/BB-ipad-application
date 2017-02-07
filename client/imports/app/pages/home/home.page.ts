@@ -6,7 +6,7 @@ import {
   ViewEncapsulation,
   OnInit,
   OnDestroy,
-  ViewContainerRef
+  ViewContainerRef,
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { NavController, MenuController, Content } from 'ionic-angular';
@@ -17,6 +17,7 @@ import styles from './home.page.scss';
 import { Authorization } from '../../authorization/authorization';
 import { DataProvider, DataFilterComponent } from '../../data-management';
 import { SheetsController, OverviewSheetComponent, SheetsPortalComponent } from '../../sheets';
+import { FilterController } from '../../data-management';
 
 import { SigninPage } from '../signin/signin.page';
 import { SwichersPage } from '../swichers/swichers.page';
@@ -29,6 +30,7 @@ import { SwichersPage } from '../swichers/swichers.page';
 })
 export class HomePage implements AfterViewInit {
   private dataSubscr: Subscription;
+  public isZoomActive: boolean;
   public mapWidth: number = 0;
   public mapHeight: number = 0;
   public filters: any[] = [];
@@ -44,6 +46,7 @@ export class HomePage implements AfterViewInit {
     private auth: Authorization,
     private dataProvider: DataProvider,
     private sheetsCtrl: SheetsController,
+    private filterCtrl: FilterController
   ) {
   }
 
@@ -51,6 +54,7 @@ export class HomePage implements AfterViewInit {
     const { height, width } = this.content;
     this.mapWidth = width.bind(this.content);
     this.mapHeight = height.bind(this.content);
+    this.filterCtrl.resetFilter();
   }
 
   ionViewCanEnter() {
@@ -73,6 +77,9 @@ export class HomePage implements AfterViewInit {
 
   openPage(name: any) {
     switch (name) {
+      case 'home': {
+        this.filterCtrl.resetFilter(); return;
+      };
       case 'swichers': this.navCtrl.setRoot(SwichersPage); return;
       default: return;
     }
