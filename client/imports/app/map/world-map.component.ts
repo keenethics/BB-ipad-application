@@ -59,10 +59,12 @@ export class WorldMap implements OnChanges {
     this.mapTransform = { x: 0, y: 0, k: 1 };
 
     // FIX THIS !!!
-    setTimeout(() => {
-      this.zoomToMarkers();
-      setTimeout(() => this.zoomToMarkers(), 1000);
-    }, 100);
+    if (this.zoomOnUpdate) {
+      setTimeout(() => {
+        this.zoomToMarkers();
+        setTimeout(() => this.zoomToMarkers(), 1000);
+      }, 100);
+    }
     // ^^^^^^^^^^^
   }
 
@@ -400,27 +402,35 @@ export class WorldMap implements OnChanges {
         k = 1;
       }
 
+      const correctZoomIdentity = () => {
+        try {
+          const regExp = /\((.+?), (.+?)\).+\((.+?),/g;
+          const transform = map.attr('transform');
+          if (transform) {
+            const maches = regExp.exec(transform);
+            this.mapTransform = { x: +maches[1], y: +maches[2], k: +maches[3] };
+            const zoomIdentity = d3.zoomIdentity
+              .translate(+maches[1], +maches[2])
+              .scale(+maches[3]);
+            this.svg.call(this.zoom.transform, zoomIdentity);
+          }
+        } catch (err) {
+          if (err instanceof TypeError) return;
+          throw err;
+        }
+      };
+
       map.transition()
         .duration(750)
+        .ease((t) => {
+          correctZoomIdentity();
+          return t;
+        })
         .attr('transform', `translate(${this.width / 2}, ${this.height / 2})` +
         `scale(${k})translate(${[-x, -y]})`)
         .on('end', () => {
-          try {
-            this.isZoomingNow = false;
-            const regExp = /\((.+?), (.+?)\).+\((.+?),/g;
-            const transform = map.attr('transform');
-            if (transform) {
-              const maches = regExp.exec(transform);
-              this.mapTransform = { x: +maches[1], y: +maches[2], k: +maches[3] };
-              const zoomIdentity = d3.zoomIdentity
-                .translate(+maches[1], +maches[2])
-                .scale(+maches[3]);
-              this.svg.call(this.zoom.transform, zoomIdentity);
-            }
-          } catch (err) {
-            if (err instanceof TypeError) return;
-            throw err;
-          }
+          correctZoomIdentity();
+          this.isZoomingNow = false;
         });
 
       this.renderMarkers(k);

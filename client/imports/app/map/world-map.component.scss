@@ -17,10 +17,13 @@ svg {
 
     .marker {
       pointer-events: all;
-      fill: rgb(18, 65, 145);
-      stroke-width: 1;
-      stroke: rgb(255, 255, 255);
+      fill: #0B409C;
+      stroke: #EFF3FA;
       vector-effect: non-scaling-stroke;
+
+      &>circle {
+        stroke-width: 4px;
+      }
 
       .label-text {
         color: rgb(18, 65, 145);

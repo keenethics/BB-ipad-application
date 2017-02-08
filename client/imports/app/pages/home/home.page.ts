@@ -36,6 +36,7 @@ export class HomePage implements AfterViewInit {
   public filters: any[] = [];
   public isMenuOpen = false;
   public mapSettings: any = {};
+  public autoZoom = false;
 
   @ViewChild(Content) content: Content;
   @ViewChild(SheetsPortalComponent, { read: ViewContainerRef }) sheetsPortal: ViewContainerRef;
@@ -67,6 +68,7 @@ export class HomePage implements AfterViewInit {
   }
 
   menuToggle(id: string) {
+    this.autoZoom = true;
     this.menuCtrl.toggle(id || '');
     this.isMenuOpen = !this.isMenuOpen;
   }
@@ -78,6 +80,7 @@ export class HomePage implements AfterViewInit {
   openPage(name: any) {
     switch (name) {
       case 'home': {
+        this.autoZoom = false;
         this.filterCtrl.resetFilter(); return;
       };
       case 'swichers': this.navCtrl.setRoot(SwichersPage); return;
