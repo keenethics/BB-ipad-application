@@ -4,11 +4,15 @@ svg {
   }
   g.map {
     path {
-      fill: url(#map-backround);
-      stroke: #999;
+      fill: url(#map-background);
+      //stroke: #999;
       stroke-linejoin: round;
       stroke-linecap: round;
       vector-effect: non-scaling-stroke;
+    }
+
+    path:hover {
+      fill: url(#map-background-selected);
     }
 
     .marker {
