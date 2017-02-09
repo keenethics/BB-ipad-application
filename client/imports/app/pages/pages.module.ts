@@ -6,6 +6,7 @@ import { CommonAppModule } from '../common/common-app.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataManagementModule } from '../data-management';
 import { SheetsModule } from '../sheets';
+import { SettingsModule } from '../settings';
 
 import { HomePage } from './home/home.page';
 import { SigninPage } from './signin/signin.page';
@@ -13,6 +14,7 @@ import { CreateUserPage } from './create-user/create-user.page';
 import { UploadDataPage } from './upload-data/upload-data.page';
 import { TestDataPage } from './test-data/test-data.page';
 import { SwichersPage } from './swichers/swichers.page';
+import { ProfileSettingsPage } from './profile-settings/profile-settings.page';
 
 const PAGES = [
   HomePage,
@@ -20,7 +22,8 @@ const PAGES = [
   CreateUserPage,
   UploadDataPage,
   TestDataPage,
-  SwichersPage
+  SwichersPage,
+  ProfileSettingsPage
 ];
 
 @NgModule({
@@ -31,7 +34,8 @@ const PAGES = [
     MapModule,
     CommonAppModule,
     DataManagementModule,
-    SheetsModule
+    SheetsModule,
+    SettingsModule
   ],
   declarations: PAGES,
   exports: PAGES,

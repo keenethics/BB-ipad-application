@@ -21,6 +21,7 @@ import { FilterController } from '../../data-management';
 
 import { SigninPage } from '../signin/signin.page';
 import { SwichersPage } from '../swichers/swichers.page';
+import { ProfileSettingsPage } from '../profile-settings/profile-settings.page';
 
 @Component({
   selector: 'home-page',
@@ -84,6 +85,7 @@ export class HomePage implements AfterViewInit {
         this.filterCtrl.resetFilter(); return;
       };
       case 'swichers': this.navCtrl.setRoot(SwichersPage); return;
+      case 'profile-settings': this.navCtrl.setRoot(ProfileSettingsPage); return;
       default: return;
     }
   }
