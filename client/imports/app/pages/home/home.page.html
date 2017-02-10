@@ -8,5 +8,5 @@
     <sheets-portal></sheets-portal>
 </ion-content>
 <ion-footer>
-  <footer [activeButtonTitle]="'home'" (onSelect)="openPage($event)"></footer>
+  <footer [activeButtonTitle]="'home'" [pages]="pages" [preventNav]="['home']" (onSelect)="resetFilters($event)"></footer>
 </ion-footer>

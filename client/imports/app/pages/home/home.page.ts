@@ -38,6 +38,7 @@ export class HomePage implements AfterViewInit {
   public isMenuOpen = false;
   public mapSettings: any = {};
   public autoZoom = false;
+  public pages = {};
 
   @ViewChild(Content) content: Content;
   @ViewChild(SheetsPortalComponent, { read: ViewContainerRef }) sheetsPortal: ViewContainerRef;
@@ -52,23 +53,23 @@ export class HomePage implements AfterViewInit {
   ) {
     this.mapSettings = JSON.parse(localStorage.getItem('mapSettings')) ||
       { charts: false, scaling: false, labels: false, values: false };
+
+    this.pages = {
+      home: HomePage,
+      swichers: SwichersPage,
+      profileSettings: ProfileSettingsPage
+    };
   }
 
   ngAfterViewInit() {
     const { height, width } = this.content;
     this.mapWidth = width.bind(this.content);
     this.mapHeight = height.bind(this.content);
-    // this.filterCtrl.resetFilter();
   }
 
   ionViewCanEnter() {
     return this.auth.isLoggedIn();
   }
-
-  // ionViewDidEnter() {
-  //   this.mapSettings = JSON.parse(localStorage.getItem('mapSettings')) ||
-  //     { charts: false, scaling: false, labels: false, values: false };
-  // }
 
   menuToggle(id: string) {
     this.autoZoom = true;
@@ -80,15 +81,10 @@ export class HomePage implements AfterViewInit {
     this.sheetsCtrl.create(OverviewSheetComponent, this.sheetsPortal, data);
   }
 
-  openPage(name: any) {
-    switch (name) {
-      case 'home': {
-        this.autoZoom = false;
-        this.filterCtrl.resetFilter(); return;
-      };
-      case 'swichers': this.navCtrl.setRoot(SwichersPage); return;
-      case 'profile-settings': this.navCtrl.setRoot(ProfileSettingsPage); return;
-      default: return;
+  resetFilters(page: string) {
+    if (page === 'home') {
+      this.autoZoom = false;
+      this.filterCtrl.resetFilter(); return;
     }
   }
 }

@@ -1,16 +1,30 @@
-import { Directive, HostListener, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Directive,
+  Input,
+  Output,
+  EventEmitter,
+  ElementRef,
+  OnChanges
+} from '@angular/core';
+import { Observable } from 'rxjs';
+
 
 @Directive({
   selector: '[debounceClick]'
 })
 export class DebounceClick {
-  @Input('debounceTime') debounceTime: string | number;
+  @Input('delay') delay: number = 0;
   @Output('debounceClick') onClick = new EventEmitter();
 
-  @HostListener('click', ['$event', 'option'])
-  click(event: MouseEvent, option: string) {
-    console.log(this.debounceTime, this.onClick, option);
-    this.onClick.emit('Kiev');
-    event.stopPropagation();
-  };
+  constructor(private elRef: ElementRef) { }
+
+  ngOnChanges(changes: any) {
+    if (changes.delay.currentValue) {
+      const eventStream = Observable
+        .fromEvent(this.elRef.nativeElement, 'click')
+        .debounceTime(this.delay);
+
+      eventStream.subscribe(() => this.onClick.emit());
+    }
+  }
 }
