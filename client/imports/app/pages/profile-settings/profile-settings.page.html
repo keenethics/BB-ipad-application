@@ -17,5 +17,5 @@
   </div>
 </ion-content>
 <ion-footer>
-  <footer [activeButtonTitle]="'profile-settings'" (onSelect)="openPage($event)"></footer>
+  <footer [activeButtonTitle]="'profile-settings'" [pages]="pages" [preventNav]="['profile-settings']"></footer>
 </ion-footer>

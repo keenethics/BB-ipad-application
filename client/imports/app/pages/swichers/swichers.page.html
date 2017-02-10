@@ -5,5 +5,5 @@
   <map-swichers [swichersState]="swichersState" (onChanges)="applySettingsToMap($event)"></map-swichers>
 </ion-content>
 <ion-footer>
-  <footer [activeButtonTitle]="'swichers'" (onSelect)="openPage($event)"></footer>
+  <footer [activeButtonTitle]="'swichers'" [pages]="pages" [preventNav]="['swichers']"></footer>
 </ion-footer>

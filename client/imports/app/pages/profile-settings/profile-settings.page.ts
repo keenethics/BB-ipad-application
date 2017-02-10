@@ -9,6 +9,9 @@ import { ProfileSettings } from '../../settings';
 import template from './profile-settings.page.html';
 import styles from './profile-settings.page.scss';
 
+import { SwichersPage } from '../swichers/swichers.page';
+import { HomePage } from '../home/home.page';
+
 @Component({
   selector: 'profile-settings',
   template,
@@ -18,12 +21,18 @@ import styles from './profile-settings.page.scss';
 export class ProfileSettingsPage implements OnInit {
   public passwordsForm: FormGroup;
   public passwords: any = {};
+  public pages = {};
 
   constructor(
     private formBuilder: FormBuilder,
     private loadingManager: LoadingManager,
     private toastManager: ToastsManager,
     private profileSettings: ProfileSettings) {
+    this.pages = {
+      home: HomePage,
+      swichers: SwichersPage,
+      profileSettings: ProfileSettingsPage
+    };
   }
 
   ngOnInit() {
