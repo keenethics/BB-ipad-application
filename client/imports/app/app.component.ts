@@ -1,8 +1,9 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Platform, Nav, MenuController, ToastController } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
 import { Authorization } from './authorization/authorization';
+import { DataProvider } from './data-management';
 
 import { HomePage } from './pages/home/home.page';
 import { SigninPage } from './pages/signin/signin.page';
@@ -12,6 +13,7 @@ import { TestDataPage } from './pages/test-data/test-data.page';
 
 import template from './app.component.html';
 import styles from './app.component.scss';
+import theme from './theme.scss';
 
 declare const FilePicker: any;
 
@@ -24,7 +26,7 @@ export class AppComponent {
   @ViewChild(Nav) navCtrl: Nav;
 
   userId: string;
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{ title: string, component: any }>;
 
   private subscriptions: any[] = [];
   public rootPage = this.auth.isLoggedIn() ? HomePage : SigninPage;
@@ -33,7 +35,8 @@ export class AppComponent {
     public platform: Platform,
     private auth: Authorization,
     private menuCtrl: MenuController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    public dataProvider: DataProvider
   ) {
     this.pages = [
       { title: 'Home page', component: HomePage },
@@ -43,7 +46,7 @@ export class AppComponent {
     ];
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.initializeApp();
   }
 
@@ -55,18 +58,23 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      StatusBar.styleDefault();
+      StatusBar.overlaysWebView(true);
+      StatusBar.styleLightContent();
       Splashscreen.hide();
     });
   }
 
   openPage(page: any) {
-    this.navCtrl.setRoot(page.component, {}, {animate: true, direction: 'forward'});
+    this.navCtrl.setRoot(page.component, {}, { animate: true, direction: 'forward' });
   }
 
   logout() {
     this.auth.logout().then(() => {
       this.navCtrl.setRoot(SigninPage);
     });
+  }
+
+  getFilteredData(filterQuery: any) {
+    this.dataProvider.query(filterQuery);
   }
 }

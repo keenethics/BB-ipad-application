@@ -1,0 +1,34 @@
+svg {
+  * {
+    vector-effect: non-scaling-stroke;
+  }
+  g.map {
+    path {
+      fill: url(#map-background);
+      //stroke: #999;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+      vector-effect: non-scaling-stroke;
+    }
+
+    path:hover {
+      fill: url(#map-background-selected);
+    }
+
+    .marker {
+      pointer-events: all;
+      fill: #0B409C;
+      stroke: #EFF3FA;
+      vector-effect: non-scaling-stroke;
+
+      &>circle {
+        stroke-width: 4px;
+      }
+
+      .label-text {
+        color: rgb(18, 65, 145);
+        font-weight: bold;
+      }
+    }
+  }
+}

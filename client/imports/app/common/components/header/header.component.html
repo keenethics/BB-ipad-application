@@ -1,0 +1,17 @@
+<ion-toolbar color="primary">
+  <ion-buttons *ngIf="isButtonEnabled">
+    <button (click)="emitButtonClick('filter-menu')" ion-button icon-only>
+        <ion-icon class="icon-bb-side-menu" name="icon-bb-side-menu"></ion-icon>
+        <!--<ion-icon *ngIf="isMenuOpen" class="icon-bb-side-menu-close" name="icon-bb-side-menu-close"></ion-icon>-->
+      </button>
+  </ion-buttons>
+  <!--<ion-buttons end>
+      <button (click)="menuToggle()" ion-button icon-only>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>-->
+  <ion-title>
+    <ion-icon class="icon-bb-logo" name="icon-bb-logo"></ion-icon>
+    MN BLACK BOOK APPLICATION
+  </ion-title>
+</ion-toolbar>

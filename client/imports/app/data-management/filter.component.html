@@ -1,0 +1,45 @@
+<ion-list>
+  <ion-item class="header">
+    <ion-icon class="icon-bb-search" name="icon-bb-search"></ion-icon>
+    <ion-toolbar color="light-blue" class="header">
+      <ion-title>SEARCH</ion-title>
+    </ion-toolbar>
+    <ion-toolbar color="light-blue" class="subheader">
+      <p>Compare countries, markets or even cities. Start by choosing the search type</p>
+    </ion-toolbar>
+  </ion-item>
+  <ion-item class="categories">
+    <ion-segment [(ngModel)]="category" (ionChange)="changeCategory()">
+      <ion-segment-button value="market">
+        <ion-icon class="icon-bb-markets" name="icon-bb-markets"></ion-icon>
+        MARKETS
+      </ion-segment-button>
+      <ion-segment-button value="country">
+        <ion-icon class="icon-bb-countries" name="icon-bb-countries"></ion-icon>
+        COUNTRIES
+      </ion-segment-button>
+      <ion-segment-button value="city">
+        <ion-icon class="icon-bb-cities" name="icon-bb-cities"></ion-icon>
+        CITIES
+      </ion-segment-button>
+    </ion-segment>
+  </ion-item>
+  <ion-item class="search-input">
+    <ion-label><ion-icon class="icon-bb-search" name="icon-bb-search"></ion-icon></ion-label>
+    <ion-input [(ngModel)]="searchValue" type="text" placeholder="Start typing a country here" value=""></ion-input>
+  </ion-item>
+  <ion-item class="applied-filters">
+    <applied-filters [filters]="filters" (onFilterRemoved)="removeOption($event)"></applied-filters>
+  </ion-item>
+  <!--AUTO-->
+  <ion-item class="options">
+    <!--LABEL AUTO-->
+    <!--<ion-scroll scrollY="true">-->
+      <ion-list>
+        <button (click)="selectOption(option)" ion-item *ngFor="let option of options | search:searchValue">
+          {{option}}
+        </button>
+      </ion-list>
+    <!--</ion-scroll>-->
+  </ion-item>
+</ion-list>

@@ -11,12 +11,10 @@
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col>№</ion-col>
-      <ion-col width-7 *ngFor="let name of columnsNames">{{name}}</ion-col>
+      <ion-col width-7 *ngFor="let name of dataProvider.columnNames$ | async | objAsArr">{{name}}</ion-col>
     </ion-row>
-    <ion-row *ngFor="let doc of data; let i = index" wrap>
-      <ion-col>{{i + 1}}</ion-col>
-      <ion-col width-7 *ngFor="let key of columnsNames">{{doc[key]}}</ion-col>
+    <ion-row *ngFor="let doc of dataProvider.data$ | async" wrap>
+      <ion-col width-7 *ngFor="let key of dataProvider.columnNames$ | async | objAsArr:true">{{doc[key]}}</ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>

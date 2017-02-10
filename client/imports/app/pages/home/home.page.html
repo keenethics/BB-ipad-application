@@ -1,13 +1,12 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Home</ion-title>
-    <ion-buttons end>
-      <button (click)="menuToggle()" ion-button icon-only>
-        <ion-icon name="menu"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-toolbar>
+  <header [isButtonEnabled]="true" (onButtonClick)="menuToggle($event)"></header>
 </ion-header>
-<ion-content>
-  <d3map></d3map>
+<ion-content class="no-scroll">
+  <div class="swipe-menu-overlay"></div>
+  <world-map [show-values]="!mapSettings.values" [show-labels]="!mapSettings.labels" [chart-type]="mapSettings.charts ? 'bar' : 'circles'"
+    [map-width]="mapWidth" [map-height]="mapHeight" [zoom-on-update]="autoZoom" [data-to-draw]="dataProvider.data$ | async" (data-click)="showOverview($event)"></world-map>
+    <sheets-portal></sheets-portal>
 </ion-content>
+<ion-footer>
+  <footer [activeButtonTitle]="'home'" (onSelect)="openPage($event)"></footer>
+</ion-footer>

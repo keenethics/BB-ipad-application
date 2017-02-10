@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -17,6 +17,7 @@ import { HomePage } from '../home/home.page';
   selector: 'signin-page',
   styles: [styles],
   template,
+  encapsulation: ViewEncapsulation.None
 })
 export class SigninPage implements OnInit {
   public loginForm: FormGroup;
