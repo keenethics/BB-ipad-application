@@ -78,8 +78,9 @@ export class ProfileSettingsPage implements OnInit {
     this.loadingManager.loading('Changing password...');
     this.profileSettings.changePassword(oldPassword, password)
       .then(() => {
+        this.passwordsForm.reset();
         this.loadingManager.loadingInst.dismiss();
-        this.toastManager.okToast('Password cahnged successfully');
+        this.toastManager.okToast('Password changed successfully');
       })
       .catch((err) => {
         this.loadingManager.loadingInst.dismiss();
