@@ -168,11 +168,16 @@ export class DataFilterComponent implements OnInit, OnDestroy {
     if (typeof option !== 'string') return;
 
     if (option && this.filters.filter(f => f.label === option).length === 0) {
-      this.filters.push({
-        label: option,
-        category: this.category,
-        unit: this.data.filter((item) => item[this.category] === option)[0]
-      });
+      const unit = this.data.filter((item) => item[this.category] === option)[0];
+      if (unit) {
+        this.filters.push({
+          label: option,
+          category: this.category,
+          unit
+        });
+      } else {
+        return;
+      }
     }
 
     this.query[this.category] = {
