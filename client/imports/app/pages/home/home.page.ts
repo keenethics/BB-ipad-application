@@ -50,23 +50,25 @@ export class HomePage implements AfterViewInit {
     private sheetsCtrl: SheetsController,
     private filterCtrl: FilterController
   ) {
+    this.mapSettings = JSON.parse(localStorage.getItem('mapSettings')) ||
+      { charts: false, scaling: false, labels: false, values: false };
   }
 
   ngAfterViewInit() {
     const { height, width } = this.content;
     this.mapWidth = width.bind(this.content);
     this.mapHeight = height.bind(this.content);
-    this.filterCtrl.resetFilter();
+    // this.filterCtrl.resetFilter();
   }
 
   ionViewCanEnter() {
     return this.auth.isLoggedIn();
   }
 
-  ionViewDidEnter() {
-    this.mapSettings = JSON.parse(localStorage.getItem('mapSettings')) ||
-      { charts: false, scaling: false, labels: false, values: false };
-  }
+  // ionViewDidEnter() {
+  //   this.mapSettings = JSON.parse(localStorage.getItem('mapSettings')) ||
+  //     { charts: false, scaling: false, labels: false, values: false };
+  // }
 
   menuToggle(id: string) {
     this.autoZoom = true;

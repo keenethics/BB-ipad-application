@@ -78,6 +78,10 @@ export class WorldMap implements OnChanges {
       this.height = this.svgHeight();
       this.initMap();
       this.renderMap();
+
+      if (this.dataToDraw) {
+        this.renderMarkers();
+      }
     }
 
     if (changes.dataToDraw) {

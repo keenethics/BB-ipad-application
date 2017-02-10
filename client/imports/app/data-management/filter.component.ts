@@ -45,19 +45,18 @@ export class DataFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.query = {
-      n2: 'Total',
-      identifier: '',
-      highLevelCategory: 'Landing point',
-      period: 'Actuals'
-    };
+    const filtersState = this.filterCtrl.getFromStorage();
+    if (filtersState) {
+      this.query = filtersState.mapQueryObject;
+      this.filterQuery = filtersState.filterQueryObject;
+      this.filters = filtersState.activeFilters;
+      this.category = filtersState.category;
+    } else {
+      this.initFilters();
+    }
 
-    this.category = '';
-    this.filters = [];
     this.options = [];
     this.searchValue = '';
-
-    this.filterQuery = Object.assign({}, this.query);
 
     this.changeCategory();
 
@@ -68,7 +67,7 @@ export class DataFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.dataSubscr.unsubscribe();
+    if (this.dataSubscr) this.dataSubscr.unsubscribe();
   }
 
   ngOnChanges(changes: any) {
@@ -88,6 +87,37 @@ export class DataFilterComponent implements OnInit, OnDestroy {
         }
       }, []).sort();
     return res;
+  }
+
+  initFilters() {
+    this.query = {
+      n2: 'Total',
+      identifier: '',
+      highLevelCategory: 'Landing point',
+      period: 'Actuals'
+    };
+
+    this.filterQuery = Object.assign({}, this.query);
+    this.filters = [];
+    this.category = '';
+
+    this.options = [];
+    this.searchValue = '';
+
+    this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
+  }
+
+  resetFilter() {
+    this.initFilters();
+
+    this.changeCategory();
+
+    this.ngOnDestroy();
+
+    this.dataSubscr = this.dataProvider.data$.subscribe((data) => {
+      this.data = data;
+      this.options = this.getOptions(this.category);
+    });
   }
 
   changeCategory() {
@@ -122,7 +152,7 @@ export class DataFilterComponent implements OnInit, OnDestroy {
       }
       default: {
         this.query.identifier = 'Global';
-        this.category = 'market';
+        this.category = '';
         this.filterQuery.identifier = 'Market';
         this.onFilterChange.emit(this.query);
         break;
@@ -131,9 +161,12 @@ export class DataFilterComponent implements OnInit, OnDestroy {
 
     this.options = [];
     this.dataProvider.query(this.filterQuery);
+    this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
   }
 
   selectOption(option: string) {
+    if (typeof option !== 'string') return;
+
     if (option && this.filters.filter(f => f.label === option).length === 0) {
       this.filters.push({
         label: option,
@@ -171,6 +204,7 @@ export class DataFilterComponent implements OnInit, OnDestroy {
       case 'country': this.category = 'city'; break;
     }
     this.dataProvider.query(this.filterQuery);
+    this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
   }
 
   removeOption(filterItem: any) {
@@ -229,5 +263,6 @@ export class DataFilterComponent implements OnInit, OnDestroy {
     }
 
     this.onFilterChange.emit(this.query);
+    this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
   }
 }
