@@ -9,6 +9,21 @@ export class FilterController {
   }
 
   resetFilter() {
-    if (this.filterCmp) this.filterCmp.ngOnInit();
+    if (this.filterCmp) this.filterCmp.resetFilter();
+  }
+
+  saveToStorage(category: string, activeFilters: any[], filterQueryObject: any, mapQueryObject: any) {
+    const filters = {
+      category,
+      activeFilters,
+      filterQueryObject,
+      mapQueryObject
+    };
+
+    localStorage.setItem('filters', JSON.stringify(filters));
+  }
+
+  getFromStorage() {
+    return JSON.parse(localStorage.getItem('filters'));
   }
 }

@@ -50,6 +50,7 @@ export class WorldMap implements OnChanges {
   @Input('chart-type') chartType: string; // circle || bar
   @Input('show-labels') labels: boolean;
   @Input('show-values') values: boolean;
+  @Input('zoom-scale-extend') zoomScaleExtend: [number, number];
 
   @Output('data-click') onDataClick = new EventEmitter();
   @Output('markers-rendered') onMarkersRendered = new EventEmitter();
@@ -57,7 +58,7 @@ export class WorldMap implements OnChanges {
 
   constructor(private elRef: ElementRef) {
     this.mapTransform = { x: 0, y: 0, k: 1 };
-
+    this.zoomScaleExtend = [1, 30];
     // FIX THIS !!!
     if (this.zoomOnUpdate) {
       setTimeout(() => {
@@ -77,6 +78,10 @@ export class WorldMap implements OnChanges {
       this.height = this.svgHeight();
       this.initMap();
       this.renderMap();
+
+      if (this.dataToDraw) {
+        this.renderMarkers();
+      }
     }
 
     if (changes.dataToDraw) {
@@ -99,7 +104,7 @@ export class WorldMap implements OnChanges {
       this.mapPath = d3.geoPath(this.projection);
 
       this.zoom = d3.zoom()
-        .scaleExtent([1, 150])
+        .scaleExtent(this.zoomScaleExtend)
         .on('zoom', () => {
           const { x, y, k } = d3.event.transform;
           this.mapTransform = d3.event.transform;
@@ -366,7 +371,7 @@ export class WorldMap implements OnChanges {
       text = dataUnit.market;
     }
 
-    if (this.values && this.labels) return `${text} • ${dataUnit.value}`;
+    if (this.values && this.labels) return `${text} ${text ? '•' : ''} ${dataUnit.value}`;
 
     if (this.labels) return text;
 
@@ -401,6 +406,8 @@ export class WorldMap implements OnChanges {
         y = this.height / 2;
         k = 1;
       }
+
+      k = k > this.zoomScaleExtend[1] ? this.zoomScaleExtend[1] : k;
 
       const correctZoomIdentity = () => {
         try {

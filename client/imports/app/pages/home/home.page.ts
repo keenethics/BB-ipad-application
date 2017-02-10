@@ -21,6 +21,7 @@ import { FilterController } from '../../data-management';
 
 import { SigninPage } from '../signin/signin.page';
 import { SwichersPage } from '../swichers/swichers.page';
+import { ProfileSettingsPage } from '../profile-settings/profile-settings.page';
 
 @Component({
   selector: 'home-page',
@@ -49,23 +50,25 @@ export class HomePage implements AfterViewInit {
     private sheetsCtrl: SheetsController,
     private filterCtrl: FilterController
   ) {
+    this.mapSettings = JSON.parse(localStorage.getItem('mapSettings')) ||
+      { charts: false, scaling: false, labels: false, values: false };
   }
 
   ngAfterViewInit() {
     const { height, width } = this.content;
     this.mapWidth = width.bind(this.content);
     this.mapHeight = height.bind(this.content);
-    this.filterCtrl.resetFilter();
+    // this.filterCtrl.resetFilter();
   }
 
   ionViewCanEnter() {
     return this.auth.isLoggedIn();
   }
 
-  ionViewDidEnter() {
-    this.mapSettings = JSON.parse(localStorage.getItem('mapSettings')) ||
-      { charts: false, scaling: false, labels: false, values: false };
-  }
+  // ionViewDidEnter() {
+  //   this.mapSettings = JSON.parse(localStorage.getItem('mapSettings')) ||
+  //     { charts: false, scaling: false, labels: false, values: false };
+  // }
 
   menuToggle(id: string) {
     this.autoZoom = true;
@@ -84,6 +87,7 @@ export class HomePage implements AfterViewInit {
         this.filterCtrl.resetFilter(); return;
       };
       case 'swichers': this.navCtrl.setRoot(SwichersPage); return;
+      case 'profile-settings': this.navCtrl.setRoot(ProfileSettingsPage); return;
       default: return;
     }
   }
