@@ -11,11 +11,11 @@ export const createUser = new ValidatedMethod({
   }).validator(),
   run({ email, password, roleId }) {
     if (!this.userId) {
-      throw new Meteor.Error('premission denied', 'Please login first.');
+      throw new Meteor.Error('permission denied', 'Please login first.');
     }
 
     if (!Roles.userIsInRole(this.userId, 'Administrator')) {
-      throw new Meteor.Error('premission denied', 'You are not an Administrator.');
+      throw new Meteor.Error('permission denied', 'You are not an Administrator.');
     }
 
     const userId = Accounts.createUser({ email, password });
@@ -48,11 +48,11 @@ export const updateUser = new ValidatedMethod({
   }).validator(),
   run({ userId, email, password, roleId }) {
     if (!this.userId) {
-      throw new Meteor.Error('premission denied', 'Please login first.');
+      throw new Meteor.Error('permission denied', 'Please login first.');
     }
 
     if (!Roles.userIsInRole(this.userId, 'Administrator')) {
-      throw new Meteor.Error('premission denied', 'You are not an Administrator.');
+      throw new Meteor.Error('permission denied', 'You are not an Administrator.');
     }
 
     const user = Meteor.users.findOne(userId);
@@ -89,5 +89,28 @@ export const updateUser = new ValidatedMethod({
       });
 
     return 'User updated successfully';
+  }
+});
+
+export const removeUser = new ValidatedMethod({
+  name: 'users.remove',
+  validate: new SimpleSchema({
+    userId: { type: String }
+  }).validator(),
+  run({ userId }) {
+    if (!this.userId) {
+      throw new Meteor.Error('permission denied', 'Please login first.');
+    }
+
+    if (!Roles.userIsInRole(this.userId, 'Administrator')) {
+      throw new Meteor.Error('permission denied', 'You are not an Administrator.');
+    }
+
+    const user = Meteor.users.findOne(userId);
+    if (!user) throw new Meteor.Error('user doesn\'t exist', 'User doesn\'t exist');
+
+    Meteor.users.remove(userId);
+
+    return `User ${userId} removed successfully`;
   }
 });
