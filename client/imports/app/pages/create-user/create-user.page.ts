@@ -3,7 +3,7 @@ import { NavController, MenuController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 
-import { getEmailRegExp } from '../../common/helpers/email-regexp';
+import { getEmailRegExp } from '../../../../../both/helpers/email-regexp';
 import { ToastsManager } from '../../common/toasts-manager';
 import { LoadingManager } from '../../common/loading-manager';
 import { EqualValidator } from '../../common/validators/equal-validator';

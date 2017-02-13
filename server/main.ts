@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
-import './imports/authorization';
+import './imports/users';
 import './imports/data-management';
 
 Meteor.startup(() => {
