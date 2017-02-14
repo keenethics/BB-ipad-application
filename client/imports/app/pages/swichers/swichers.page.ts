@@ -4,6 +4,7 @@ import { NavController } from 'ionic-angular';
 import { HomePage } from '../home/home.page';
 import { ProfileSettingsPage } from '../profile-settings/profile-settings.page';
 import { UserManagementPage } from '../user-management/user-management.page';
+import { SigninPage } from '../signin/signin.page';
 
 import styles from './swichers.page.scss';
 import template from './swichers.page.html';
@@ -22,7 +23,8 @@ export class SwichersPage {
       home: HomePage,
       swichers: SwichersPage,
       profileSettings: ProfileSettingsPage,
-      userManagement: UserManagementPage
+      userManagement: UserManagementPage,
+      signin: SigninPage
     };
   }
 

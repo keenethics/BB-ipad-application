@@ -328,6 +328,12 @@ ion-header {
         }
       }
     }
+
+    ion-buttons[end] {
+      button.bar-button {
+        padding-right: 24px;
+      }
+    }
     ion-title {
       padding: 7px 90px 1px;
       ion-icon {

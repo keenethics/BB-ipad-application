@@ -63,9 +63,11 @@ user-management-page {
         div.item-inner {
           border: none;
         }
-        
       } 
       &>ion-item.item.item-block {
+        div.item-inner {
+          border: none;
+        }
         border-bottom: none;
         border: none;
         padding: 0;

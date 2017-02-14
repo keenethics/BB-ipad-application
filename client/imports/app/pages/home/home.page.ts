@@ -59,7 +59,8 @@ export class HomePage implements AfterViewInit {
       home: HomePage,
       swichers: SwichersPage,
       profileSettings: ProfileSettingsPage,
-      userManagement: UserManagementPage
+      userManagement: UserManagementPage,
+      signin: SigninPage
     };
   }
 

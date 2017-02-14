@@ -19,6 +19,7 @@ import { ProfileSettingsPage } from '../profile-settings/profile-settings.page';
 import { SwichersPage } from '../swichers/swichers.page';
 import { CreateUserPage } from '../create-user/create-user.page';
 import { EditUserPage } from '../edit-user/edit-user.page';
+import { SigninPage } from '../signin/signin.page';
 
 @Component({
   selector: 'user-management-page',
@@ -45,13 +46,15 @@ export class UserManagementPage implements OnInit {
       home: HomePage,
       swichers: SwichersPage,
       profileSettings: ProfileSettingsPage,
-      userManagement: UserManagementPage
+      userManagement: UserManagementPage,
+      signin: SigninPage
     };
 
     this.usersCtrl.limit = this.usersLimit;
   }
 
   ngOnInit() {
+    this.usersCtrl.getUsers(this.usersLimit, 0);
   }
 
   ionViewCanEnter() {
