@@ -28,6 +28,7 @@ export class FooterComponent {
         case 'home': this.navCtrl.setRoot(this.pages.home); break;
         case 'swichers': this.navCtrl.setRoot(this.pages.swichers); break;
         case 'profile-settings': this.navCtrl.setRoot(this.pages.profileSettings); break;
+        case 'user-management': this.navCtrl.setRoot(this.pages.userManagement); break;
       }
     }
 

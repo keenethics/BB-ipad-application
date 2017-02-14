@@ -1,15 +1,4 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>User creation</ion-title>
-    <ion-buttons end>
-      <button (click)="menuToggle()" ion-button icon-only>
-        <ion-icon name="menu"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-<ion-content>
-  <form [formGroup]="newUserForm" (ngSubmit)="createUser()" novalidate padding>
+<form [formGroup]="newUserForm" (ngSubmit)="createUser()" novalidate padding>
     <ion-list>
       <ion-item>
         <ion-label floating>Email</ion-label>
@@ -30,8 +19,8 @@
         </ion-select>
       </ion-item>
       <ion-item>
-        <button type="submit" ion-button block [disabled]="isFormValid(newUserForm)">Create user</button>
+        <button type="submit" ion-button [disabled]="isFormValid(newUserForm)">Create user</button>
+        <button (click)="close()" type="button">Cancel</button>
       </ion-item>
     </ion-list>
   </form>
-</ion-content>

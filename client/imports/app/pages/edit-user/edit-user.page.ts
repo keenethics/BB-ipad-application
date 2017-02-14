@@ -8,20 +8,22 @@ import { ToastsManager } from '../../common/toasts-manager';
 import { LoadingManager } from '../../common/loading-manager';
 import { EqualValidator } from '../../common/validators/equal-validator';
 
-import template from './create-user.page.html';
-import styles from './create-user.page.scss';
+import { UsersController } from '../../settings/users-controller';
+
+import template from './edit-user.page.html';
+import styles from './edit-user.page.scss';
 
 import { Authorization, RolesController } from '../../authorization';
 import { HomePage } from '../home/home.page';
 
 @Component({
-  selector: 'create-user-page',
+  selector: 'edit-user-page',
   styles: [styles],
   template,
 })
-export class CreateUserPage implements OnInit {
-  public newUserForm: FormGroup;
-  public newUserCredentials: NewUserCredentials;
+export class EditUserPage implements OnInit {
+  public userForm: FormGroup;
+  public userCredentials: UserCredentials;
   public roles: any;
 
   constructor(
@@ -32,20 +34,25 @@ export class CreateUserPage implements OnInit {
     private loadingManager: LoadingManager,
     private rolesCtrl: RolesController,
     private menuCtrl: MenuController,
-    private viewCtrl: ViewController
+    private viewCtrl: ViewController,
+    private usersCtrl: UsersController
   ) {
-    this.newUserCredentials = {
-      email: '',
+    const user = this.usersCtrl.editableUser;
+    if (!user) viewCtrl.dismiss();
+
+    this.userCredentials = {
+      id: user._id,
+      email: user.emails[0].address,
       password: '',
       confPass: '',
-      roleId: ''
+      roleId: (user as any).roleId
     };
 
     this.roles = this.rolesCtrl.getAllRoles();
   }
 
   ngOnInit() {
-    this.buildNewUserForm();
+    this.buildUserForm();
   }
 
   ionViewCanEnter() {
@@ -56,17 +63,17 @@ export class CreateUserPage implements OnInit {
     }
   }
 
-  buildNewUserForm() {
-    this.newUserForm = this.formBuilder.group({
+  buildUserForm() {
+    this.userForm = this.formBuilder.group({
       email: [
-        this.newUserCredentials.email,
+        this.userCredentials.email,
         [
           Validators.required,
           Validators.pattern(getEmailRegExp())
         ]
       ],
       password: [
-        this.newUserCredentials.password,
+        this.userCredentials.password,
         [
           Validators.required,
           Validators.maxLength(40),
@@ -75,14 +82,14 @@ export class CreateUserPage implements OnInit {
         ]
       ],
       confPass: [
-        this.newUserCredentials.confPass,
+        this.userCredentials.confPass,
         [
           Validators.required,
           new EqualValidator('password', 'false')
         ]
       ],
       roleId: [
-        this.newUserCredentials.roleId,
+        this.userCredentials.roleId,
         [
           Validators.required,
           (c: AbstractControl) => {
@@ -95,31 +102,18 @@ export class CreateUserPage implements OnInit {
         ]
       ]
     });
-
-    this.newUserForm.valueChanges
-      .subscribe(data => this.onValueChanged(data));
   }
 
-  onValueChanged(data?: any) {
-    // TODO: Generate array of errors messages here
+  editUser() {
+    const {id, email, password, roleId} = this.userCredentials;
+    this.usersCtrl.updateUser(id, email, password, roleId)
+      .then(() => {
+        this.viewCtrl.dismiss();
+      });
   }
 
   isFormValid(form: FormGroup): boolean {
     return !(form.valid && form.dirty && form.touched);
-  }
-
-  createUser() {
-    this.loadingManager.loading('Registration...');
-    this.auth.createUser(this.newUserCredentials)
-      .then((res: any) => {
-        this.loadingManager.loadingInst.dismiss();
-        this.toasts.okToast(res);
-        this.newUserForm.reset();
-      })
-      .catch((err) => {
-        this.loadingManager.loadingInst.dismiss();
-        this.toasts.okToast(err.reason);
-      });
   }
 
   close() {
@@ -127,7 +121,8 @@ export class CreateUserPage implements OnInit {
   }
 }
 
-interface NewUserCredentials {
+interface UserCredentials {
+  id: string;
   email: string;
   password: string;
   confPass: string;

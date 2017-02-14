@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 
 import { HomePage } from '../home/home.page';
 import { ProfileSettingsPage } from '../profile-settings/profile-settings.page';
+import { UserManagementPage } from '../user-management/user-management.page';
 
 import styles from './swichers.page.scss';
 import template from './swichers.page.html';
@@ -20,7 +21,8 @@ export class SwichersPage {
     this.pages = {
       home: HomePage,
       swichers: SwichersPage,
-      profileSettings: ProfileSettingsPage
+      profileSettings: ProfileSettingsPage,
+      userManagement: UserManagementPage
     };
   }
 

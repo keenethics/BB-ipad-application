@@ -1,0 +1,21 @@
+<ion-header>
+  <header></header>
+  <ion-toolbar>
+    <button (click)="addUser()" ion-button>+</button>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let u of usersCtrl.users$ | async">
+      {{u.emails[0].address}}
+      <button (click)="editUser(u)" ion-button small item-right>Edit</button>
+      <button (click)="deleteUser(u._id)" ion-button small item-right>Delete</button>
+    </ion-item>
+  </ion-list>
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <pagination [allUsersCount]="usersCtrl.usersCount$ | async" [limit]="usersLimit" (onSelect)="setPage($event)"></pagination>
+  </ion-toolbar>
+  <footer [activeButtonTitle]="'user-management'" [pages]="pages" [preventNav]="['user-management']"></footer>
+</ion-footer>

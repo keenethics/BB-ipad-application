@@ -15,6 +15,8 @@ import { UploadDataPage } from './upload-data/upload-data.page';
 import { TestDataPage } from './test-data/test-data.page';
 import { SwichersPage } from './swichers/swichers.page';
 import { ProfileSettingsPage } from './profile-settings/profile-settings.page';
+import { EditUserPage } from './edit-user/edit-user.page';
+import { UserManagementPage } from './user-management/user-management.page';
 
 const PAGES = [
   HomePage,
@@ -23,7 +25,9 @@ const PAGES = [
   UploadDataPage,
   TestDataPage,
   SwichersPage,
-  ProfileSettingsPage
+  ProfileSettingsPage,
+  UserManagementPage,
+  EditUserPage
 ];
 
 @NgModule({

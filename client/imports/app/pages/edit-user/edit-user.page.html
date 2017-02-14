@@ -1,0 +1,26 @@
+<form [formGroup]="userForm" (ngSubmit)="editUser()" novalidate padding>
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Email</ion-label>
+        <ion-input [(ngModel)]="userCredentials.email" formControlName='email' type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Password</ion-label>
+        <ion-input [(ngModel)]="userCredentials.password" formControlName='password' type="password"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Confirm password</ion-label>
+        <ion-input [(ngModel)]="userCredentials.confPass" formControlName='confPass' type="password"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Role</ion-label>
+        <ion-select [(ngModel)]="userCredentials.roleId" formControlName='roleId'>
+          <ion-option *ngFor="let role of roles" [value]="role.id">{{role.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <button type="submit" ion-button [disabled]="isFormValid(userForm)">edit user</button>
+        <button (click)="close()" ion-button type="button">Cancel</button>
+      </ion-item>
+    </ion-list>
+  </form>
