@@ -44,7 +44,7 @@ export class UsersController {
       .subscribe((res) => {
         const {limit, skip} = this.lastOptions;
         this.getUsers(limit, skip);
-        this._users.next(Meteor.users.find({}, { limit: this.limit }).fetch());
+        this._users.next(Meteor.users.find({}, { limit }).fetch());
       }, (err) => {
         this.toasts.okToast(err.reason);
       });
