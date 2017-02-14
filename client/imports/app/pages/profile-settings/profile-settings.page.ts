@@ -11,6 +11,8 @@ import styles from './profile-settings.page.scss';
 
 import { SwichersPage } from '../swichers/swichers.page';
 import { HomePage } from '../home/home.page';
+import { UserManagementPage } from '../user-management/user-management.page';
+import { SigninPage } from '../signin/signin.page';
 
 @Component({
   selector: 'profile-settings',
@@ -31,7 +33,9 @@ export class ProfileSettingsPage implements OnInit {
     this.pages = {
       home: HomePage,
       swichers: SwichersPage,
-      profileSettings: ProfileSettingsPage
+      profileSettings: ProfileSettingsPage,
+      userManagement: UserManagementPage,
+      signin: SigninPage
     };
   }
 

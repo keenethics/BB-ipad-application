@@ -12,5 +12,8 @@
     <ion-segment-button value="profile-settings">
       <ion-icon class="icon-bb-preferences" name="icon-bb-preferences"></ion-icon>
     </ion-segment-button>
+    <ion-segment-button *ngIf="isAdmin()" value="user-management">
+      <ion-icon class="icon-bb-user" name="icon-bb-user"></ion-icon>
+    </ion-segment-button>
   </ion-segment>
 </ion-toolbar>

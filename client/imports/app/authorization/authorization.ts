@@ -37,7 +37,7 @@ export class Authorization {
     return new Promise((resolve, reject) => {
       const { email, password, roleId } = userOptions;
 
-      Meteor.call('auth.create-user',
+      Meteor.call('users.create',
         { email, password, roleId },
         (err: Meteor.Error, res: string) => {
           if (err) {

@@ -13,6 +13,7 @@ import { DebounceClick } from './directives/debounceClick';
 
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { HeaderComponent } from './components/header/header.component';
     ExcludePipe,
     FooterComponent,
     HeaderComponent,
-    DebounceClick
+    DebounceClick,
+    PaginationComponent
   ],
   exports: [
     ObjectAsArray,
@@ -38,7 +40,8 @@ import { HeaderComponent } from './components/header/header.component';
     ExcludePipe,
     FooterComponent,
     HeaderComponent,
-    DebounceClick
+    DebounceClick,
+    PaginationComponent
   ]
 })
 export class CommonAppModule {

@@ -1,5 +1,5 @@
 <ion-header>
-  <header [isButtonEnabled]="false"></header>
+  <header [pages]="pages" [isButtonEnabled]="false"></header>
 </ion-header>
 <ion-content>
   <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate padding>

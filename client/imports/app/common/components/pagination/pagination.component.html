@@ -1,0 +1,5 @@
+<div class="pagination">
+  <button ion-button small [ngClass]="{active: currentPage === p.index}" *ngFor="let p of pages" (click)="selectPage(p)">
+    {{p.index}}
+  </button>
+</div>

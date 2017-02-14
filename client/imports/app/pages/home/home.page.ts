@@ -22,6 +22,7 @@ import { FilterController } from '../../data-management';
 import { SigninPage } from '../signin/signin.page';
 import { SwichersPage } from '../swichers/swichers.page';
 import { ProfileSettingsPage } from '../profile-settings/profile-settings.page';
+import { UserManagementPage } from '../user-management/user-management.page';
 
 @Component({
   selector: 'home-page',
@@ -57,7 +58,9 @@ export class HomePage implements AfterViewInit {
     this.pages = {
       home: HomePage,
       swichers: SwichersPage,
-      profileSettings: ProfileSettingsPage
+      profileSettings: ProfileSettingsPage,
+      userManagement: UserManagementPage,
+      signin: SigninPage
     };
   }
 

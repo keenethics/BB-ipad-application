@@ -5,6 +5,7 @@ import {
   Input
 } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { RolesController } from '../../../authorization';
 
 import template from './footer.component.html';
 
@@ -18,8 +19,9 @@ export class FooterComponent {
   @Input('preventNav') preventNavArr: string[] = [];
   @Output('onSelect') onSelect = new EventEmitter();
 
-  constructor(private navCtrl: NavController) {
-
+  constructor(
+    private navCtrl: NavController,
+    private roles: RolesController) {
   }
 
   selectPage(event: any) {
@@ -28,9 +30,14 @@ export class FooterComponent {
         case 'home': this.navCtrl.setRoot(this.pages.home); break;
         case 'swichers': this.navCtrl.setRoot(this.pages.swichers); break;
         case 'profile-settings': this.navCtrl.setRoot(this.pages.profileSettings); break;
+        case 'user-management': this.navCtrl.setRoot(this.pages.userManagement); break;
       }
     }
 
     this.onSelect.emit(event.value);
+  }
+
+  isAdmin() {
+    return this.roles.userIsInRole(Meteor.userId(), 'Administrator');
   }
 }
