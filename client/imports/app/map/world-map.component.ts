@@ -15,6 +15,7 @@ import {
   HostListener
 } from '@angular/core';
 import { BusinessDataUnit } from '../../../../both/data-management/business-data.collection';
+import { Platform } from 'ionic-angular';
 
 import * as d3 from 'd3';
 import * as d3proj from 'd3-geo-projection';
@@ -56,17 +57,19 @@ export class WorldMap implements OnChanges {
   @Output('markers-rendered') onMarkersRendered = new EventEmitter();
   @Output('map-rendered') onMapRendered = new EventEmitter();
 
-  constructor(private elRef: ElementRef) {
+  constructor(private elRef: ElementRef, private plt: Platform) {
     this.mapTransform = { x: 0, y: 0, k: 1 };
     this.zoomScaleExtend = [1, 30];
-    // FIX THIS !!!
-    if (this.zoomOnUpdate) {
-      setTimeout(() => {
-        this.zoomToMarkers();
-        setTimeout(() => this.zoomToMarkers(), 1000);
-      }, 100);
-    }
-    // ^^^^^^^^^^^
+
+
+    // // FIX THIS !!!
+    // if (this.zoomOnUpdate) {
+    //   setTimeout(() => {
+    //     this.zoomToMarkers();
+    //     setTimeout(() => this.zoomToMarkers(), 1000);
+    //   }, 100);
+    // }
+    // // ^^^^^^^^^^^
   }
 
   ngOnChanges(changes: any) {
@@ -126,6 +129,9 @@ export class WorldMap implements OnChanges {
         .data(topojson.feature(mapTopoJson, mapTopoJson.objects.countries).features)
         .enter()
         .append('path')
+        .attr('class', () => {
+          return this.plt.is('ios') ? 'ios-only' : 'not-ios';
+        })
         .attr('d', this.mapPath);
 
       this.onMapRendered.emit();

@@ -4,14 +4,24 @@ svg {
   }
   g.map {
     path {
-      fill: url(#map-background);
-      //stroke: #999;
       stroke-linejoin: round;
       stroke-linecap: round;
       vector-effect: non-scaling-stroke;
     }
 
-    path:hover {
+    path.ios-only {
+      fill: #ABB5C2;
+    }
+
+    path.ios-only:hover {
+      fill: #375CAE;
+    }
+
+    path.not-ios {
+      fill: url(#map-background);
+    }
+
+    path.not-ios:hover {
       fill: url(#map-background-selected);
     }
 
