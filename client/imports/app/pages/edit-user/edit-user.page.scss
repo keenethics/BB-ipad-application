@@ -1,0 +1,108 @@
+$colors: (
+  primary: #0B409C,
+  secondary: #A7C1E3,
+  light: #E2E8F0,
+  dark: #47494D,
+  dark-blue: #173567,
+  light-blue: #3B65AD,
+  ui-light: #ECEFF4
+);
+
+edit-user-page, create-user-page {
+  &>form {
+    background: #F8F9FA;
+    padding: 50px;
+    h1 {
+      margin-top: 0;
+      font-weight: 400;
+      font-size: 22px;
+      color: map-get($colors, 'primary');
+    }
+  }
+  
+  ion-list.list {
+    margin: auto;
+    &>ion-item.item.item-block:first-child {
+      div.item-inner {
+        border: none;
+      }
+    } 
+    &>ion-item.item.item-block {
+      border-bottom: none;
+      border: none;
+      padding: 0;
+      background: transparent;
+      margin: initial;
+      color: map-get($colors, 'light-blue');
+      border-radius: 5px;
+      div.item-inner {
+        border: none;
+        padding: 0;
+        &>div.input-wrapper {
+          ion-label {
+            margin: 0;
+          }
+        }
+      }
+
+      &.select {
+        div.input-wrapper {
+          font-size: 15px;
+          background-color: white;
+          padding: 0 32px;
+          border-radius: 5px;
+          line-height: 28px;
+          color: #9b9b9b;
+          margin: 10px 0;
+          ion-select {
+            color: map-get($colors, 'light-blue');
+            div.select-icon {
+              position: relative;
+              width: 12px;
+              height: 18px;
+              left: 5px;
+              top: 5px;
+            }
+          }
+        }
+      }
+
+      ion-input {
+        width: 100%;
+        font-size: 15px;
+        line-height: 28px;
+        margin: 10px 0;
+        float: left;
+        background: white;
+        border-radius: 4px;
+        padding: 0 30px;
+      }
+
+      button {
+        font-size: 13px;
+        font-weight: bold;
+        width: initial;
+        height: 55px;
+        padding: 0px 56px;
+        border-radius: 28px;
+        margin-top: 20px;
+        float: left;
+
+        &.secondary {
+          background: none;
+          color: map-get($colors, 'light-blue');
+        }
+      }
+    }
+  }
+}
+
+ion-popover.edit-form, ion-popover.create-form {
+  .popover-content {
+    width: 500px
+  }
+
+  ion-backdrop {
+    opacity: 0.3;
+  }
+}

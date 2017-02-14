@@ -1,26 +1,24 @@
-<form [formGroup]="userForm" (ngSubmit)="editUser()" novalidate padding>
+<form [formGroup]="userForm" (ngSubmit)="editUser()" novalidate>
+    <h1>{{email}}</h1>
     <ion-list>
       <ion-item>
-        <ion-label floating>Email</ion-label>
-        <ion-input [(ngModel)]="userCredentials.email" formControlName='email' type="text"></ion-input>
+        <ion-input [(ngModel)]="userCredentials.email" formControlName='email' placeholder="E-mail" type="text"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label floating>Password</ion-label>
-        <ion-input [(ngModel)]="userCredentials.password" formControlName='password' type="password"></ion-input>
+        <ion-input [(ngModel)]="userCredentials.password" formControlName='password' placeholder="Password" type="password"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label floating>Confirm password</ion-label>
-        <ion-input [(ngModel)]="userCredentials.confPass" formControlName='confPass' type="password"></ion-input>
+        <ion-input [(ngModel)]="userCredentials.confPass" formControlName='confPass' placeholder="Confirm password" type="password"></ion-input>
       </ion-item>
-      <ion-item>
-        <ion-label floating>Role</ion-label>
-        <ion-select [(ngModel)]="userCredentials.roleId" formControlName='roleId'>
+      <ion-item class="select">
+        <ion-label>Role</ion-label>
+        <ion-select [(ngModel)]="userCredentials.roleId" formControlName='roleId' placeholder="Role">
           <ion-option *ngFor="let role of roles" [value]="role.id">{{role.name}}</ion-option>
         </ion-select>
       </ion-item>
       <ion-item>
-        <button type="submit" ion-button [disabled]="isFormValid(userForm)">edit user</button>
-        <button (click)="close()" ion-button type="button">Cancel</button>
+        <button type="submit" ion-button [disabled]="isFormValid(userForm)">SAVE</button>
+        <button class="secondary" (click)="close()" ion-button type="button">CANCEL</button>
       </ion-item>
     </ion-list>
   </form>

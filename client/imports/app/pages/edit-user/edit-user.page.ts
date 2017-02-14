@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation} from '@angular/core';
 import { NavController, MenuController, ViewController, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
@@ -20,11 +20,13 @@ import { HomePage } from '../home/home.page';
   selector: 'edit-user-page',
   styles: [styles],
   template,
+  encapsulation: ViewEncapsulation.None
 })
 export class EditUserPage implements OnInit {
   public userForm: FormGroup;
   public userCredentials: UserCredentials;
   public roles: any;
+  public email: string;
 
   constructor(
     public navCtrl: NavController,
@@ -39,6 +41,8 @@ export class EditUserPage implements OnInit {
   ) {
     const user = this.usersCtrl.editableUser;
     if (!user) viewCtrl.dismiss();
+
+    this.email = user.emails[0].address.substr(0);
 
     this.userCredentials = {
       id: user._id,

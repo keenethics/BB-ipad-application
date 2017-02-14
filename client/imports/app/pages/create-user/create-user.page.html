@@ -1,26 +1,24 @@
-<form [formGroup]="newUserForm" (ngSubmit)="createUser()" novalidate padding>
-    <ion-list>
-      <ion-item>
-        <ion-label floating>Email</ion-label>
-        <ion-input [(ngModel)]="newUserCredentials.email" formControlName='email' type="text"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label floating>Password</ion-label>
-        <ion-input [(ngModel)]="newUserCredentials.password" formControlName='password' type="password"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label floating>Confirm password</ion-label>
-        <ion-input [(ngModel)]="newUserCredentials.confPass" formControlName='confPass' type="password"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label floating>Role</ion-label>
-        <ion-select [(ngModel)]="newUserCredentials.roleId" formControlName='roleId'>
-          <ion-option *ngFor="let role of roles" [value]="role.id">{{role.name}}</ion-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <button type="submit" ion-button [disabled]="isFormValid(newUserForm)">Create user</button>
-        <button (click)="close()" type="button">Cancel</button>
-      </ion-item>
-    </ion-list>
-  </form>
+<form [formGroup]="newUserForm" (ngSubmit)="createUser()" novalidate>
+  <h1>ADDING NEW USER</h1>
+  <ion-list>
+    <ion-item>
+      <ion-input [(ngModel)]="newUserCredentials.email" formControlName='email' placeholder="E-mail" type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input [(ngModel)]="newUserCredentials.password" formControlName='password' placeholder="Password" type="password"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input [(ngModel)]="newUserCredentials.confPass" formControlName='confPass' placeholder="Confirm password" type="password"></ion-input>
+    </ion-item>
+    <ion-item class="select">
+      <ion-label>Role</ion-label>
+      <ion-select [(ngModel)]="newUserCredentials.roleId" formControlName='roleId' placeholder="Role">
+        <ion-option *ngFor="let role of roles" [value]="role.id">{{role.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <button type="submit" ion-button [disabled]="isFormValid(newUserForm)">ADD</button>
+      <button class="secondary" (click)="close()" type="button">CANCEL</button>
+    </ion-item>
+  </ion-list>
+</form>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { NavController, MenuController, PopoverController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
@@ -24,10 +24,11 @@ import { EditUserPage } from '../edit-user/edit-user.page';
   selector: 'user-management-page',
   styles: [styles],
   template,
+  encapsulation: ViewEncapsulation.None
 })
 export class UserManagementPage implements OnInit {
   public pages: any;
-  public usersLimit: number = 2;
+  public usersLimit: number = 5;
 
   constructor(
     public navCtrl: NavController,
@@ -66,13 +67,13 @@ export class UserManagementPage implements OnInit {
   }
 
   addUser() {
-    const popover = this.popoverCtrl.create(CreateUserPage);
+    const popover = this.popoverCtrl.create(CreateUserPage, {}, { cssClass: 'create-form' });
     popover.present();
   }
 
   editUser(user: Meteor.User) {
     this.usersCtrl.setEditedUser(user);
-    const popover = this.popoverCtrl.create(EditUserPage);
+    const popover = this.popoverCtrl.create(EditUserPage, {}, { cssClass: 'edit-form' });
     popover.present();
   }
 
