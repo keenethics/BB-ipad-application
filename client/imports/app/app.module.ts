@@ -5,8 +5,7 @@ import { File } from 'ionic-native';
 
 import { AuthorizationModule } from './authorization/authorization.module';
 import { DataManagementModule } from './data-management/data-management.module';
-import { CommonAppModule } from './common/common-app.module';
-import { PagesModule } from './pages/pages.module';
+import { SharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
 
 import '../../stylesheets/global.scss';
@@ -17,9 +16,9 @@ import '../../stylesheets/global.scss';
     IonicModule.forRoot(AppComponent, {
       mode: 'ios'
     }),
-    PagesModule,
     AuthorizationModule,
-    DataManagementModule
+    DataManagementModule,
+    SharedModule
   ],
   declarations: [
     AppComponent,
@@ -33,6 +32,9 @@ import '../../stylesheets/global.scss';
   ],
   entryComponents: [
     AppComponent
+  ],
+  exports: [
+    SharedModule
   ]
 })
 export class AppModule { }

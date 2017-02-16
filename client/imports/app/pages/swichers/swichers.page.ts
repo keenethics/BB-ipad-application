@@ -16,17 +16,8 @@ import template from './swichers.page.html';
 })
 export class SwichersPage {
   public swichersState: any;
-  public pages = {};
 
-  constructor(private navCtrl: NavController) {
-    this.pages = {
-      home: HomePage,
-      swichers: SwichersPage,
-      profileSettings: ProfileSettingsPage,
-      userManagement: UserManagementPage,
-      signin: SigninPage
-    };
-  }
+  constructor(private navCtrl: NavController) {}
 
   ionViewDidEnter() {
     this.swichersState = JSON.parse(localStorage.getItem('mapSettings'));

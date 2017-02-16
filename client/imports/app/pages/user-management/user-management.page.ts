@@ -28,7 +28,6 @@ import { SigninPage } from '../signin/signin.page';
   encapsulation: ViewEncapsulation.None
 })
 export class UserManagementPage implements OnInit {
-  public pages: any;
   public usersLimit: number = 5;
 
   constructor(
@@ -42,14 +41,6 @@ export class UserManagementPage implements OnInit {
     private menuCtrl: MenuController,
     private popoverCtrl: PopoverController
   ) {
-    this.pages = {
-      home: HomePage,
-      swichers: SwichersPage,
-      profileSettings: ProfileSettingsPage,
-      userManagement: UserManagementPage,
-      signin: SigninPage
-    };
-
     this.usersCtrl.limit = this.usersLimit;
   }
 

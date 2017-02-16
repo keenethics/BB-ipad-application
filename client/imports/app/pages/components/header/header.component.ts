@@ -10,12 +10,13 @@ import template from './header.component.html';
 
 import { Authorization } from '../../../authorization';
 
+import { SigninPage } from '../../index';
+
 @Component({
   selector: 'header',
   template
 })
 export class HeaderComponent {
-  @Input() pages: any;
   @Input('isButtonEnabled') isButtonEnabled: boolean;
   @Output('onButtonClick') onButtonClick = new EventEmitter();
 
@@ -32,7 +33,7 @@ export class HeaderComponent {
 
   logout() {
     this.auth.logout().then(() => {
-      this.navCtrl.setRoot(this.pages.signin);
+      this.navCtrl.setRoot(SigninPage);
     });
   }
 }

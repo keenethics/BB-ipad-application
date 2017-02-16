@@ -18,6 +18,12 @@ import { ProfileSettingsPage } from './profile-settings/profile-settings.page';
 import { EditUserPage } from './edit-user/edit-user.page';
 import { UserManagementPage } from './user-management/user-management.page';
 
+import {
+  FooterComponent,
+  HeaderComponent,
+  PaginationComponent
+} from './components';
+
 const PAGES = [
   HomePage,
   SigninPage,
@@ -28,6 +34,12 @@ const PAGES = [
   ProfileSettingsPage,
   UserManagementPage,
   EditUserPage
+];
+
+const COMPONENTS = [
+  FooterComponent,
+  HeaderComponent,
+  PaginationComponent
 ];
 
 @NgModule({
@@ -41,8 +53,8 @@ const PAGES = [
     SheetsModule,
     SettingsModule
   ],
-  declarations: PAGES,
-  exports: PAGES,
+  declarations: [...PAGES, ...COMPONENTS],
+  exports: [...PAGES, ...COMPONENTS],
   entryComponents: PAGES
 })
 export class PagesModule {
