@@ -19,7 +19,7 @@ export const uploadFile = new ValidatedMethod({
       throw new Meteor.Error('premission denied', 'Please login first.');
     }
 
-    if (!Roles.userIsInRole(this.userId, 'DataUpload')) {
+    if (!Roles.userIsInRole(this.userId, ['DataUpload', 'Administrator'])) {
       throw new Meteor.Error('premission denied', 'You are not a data manager.');
     }
 
@@ -30,7 +30,10 @@ export const uploadFile = new ValidatedMethod({
     keys.forEach((key) => {
       columnNames[toCamelCase(key.toLowerCase())] = key;
     });
+
     ColumnNamesCollection.update({}, columnNames, { upsert: true });
+
+    BusinessData.remove({});
 
     parsedData.forEach((item: string[], index: number) => {
       if (index !== 0) {

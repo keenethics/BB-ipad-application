@@ -11,6 +11,8 @@ import { ExcludePipe } from './pipes/exclude.pipe';
 import { Draggable } from './directives/draggable';
 import { DebounceClick } from './directives/debounceClick';
 
+import { PickFileComponent } from './components/pick-file/pick-file.component';
+
 @NgModule({
   imports: [
     IonicModule
@@ -25,6 +27,7 @@ import { DebounceClick } from './directives/debounceClick';
     Draggable,
     ExcludePipe,
     DebounceClick,
+    PickFileComponent
   ],
   exports: [
     ObjectAsArray,
@@ -32,6 +35,7 @@ import { DebounceClick } from './directives/debounceClick';
     Draggable,
     ExcludePipe,
     DebounceClick,
+    PickFileComponent
   ]
 })
 export class CommonAppModule {

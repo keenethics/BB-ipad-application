@@ -75,7 +75,7 @@ export class Authorization {
     return Boolean(Meteor.userId());
   }
 
-  user() {
-    return Meteor.user() as any;
+  user(): Meteor.User {
+    return Meteor.user() as Meteor.User;
   }
 }
