@@ -39,7 +39,6 @@ export class DataFilterComponent implements OnInit, OnDestroy {
 
   @Input() data: BusinessDataUnit[];
   @Input() currentQuery: any;
-  // @Output() onFilterChange = new EventEmitter();
 
   constructor(private dataProvider: DataProvider, private filterCtrl: FilterController) {
     filterCtrl.setFilterComponetn(this);
@@ -131,7 +130,6 @@ export class DataFilterComponent implements OnInit, OnDestroy {
           period: 'Actuals'
         };
         this.query.identifier = 'Market';
-        // this.onFilterChange.emit(this.query);
         break;
       };
       case 'country': {
@@ -140,7 +138,6 @@ export class DataFilterComponent implements OnInit, OnDestroy {
         delete this.filterQuery.city;
         this.filterQuery.identifier = 'Country';
         this.query.identifier = 'Country';
-        // this.onFilterChange.emit(this.query);
         break;
       };
       case 'city': {
@@ -148,14 +145,12 @@ export class DataFilterComponent implements OnInit, OnDestroy {
         delete this.filterQuery.city;
         this.filterQuery.identifier = 'City';
         this.query.identifier = 'City';
-        // this.onFilterChange.emit(this.query);
         break;
       }
       default: {
         this.query.identifier = 'Global';
         this.category = '';
         this.filterQuery.identifier = 'Market';
-        // this.onFilterChange.emit(this.query);
         break;
       }
     }
@@ -203,7 +198,6 @@ export class DataFilterComponent implements OnInit, OnDestroy {
         break;
       };
     }
-    // this.onFilterChange.emit(this.query);
     this.filterCtrl.currentFilter$ = this.query;
 
     switch (this.category) {
@@ -270,7 +264,6 @@ export class DataFilterComponent implements OnInit, OnDestroy {
     }
 
     this.filterCtrl.currentFilter$ = this.query;
-    // this.onFilterChange.emit(this.query);
     this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
   }
 }
