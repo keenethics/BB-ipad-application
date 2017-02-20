@@ -12,7 +12,7 @@ export class BuFilter {
   constructor() {
     this.subscribe();
     this.titlesMap = new Map([
-      ['Total', 'TOTAL'],
+      ['Total', 'MN'],
       ['Services Portfolio Sales', 'SPS'],
       ['MN Products-RN', 'P'],
       ['CTO', 'CTO'],

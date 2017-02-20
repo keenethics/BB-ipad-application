@@ -35,22 +35,28 @@ export class BuFilterComponnet {
   }
 
   select(item: { title: any, value: boolean }) {
+    if (item.title === 'Total') {
+      this.queryObject.n2 = 'Total';
+      this.filterCtrl.currentFilter$ = this.queryObject;
+      return;
+    }
+
     if (item.value) {
-      // if (this.queryObject.n2.$in) {
-      //   if (Array.isArray(item.title)) {
-      //     item.title.forEach((t) => {
-      //       if (this.queryObject.n2.$in.indexOf(t) === -1) {
-      //         this.queryObject.n2.$in.push(t);
-      //       }
-      //     });
-      //   } else {
-      //     if (this.queryObject.n2.$in.indexOf(item.title) === -1) {
-      //       this.queryObject.n2.$in.push(item.title);
-      //     }
-      //   }
-      // } else {
-      this.queryObject.n2 = { $in: Array.isArray(item.title) ? [...item.title] : [item.title] };
-      // }
+      if (this.queryObject.n2.$in) {
+        if (Array.isArray(item.title)) {
+          item.title.forEach((t) => {
+            if (this.queryObject.n2.$in.indexOf(t) === -1) {
+              this.queryObject.n2.$in.push(t);
+            }
+          });
+        } else {
+          if (this.queryObject.n2.$in.indexOf(item.title) === -1) {
+            this.queryObject.n2.$in.push(item.title);
+          }
+        }
+      } else {
+        this.queryObject.n2 = { $in: Array.isArray(item.title) ? [...item.title] : [item.title] };
+      }
     } else {
       if (Array.isArray(item.title)) {
         item.title.forEach((t) => {
@@ -59,6 +65,8 @@ export class BuFilterComponnet {
       } else {
         this.queryObject.n2.$in = this.queryObject.n2.$in.filter((i: string) => i !== item.title);
       }
+
+      if (!this.queryObject.n2.$in.length) this.queryObject.n2 = 'Total';
     }
     this.filterCtrl.currentFilter$ = this.queryObject;
   }
