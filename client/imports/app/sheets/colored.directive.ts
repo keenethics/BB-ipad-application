@@ -17,12 +17,12 @@ export class ColoredDirective {
   setBackgroundColor(value: number) {
     let color = '';
     if (value <= -50) {
-      color = 'rgb(189,61,62)';
+      color = 'red';
     } else if (value <= -25 && value > -50) {
-      color = 'rgb(227,136,12)';
+      color = 'orange';
     } else if (value <= -10 && value > -25) {
-      color = 'rgb(255,196,1)';
+      color = 'yellow';
     }
-    (this.elRef.nativeElement as HTMLElement).style.color = color;
+    (this.elRef.nativeElement as HTMLElement).classList.add(color || 'transparent');
   }
 }
