@@ -4,6 +4,7 @@ import { StatusBar, Splashscreen } from 'ionic-native';
 
 import { Authorization } from './authorization/authorization';
 import { DataProvider } from './data-management';
+import { FilterController } from './filters';
 
 import { HomePage } from './pages/home/home.page';
 import { SigninPage } from './pages/signin/signin.page';
@@ -36,7 +37,8 @@ export class AppComponent {
     private auth: Authorization,
     private menuCtrl: MenuController,
     private toastCtrl: ToastController,
-    public dataProvider: DataProvider
+    public dataProvider: DataProvider,
+    private filterCtrl: FilterController
   ) {
     this.pages = [
       { title: 'Home page', component: HomePage },
@@ -48,6 +50,9 @@ export class AppComponent {
 
   ngAfterViewInit() {
     this.initializeApp();
+    this.filterCtrl.currentFilter$.subscribe((f: any) => {
+      this.dataProvider.query(f);
+    });
   }
 
   ngOnDestroy() {
@@ -72,9 +77,5 @@ export class AppComponent {
     this.auth.logout().then(() => {
       this.navCtrl.setRoot(SigninPage);
     });
-  }
-
-  getFilteredData(filterQuery: any) {
-    this.dataProvider.query(filterQuery);
   }
 }

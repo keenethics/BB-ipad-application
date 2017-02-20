@@ -5,8 +5,8 @@ import { toCamelCase } from '../../../both/helpers/to-camel-case';
 import {
   BusinessData,
   BusinessDataUnit,
-  ColumnNames,
-  ColumnNamesCollection
+  ColumnNamesCollection,
+  UnitsTitles
 } from '../../../both/data-management';
 
 export const uploadFile = new ValidatedMethod({
@@ -26,11 +26,10 @@ export const uploadFile = new ValidatedMethod({
     const parsedData = Baby.parse(fileData, { skipEmptyLines: true, delimiter: ';' }).data;
     const keys: string[] = parsedData[0];
 
-    const columnNames = {} as ColumnNames;
+    const columnNames = {};
     keys.forEach((key) => {
       columnNames[toCamelCase(key.toLowerCase())] = key;
     });
-
     ColumnNamesCollection.update({}, columnNames, { upsert: true });
 
     BusinessData.remove({});
@@ -44,6 +43,12 @@ export const uploadFile = new ValidatedMethod({
         BusinessData.insert(doc);
       }
     });
+
+    const titles = (BusinessData as any)
+      .aggregate([{ $group: { _id: null, titles: { $addToSet: '$n2' } } }])[0]
+      .titles as string[];
+    UnitsTitles.remove({});
+    titles.forEach(t => UnitsTitles.insert({ title: t }));
 
     return 'Data uploaded!';
   }

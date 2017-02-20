@@ -15,9 +15,9 @@ import template from './home.page.html';
 import styles from './home.page.scss';
 
 import { Authorization } from '../../authorization/authorization';
-import { DataProvider, DataFilterComponent } from '../../data-management';
+import { DataProvider } from '../../data-management';
 import { SheetsController, OverviewSheetComponent, SheetsPortalComponent } from '../../sheets';
-import { FilterController } from '../../data-management';
+import { FilterController } from '../../filters';
 
 import { SigninPage } from '../signin/signin.page';
 import { SwichersPage } from '../swichers/swichers.page';

@@ -6,6 +6,7 @@ import { CommonAppModule } from '../common/common-app.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataManagementModule } from '../data-management';
 import { SheetsModule } from '../sheets';
+import { FiltersModule } from '../filters';
 import { SettingsModule } from '../settings';
 
 import { HomePage } from './home/home.page';
@@ -51,7 +52,8 @@ const COMPONENTS = [
     CommonAppModule,
     DataManagementModule,
     SheetsModule,
-    SettingsModule
+    SettingsModule,
+    FiltersModule
   ],
   declarations: [...PAGES, ...COMPONENTS],
   exports: [...PAGES, ...COMPONENTS],

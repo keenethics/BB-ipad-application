@@ -6,6 +6,7 @@ import { File } from 'ionic-native';
 import { AuthorizationModule } from './authorization/authorization.module';
 import { DataManagementModule } from './data-management/data-management.module';
 import { SharedModule } from './shared/shared.module';
+import { FiltersModule } from './filters';
 import { AppComponent } from './app.component';
 
 import '../../stylesheets/global.scss';
@@ -18,7 +19,8 @@ import '../../stylesheets/global.scss';
     }),
     AuthorizationModule,
     DataManagementModule,
-    SharedModule
+    SharedModule,
+    FiltersModule
   ],
   declarations: [
     AppComponent,
@@ -34,7 +36,8 @@ import '../../stylesheets/global.scss';
     AppComponent
   ],
   exports: [
-    SharedModule
+    SharedModule,
+    FiltersModule
   ]
 })
 export class AppModule { }
