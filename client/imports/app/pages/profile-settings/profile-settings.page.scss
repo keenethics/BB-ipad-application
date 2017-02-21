@@ -13,9 +13,6 @@ profile-settings {
   ion-content {
 
     div.scroll-content {
-      display: flex;
-      align-items: center;
-      justify-content: center;
       background: #F8F9FA;
 
       h1 {
@@ -28,6 +25,8 @@ profile-settings {
         width: 500px;
         height: 420px;
         padding: 40px 50px !important;
+        margin: auto;
+        margin-top: 10%;
       }
 
       form {
