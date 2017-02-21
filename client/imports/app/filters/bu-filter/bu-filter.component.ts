@@ -42,21 +42,21 @@ export class BuFilterComponnet {
     }
 
     if (item.value) {
-      if (this.queryObject.n2.$in) {
-        if (Array.isArray(item.title)) {
-          item.title.forEach((t) => {
-            if (this.queryObject.n2.$in.indexOf(t) === -1) {
-              this.queryObject.n2.$in.push(t);
-            }
-          });
-        } else {
-          if (this.queryObject.n2.$in.indexOf(item.title) === -1) {
-            this.queryObject.n2.$in.push(item.title);
-          }
-        }
-      } else {
+      // if (this.queryObject.n2.$in) {
+      //   if (Array.isArray(item.title)) {
+      //     item.title.forEach((t) => {
+      //       if (this.queryObject.n2.$in.indexOf(t) === -1) {
+      //         this.queryObject.n2.$in.push(t);
+      //       }
+      //     });
+      //   } else {
+      //     if (this.queryObject.n2.$in.indexOf(item.title) === -1) {
+      //       this.queryObject.n2.$in.push(item.title);
+      //     }
+      //   }
+      // } else {
         this.queryObject.n2 = { $in: Array.isArray(item.title) ? [...item.title] : [item.title] };
-      }
+      // }
     } else {
       if (Array.isArray(item.title)) {
         item.title.forEach((t) => {

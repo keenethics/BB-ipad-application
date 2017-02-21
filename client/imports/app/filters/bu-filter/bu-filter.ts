@@ -13,17 +13,17 @@ export class BuFilter {
     this.subscribe();
     this.titlesMap = new Map([
       ['Total', 'MN'],
-      ['Services Portfolio Sales', 'SPS'],
-      ['MN Products-RN', 'P'],
-      ['CTO', 'CTO'],
-      ['Product Portfolio Sales', 'PPS'],
-      ['Commercial Management', 'CM'],
-      ['MN Products-CC', 'CC'],
-      ['COO', 'COO'],
       ['Global Services', 'GS'],
-      ['Central Team', 'OTHERS'],
-      ['Business and Portfolio Integration Leadership', 'OTHERS'],
-      ['Advanced MN Solutions', 'AMS']
+      ['MN Products-RN', 'P'],
+      ['MN Products-CC', 'CC'],
+      ['Advanced MN Solutions', 'AMS'],
+      ['Product Portfolio Sales', 'PPS'],
+      ['Services Portfolio Sales', 'SPS'],
+      ['COO', 'COO'],
+      ['Commercial Management', 'CM'],
+      ['CTO', 'CTO'],
+      ['Central Team', 'MGMT'],
+      ['Business and Portfolio Integration Leadership', 'MGMT'],
     ]);
   }
 
@@ -32,20 +32,22 @@ export class BuFilter {
       .subscribe('unitsTitles')
       .subscribe(() => {
         const titles = UnitsTitles.find().fetch();
-        const mapedTitles = titles
+        const mapedTitles = Array.from(this.titlesMap)
           .reduce((acc: any[], item: any) => {
-            acc.push({ value: item.title, title: this.titlesMap.get(item.title) });
+            if (!~titles.indexOf(item[0])) {
+              acc.push({ value: item[0], title: item[1] });
+            }
             return acc;
           }, []);
 
-        const mergedOthers = mapedTitles
-          .filter((item: any) => item.title === 'OTHERS')
+        const mergedMGMT = mapedTitles
+          .filter((item: any) => item.title === 'MGMT')
           .reduce((acc: any, item: any) => {
             acc.value.push(item.value);
             return acc;
-          }, { title: 'OTHERS', value: [] });
+          }, { title: 'MGMT', value: [] });
 
-        const result = [...mapedTitles.filter((item: any) => item.title !== 'OTHERS'), mergedOthers];
+        const result = [...mapedTitles.filter((item: any) => item.title !== 'MGMT'), mergedMGMT];
         this.buTitles.next(result);
       });
   }
