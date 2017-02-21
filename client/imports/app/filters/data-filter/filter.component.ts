@@ -189,6 +189,7 @@ export class DataFilterComponent implements OnInit, OnDestroy {
       case 'country': {
         this.query.identifier = 'City';
         this.filterQuery = Object.assign({}, this.query);
+        delete this.filterQuery.city;
         break;
       };
       case 'city': {
