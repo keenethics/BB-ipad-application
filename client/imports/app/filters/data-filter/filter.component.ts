@@ -158,6 +158,7 @@ export class DataFilterComponent implements OnInit, OnDestroy {
     this.options = [];
     this.dataProvider.query(this.filterQuery);
     this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
+    this.searchValue = '';
   }
 
   selectOption(option: string) {
@@ -207,6 +208,7 @@ export class DataFilterComponent implements OnInit, OnDestroy {
     }
     this.dataProvider.query(this.filterQuery);
     this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
+    this.searchValue = '';
   }
 
   removeOption(filterItem: any) {
