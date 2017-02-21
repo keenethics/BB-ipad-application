@@ -332,6 +332,12 @@ ion-header {
     ion-buttons[end] {
       button.bar-button {
         padding-right: 24px;
+        &.export-btn {
+          padding: 7px 0 0;
+          font-size: 13px;
+          font-weight: bold;
+          color: map-get($colors, 'light-blue');
+        }
       }
     }
     ion-title {
@@ -385,3 +391,5 @@ ion-footer {
 @import '../imports/app/pages/user-management/user-management.page.scss';
 @import '../imports/app/pages/create-user/create-user.page.scss';
 @import '../imports/app/pages/edit-user/edit-user.page.scss';
+@import '../imports/app/pages/components/header/header.component.scss';
+@import '../imports/app/filters/bu-filter/bu-filter.component.scss';

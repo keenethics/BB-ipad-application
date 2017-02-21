@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { BusinessData, ColumnNamesCollection } from '../../../both/data-management';
+import { BusinessData, ColumnNamesCollection, UnitsTitles } from '../../../both/data-management';
 
 Meteor.publish('businessData', function (query: Object) {
     if (typeof query !== 'object' ||
@@ -13,3 +13,8 @@ Meteor.publish('businessData', function (query: Object) {
 Meteor.publish('columnNames', function () {
     return ColumnNamesCollection.find({});
 });
+
+Meteor.publish('unitsTitles', function () {
+    return UnitsTitles.find({});
+});
+

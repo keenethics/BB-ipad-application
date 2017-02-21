@@ -15,9 +15,9 @@ import template from './home.page.html';
 import styles from './home.page.scss';
 
 import { Authorization } from '../../authorization/authorization';
-import { DataProvider, DataFilterComponent } from '../../data-management';
+import { DataProvider } from '../../data-management';
 import { SheetsController, OverviewSheetComponent, SheetsPortalComponent } from '../../sheets';
-import { FilterController } from '../../data-management';
+import { FilterController } from '../../filters';
 
 import { SigninPage } from '../signin/signin.page';
 import { SwichersPage } from '../swichers/swichers.page';
@@ -39,7 +39,6 @@ export class HomePage implements AfterViewInit {
   public isMenuOpen = false;
   public mapSettings: any = {};
   public autoZoom = false;
-  public pages = {};
 
   @ViewChild(Content) content: Content;
   @ViewChild(SheetsPortalComponent, { read: ViewContainerRef }) sheetsPortal: ViewContainerRef;
@@ -54,14 +53,6 @@ export class HomePage implements AfterViewInit {
   ) {
     this.mapSettings = JSON.parse(localStorage.getItem('mapSettings')) ||
       { charts: false, scaling: false, labels: false, values: false };
-
-    this.pages = {
-      home: HomePage,
-      swichers: SwichersPage,
-      profileSettings: ProfileSettingsPage,
-      userManagement: UserManagementPage,
-      signin: SigninPage
-    };
   }
 
   ngAfterViewInit() {

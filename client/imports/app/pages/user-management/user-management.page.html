@@ -1,5 +1,5 @@
 <ion-header>
-  <header [pages]="pages"></header>
+  <header></header>
   <ion-toolbar class="subheader">
     <button id="add-user-button" (click)="addUser()" ion-button round>+</button>
     <label for="add-user-button">ADD USER</label>
@@ -23,5 +23,5 @@
   <ion-toolbar class="subfooter">
     <pagination [allUsersCount]="usersCtrl.usersCount$ | async" [limit]="usersLimit" (onSelect)="setPage($event)"></pagination>
   </ion-toolbar>
-  <footer [activeButtonTitle]="'user-management'" [pages]="pages" [preventNav]="['user-management']"></footer>
+  <footer [activeButtonTitle]="'user-management'" [preventNav]="['user-management']"></footer>
 </ion-footer>

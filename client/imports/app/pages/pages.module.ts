@@ -6,6 +6,7 @@ import { CommonAppModule } from '../common/common-app.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataManagementModule } from '../data-management';
 import { SheetsModule } from '../sheets';
+import { FiltersModule } from '../filters';
 import { SettingsModule } from '../settings';
 
 import { HomePage } from './home/home.page';
@@ -17,6 +18,12 @@ import { SwichersPage } from './swichers/swichers.page';
 import { ProfileSettingsPage } from './profile-settings/profile-settings.page';
 import { EditUserPage } from './edit-user/edit-user.page';
 import { UserManagementPage } from './user-management/user-management.page';
+
+import {
+  FooterComponent,
+  HeaderComponent,
+  PaginationComponent
+} from './components';
 
 const PAGES = [
   HomePage,
@@ -30,6 +37,12 @@ const PAGES = [
   EditUserPage
 ];
 
+const COMPONENTS = [
+  FooterComponent,
+  HeaderComponent,
+  PaginationComponent
+];
+
 @NgModule({
   imports: [
     IonicModule,
@@ -39,10 +52,11 @@ const PAGES = [
     CommonAppModule,
     DataManagementModule,
     SheetsModule,
-    SettingsModule
+    SettingsModule,
+    FiltersModule
   ],
-  declarations: PAGES,
-  exports: PAGES,
+  declarations: [...PAGES, ...COMPONENTS],
+  exports: [...PAGES, ...COMPONENTS],
   entryComponents: PAGES
 })
 export class PagesModule {

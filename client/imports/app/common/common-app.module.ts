@@ -11,9 +11,7 @@ import { ExcludePipe } from './pipes/exclude.pipe';
 import { Draggable } from './directives/draggable';
 import { DebounceClick } from './directives/debounceClick';
 
-import { FooterComponent } from './components/footer/footer.component';
-import { HeaderComponent } from './components/header/header.component';
-import { PaginationComponent } from './components/pagination/pagination.component';
+import { PickFileComponent } from './components/pick-file/pick-file.component';
 
 @NgModule({
   imports: [
@@ -28,20 +26,16 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     SearchPipe,
     Draggable,
     ExcludePipe,
-    FooterComponent,
-    HeaderComponent,
     DebounceClick,
-    PaginationComponent
+    PickFileComponent
   ],
   exports: [
     ObjectAsArray,
     SearchPipe,
     Draggable,
     ExcludePipe,
-    FooterComponent,
-    HeaderComponent,
     DebounceClick,
-    PaginationComponent
+    PickFileComponent
   ]
 })
 export class CommonAppModule {

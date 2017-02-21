@@ -23,20 +23,12 @@ import { SigninPage } from '../signin/signin.page';
 export class ProfileSettingsPage implements OnInit {
   public passwordsForm: FormGroup;
   public passwords: any = {};
-  public pages = {};
 
   constructor(
     private formBuilder: FormBuilder,
     private loadingManager: LoadingManager,
     private toastManager: ToastsManager,
     private profileSettings: ProfileSettings) {
-    this.pages = {
-      home: HomePage,
-      swichers: SwichersPage,
-      profileSettings: ProfileSettingsPage,
-      userManagement: UserManagementPage,
-      signin: SigninPage
-    };
   }
 
   ngOnInit() {

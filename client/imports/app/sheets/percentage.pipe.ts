@@ -5,6 +5,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class PercentagePipe implements PipeTransform {
   transform(val: any): string {
-    return parseFloat(val) ? val.toFixed(2) + '%' : 'N/A';
+    return parseFloat(val) ? val.toFixed(1) + '%' : 'N/A';
   }
 }
