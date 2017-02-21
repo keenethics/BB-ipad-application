@@ -35,6 +35,12 @@ export class BuFilterComponnet {
   }
 
   select(item: { title: any, value: boolean }) {
+    if (item.title === 'Total') {
+      this.queryObject.n2 = 'Total';
+      this.filterCtrl.currentFilter$ = this.queryObject;
+      return;
+    }
+
     if (item.value) {
       // if (this.queryObject.n2.$in) {
       //   if (Array.isArray(item.title)) {
@@ -49,7 +55,7 @@ export class BuFilterComponnet {
       //     }
       //   }
       // } else {
-      this.queryObject.n2 = { $in: Array.isArray(item.title) ? [...item.title] : [item.title] };
+        this.queryObject.n2 = { $in: Array.isArray(item.title) ? [...item.title] : [item.title] };
       // }
     } else {
       if (Array.isArray(item.title)) {
@@ -59,6 +65,8 @@ export class BuFilterComponnet {
       } else {
         this.queryObject.n2.$in = this.queryObject.n2.$in.filter((i: string) => i !== item.title);
       }
+
+      if (!this.queryObject.n2.$in.length) this.queryObject.n2 = 'Total';
     }
     this.filterCtrl.currentFilter$ = this.queryObject;
   }
