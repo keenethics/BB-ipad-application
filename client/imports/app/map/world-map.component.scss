@@ -9,19 +9,11 @@ svg {
       vector-effect: non-scaling-stroke;
     }
 
-    path.ios-only {
-      fill: #ABB5C2;
-    }
-
-    path.ios-only:hover {
-      fill: #375CAE;
-    }
-
-    path.not-ios {
+    path {
       fill: url(#map-background);
     }
 
-    path.not-ios:hover {
+    path:hover {
       fill: url(#map-background-selected);
     }
 
