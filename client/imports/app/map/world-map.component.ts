@@ -60,16 +60,6 @@ export class WorldMap implements OnChanges {
   constructor(private elRef: ElementRef, private plt: Platform) {
     this.mapTransform = { x: 0, y: 0, k: 1 };
     this.zoomScaleExtend = [1, 30];
-
-
-    // // FIX THIS !!!
-    // if (this.zoomOnUpdate) {
-    //   setTimeout(() => {
-    //     this.zoomToMarkers();
-    //     setTimeout(() => this.zoomToMarkers(), 1000);
-    //   }, 100);
-    // }
-    // // ^^^^^^^^^^^
   }
 
   ngOnChanges(changes: any) {
@@ -129,9 +119,7 @@ export class WorldMap implements OnChanges {
         .data(topojson.feature(mapTopoJson, mapTopoJson.objects.countries).features)
         .enter()
         .append('path')
-        .attr('class', () => {
-          return this.plt.is('ios') ? 'ios-only' : 'not-ios';
-        })
+        .attr('data-country', (d: any) => d.properties.name)
         .attr('d', this.mapPath);
 
       this.onMapRendered.emit();
