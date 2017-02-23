@@ -64,9 +64,15 @@ export class DataFilterComponent implements OnInit, OnDestroy {
       this.data = data;
       this.options = this.getOptions(this.category);
     });
+
+    this.filterCtrl.onChangeCategory.subscribe((category: string) => {
+      this.category = category;
+      this.changeCategory();
+    });
   }
 
   ngOnDestroy() {
+    this.filterCtrl.onChangeCategory.unsubscribe();
     if (this.dataSubscr) this.dataSubscr.unsubscribe();
   }
 

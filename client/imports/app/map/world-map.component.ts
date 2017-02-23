@@ -479,8 +479,10 @@ export class WorldMap implements OnChanges {
           }
         });
 
-      console.log(`%cWARNING! These countries not matched with the map data.`, 'background-color: yellow');
-      console.log(countries);
+      if (countries.length) {
+        console.log(`%cWARNING! These countries not matched with the map data.`, 'background-color: yellow');
+        console.log(countries);
+      }
     };
 
     if (countries.indexOf('Total') !== -1) {

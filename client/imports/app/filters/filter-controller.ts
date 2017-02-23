@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class FilterController {
   private filterCmp: DataFilterComponent;
   private currentFilter = new BehaviorSubject(this.getFromStorage());
+  public onChangeCategory = new EventEmitter();
 
   constructor() {
 
@@ -42,5 +43,11 @@ export class FilterController {
 
   getFromStorage() {
     return JSON.parse(localStorage.getItem('filters'));
+  }
+
+  emitChangeCategory(category: string) {
+    if (category === 'country' || category === 'city') {
+      this.onChangeCategory.emit(category);
+    }
   }
 }
