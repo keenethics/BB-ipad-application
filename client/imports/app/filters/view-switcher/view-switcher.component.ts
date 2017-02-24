@@ -25,6 +25,11 @@ export class ViewSwitcherComponent {
 
   constructor(private filterCtrl: FilterController) {
     this.category = filterCtrl.getFromStorage().category;
+    this.filterCtrl.onChangeCategory.subscribe((category: string) => {
+      if (this.category !== category) {
+        this.category = category;
+      }
+    });
   }
 
   select(event: any) {

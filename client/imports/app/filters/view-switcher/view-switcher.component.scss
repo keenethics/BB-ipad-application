@@ -13,6 +13,10 @@ view-switcher {
     background: #fff;
     border: none;
 
+    &:hover:not(.segment-activated) {
+      background-color: #fff;
+    }
+
     &:last-of-type {
       border-top-right-radius: 26px;
       border-bottom-right-radius: 26px;

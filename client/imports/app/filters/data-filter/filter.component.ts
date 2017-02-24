@@ -31,6 +31,7 @@ export class DataFilterComponent implements OnInit, OnDestroy {
   private query: any;
   private filterQuery: any;
   private dataSubscr: Subscription;
+  private selectedCountry: string;
 
   public options: string[];
   public searchValue: string;
@@ -66,19 +67,37 @@ export class DataFilterComponent implements OnInit, OnDestroy {
     });
 
     this.filterCtrl.onChangeCategory.subscribe((category: string) => {
-      this.category = category;
-      this.changeCategory();
+      if (this.category !== category) {
+        this.category = category;
+        this.changeCategory();
+      }
+    });
+
+    this.filterCtrl.onSelectCountry.subscribe((name: string) => {
+      if (this.query.country) {
+        const countries: string[] = this.query.country.$in;
+        if (countries.indexOf(name) === -1) countries.push(name);
+      } else {
+        this.query.country = { $in: [name] };
+      }
+      this.selectedCountry = name;
+      this.filterCtrl.currentFilter$ = this.query;
     });
   }
 
   ngOnDestroy() {
     this.filterCtrl.onChangeCategory.unsubscribe();
+    this.filterCtrl.onSelectCountry.unsubscribe();
     if (this.dataSubscr) this.dataSubscr.unsubscribe();
   }
 
   ngOnChanges(changes: any) {
     if (changes.data.currentValue.length > 0 && this.options.length === 0) {
       this.options = this.getOptions(this.category);
+    }
+
+    if (changes.data) {
+      this.selectCountry();
     }
   }
 
@@ -161,10 +180,28 @@ export class DataFilterComponent implements OnInit, OnDestroy {
       }
     }
     this.filterCtrl.currentFilter$ = this.query;
+    this.filterCtrl.onChangeCategory.emit(this.category);
     this.options = [];
     this.dataProvider.query(this.filterQuery);
     this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
     this.searchValue = '';
+  }
+
+  selectCountry() {
+    if (this.selectedCountry) {
+      new DataProvider().getDataImmediately({ country: this.selectedCountry }, { limit: 1 })
+        .then((data: any[]) => {
+          const unit = data.filter((item: any) => item.country === this.selectedCountry)[0];
+          if (!this.filters.filter((item: any) => item.label === this.selectedCountry).length) {
+            this.filters.push({
+              label: this.selectedCountry,
+              category: 'country',
+              unit
+            });
+          }
+          this.selectedCountry = '';
+        });
+    }
   }
 
   selectOption(option: string) {

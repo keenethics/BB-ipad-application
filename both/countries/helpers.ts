@@ -1,5 +1,5 @@
 import { BusinessDataUnit, BusinessData } from '../data-management';
-import { MarketCountries } from '../countries';
+import { MarketCountries, AvailableCountries } from '../countries';
 
 export const getNotMatchedCountries = (businessData: BusinessDataUnit[], countries: { properties: string }[]) => {
   const countriesNames = businessData.reduce((acc: string[], item: BusinessDataUnit) => {
@@ -24,6 +24,17 @@ export const getNotMatchedCountries = (businessData: BusinessDataUnit[], countri
   });
 
   return countriesNames;
+};
+
+export const setAvailableCountries = () => {
+  const countries = (BusinessData as any).aggregate([
+    { $match: { country: { $ne: 'Total' } } },
+    { $group : { _id : '$country' } }
+  ]) as any[];
+
+  countries.forEach((c) => {
+    AvailableCountries.insert({ name: c._id });
+  });
 };
 
 export const setMarketCountries = () => {

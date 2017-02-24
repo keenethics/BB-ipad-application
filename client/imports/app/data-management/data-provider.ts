@@ -52,13 +52,13 @@ export class DataProvider {
       });
   }
 
-  getDataImmediately(queryObject: any = {}) {
+  getDataImmediately(queryObject: any = {}, projection?: any) {
     return new Promise((resolve) => {
       if (this._subscription) {
         this._subscription.unsubscribe();
       }
 
-      this._subscription = MeteorObservable.subscribe('businessData', queryObject)
+      this._subscription = MeteorObservable.subscribe('businessData', queryObject, projection)
         .subscribe(() => {
           resolve(BusinessData.find(queryObject).fetch());
         });
