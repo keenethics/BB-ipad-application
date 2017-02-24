@@ -133,10 +133,8 @@ export class WorldMap implements OnChanges {
         .append('path')
         .attr('data-country', (d: any) => d.properties.name_long)
         .attr('d', this.mapPath)
-        .on('mousedown', (d: any) => {
-          let isClicked = true;
-          setTimeout(() => { isClicked = false; }, 600);
-
+        .style('pointer-events', 'visible')
+        .on('click', (d: any) => {
           const names = [
             d.properties['name'],
             d.properties['name_long'],
@@ -149,8 +147,26 @@ export class WorldMap implements OnChanges {
             return acc;
           }, []);
 
-          if (isClicked) this.onSelectCountry.emit(names);
+          this.onSelectCountry.emit(names);
         });
+        // .on('mousedown', (d: any) => {
+        //   let isClicked = true;
+        //   setTimeout(() => { isClicked = false; }, 600);
+
+        //   const names = [
+        //     d.properties['name'],
+        //     d.properties['name_long'],
+        //     d.properties['formal_en'],
+        //     d.properties['admin']
+        //   ].reduce((acc: string[], n: string) => {
+        //     if (acc.indexOf(n) === -1) {
+        //       acc.push(n);
+        //     }
+        //     return acc;
+        //   }, []);
+
+        //   if (isClicked) this.onSelectCountry.emit(names);
+        // });
 
       this.onMapRendered.emit();
     }
