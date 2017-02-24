@@ -200,6 +200,7 @@ export class DataFilterComponent implements OnInit, OnDestroy {
             });
           }
           this.selectedCountry = '';
+          this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
         });
     }
   }
