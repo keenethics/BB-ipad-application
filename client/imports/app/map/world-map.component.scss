@@ -13,7 +13,7 @@ svg {
       fill: url(#map-background);
     }
 
-    path:hover {
+    path.selected {
       fill: url(#map-background-selected);
     }
 

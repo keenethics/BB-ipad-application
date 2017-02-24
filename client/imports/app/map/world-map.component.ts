@@ -14,8 +14,8 @@ import {
   NgZone,
   HostListener
 } from '@angular/core';
-import { BusinessDataUnit } from '../../../../both/data-management/business-data.collection';
 import { Platform } from 'ionic-angular';
+import { Subscription } from 'rxjs';
 
 import * as d3 from 'd3';
 import * as d3proj from 'd3-geo-projection';
@@ -26,10 +26,15 @@ import * as mapTopoJson from './json/world.json';
 import template from './world-map.component.html';
 import styles from './world-map.component.scss';
 
+import { BusinessDataUnit } from '../../../../both/data-management/business-data.collection';
+import { DataProvider } from '../data-management';
+import { MarketCountriesProvider } from './countries/market-countries';
+
 @Component({
   selector: 'world-map',
   styles: [styles],
   encapsulation: ViewEncapsulation.None,
+  providers: [DataProvider],
   template
 })
 export class WorldMap implements OnChanges {
@@ -56,20 +61,16 @@ export class WorldMap implements OnChanges {
   @Output('data-click') onDataClick = new EventEmitter();
   @Output('markers-rendered') onMarkersRendered = new EventEmitter();
   @Output('map-rendered') onMapRendered = new EventEmitter();
+  @Output('select-country') onSelectCountry = new EventEmitter();
 
-  constructor(private elRef: ElementRef, private plt: Platform) {
+  constructor(
+    private elRef: ElementRef,
+    private plt: Platform,
+    private dataProvider: DataProvider,
+    private marketCountries: MarketCountriesProvider
+  ) {
     this.mapTransform = { x: 0, y: 0, k: 1 };
     this.zoomScaleExtend = [1, 30];
-
-
-    // // FIX THIS !!!
-    // if (this.zoomOnUpdate) {
-    //   setTimeout(() => {
-    //     this.zoomToMarkers();
-    //     setTimeout(() => this.zoomToMarkers(), 1000);
-    //   }, 100);
-    // }
-    // // ^^^^^^^^^^^
   }
 
   ngOnChanges(changes: any) {
@@ -89,6 +90,7 @@ export class WorldMap implements OnChanges {
 
     if (changes.dataToDraw) {
       this.renderMarkers();
+      this.selectCountries(this.dataToDraw);
 
       if (this.zoomOnUpdate) {
         this.zoomToMarkers();
@@ -129,10 +131,26 @@ export class WorldMap implements OnChanges {
         .data(topojson.feature(mapTopoJson, mapTopoJson.objects.countries).features)
         .enter()
         .append('path')
-        .attr('class', () => {
-          return this.plt.is('ios') ? 'ios-only' : 'not-ios';
-        })
-        .attr('d', this.mapPath);
+        .attr('data-country', (d: any) => d.properties.name_long)
+        .attr('d', this.mapPath)
+        .on('mousedown', (d: any) => {
+          let isClicked = true;
+          setTimeout(() => { isClicked = false; }, 600);
+
+          const names = [
+            d.properties['name'],
+            d.properties['name_long'],
+            d.properties['formal_en'],
+            d.properties['admin']
+          ].reduce((acc: string[], n: string) => {
+            if (acc.indexOf(n) === -1) {
+              acc.push(n);
+            }
+            return acc;
+          }, []);
+
+          if (isClicked) this.onSelectCountry.emit(names);
+        });
 
       this.onMapRendered.emit();
     }
@@ -447,6 +465,53 @@ export class WorldMap implements OnChanges {
         });
 
       this.renderMarkers(k);
+    }
+  }
+
+  selectCountries(data: any) {
+    if (!this.svg) return;
+    const countries = data.reduce((acc: string[], item: BusinessDataUnit) => {
+      if (acc.indexOf(item.country) === -1) {
+        acc.push(item.country);
+      }
+      return acc;
+    }, []) as string[];
+
+    const selectCountries = (countries: string[]) => {
+      this.svg.select('g.map')
+        .selectAll('path')
+        .attr('class', (d: any) => {
+          const names = [
+            countries.indexOf(d.properties['name']),
+            countries.indexOf(d.properties['name_long']),
+            countries.indexOf(d.properties['formal_en']),
+            countries.indexOf(d.properties['admin'])
+          ];
+
+          if (names[0] !== -1 || names[1] !== -1 || names[2] !== -1 || names[3] !== -1) {
+            const index = names.filter(item => item !== -1)[0];
+            countries.splice(index, 1);
+            return 'selected';
+          } else {
+            return '';
+          }
+        });
+
+      if (countries.length) {
+        console.log(`%cWARNING! These countries not matched with the map data.`, 'background-color: yellow');
+        console.log(countries);
+      }
+    };
+
+    if (countries.indexOf('Total') !== -1) {
+      const marketsNames = data.map((d: any) => d.market);
+      this.marketCountries.getMarketsCoutries(marketsNames)
+        .then((markets: any[]) => {
+          const countries = markets.reduce((acc: any[], item: any) => [...acc, ...item.countries], []);
+          selectCountries(countries);
+        });
+    } else {
+      selectCountries(countries);
     }
   }
 }

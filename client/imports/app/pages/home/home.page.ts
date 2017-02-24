@@ -81,4 +81,8 @@ export class HomePage implements AfterViewInit {
       this.filterCtrl.resetFilter(); return;
     }
   }
+
+  selectCountry(countryNames: any) {
+    this.filterCtrl.selectCountry(countryNames);
+  }
 }
