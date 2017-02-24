@@ -15,6 +15,10 @@ import { DataUploader } from '../../../data-management';
 import { LoadingManager, ToastsManager } from '../../../common';
 
 import { SigninPage } from '../../index';
+import { HomePage } from '../../home/home.page';
+import { SwichersPage } from '../../swichers/swichers.page';
+
+import { FilterController } from '../../../filters';
 
 @Component({
   selector: 'header',
@@ -32,7 +36,8 @@ export class HeaderComponent {
     private rolesCtrl: RolesController,
     private dataUploader: DataUploader,
     private loadingCtrl: LoadingManager,
-    private toastCtrl: ToastsManager
+    private toastCtrl: ToastsManager,
+    private filterCtrl: FilterController
   ) {
   }
 
@@ -66,5 +71,20 @@ export class HeaderComponent {
       .catch((err) => {
         this.toastCtrl.okToast(err.reason || err.message || err);
       });
+  }
+
+  openPage(name: string) {
+    switch (name) {
+      case 'home': {
+        console.log(this.navCtrl.getActive());
+        if (this.navCtrl.getActive().component === HomePage) {
+          // this.filterCtrl.resetFilter(); break;
+          break;
+        } else {
+          this.navCtrl.setRoot(HomePage); break;
+        }
+      }
+      case 'switchers': this.navCtrl.setRoot(SwichersPage); break;
+    }
   }
 }

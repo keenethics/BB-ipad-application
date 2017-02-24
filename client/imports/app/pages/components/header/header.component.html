@@ -1,8 +1,14 @@
 <ion-toolbar color="primary">
-  <ion-buttons *ngIf="isButtonEnabled">
-    <button (click)="emitButtonClick('filter-menu')" ion-button icon-only>
-        <ion-icon class="icon-bb-side-menu" name="icon-bb-side-menu"></ion-icon>
-      </button>
+  <ion-buttons>
+    <button *ngIf="isButtonEnabled" (click)="emitButtonClick('filter-menu')" ion-button icon-only>
+      <ion-icon class="icon-bb-side-menu" name="icon-bb-side-menu"></ion-icon>
+    </button>
+    <button (click)="openPage('home')" ion-button icon-only>
+      <ion-icon class="icon-bb-map" name="icon-bb-map"></ion-icon>
+    </button>
+    <button (click)="openPage('switchers')" ion-button icon-only>
+      <ion-icon class="icon-bb-filter" name="icon-bb-filter"></ion-icon>
+    </button>
   </ion-buttons>
   <ion-buttons *ngIf="isLoggedIn()" end>
     <button #exportButton *ngIf="canUserUploadData()" class="export-btn" ion-button clear>
