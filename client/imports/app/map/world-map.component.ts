@@ -224,7 +224,7 @@ export class WorldMap implements OnChanges {
 
       groupEnter.append('rect')
         .attr('class', 'bar')
-        .attr('width', 10)
+        .attr('width', 10 / scale)
         .attr('height', (d: any) => barScale(parseInt(d.value) | 0) / scale)
         .attr('x', -5 / scale);
 
