@@ -216,7 +216,11 @@ export class WorldMap implements OnChanges {
         .attr('class', 'marker')
         .attr('style', 'cursor: pointer')
         .attr('transform', (d: any) => {
-          return `translate(${this.projection([parseInt(d.longitude, 10) || 0, parseInt(d.latitude, 10) || 0])})`;
+          const position = this.projection([parseInt(d.longitude, 10) || 0, parseInt(d.latitude, 10) || 0]);
+          return `translate(${[
+            position[0],
+            position[1] - barScale(parseInt(d.value) | 0) / scale
+          ]})`;
         })
         .on('mousedown', function (d: any) {
           onDataClick.emit({ data: d, element: this });
@@ -318,7 +322,11 @@ export class WorldMap implements OnChanges {
         .attr('class', 'marker')
         .attr('style', 'cursor: pointer')
         .attr('transform', (d: any) => {
-          return `translate(${this.projection([parseInt(d.longitude, 10) || 0, parseInt(d.latitude, 10) || 0])})`;
+          const position = this.projection([parseInt(d.longitude, 10) || 0, parseInt(d.latitude, 10) || 0]);
+          return `translate(${[
+            position[0],
+            position[1] - radiusScale(parseInt(d.value) | 0) / scale
+          ]})`;
         })
         .on('mousedown', function (d: any) {
           onDataClick.emit({ data: d, element: this });
