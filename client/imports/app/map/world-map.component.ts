@@ -238,7 +238,7 @@ export class WorldMap implements OnChanges {
           .text((d: any) => this.getLabelText(d))
           .attr('class', 'label-text')
           .attr('stroke', 'none')
-          .attr('font-size', 10)
+          .attr('font-size', 10 / scale)
           .attr('transform', function (d: any) {
             const { width, height } = this.getBoundingClientRect();
             d.textSize = { width, height };
@@ -336,7 +336,7 @@ export class WorldMap implements OnChanges {
           .text((d: any) => this.getLabelText(d))
           .attr('class', 'label-text')
           .attr('stroke', 'none')
-          .attr('font-size', 10)
+          .attr('font-size', 10 / scale)
           .attr('transform', function (d: any) {
             const { width, height } = this.getBoundingClientRect();
             d.textSize = { width, height };
