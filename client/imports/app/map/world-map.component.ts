@@ -244,7 +244,7 @@ export class WorldMap implements OnChanges {
             d.textSize = { width, height };
             return `translate(${[
               -(width / 2) / scale,
-              -height / scale
+              (barScale(parseInt(d.value) | 0) + 15) / scale
             ]})`;
           });
 
@@ -255,7 +255,7 @@ export class WorldMap implements OnChanges {
             const { width, height } = this.getBoundingClientRect();
             return `translate(${[
               -(width / 2) / scale,
-              -(height + 4) / scale
+              (barScale(parseInt(d.value) | 0) + 2) / scale
             ]})`;
           });
       }
@@ -283,7 +283,7 @@ export class WorldMap implements OnChanges {
             d.textSize = { width, height };
             return `translate(${[
               -(width / 2) / scale,
-              -height / scale
+              (barScale(parseInt(d.value) | 0) + 15) / scale
             ]})`;
           });
 
@@ -295,7 +295,7 @@ export class WorldMap implements OnChanges {
             const { width, height } = this.getBoundingClientRect();
             return `translate(${[
               -(width / 2) / scale,
-              -(height + 4) / scale
+              (barScale(parseInt(d.value) | 0) + 2) / scale
             ]})`;
           });
       }
@@ -342,7 +342,7 @@ export class WorldMap implements OnChanges {
             d.textSize = { width, height };
             return `translate(${[
               (-width / 2) / scale,
-              -radiusScale(parseInt(d.value) | 0) / scale - height / scale
+              (radiusScale(parseInt(d.value) | 0) + 17) / scale
             ]})`;
           });
 
@@ -354,7 +354,7 @@ export class WorldMap implements OnChanges {
             const { width, height } = this.getBoundingClientRect();
             return `translate(${[
               -width / 2 / scale,
-              -(radiusScale(parseInt(d.value) | 0) + height + 4) / scale
+              (radiusScale(parseInt(d.value) | 0) + 4) / scale
             ]})`;
           });
       }
@@ -380,7 +380,7 @@ export class WorldMap implements OnChanges {
             d.textSize = { width, height };
             return `translate(${[
               (-width / 2) / scale,
-              -radiusScale(parseInt(d.value) | 0) / scale - height / scale
+              (radiusScale(parseInt(d.value) | 0) + 17) / scale
             ]})`;
           });
 
@@ -392,7 +392,7 @@ export class WorldMap implements OnChanges {
             const { width, height } = this.getBoundingClientRect();
             return `translate(${[
               -width / 2 / scale,
-              -(radiusScale(parseInt(d.value) | 0) + height + 4) / scale
+              (radiusScale(parseInt(d.value) | 0) + 4) / scale
             ]})`;
           });
       }
