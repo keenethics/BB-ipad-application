@@ -197,7 +197,7 @@ export class WorldMap implements OnChanges {
       } else {
         this.renderCircles(ranges, scale, placeholders);
       }
-
+      this.selectCountries(this.dataToDraw);
       this.onMarkersRendered.emit();
     }
   }
