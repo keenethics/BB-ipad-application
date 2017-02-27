@@ -56,6 +56,7 @@ export class WorldMap implements OnChanges {
   @Input('chart-type') chartType: string; // circle || bar
   @Input('show-labels') labels: boolean;
   @Input('show-values') values: boolean;
+  @Input('is-log-scale') isLogScale: boolean;
   @Input('zoom-scale-extend') zoomScaleExtend: [number, number];
 
   @Output('data-click') onDataClick = new EventEmitter();
@@ -204,7 +205,8 @@ export class WorldMap implements OnChanges {
 
   private renderBars(ranges: any[], scale: number, placeholders: any) {
     try {
-      const barScale = d3.scaleLinear()
+      const scaleFunc = this.isLogScale ? d3.scaleLog : d3.scaleLinear;
+      const barScale = scaleFunc()
         .domain(d3.extent(ranges))
         .range([5, this.svgHeight() / 20])
         .clamp(true);
@@ -310,7 +312,8 @@ export class WorldMap implements OnChanges {
 
   private renderCircles(ranges: any[], scale: number, placeholders: any) {
     try {
-      const radiusScale = d3.scaleLinear()
+      const scaleFunc = this.isLogScale ? d3.scaleLog : d3.scaleLinear;
+      const radiusScale = scaleFunc()
         .domain([d3.min(ranges), d3.max(ranges)])
         .range([5, 25])
         .clamp(true);
