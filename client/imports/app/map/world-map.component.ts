@@ -111,6 +111,7 @@ export class WorldMap implements OnChanges {
 
       this.zoom = d3.zoom()
         .scaleExtent(this.zoomScaleExtend)
+        .translateExtent([[0, 0], [this.svgWidth(), this.svgHeight()]])
         .on('zoom', () => {
           const { x, y, k } = d3.event.transform;
           this.mapTransform = d3.event.transform;
@@ -150,24 +151,24 @@ export class WorldMap implements OnChanges {
 
           this.onSelectCountry.emit(names);
         });
-        // .on('mousedown', (d: any) => {
-        //   let isClicked = true;
-        //   setTimeout(() => { isClicked = false; }, 600);
+      // .on('mousedown', (d: any) => {
+      //   let isClicked = true;
+      //   setTimeout(() => { isClicked = false; }, 600);
 
-        //   const names = [
-        //     d.properties['name'],
-        //     d.properties['name_long'],
-        //     d.properties['formal_en'],
-        //     d.properties['admin']
-        //   ].reduce((acc: string[], n: string) => {
-        //     if (acc.indexOf(n) === -1) {
-        //       acc.push(n);
-        //     }
-        //     return acc;
-        //   }, []);
+      //   const names = [
+      //     d.properties['name'],
+      //     d.properties['name_long'],
+      //     d.properties['formal_en'],
+      //     d.properties['admin']
+      //   ].reduce((acc: string[], n: string) => {
+      //     if (acc.indexOf(n) === -1) {
+      //       acc.push(n);
+      //     }
+      //     return acc;
+      //   }, []);
 
-        //   if (isClicked) this.onSelectCountry.emit(names);
-        // });
+      //   if (isClicked) this.onSelectCountry.emit(names);
+      // });
 
       this.onMapRendered.emit();
     }
