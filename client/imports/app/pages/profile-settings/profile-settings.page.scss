@@ -57,6 +57,12 @@ profile-settings {
             float: left;
           }
         }
+
+        div.error-messages {
+          p {
+            color: #8b0000;
+          }
+        }
       }
     }
   }
