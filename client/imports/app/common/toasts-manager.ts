@@ -15,7 +15,8 @@ export class ToastsManager {
     this.okToastInst = this.toastCtrl.create({
       message,
       showCloseButton: true,
-      closeButtonText: 'OK'
+      closeButtonText: 'OK',
+      duration: 30000,
     });
 
     this.okToastInst.present();
