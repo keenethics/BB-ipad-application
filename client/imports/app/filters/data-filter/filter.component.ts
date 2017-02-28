@@ -191,7 +191,7 @@ export class DataFilterComponent implements OnInit, OnDestroy {
 
   selectCountry() {
     if (this.selectedCountry) {
-      new DataProvider().getDataImmediately({ country: this.selectedCountry }, { limit: 1 })
+      new DataProvider().getDataImmediately({ country: this.selectedCountry, identifier: 'Country' }, { limit: 1 })
         .then((data: any[]) => {
           const unit = data.filter((item: any) => item.country === this.selectedCountry)[0];
           if (!this.filters.filter((item: any) => item.label === this.selectedCountry).length) {
