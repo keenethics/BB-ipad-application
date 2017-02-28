@@ -11,6 +11,7 @@ import { SigninPage } from './pages/signin/signin.page';
 import { CreateUserPage } from './pages/create-user/create-user.page';
 import { UploadDataPage } from './pages/upload-data/upload-data.page';
 import { ProfileSettingsPage } from './pages/profile-settings/profile-settings.page';
+import { UserManagementPage } from './pages/user-management/user-management.page';
 
 import template from './app.component.html';
 import styles from './app.component.scss';
@@ -44,7 +45,8 @@ export class AppComponent {
       { title: 'Home page', component: HomePage },
       { title: 'Create user', component: CreateUserPage },
       { title: 'Upload file', component: UploadDataPage },
-      { title: 'Profile setting', component: ProfileSettingsPage }
+      { title: 'Profile setting', component: ProfileSettingsPage },
+      { title: 'Uasers management', component: UserManagementPage }
     ];
   }
 
