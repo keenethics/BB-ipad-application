@@ -232,7 +232,7 @@ export class WorldMap implements OnChanges {
             position[1] - barScale(parseInt(d.value) | 0) / scale
           ]})`;
         })
-        .on('mousedown', function (d: any) {
+        .on('click', function (d: any) {
           mapContext.selectedMarkerElement = this;
           mapContext.addSelectedMarkerClass(d);
           mapContext.onDataClick.emit({ data: d, element: this });
@@ -340,7 +340,7 @@ export class WorldMap implements OnChanges {
             position[1] - radiusScale(parseInt(d.value) | 0) / scale
           ]})`;
         })
-        .on('mousedown', function (d: any) {
+        .on('click', function (d: any) {
           mapContext.selectedMarkerElement = this;
           mapContext.addSelectedMarkerClass(d);
           mapContext.onDataClick.emit({ data: d, element: this });
