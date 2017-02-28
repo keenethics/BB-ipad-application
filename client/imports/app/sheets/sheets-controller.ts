@@ -49,11 +49,9 @@ export class SheetsController {
         if (type === OverviewSheetComponent) {
           this.create(OverviewSheetComponent, vCref, eventData);
           component.destroy();
-          this.onSheetDestroy.emit();
         } else if (type === FactSheetComponent) {
           this.create(FactSheetComponent, vCref, eventData);
           component.destroy();
-          this.onSheetDestroy.emit();
         }
       });
 
