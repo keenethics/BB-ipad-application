@@ -15,6 +15,9 @@
       EXPORT
       <pick-file (onFileSelected)="uploadData($event)" [fileType]="'text/csv'" [emitterElement]="exportButton"></pick-file>
     </button>
+    <button *ngIf="isAdmin()" (click)="openPage('user-management')" ion-button icon-only>
+      <ion-icon class="icon-bb-user" name="icon-bb-user"></ion-icon>
+    </button>
     <button (click)="logout()" ion-button icon-only>
       <ion-icon class="icon-bb-logout" name="icon-bb-logout"></ion-icon>
     </button>

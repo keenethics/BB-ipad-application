@@ -106,6 +106,10 @@ export const removeUser = new ValidatedMethod({
       throw new Meteor.Error('permission denied', 'You are not an Administrator.');
     }
 
+    if (this.userId === userId) {
+      throw new Meteor.Error('permission denied', 'You can\'t delete this user.');
+    }
+
     const user = Meteor.users.findOne(userId);
     if (!user) throw new Meteor.Error('user doesn\'t exist', 'User doesn\'t exist');
 

@@ -17,6 +17,7 @@ import { LoadingManager, ToastsManager } from '../../../common';
 import { SigninPage } from '../../index';
 import { HomePage } from '../../home/home.page';
 import { SwichersPage } from '../../swichers/swichers.page';
+import { UserManagementPage } from '../../user-management/user-management.page';
 
 import { FilterController } from '../../../filters';
 
@@ -61,6 +62,12 @@ export class HeaderComponent {
     return this.rolesCtrl.userIsInRole(userId, roles);
   }
 
+  isAdmin() {
+    const userId = this.auth.user() && this.auth.user()._id;
+    const roles = ['Administrator'];
+    return this.rolesCtrl.userIsInRole(userId, roles);
+  }
+
   uploadData(file: File) {
     this.loadingCtrl.loading('Uploading data...');
     this.dataUploader.uploadFile(file)
@@ -85,6 +92,7 @@ export class HeaderComponent {
         }
       }
       case 'switchers': this.navCtrl.setRoot(SwichersPage); break;
+      case 'user-management': this.navCtrl.setRoot(UserManagementPage); break;
     }
   }
 }
