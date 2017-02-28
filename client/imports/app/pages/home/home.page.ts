@@ -7,6 +7,7 @@ import {
   OnInit,
   OnDestroy,
   ViewContainerRef,
+  EventEmitter
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { NavController, MenuController, Content } from 'ionic-angular';
@@ -39,6 +40,7 @@ export class HomePage implements AfterViewInit {
   public isMenuOpen = false;
   public mapSettings: any = {};
   public autoZoom = false;
+  public onDeselectMarkerEmiter = new EventEmitter();
 
   @ViewChild(Content) content: Content;
   @ViewChild(SheetsPortalComponent, { read: ViewContainerRef }) sheetsPortal: ViewContainerRef;
@@ -59,6 +61,9 @@ export class HomePage implements AfterViewInit {
     const { height, width } = this.content;
     this.mapWidth = width.bind(this.content);
     this.mapHeight = height.bind(this.content);
+    this.sheetsCtrl.onSheetDestroy.subscribe(() => {
+      this.onDeselectMarkerEmiter.emit();
+    });
   }
 
   ionViewCanEnter() {

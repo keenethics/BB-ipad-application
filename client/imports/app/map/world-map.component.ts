@@ -45,6 +45,7 @@ export class WorldMap implements OnChanges {
   private isMapReady: boolean = false;
   private isZoomingNow: boolean = false;
   private zoom: d3.ZoomBehavior<any, any>;
+  private selectedMarkerElement: SVGCircleElement | SVGRectElement;
 
   width: number;
   height: number;
@@ -58,6 +59,13 @@ export class WorldMap implements OnChanges {
   @Input('show-values') values: boolean;
   @Input('is-log-scale') isLogScale: boolean;
   @Input('zoom-scale-extend') zoomScaleExtend: [number, number];
+
+  @Input('deselect-marker-emiter')
+  set deselectMarkerEmiter(emiter: EventEmitter<any>) {
+    emiter.subscribe(() => {
+      this.removeSelectedMarkerClass();
+    });
+  }
 
   @Output('data-click') onDataClick = new EventEmitter();
   @Output('markers-rendered') onMarkersRendered = new EventEmitter();
@@ -211,8 +219,7 @@ export class WorldMap implements OnChanges {
         .domain(d3.extent(ranges))
         .range([5, this.svgHeight() / 20])
         .clamp(true);
-
-      const onDataClick = this.onDataClick;
+      const mapContext = this;
 
       const groupEnter = placeholders.enter()
         .append('g')
@@ -226,7 +233,9 @@ export class WorldMap implements OnChanges {
           ]})`;
         })
         .on('mousedown', function (d: any) {
-          onDataClick.emit({ data: d, element: this });
+          mapContext.selectedMarkerElement = this;
+          mapContext.addSelectedMarkerClass(d);
+          mapContext.onDataClick.emit({ data: d, element: this });
         });
 
       groupEnter.append('rect')
@@ -318,8 +327,7 @@ export class WorldMap implements OnChanges {
         .domain([d3.min(ranges), d3.max(ranges)])
         .range([5, 25])
         .clamp(true);
-
-      const onDataClick = this.onDataClick;
+      const mapContext = this;
 
       const groupEnter = placeholders.enter()
         .append('g')
@@ -333,7 +341,9 @@ export class WorldMap implements OnChanges {
           ]})`;
         })
         .on('mousedown', function (d: any) {
-          onDataClick.emit({ data: d, element: this });
+          mapContext.selectedMarkerElement = this;
+          mapContext.addSelectedMarkerClass(d);
+          mapContext.onDataClick.emit({ data: d, element: this });
         });
 
       groupEnter.append('circle')
@@ -541,5 +551,21 @@ export class WorldMap implements OnChanges {
     } else {
       selectCountries(countries);
     }
+  }
+
+  private addSelectedMarkerClass(markerData: BusinessDataUnit) {
+    let className: string;
+    switch (markerData.identifier) {
+      case 'City': className = 'selected-city'; break;
+      case 'Country': className = 'selected-country'; break;
+      case 'Market': className = 'selected-market'; break;
+      default: className = '';
+    }
+
+    this.selectedMarkerElement.classList.add(className);
+  }
+
+  private removeSelectedMarkerClass() {
+    this.selectedMarkerElement.classList.remove('selected-city', 'selected-country', 'selected-market');
   }
 }

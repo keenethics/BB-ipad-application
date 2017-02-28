@@ -3,7 +3,8 @@ import {
   ViewContainerRef,
   ReflectiveInjector,
   ComponentFactoryResolver,
-  ComponentRef
+  ComponentRef,
+  EventEmitter
 } from '@angular/core';
 
 import { SheetsPortalComponent } from './sheets-portal.component';
@@ -22,6 +23,8 @@ export class SheetsController {
   private overviewSheets: ComponentRef<OverviewSheetComponent>[] = [];
   private factSheets: ComponentRef<FactSheetComponent>[] = [];
 
+  public onSheetDestroy = new EventEmitter();
+
   public create(sheetType: any, vCref: ViewContainerRef, eventData: { data: BusinessDataUnit, element: HTMLElement }): ComponentRef<FactSheetComponent | OverviewSheetComponent> {
     if (
       (sheetType === FactSheetComponent) ||
@@ -39,15 +42,18 @@ export class SheetsController {
 
       component.instance.onCloseEmitter.subscribe(() => {
         component.destroy();
+        this.onSheetDestroy.emit();
       });
 
       component.instance.onClickEmitter.subscribe((type: any) => {
         if (type === OverviewSheetComponent) {
           this.create(OverviewSheetComponent, vCref, eventData);
           component.destroy();
+          this.onSheetDestroy.emit();
         } else if (type === FactSheetComponent) {
           this.create(FactSheetComponent, vCref, eventData);
           component.destroy();
+          this.onSheetDestroy.emit();
         }
       });
 

@@ -31,6 +31,18 @@ svg {
         color: rgb(18, 65, 145);
         font-weight: bold;
       }
+
+      &.selected-city {
+        fill: #429437;
+      }
+
+      &.selected-country {
+        fill: #9e9e9e;
+      }
+
+      &.selected-market {
+        fill: #5d5d5d;
+      }
     }
   }
 }
