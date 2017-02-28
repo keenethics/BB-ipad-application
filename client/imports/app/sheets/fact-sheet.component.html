@@ -21,13 +21,9 @@
         </tr>
         <tr>
           <th></th>
-          <th rowspan="2" *ngFor="let col of columnsDescs" class="t-right">
+          <th *ngFor="let col of columnsDescs" class="t-right">
             {{col.title}}
           </th>
-        </tr>
-        <tr>
-          <th *ngFor="let col of columnsDescs"></th>
-        </tr>
       </thead>
       <tbody>
         <tr *ngFor="let row of rowsDescs">
