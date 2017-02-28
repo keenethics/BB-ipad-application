@@ -62,7 +62,7 @@ export class DataFilterComponent implements OnInit, OnDestroy {
     this.changeCategory();
 
     this.dataSubscr = this.dataProvider.data$.subscribe((data) => {
-      this.data = data;
+      this.data = data.filter((d: BusinessDataUnit) => ((d.city !== 'Non Nokia Site') && (d.city !== 'Virtual Office')));
       this.options = this.getOptions(this.category);
     });
 
@@ -81,7 +81,8 @@ export class DataFilterComponent implements OnInit, OnDestroy {
         this.query.country = { $in: [name] };
       }
       this.selectedCountry = name;
-      this.filterCtrl.currentFilter$ = this.query;
+      // this.filterCtrl.currentFilter$ = this.query;
+      this.doDataQuery(this.query);
     });
   }
 
@@ -179,7 +180,8 @@ export class DataFilterComponent implements OnInit, OnDestroy {
         break;
       }
     }
-    this.filterCtrl.currentFilter$ = this.query;
+    // this.filterCtrl.currentFilter$ = this.query;
+    this.doDataQuery(this.query);
     this.filterCtrl.onChangeCategory.emit(this.category);
     this.options = [];
     this.dataProvider.query(this.filterQuery);
@@ -244,7 +246,8 @@ export class DataFilterComponent implements OnInit, OnDestroy {
         break;
       };
     }
-    this.filterCtrl.currentFilter$ = this.query;
+    // this.filterCtrl.currentFilter$ = this.query;
+    this.doDataQuery(this.query);
 
     switch (this.category) {
       case 'market': this.category = 'country'; break;
@@ -310,7 +313,13 @@ export class DataFilterComponent implements OnInit, OnDestroy {
       };
     }
 
-    this.filterCtrl.currentFilter$ = this.query;
+    // this.filterCtrl.currentFilter$ = this.query;
+    this.doDataQuery(this.query);
     this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
+  }
+
+  private doDataQuery(filterObj: any, isVirtualOfficesIncluded: boolean = false) {
+    if(!isVirtualOfficesIncluded) filterObj.city = Object.assign({ $nin:  ['Non Nokia Site', 'Virtual Office'] }, filterObj.city);
+    this.filterCtrl.currentFilter$ = filterObj;
   }
 }
