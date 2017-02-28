@@ -11,10 +11,6 @@
     </button>
   </ion-buttons>
   <ion-buttons *ngIf="isLoggedIn()" end>
-    <button #exportButton *ngIf="canUserUploadData()" class="export-btn" ion-button clear>
-      EXPORT
-      <pick-file (onFileSelected)="uploadData($event)" [fileType]="'text/csv'" [emitterElement]="exportButton"></pick-file>
-    </button>
     <button *ngIf="isAdmin()" (click)="openPage('user-management')" ion-button icon-only>
       <ion-icon class="icon-bb-user" name="icon-bb-user"></ion-icon>
     </button>
