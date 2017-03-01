@@ -9,7 +9,7 @@ import {
 @Component({
   selector: 'applied-filters',
   template: `
-    <ion-chip *ngFor="let f of filters">
+    <ion-chip *ngFor="let f of filters" [ngStyle]="{'background-color': getColor(f)}">
       <ion-label>{{f.label}}</ion-label>
       <button ion-button (click)="removeFilter(f)">
         <ion-icon name="close"></ion-icon>
@@ -28,5 +28,14 @@ export class AppliedFiltersComponent {
 
   removeFilter(filter: string) {
     this.onFilterRemoved.emit(filter);
+  }
+
+  getColor({ category }: { category: string }) {
+    switch (category) {
+      case 'city': return '#395FFF';
+      case 'country': return '#5A77F7';
+      case 'market': return '#1540FF';
+    }
+    return 'transparent';
   }
 }

@@ -125,192 +125,6 @@ ion-menu#filter-menu {
   }
 }
 
-data-filter {
-  background-color: map-get($colors, 'light-blue');
-
-  &>ion-list.list {
-    background-color: map-get($colors, 'light-blue');
-    display: block;
-    // justify-content: flex-start;
-    // flex-direction: column;
-    height: 100%;
-    margin: 0 !important;
-    // overflow: hidden;
-
-    ion-item.header {
-      ion-icon {
-        position: absolute;
-        z-index: 10;
-        transform: rotateY(180deg);
-        top: -9px;
-        left: -9px;
-        font-size: 133px;
-        opacity: 0.1;
-      }
-    }
-    ion-item.item.item-block {
-      background-color: map-get($colors, 'light-blue');
-      border: none;
-      padding: 0;
-
-      &:first-child, &:last-child {
-        border: none !important;
-      }
-
-      &.categories {
-        .input-wrapper {
-          height: 100px;
-          background: rgba(0,0,0, .07);
-        }
-        ion-label {
-          margin: 0;
-          height: 100%;
-          ion-segment.segment {
-            padding: 0 20px;
-            height: 100%;
-            ion-segment-button.segment-button {
-              border: none;
-              display: flex;
-              height: 100%;
-              color: map-get($colors,'secondary');
-              flex-direction: column;
-              align-items: center;
-              justify-content: center;
-              font-size: 11px;
-              font-weight: bold;
-              ion-icon {
-                line-height: 30px;
-                font-size: 30px;
-              }
-              &.segment-activated {
-                color: map-get($colors,'light');
-                background: none;
-              }
-            }
-          }
-        }
-      }
-
-      &.search-input {
-        margin: 40px;
-        width: 250px;
-        height: 50px;
-        margin-bottom: 15px;
-        div.item-inner {
-          div.input-wrapper {
-            display: flex;
-            background: map-get($colors,'light');
-            border-radius: 4px;
-            color: map-get($colors,'secondary');
-            padding-left: 20px;
-          }
-        }
-        ion-label {
-          ion-icon {
-            font-size: 27px;
-            line-height: 27px;
-          }
-        }
-        ion-input.input {
-          background: map-get($colors,'light');
-          border-radius: 4px;
-          input.text-input {
-            margin-left: 0px;
-            font-size: 14px;
-            width: 98%;
-            line-height: 25px;
-          }
-        }
-      }
-
-      &.applied-filters {
-        min-height: initial;
-        ion-label {
-          margin: 0;
-          padding: 0 35px;
-          applied-filters {
-            white-space: initial;
-          }
-          ion-chip {
-            margin: 5px;
-            height: 35px;
-            background: #536BD5;
-            border: 1px solid #5F89D1;
-            // background: transparent;
-            // border: 1px solid map-get($colors,'secondary');
-            border-radius: 4px;
-            color: map-get($colors,'light');
-            ion-label {
-              font-size: 14px;
-              padding: 0 10px;
-            }
-            button {
-              margin: 0;
-              width: 33px;
-              height: 33px;
-              font-size: 14px;
-              background: transparent;
-              padding: 0;
-              border-radius: 4px;
-              box-shadow: none;
-              ion-icon {
-                width: 33px;
-                height: 33px;
-                border-radius: 4px;
-                font-size: 25px;
-                color: map-get($colors,'secondary');
-                line-height: 32px;
-                &:before {
-                  font-weight: bold;
-                }
-              }
-            }
-          }
-        }
-      }
-
-      &.options {
-        flex-grow: 1;
-        div.item-inner {
-          height: 100%;
-          div.input-wrapper {
-            height: 100%;
-          }
-        }
-
-        ion-list {
-          padding: 0 40px;
-          min-height: 1000px;
-          button.item {
-            border: none;
-            background: transparent;
-            font-size: 14px;
-            padding: 0;
-            color: map-get($colors,'light');
-            line-height: 42px;
-            ion-label {
-              padding: 0;
-              margin: 0;
-            }
-
-            .item-inner {
-              background-image: none;
-            }
-          }
-        }
-      }
-
-      div.item-inner {
-        border: none;
-        padding: 0;
-        .input-wrapper {
-          display: block;
-        }
-      }
-    }
-  }
-}
-
 ion-header {
   &>header>ion-toolbar.toolbar {
     min-height: 70px;
@@ -341,7 +155,7 @@ ion-header {
       }
     }
     ion-title {
-      padding: 7px 90px 1px;
+      padding: 7px 260px 1px;
       ion-icon {
         margin-right: 13px;
       }
@@ -383,6 +197,7 @@ ion-footer {
   }
 }
 
+@import '../imports/app/filters/data-filter/filter.component.scss';
 @import '../imports/app/sheets/overview-sheet.component.scss';
 @import '../imports/app/sheets/sheets.styles.scss';
 @import '../imports/app/sheets/fact-sheet.component.scss';
@@ -393,3 +208,4 @@ ion-footer {
 @import '../imports/app/pages/edit-user/edit-user.page.scss';
 @import '../imports/app/pages/components/header/header.component.scss';
 @import '../imports/app/filters/bu-filter/bu-filter.component.scss';
+@import '../imports/app/filters/view-switcher/view-switcher.component.scss';

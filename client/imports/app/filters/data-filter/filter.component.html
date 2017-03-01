@@ -1,6 +1,6 @@
 <ion-list>
   <ion-item class="header">
-    <ion-icon class="icon-bb-search" name="icon-bb-search"></ion-icon>
+    <ion-icon class="icon-search" name="icon-search"></ion-icon>
     <ion-toolbar color="light-blue" class="header">
       <ion-title>SEARCH</ion-title>
     </ion-toolbar>
@@ -11,21 +11,21 @@
   <ion-item class="categories">
     <ion-segment [(ngModel)]="category" (ionChange)="changeCategory()">
       <ion-segment-button value="market">
-        <ion-icon class="icon-bb-markets" name="icon-bb-markets"></ion-icon>
+        <ion-icon class="icon-markets" name="icon-markets"></ion-icon>
         MARKETS
       </ion-segment-button>
       <ion-segment-button value="country">
-        <ion-icon class="icon-bb-countries" name="icon-bb-countries"></ion-icon>
+        <ion-icon class="icon-countries" name="icon-countries"></ion-icon>
         COUNTRIES
       </ion-segment-button>
       <ion-segment-button value="city">
-        <ion-icon class="icon-bb-cities" name="icon-bb-cities"></ion-icon>
+        <ion-icon class="icon-cities" name="icon-cities"></ion-icon>
         CITIES
       </ion-segment-button>
     </ion-segment>
   </ion-item>
   <ion-item class="search-input">
-    <ion-label><ion-icon class="icon-bb-search" name="icon-bb-search"></ion-icon></ion-label>
+    <ion-label><ion-icon class="icon-search" name="icon-search"></ion-icon></ion-label>
     <ion-input [(ngModel)]="searchValue" type="text" placeholder="Start typing a country here" value=""></ion-input>
   </ion-item>
   <ion-item class="applied-filters">

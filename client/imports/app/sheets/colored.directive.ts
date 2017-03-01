@@ -10,6 +10,7 @@ export class ColoredDirective {
 
   ngOnChanges(changes: any) {
     if (changes.colored.currentValue) {
+      (this.elRef.nativeElement as HTMLElement).classList.add('colored');
       this.setBackgroundColor(changes.colored.currentValue);
     }
   }

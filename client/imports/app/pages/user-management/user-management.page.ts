@@ -29,6 +29,8 @@ import { SigninPage } from '../signin/signin.page';
 })
 export class UserManagementPage implements OnInit {
   public usersLimit: number = 5;
+  private selectedItem: any;
+  private userToDelete: any;
 
   constructor(
     public navCtrl: NavController,
@@ -50,7 +52,7 @@ export class UserManagementPage implements OnInit {
 
   ionViewCanEnter() {
     try {
-      return this.auth.user().roles.includes('Administrator');
+      return (this.auth.user() as any).roles.includes('Administrator');
     } catch (err) {
       return false;
     }
@@ -73,5 +75,13 @@ export class UserManagementPage implements OnInit {
 
   deleteUser(userId: string) {
     this.usersCtrl.deleteUser(userId);
+  }
+
+  isSelected(id: any) {
+    return this.selectedItem ? id === this.selectedItem._id : false;
+  }
+
+  isDeleting(id: any) {
+    return this.userToDelete ? id === this.userToDelete._id : false;
   }
 }

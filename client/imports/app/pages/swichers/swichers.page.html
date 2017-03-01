@@ -1,9 +1,3 @@
-<ion-header>
-  <header (onButtonClick)="menuToggle($event)"></header>
-</ion-header>
 <ion-content>
   <map-swichers [swichersState]="swichersState" (onChanges)="applySettingsToMap($event)"></map-swichers>
 </ion-content>
-<ion-footer>
-  <footer [activeButtonTitle]="'swichers'" [preventNav]="['swichers']"></footer>
-</ion-footer>

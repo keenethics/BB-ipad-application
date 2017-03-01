@@ -6,7 +6,6 @@ import { BehaviorSubject } from 'rxjs';
 import {
   BusinessData,
   BusinessDataUnit,
-  ColumnNames,
   ColumnNamesCollection
 } from '../../../../both/data-management';
 
@@ -14,7 +13,7 @@ import {
 export class DataProvider {
   private _data: BehaviorSubject<BusinessDataUnit[]> = new BehaviorSubject([]);
   private _subscription: any;
-  private _columnNames: BehaviorSubject<ColumnNames> = new BehaviorSubject(null);
+  private _columnNames: BehaviorSubject<any> = new BehaviorSubject(null);
 
   constructor() {
     this.subscribeToPublications();
@@ -51,5 +50,18 @@ export class DataProvider {
         const data = BusinessData.find(queryObject).fetch();
         this._data.next(data);
       });
+  }
+
+  getDataImmediately(queryObject: any = {}, projection?: any) {
+    return new Promise((resolve) => {
+      if (this._subscription) {
+        this._subscription.unsubscribe();
+      }
+
+      this._subscription = MeteorObservable.subscribe('businessData', queryObject, projection)
+        .subscribe(() => {
+          resolve(BusinessData.find(queryObject).fetch());
+        });
+    });
   }
 }

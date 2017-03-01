@@ -14,7 +14,9 @@ import { Authorization, RolesController } from '../../../authorization';
 import { DataUploader } from '../../../data-management';
 import { LoadingManager, ToastsManager } from '../../../common';
 
-import { SigninPage } from '../../index';
+import { SigninPage, HomePage, PreferencesPage } from '../../index';
+
+import { FilterController } from '../../../filters';
 
 @Component({
   selector: 'header',
@@ -32,7 +34,8 @@ export class HeaderComponent {
     private rolesCtrl: RolesController,
     private dataUploader: DataUploader,
     private loadingCtrl: LoadingManager,
-    private toastCtrl: ToastsManager
+    private toastCtrl: ToastsManager,
+    private filterCtrl: FilterController
   ) {
   }
 
@@ -56,6 +59,12 @@ export class HeaderComponent {
     return this.rolesCtrl.userIsInRole(userId, roles);
   }
 
+  isAdmin() {
+    const userId = this.auth.user() && this.auth.user()._id;
+    const roles = ['Administrator'];
+    return this.rolesCtrl.userIsInRole(userId, roles);
+  }
+
   uploadData(file: File) {
     this.loadingCtrl.loading('Uploading data...');
     this.dataUploader.uploadFile(file)
@@ -66,5 +75,19 @@ export class HeaderComponent {
       .catch((err) => {
         this.toastCtrl.okToast(err.reason || err.message || err);
       });
+  }
+
+  openPage(name: string) {
+    switch (name) {
+      case 'home': {
+        if (this.navCtrl.getActive().component === HomePage) {
+          // this.filterCtrl.resetFilter(); break;
+          break;
+        } else {
+          this.navCtrl.setRoot(HomePage); break;
+        }
+      }
+      case 'preferences': this.navCtrl.setRoot(PreferencesPage); break;
+    }
   }
 }

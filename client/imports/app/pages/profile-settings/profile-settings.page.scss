@@ -8,7 +8,7 @@ $colors: (
   ui-light: #ECEFF4
 );
 
-profile-settings {
+profile-settings-page {
 
   ion-content {
 
@@ -55,6 +55,12 @@ profile-settings {
             border-radius: 28px;
             margin-top: 20px;
             float: left;
+          }
+        }
+
+        div.error-messages {
+          p {
+            color: #8b0000;
           }
         }
       }

@@ -31,6 +31,7 @@ export class DataFilterComponent implements OnInit, OnDestroy {
   private query: any;
   private filterQuery: any;
   private dataSubscr: Subscription;
+  private selectedCountry: string;
 
   public options: string[];
   public searchValue: string;
@@ -61,18 +62,43 @@ export class DataFilterComponent implements OnInit, OnDestroy {
     this.changeCategory();
 
     this.dataSubscr = this.dataProvider.data$.subscribe((data) => {
-      this.data = data;
+      this.data = data.filter((d: BusinessDataUnit) => ((d.city !== 'Non Nokia Site') && (d.city !== 'Virtual Office')));
       this.options = this.getOptions(this.category);
+    });
+
+    this.filterCtrl.onChangeCategory.subscribe((category: string) => {
+      if (this.category !== category) {
+        this.category = category;
+        this.changeCategory();
+      }
+    });
+
+    this.filterCtrl.onSelectCountry.subscribe((name: string) => {
+      if (this.query.country) {
+        const countries: string[] = this.query.country.$in;
+        if (countries.indexOf(name) === -1) countries.push(name);
+      } else {
+        this.query.country = { $in: [name] };
+      }
+      this.selectedCountry = name;
+      // this.filterCtrl.currentFilter$ = this.query;
+      this.doDataQuery(this.query);
     });
   }
 
   ngOnDestroy() {
+    this.filterCtrl.onChangeCategory.unsubscribe();
+    this.filterCtrl.onSelectCountry.unsubscribe();
     if (this.dataSubscr) this.dataSubscr.unsubscribe();
   }
 
   ngOnChanges(changes: any) {
     if (changes.data.currentValue.length > 0 && this.options.length === 0) {
       this.options = this.getOptions(this.category);
+    }
+
+    if (changes.data) {
+      this.selectCountry();
     }
   }
 
@@ -154,10 +180,31 @@ export class DataFilterComponent implements OnInit, OnDestroy {
         break;
       }
     }
-    this.filterCtrl.currentFilter$ = this.query;
+    // this.filterCtrl.currentFilter$ = this.query;
+    this.doDataQuery(this.query);
+    this.filterCtrl.onChangeCategory.emit(this.category);
     this.options = [];
     this.dataProvider.query(this.filterQuery);
     this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
+    this.searchValue = '';
+  }
+
+  selectCountry() {
+    if (this.selectedCountry) {
+      new DataProvider().getDataImmediately({ country: this.selectedCountry, identifier: 'Country' }, { limit: 1 })
+        .then((data: any[]) => {
+          const unit = data.filter((item: any) => item.country === this.selectedCountry)[0];
+          if (!this.filters.filter((item: any) => item.label === this.selectedCountry).length) {
+            this.filters.push({
+              label: this.selectedCountry,
+              category: 'country',
+              unit
+            });
+          }
+          this.selectedCountry = '';
+          this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
+        });
+    }
   }
 
   selectOption(option: string) {
@@ -199,7 +246,8 @@ export class DataFilterComponent implements OnInit, OnDestroy {
         break;
       };
     }
-    this.filterCtrl.currentFilter$ = this.query;
+    // this.filterCtrl.currentFilter$ = this.query;
+    this.doDataQuery(this.query);
 
     switch (this.category) {
       case 'market': this.category = 'country'; break;
@@ -207,6 +255,7 @@ export class DataFilterComponent implements OnInit, OnDestroy {
     }
     this.dataProvider.query(this.filterQuery);
     this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
+    this.searchValue = '';
   }
 
   removeOption(filterItem: any) {
@@ -264,7 +313,13 @@ export class DataFilterComponent implements OnInit, OnDestroy {
       };
     }
 
-    this.filterCtrl.currentFilter$ = this.query;
+    // this.filterCtrl.currentFilter$ = this.query;
+    this.doDataQuery(this.query);
     this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
+  }
+
+  private doDataQuery(filterObj: any, isVirtualOfficesIncluded: boolean = false) {
+    if (!isVirtualOfficesIncluded) filterObj.city = Object.assign({ $nin: ['Non Nokia Site', 'Virtual Office'] }, filterObj.city);
+    this.filterCtrl.currentFilter$ = filterObj;
   }
 }

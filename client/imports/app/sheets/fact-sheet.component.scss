@@ -6,11 +6,21 @@ fact-sheet {
   right: 0;
   width: 92%;
   table {
+    line-height: 30px;
     th, td {
-      padding: 0 8px;
+      padding: 0 4px;
+      font-size: 10px;
     }
 
-    td[ng-reflect-colored]:after {
+    th:first-child, td:first-child {
+      padding: 0 5px;
+    }
+
+    td:last-child, th:last-child {
+      padding: 0 5px;
+    }
+
+    td.colored:after {
       content: '';
       width: 7px;
       height: 7px;
@@ -22,15 +32,15 @@ fact-sheet {
       right: 4px;
     }
 
-    td[ng-reflect-colored].red:after {
+    td.colored.red:after {
       background-color: rgb(189,61,62);
     }
 
-    td[ng-reflect-colored].orange:after {
+    td.colored.orange:after {
       background-color: rgb(227,136,12);
     }
 
-    td[ng-reflect-colored].yellow:after {
+    td.colored.yellow:after {
       background-color: rgb(255,196,1);
     }
   }

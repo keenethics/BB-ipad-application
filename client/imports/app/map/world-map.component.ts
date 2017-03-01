@@ -14,8 +14,8 @@ import {
   NgZone,
   HostListener
 } from '@angular/core';
-import { BusinessDataUnit } from '../../../../both/data-management/business-data.collection';
 import { Platform } from 'ionic-angular';
+import { Subscription } from 'rxjs';
 
 import * as d3 from 'd3';
 import * as d3proj from 'd3-geo-projection';
@@ -26,10 +26,15 @@ import * as mapTopoJson from './json/world.json';
 import template from './world-map.component.html';
 import styles from './world-map.component.scss';
 
+import { BusinessDataUnit } from '../../../../both/data-management/business-data.collection';
+import { DataProvider } from '../data-management';
+import { MarketCountriesProvider } from './countries/market-countries';
+
 @Component({
   selector: 'world-map',
   styles: [styles],
   encapsulation: ViewEncapsulation.None,
+  providers: [DataProvider],
   template
 })
 export class WorldMap implements OnChanges {
@@ -40,6 +45,7 @@ export class WorldMap implements OnChanges {
   private isMapReady: boolean = false;
   private isZoomingNow: boolean = false;
   private zoom: d3.ZoomBehavior<any, any>;
+  private selectedMarkerElement: SVGCircleElement | SVGRectElement;
 
   width: number;
   height: number;
@@ -51,25 +57,29 @@ export class WorldMap implements OnChanges {
   @Input('chart-type') chartType: string; // circle || bar
   @Input('show-labels') labels: boolean;
   @Input('show-values') values: boolean;
+  @Input('is-log-scale') isLogScale: boolean;
   @Input('zoom-scale-extend') zoomScaleExtend: [number, number];
+
+  @Input('deselect-marker-emiter')
+  set deselectMarkerEmiter(emiter: EventEmitter<any>) {
+    emiter.subscribe(() => {
+      this.removeSelectedMarkerClass();
+    });
+  }
 
   @Output('data-click') onDataClick = new EventEmitter();
   @Output('markers-rendered') onMarkersRendered = new EventEmitter();
   @Output('map-rendered') onMapRendered = new EventEmitter();
+  @Output('select-country') onSelectCountry = new EventEmitter();
 
-  constructor(private elRef: ElementRef, private plt: Platform) {
+  constructor(
+    private elRef: ElementRef,
+    private plt: Platform,
+    private dataProvider: DataProvider,
+    private marketCountries: MarketCountriesProvider
+  ) {
     this.mapTransform = { x: 0, y: 0, k: 1 };
     this.zoomScaleExtend = [1, 30];
-
-
-    // // FIX THIS !!!
-    // if (this.zoomOnUpdate) {
-    //   setTimeout(() => {
-    //     this.zoomToMarkers();
-    //     setTimeout(() => this.zoomToMarkers(), 1000);
-    //   }, 100);
-    // }
-    // // ^^^^^^^^^^^
   }
 
   ngOnChanges(changes: any) {
@@ -89,6 +99,7 @@ export class WorldMap implements OnChanges {
 
     if (changes.dataToDraw) {
       this.renderMarkers();
+      this.selectCountries(this.dataToDraw);
 
       if (this.zoomOnUpdate) {
         this.zoomToMarkers();
@@ -108,6 +119,7 @@ export class WorldMap implements OnChanges {
 
       this.zoom = d3.zoom()
         .scaleExtent(this.zoomScaleExtend)
+        .translateExtent([[0, 0], [this.svgWidth(), this.svgHeight()]])
         .on('zoom', () => {
           const { x, y, k } = d3.event.transform;
           this.mapTransform = d3.event.transform;
@@ -129,10 +141,42 @@ export class WorldMap implements OnChanges {
         .data(topojson.feature(mapTopoJson, mapTopoJson.objects.countries).features)
         .enter()
         .append('path')
-        .attr('class', () => {
-          return this.plt.is('ios') ? 'ios-only' : 'not-ios';
-        })
-        .attr('d', this.mapPath);
+        .attr('data-country', (d: any) => d.properties.name_long)
+        .attr('d', this.mapPath)
+        .style('pointer-events', 'visible')
+        .on('click', (d: any) => {
+          const names = [
+            d.properties['name'],
+            d.properties['name_long'],
+            d.properties['formal_en'],
+            d.properties['admin']
+          ].reduce((acc: string[], n: string) => {
+            if (acc.indexOf(n) === -1) {
+              acc.push(n);
+            }
+            return acc;
+          }, []);
+
+          this.onSelectCountry.emit(names);
+        });
+      // .on('mousedown', (d: any) => {
+      //   let isClicked = true;
+      //   setTimeout(() => { isClicked = false; }, 600);
+
+      //   const names = [
+      //     d.properties['name'],
+      //     d.properties['name_long'],
+      //     d.properties['formal_en'],
+      //     d.properties['admin']
+      //   ].reduce((acc: string[], n: string) => {
+      //     if (acc.indexOf(n) === -1) {
+      //       acc.push(n);
+      //     }
+      //     return acc;
+      //   }, []);
+
+      //   if (isClicked) this.onSelectCountry.emit(names);
+      // });
 
       this.onMapRendered.emit();
     }
@@ -163,34 +207,40 @@ export class WorldMap implements OnChanges {
       } else {
         this.renderCircles(ranges, scale, placeholders);
       }
-
+      this.selectCountries(this.dataToDraw);
       this.onMarkersRendered.emit();
     }
   }
 
   private renderBars(ranges: any[], scale: number, placeholders: any) {
     try {
-      const barScale = d3.scaleLinear()
+      const scaleFunc = this.isLogScale ? d3.scaleLog : d3.scaleLinear;
+      const barScale = scaleFunc()
         .domain(d3.extent(ranges))
         .range([5, this.svgHeight() / 20])
         .clamp(true);
-
-      const onDataClick = this.onDataClick;
+      const mapContext = this;
 
       const groupEnter = placeholders.enter()
         .append('g')
         .attr('class', 'marker')
         .attr('style', 'cursor: pointer')
         .attr('transform', (d: any) => {
-          return `translate(${this.projection([parseInt(d.longitude, 10) || 0, parseInt(d.latitude, 10) || 0])})`;
+          const position = this.projection([parseInt(d.longitude, 10) || 0, parseInt(d.latitude, 10) || 0]);
+          return `translate(${[
+            position[0],
+            position[1] - barScale(parseInt(d.value) | 0) / scale
+          ]})`;
         })
-        .on('mousedown', function (d: any) {
-          onDataClick.emit({ data: d, element: this });
+        .on('click', function (d: any) {
+          mapContext.selectedMarkerElement = this;
+          mapContext.addSelectedMarkerClass(d);
+          mapContext.onDataClick.emit({ data: d, element: this });
         });
 
       groupEnter.append('rect')
         .attr('class', 'bar')
-        .attr('width', 10)
+        .attr('width', 10 / scale)
         .attr('height', (d: any) => barScale(parseInt(d.value) | 0) / scale)
         .attr('x', -5 / scale);
 
@@ -204,13 +254,13 @@ export class WorldMap implements OnChanges {
           .text((d: any) => this.getLabelText(d))
           .attr('class', 'label-text')
           .attr('stroke', 'none')
-          .attr('font-size', 10)
+          .attr('font-size', 10 / scale)
           .attr('transform', function (d: any) {
             const { width, height } = this.getBoundingClientRect();
             d.textSize = { width, height };
             return `translate(${[
               -(width / 2) / scale,
-              -height / scale
+              (barScale(parseInt(d.value) | 0) + 15) / scale
             ]})`;
           });
 
@@ -221,7 +271,7 @@ export class WorldMap implements OnChanges {
             const { width, height } = this.getBoundingClientRect();
             return `translate(${[
               -(width / 2) / scale,
-              -(height + 4) / scale
+              (barScale(parseInt(d.value) | 0) + 2) / scale
             ]})`;
           });
       }
@@ -249,7 +299,7 @@ export class WorldMap implements OnChanges {
             d.textSize = { width, height };
             return `translate(${[
               -(width / 2) / scale,
-              -height / scale
+              (barScale(parseInt(d.value) | 0) + 15) / scale
             ]})`;
           });
 
@@ -261,7 +311,7 @@ export class WorldMap implements OnChanges {
             const { width, height } = this.getBoundingClientRect();
             return `translate(${[
               -(width / 2) / scale,
-              -(height + 4) / scale
+              (barScale(parseInt(d.value) | 0) + 2) / scale
             ]})`;
           });
       }
@@ -272,22 +322,28 @@ export class WorldMap implements OnChanges {
 
   private renderCircles(ranges: any[], scale: number, placeholders: any) {
     try {
-      const radiusScale = d3.scaleLinear()
+      const scaleFunc = this.isLogScale ? d3.scaleLog : d3.scaleLinear;
+      const radiusScale = scaleFunc()
         .domain([d3.min(ranges), d3.max(ranges)])
         .range([5, 25])
         .clamp(true);
-
-      const onDataClick = this.onDataClick;
+      const mapContext = this;
 
       const groupEnter = placeholders.enter()
         .append('g')
         .attr('class', 'marker')
         .attr('style', 'cursor: pointer')
         .attr('transform', (d: any) => {
-          return `translate(${this.projection([parseInt(d.longitude, 10) || 0, parseInt(d.latitude, 10) || 0])})`;
+          const position = this.projection([parseInt(d.longitude, 10) || 0, parseInt(d.latitude, 10) || 0]);
+          return `translate(${[
+            position[0],
+            position[1] - radiusScale(parseInt(d.value) | 0) / scale
+          ]})`;
         })
-        .on('mousedown', function (d: any) {
-          onDataClick.emit({ data: d, element: this });
+        .on('click', function (d: any) {
+          mapContext.selectedMarkerElement = this;
+          mapContext.addSelectedMarkerClass(d);
+          mapContext.onDataClick.emit({ data: d, element: this });
         });
 
       groupEnter.append('circle')
@@ -302,13 +358,13 @@ export class WorldMap implements OnChanges {
           .text((d: any) => this.getLabelText(d))
           .attr('class', 'label-text')
           .attr('stroke', 'none')
-          .attr('font-size', 10)
+          .attr('font-size', 10 / scale)
           .attr('transform', function (d: any) {
             const { width, height } = this.getBoundingClientRect();
             d.textSize = { width, height };
             return `translate(${[
               (-width / 2) / scale,
-              -radiusScale(parseInt(d.value) | 0) / scale - height / scale
+              (radiusScale(parseInt(d.value) | 0) + 17) / scale
             ]})`;
           });
 
@@ -320,7 +376,7 @@ export class WorldMap implements OnChanges {
             const { width, height } = this.getBoundingClientRect();
             return `translate(${[
               -width / 2 / scale,
-              -(radiusScale(parseInt(d.value) | 0) + height + 4) / scale
+              (radiusScale(parseInt(d.value) | 0) + 4) / scale
             ]})`;
           });
       }
@@ -346,7 +402,7 @@ export class WorldMap implements OnChanges {
             d.textSize = { width, height };
             return `translate(${[
               (-width / 2) / scale,
-              -radiusScale(parseInt(d.value) | 0) / scale - height / scale
+              (radiusScale(parseInt(d.value) | 0) + 17) / scale
             ]})`;
           });
 
@@ -358,7 +414,7 @@ export class WorldMap implements OnChanges {
             const { width, height } = this.getBoundingClientRect();
             return `translate(${[
               -width / 2 / scale,
-              -(radiusScale(parseInt(d.value) | 0) + height + 4) / scale
+              (radiusScale(parseInt(d.value) | 0) + 4) / scale
             ]})`;
           });
       }
@@ -448,5 +504,68 @@ export class WorldMap implements OnChanges {
 
       this.renderMarkers(k);
     }
+  }
+
+  selectCountries(data: any) {
+    if (!this.svg) return;
+    const countries = data.reduce((acc: string[], item: BusinessDataUnit) => {
+      if (acc.indexOf(item.country) === -1) {
+        acc.push(item.country);
+      }
+      return acc;
+    }, []) as string[];
+
+    const selectCountries = (countries: string[]) => {
+      this.svg.select('g.map')
+        .selectAll('path')
+        .attr('class', (d: any) => {
+          const names = [
+            countries.indexOf(d.properties['name']),
+            countries.indexOf(d.properties['name_long']),
+            countries.indexOf(d.properties['formal_en']),
+            countries.indexOf(d.properties['admin'])
+          ];
+
+          if (names[0] !== -1 || names[1] !== -1 || names[2] !== -1 || names[3] !== -1) {
+            const index = names.filter(item => item !== -1)[0];
+            countries.splice(index, 1);
+            return 'selected';
+          } else {
+            return '';
+          }
+        });
+
+      if (countries.length) {
+        console.log(`%cWARNING! These countries not matched with the map data.`, 'background-color: yellow');
+        console.log(countries);
+      }
+    };
+
+    if (countries.indexOf('Total') !== -1) {
+      const marketsNames = data.map((d: any) => d.market);
+      this.marketCountries.getMarketsCoutries(marketsNames)
+        .then((markets: any[]) => {
+          const countries = markets.reduce((acc: any[], item: any) => [...acc, ...item.countries], []);
+          selectCountries(countries);
+        });
+    } else {
+      selectCountries(countries);
+    }
+  }
+
+  private addSelectedMarkerClass(markerData: BusinessDataUnit) {
+    let className: string;
+    switch (markerData.identifier) {
+      case 'City': className = 'selected-city'; break;
+      case 'Country': className = 'selected-country'; break;
+      case 'Market': className = 'selected-market'; break;
+      default: className = '';
+    }
+
+    this.selectedMarkerElement.classList.add(className);
+  }
+
+  private removeSelectedMarkerClass() {
+    this.selectedMarkerElement.classList.remove('selected-city', 'selected-country', 'selected-market');
   }
 }

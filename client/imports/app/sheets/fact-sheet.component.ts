@@ -3,7 +3,8 @@ import {
   Input,
   Output,
   EventEmitter,
-  ViewEncapsulation
+  ViewEncapsulation,
+  NgZone
 } from '@angular/core';
 
 import { DataProvider } from '../data-management';
@@ -31,10 +32,10 @@ export class FactSheetComponent {
 
   public entityKey: string;
   public businessData: BusinessDataUnit[];
-  public excludedRowsDescs: any[];
+  public lastColumnsDesc: any;
   public periods: string[];
 
-  constructor(private dataProvider: DataProvider) {
+  constructor(private dataProvider: DataProvider, private zone: NgZone) {
     this.dataProvider.data$.subscribe((data) => {
       this.businessData = data;
       this.periods = this.getPeriods(data);
@@ -47,79 +48,128 @@ export class FactSheetComponent {
   }
 
   initTableDescriptions() {
-    if (!this.columnsDescs) {
-      this.columnsDescs = [
-        { title: 'MN TOTAL', dataSources: { n2: 'Total' } },
-        { title: 'MN P', dataSources: { n2: 'MN Products-RN' } },
-        { title: 'MN CC', dataSources: { n2: 'MN Products-CC' } },
-        { title: 'GS', dataSources: { n2: 'Global Services' } },
-        { title: 'AMS', dataSources: { n2: 'Advanced MN Solutions' } },
-        { title: 'PPS', dataSources: { n2: 'Product Portfolio Sales' } },
-        { title: 'SPS', dataSources: { n2: 'Services Portfolio Sales' } },
-        { title: 'COO', dataSources: { n2: 'COO' } },
-        { title: 'CM', dataSources: { n2: 'Commercial Management' } },
-        { title: 'CTO', dataSources: { n2: 'CTO' } },
-        { title: 'OTHERS', dataSources: { n2: ['Central Team', 'Business and Portfolio Integration Leadership'] } }
-      ];
-    }
-
-    let firstPeriod: string | number = '-';
-    let baseLineYear: string | number = '-';
-    let lastPeriod = '-';
-
-    if (this.periods.length) {
-      firstPeriod = this.periods.reduce((acc, item) => acc || Number(item), null);
-      baseLineYear = firstPeriod as number - 1;
-      lastPeriod = this.periods.reverse().reduce((acc, item) => acc || Number(item), null);
-    }
-
-
-    this.rowsDescs = [
+    this.columnsDescs = [
+      { title: 'P12', dataSources: { period: '2016', highLevelCategory: 'Landing point' } },
+      { title: 'Ramp up', dataSources: { period: '2016', highLevelCategory: 'Ramp up' } },
+      { title: 'Ramp down', dataSources: { period: '2016', highLevelCategory: 'Ramp down' } },
+      { title: 'Other flows', dataSources: { period: '2016', highLevelCategory: ['Other in', 'Other out'] } },
+      { title: 'LP', dataSources: { period: '2017', highLevelCategory: 'Landing point' } },
+      { title: 'Ramp up', dataSources: { period: '2017', highLevelCategory: 'Ramp up' } },
+      { title: 'Ramp down', dataSources: { period: '2017', highLevelCategory: 'Ramp down' } },
+      { title: 'Other flows', dataSources: { period: '2017', highLevelCategory: ['Other in', 'Other out'] } },
+      { title: 'LP', dataSources: { period: '2018', highLevelCategory: 'Landing point' } },
+      { title: 'Ramp up', dataSources: { period: '2018', highLevelCategory: 'Ramp up' } },
+      { title: 'Ramp down', dataSources: { period: '2018', highLevelCategory: 'Ramp down' } },
+      { title: 'Other flows', dataSources: { period: '2018', highLevelCategory: ['Other in', 'Other out'] } },
+      { title: 'LP', dataSources: { period: '2019', highLevelCategory: 'Landing point' } },
+      { title: 'Ramp up', dataSources: { period: '2019', highLevelCategory: 'Ramp up' } },
+      { title: 'Ramp down', dataSources: { period: '2019', highLevelCategory: 'Ramp down' } },
+      { title: 'Other flows', dataSources: { period: '2019', highLevelCategory: ['Other in', 'Other out'] } },
       {
-        title: `Baseline P12/${baseLineYear}`,
-        dataSources: { period: 'Baseline', highLevelCategory: 'Landing point' },
-        color: ''
-      },
-      {
-        title: `P12/${firstPeriod}`,
-        dataSources: { period: String(firstPeriod), highLevelCategory: 'Landing point' },
-        color: 'row-color-3'
-      },
-      {
-        title: `Net down/up P12/${firstPeriod} - ${lastPeriod}`,
-        dataSources: { period: [String(lastPeriod), String(firstPeriod)], highLevelCategory: 'Landing point' },
+        title: 'LP2019 vs P122016',
+        dataSources: { period: ['2016', '2019'], highLevelCategory: 'Landing point' },
         calc: (inputs: any[]) => {
           if (inputs.length > 1) {
-            const lp = inputs.filter((item: any) => item.period === String(lastPeriod))[0];
-            const fp = inputs.filter((item: any) => item.period === String(firstPeriod))[0];
-            return lp.value - fp.value;
-          }
-          return inputs[0].value;
-        },
-        color: ''
-      },
-      {
-        title: `Landing point ${lastPeriod}`,
-        dataSources: { period: String(lastPeriod), highLevelCategory: 'Landing point' },
-        color: 'row-color-3'
-      },
-      {
-        title: `YE${lastPeriod} vs. P12/${firstPeriod}`,
-        dataSources: { period: [String(firstPeriod), String(lastPeriod)], highLevelCategory: 'Landing point' },
-        calc: (inputs: any[]) => {
-          if (inputs.length > 1) {
-            const lp = inputs.filter((item: any) => item.period === String(lastPeriod))[0];
-            const fp = inputs.filter((item: any) => item.period === String(firstPeriod))[0];
+            const lp = inputs.filter((item: any) => item.period === '2019')[0];
+            const fp = inputs.filter((item: any) => item.period === '2016')[0];
             return (Number(lp.value - fp.value) / Number(fp.value) * 100);
           }
 
           return Number(inputs[0].value);
-        },
-        color: 'row-color-3'
+        }
       }
     ];
 
-    this.excludedRowsDescs = [this.rowsDescs[this.rowsDescs.length - 1]];
+    this.lastColumnsDesc = this.columnsDescs[this.columnsDescs.length - 1];
+
+
+    this.rowsDescs = [
+      { title: 'GS', dataSources: { n2: 'Global Services' } },
+      { title: 'P', dataSources: { n2: 'MN Products-RN' } },
+      { title: 'CC', dataSources: { n2: 'MN Products-CC' } },
+      { title: 'AMS', dataSources: { n2: 'Advanced MN Solutions' } },
+      { title: 'PPS', dataSources: { n2: 'Product Portfolio Sales' } },
+      { title: 'SPS', dataSources: { n2: 'Services Portfolio Sales' } },
+      { title: 'COO', dataSources: { n2: 'COO' } },
+      { title: 'CM', dataSources: { n2: 'Commercial Management' } },
+      { title: 'CTO', dataSources: { n2: 'CTO' } },
+      { title: 'Mgmt', dataSources: { n2: ['Central Team', 'Business and Portfolio Integration Leadership'] } },
+      { title: 'MNTotal', dataSources: { n2: 'Total' } }
+    ];
+
+    // if (!this.columnsDescs) {
+    //   this.columnsDescs = [
+    // { title: 'MN TOTAL', dataSources: { n2: 'Total' } },
+    // { title: 'MN P', dataSources: { n2: 'MN Products-RN' } },
+    // { title: 'MN CC', dataSources: { n2: 'MN Products-CC' } },
+    // { title: 'GS', dataSources: { n2: 'Global Services' } },
+    // { title: 'AMS', dataSources: { n2: 'Advanced MN Solutions' } },
+    // { title: 'PPS', dataSources: { n2: 'Product Portfolio Sales' } },
+    // { title: 'SPS', dataSources: { n2: 'Services Portfolio Sales' } },
+    // { title: 'COO', dataSources: { n2: 'COO' } },
+    // { title: 'CM', dataSources: { n2: 'Commercial Management' } },
+    // { title: 'CTO', dataSources: { n2: 'CTO' } },
+    // { title: 'OTHERS', dataSources: { n2: ['Central Team', 'Business and Portfolio Integration Leadership'] } }
+    //   ];
+    // }
+
+    // let firstPeriod: string | number = '-';
+    // let baseLineYear: string | number = '-';
+    // let lastPeriod = '-';
+
+    // if (this.periods.length) {
+    //   firstPeriod = this.periods.reduce((acc, item) => acc || Number(item), null);
+    //   baseLineYear = firstPeriod as number - 1;
+    //   lastPeriod = this.periods.reverse().reduce((acc, item) => acc || Number(item), null);
+    // }
+
+
+    // this.rowsDescs = [
+    //   {
+    //     title: `Baseline P12/${baseLineYear}`,
+    //     dataSources: { period: 'Baseline', highLevelCategory: 'Landing point' },
+    //     color: ''
+    //   },
+    //   {
+    //     title: `P12/${firstPeriod}`,
+    //     dataSources: { period: String(firstPeriod), highLevelCategory: 'Landing point' },
+    //     color: 'row-color-3'
+    //   },
+    //   {
+    //     title: `Net down/up P12/${firstPeriod} - ${lastPeriod}`,
+    //     dataSources: { period: [String(lastPeriod), String(firstPeriod)], highLevelCategory: 'Landing point' },
+    // calc: (inputs: any[]) => {
+    //   if (inputs.length > 1) {
+    //     const lp = inputs.filter((item: any) => item.period === String(lastPeriod))[0];
+    //     const fp = inputs.filter((item: any) => item.period === String(firstPeriod))[0];
+    //     return lp.value - fp.value;
+    //   }
+    //   return inputs[0].value;
+    // },
+    //     color: ''
+    //   },
+    //   {
+    //     title: `Landing point ${lastPeriod}`,
+    //     dataSources: { period: String(lastPeriod), highLevelCategory: 'Landing point' },
+    //     color: 'row-color-3'
+    //   },
+    //   {
+    //     title: `YE${lastPeriod} vs. P12/${firstPeriod}`,
+    //     dataSources: { period: [String(firstPeriod), String(lastPeriod)], highLevelCategory: 'Landing point' },
+    // calc: (inputs: any[]) => {
+    //   if (inputs.length > 1) {
+    //     const lp = inputs.filter((item: any) => item.period === String(lastPeriod))[0];
+    //     const fp = inputs.filter((item: any) => item.period === String(firstPeriod))[0];
+    //     return (Number(lp.value - fp.value) / Number(fp.value) * 100);
+    //   }
+
+    //   return Number(inputs[0].value);
+    // },
+    //     color: 'row-color-3'
+    //   }
+    // ];
+
+    // this.excludedRowsDescs = [this.rowsDescs[this.rowsDescs.length - 1]];
   }
 
   getPeriods(data: BusinessDataUnit[]): string[] {

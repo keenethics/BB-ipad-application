@@ -18,6 +18,7 @@ import { SwichersPage } from './swichers/swichers.page';
 import { ProfileSettingsPage } from './profile-settings/profile-settings.page';
 import { EditUserPage } from './edit-user/edit-user.page';
 import { UserManagementPage } from './user-management/user-management.page';
+import { PreferencesPage } from './preferences/preferences.page';
 
 import {
   FooterComponent,
@@ -34,7 +35,8 @@ const PAGES = [
   SwichersPage,
   ProfileSettingsPage,
   UserManagementPage,
-  EditUserPage
+  EditUserPage,
+  PreferencesPage
 ];
 
 const COMPONENTS = [

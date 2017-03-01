@@ -68,7 +68,7 @@ export class BuFilterComponnet {
       // }
     } else {
       if (Array.isArray(item.title)) {
-        item.title.forEach((t) => {
+        item.title.forEach((t: any) => {
           this.queryObject.n2.$in = this.queryObject.n2.$in.filter((i: string) => i !== t);
         });
       } else {

@@ -15,7 +15,7 @@ import { UserManagementPage } from '../user-management/user-management.page';
 import { SigninPage } from '../signin/signin.page';
 
 @Component({
-  selector: 'profile-settings',
+  selector: 'profile-settings-page',
   template,
   styles: [styles],
   encapsulation: ViewEncapsulation.None

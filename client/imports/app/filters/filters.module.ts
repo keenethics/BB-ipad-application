@@ -9,6 +9,8 @@ import { CutPipe } from './bu-filter/cut.pipe';
 import { FilterController } from './filter-controller';
 import { AppliedFiltersComponent } from './data-filter/applied-filters.component';
 import { DataFilterComponent } from './data-filter/filter.component';
+import { ViewSwitcherComponent } from './view-switcher/view-switcher.component';
+
 
 @NgModule({
   imports: [
@@ -19,11 +21,13 @@ import { DataFilterComponent } from './data-filter/filter.component';
     BuFilterComponnet,
     DataFilterComponent,
     AppliedFiltersComponent,
+    ViewSwitcherComponent,
     CutPipe
   ],
   exports: [
     BuFilterComponnet,
-    DataFilterComponent
+    DataFilterComponent,
+    ViewSwitcherComponent
   ],
   providers: [
     BuFilter,
