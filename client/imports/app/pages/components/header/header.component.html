@@ -1,0 +1,22 @@
+<ion-toolbar color="primary">
+  <ion-buttons>
+    <button (click)="openPage('home')" ion-button icon-only>
+      <ion-icon class="icon-home" name="icon-home"></ion-icon>
+    </button>
+    <button *ngIf="isButtonEnabled" (click)="emitButtonClick('filter-menu')" ion-button icon-only>
+      <ion-icon class="icon-filter" name="icon-filter"></ion-icon>
+    </button>
+  </ion-buttons>
+  <ion-buttons *ngIf="isLoggedIn()" end>
+    <button (click)="openPage('preferences')" ion-button icon-only>
+      <ion-icon class="icon-preferences" name="icon-preferences"></ion-icon>
+    </button>
+    <button (click)="logout()" ion-button icon-only>
+      <ion-icon class="icon-logout" name="icon-logout"></ion-icon>
+    </button>
+  </ion-buttons>
+  <ion-title>
+    <ion-icon class="icon-logo" name="icon-logo"></ion-icon>
+    MN BLACK BOOK APPLICATION
+  </ion-title>
+</ion-toolbar>

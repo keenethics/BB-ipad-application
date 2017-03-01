@@ -1,43 +1,43 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { BrowserModule } from '@angular/platform-browser';
+import { File } from 'ionic-native';
 
-import { RouterModule } from '@angular/router';
-import { AccountsModule } from './accounts';
-
+import { AuthorizationModule } from './authorization/authorization.module';
+import { DataManagementModule } from './data-management/data-management.module';
+import { SharedModule } from './shared/shared.module';
+import { FiltersModule } from './filters';
 import { AppComponent } from './app.component';
-import { routes, ROUTES_PROVIDERS } from './app.routes';
-import { D3MAP_DECLARATIONS } from './d3map';
-import { SITE_DECLARATIONS } from './site';
-import { HOME_DECLARATIONS } from './home';
-import { AUTHGUARD_PROVIDERS } from './guards/index';
-import { USERS_DECLARATIONS } from './users';
+import '../../stylesheets/global.scss';
 
-import { UserPipe } from '../pipes/user.name.pipe'
-import { FormsModule }   from '@angular/forms';
-import { FileDropModule } from "angular2-file-drop";
 
 @NgModule({
   imports: [
     BrowserModule,
-    RouterModule.forRoot(routes),
-    AccountsModule,
-    FormsModule,
-    FileDropModule
+    IonicModule.forRoot(AppComponent, {
+      mode: 'ios'
+    }),
+    AuthorizationModule,
+    DataManagementModule,
+    SharedModule,
+    FiltersModule
   ],
   declarations: [
     AppComponent,
-    UserPipe,
-    ...D3MAP_DECLARATIONS,
-    ...SITE_DECLARATIONS,
-    ...HOME_DECLARATIONS,
-    ...USERS_DECLARATIONS
   ],
   bootstrap: [
-    AppComponent
+    IonicApp
   ],
   providers: [
-    ...AUTHGUARD_PROVIDERS,
-    ...ROUTES_PROVIDERS
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    File
   ],
+  entryComponents: [
+    AppComponent
+  ],
+  exports: [
+    SharedModule,
+    FiltersModule
+  ]
 })
-export class AppModule {}
+export class AppModule { }

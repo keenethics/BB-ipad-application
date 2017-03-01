@@ -23,3 +23,8 @@ shell-server@0.2.1
 accounts-password
 check
 meteorhacks:aggregate
+alanning:roles
+aldeed:simple-schema
+mdg:validated-method
+ground:db
+mbanting:cordova-accounts-resume

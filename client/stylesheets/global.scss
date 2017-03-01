@@ -1,0 +1,211 @@
+// @import "{}/node_modules/ionic-angular/themes/ionic.build.default.scss";
+
+@import "{}/node_modules/ionic-angular/themes/ionic.globals.scss";
+
+// Shared Variables
+// —------------------------------------------------
+// To customize the look and feel of this app, you can override
+// the Sass variables found in Ionic's source scss files.
+// To view all the possible Ionic variables, see:
+// http://ionicframework.com/docs/v2/theming/overriding-..
+
+// Named Color Variables
+// —------------------------------------------------
+// Named colors makes it easy to reuse colors on various components.
+// It's highly recommended to change the default colors
+// to match your app's branding. Ionic uses a Sass map of
+// colors so you can add, rename and remove colors as needed.
+// The "primary" color is the only required color in the map.
+
+// $colors: (
+// primary: #0B409C,
+// secondary: #32db64,
+// danger: #f53d3d,
+// light: #f4f4f4,
+// dark: #222
+// );
+
+$colors: (
+  primary: #0B409C,
+  secondary: #A7C1E3,
+  light: #E2E8F0,
+  dark: #47494D,
+  dark-blue: #173567,
+  light-blue: #3B65AD,
+  ui-light: #ECEFF4
+);
+
+// App iOS Variables
+// —------------------------------------------------
+// iOS only Sass variables can go here
+
+// App Material Design Variables
+// —------------------------------------------------
+// Material Design only Sass variables can go here
+
+// App Windows Variables
+// —------------------------------------------------
+// Windows only Sass variables can go here
+
+// App Theme
+// —------------------------------------------------
+// Ionic apps can have different themes applied, which can
+// then be future customized. This import comes last
+// so that the above variables are used and Ionic's
+// default are overridden.
+
+@import "{}/node_modules/ionic-angular/themes/ionic.theme.default.scss";
+@import "./ionic/ionic.components.scss";
+
+// Ionicons
+// —------------------------------------------------
+// The premium icon font for Ionic. For more info, please see:
+// http://ionicframework.com/docs/v2/ionicons/
+
+@import "{}/node_modules/ionicons/dist/scss/ionicons.scss";
+@import "./icons.scss";
+
+// Fonts
+// —------------------------------------------------
+
+// @import "roboto";
+// @import "noto-sans";
+
+ion-menu#filter-menu {
+  &>div.menu-inner {
+    width: 330px;
+    ion-content {
+      background-color: map-get($colors, 'light-blue');
+      &>.scroll-content{
+        // overflow: hidden;
+      }
+    }
+  }
+
+  ion-toolbar {
+    background-color: transparent;
+    &.header {
+      height: 90px;
+      div.toolbar-background {
+        border: none;
+        background: transparent;
+      }
+      ion-title {
+        background-color: transparent;
+        align-items: flex-start;
+        padding: 47px 40px;
+        div.toolbar-title {
+          font-size: 22px;
+          text-align: left;
+          color: map-get($colors,'light');
+          font-weight: 400;
+          letter-spacing: 3px;
+        }
+      }
+    }
+
+    &.subheader{
+      padding: 0;
+      .toolbar-background {
+        border: none;
+        background: transparent;
+      }
+      .toolbar-content {
+        background-color: transparent;
+        p {
+          white-space: normal;
+          font-size: 16px;
+          color: map-get($colors,'secondary');
+          width: 227px;
+          line-height: 23px;
+          margin: 0 0 40px 40px;
+        }
+      }
+    }
+  }
+}
+
+ion-header {
+  &>header>ion-toolbar.toolbar {
+    min-height: 70px;
+    color: map-get($colors,'light');
+    ion-buttons {
+      button.bar-button {
+        font-size: 7px;
+        padding-left: 24px;
+        padding-top: 7px;
+        ion-icon {
+          font-size: 15px;
+        }
+        &:hover {
+          color: map-get($colors,'light');
+        }
+      }
+    }
+
+    ion-buttons[end] {
+      button.bar-button {
+        padding-right: 24px;
+        &.export-btn {
+          padding: 7px 0 0;
+          font-size: 13px;
+          font-weight: bold;
+          color: map-get($colors, 'light-blue');
+        }
+      }
+    }
+    ion-title {
+      padding: 7px 260px 1px;
+      ion-icon {
+        margin-right: 13px;
+      }
+    }
+  }
+}
+
+ion-footer {
+  &>footer>ion-toolbar.toolbar {
+    background-color: map-get($colors,'ui-light');
+    min-height: 70px;
+    &>div.toolbar-background {
+      border: none;
+    }
+    ion-segment.segment {
+      padding: 0 20px;
+      height: 100%;
+      ion-segment-button.segment-button {
+        border: none;
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        max-width: 60px;
+        margin: 0 20px;
+        border-radius: 0;
+        ion-icon {
+          line-height: 24px;
+          font-size: 24px;
+        }
+        &.segment-activated {
+          background: none;
+          color: map-get($colors, 'primary');
+          border-bottom: 2px solid map-get($colors, 'primary');
+        }
+      }
+    }
+  }
+}
+
+@import '../imports/app/filters/data-filter/filter.component.scss';
+@import '../imports/app/sheets/overview-sheet.component.scss';
+@import '../imports/app/sheets/sheets.styles.scss';
+@import '../imports/app/sheets/fact-sheet.component.scss';
+@import '../imports/app/pages/signin/signin.page.scss';
+@import '../imports/app/pages/profile-settings/profile-settings.page.scss';
+@import '../imports/app/pages/user-management/user-management.page.scss';
+@import '../imports/app/pages/create-user/create-user.page.scss';
+@import '../imports/app/pages/edit-user/edit-user.page.scss';
+@import '../imports/app/pages/components/header/header.component.scss';
+@import '../imports/app/filters/bu-filter/bu-filter.component.scss';
+@import '../imports/app/filters/view-switcher/view-switcher.component.scss';
