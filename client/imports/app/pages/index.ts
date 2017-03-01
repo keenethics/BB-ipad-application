@@ -6,6 +6,7 @@ export { SigninPage } from './signin/signin.page';
 export { SwichersPage } from './swichers/swichers.page';
 export { UploadDataPage } from './upload-data/upload-data.page';
 export { UserManagementPage } from './user-management/user-management.page';
+export { PreferencesPage } from './preferences/preferences.page';
 
 export {
   FooterComponent,

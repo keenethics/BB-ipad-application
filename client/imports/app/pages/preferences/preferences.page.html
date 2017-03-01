@@ -1,0 +1,11 @@
+<ion-header>
+  <header (onButtonClick)="menuToggle($event)"></header>
+</ion-header>
+<ion-content>
+  <ion-tabs tabsPlacement="top" tabsLayout="icon-bottom">
+    <ion-tab *ngFor="let p of pages" [tabIcon]="p.icon" [tabTitle]="p.title" [root]="p.component"></ion-tab>
+  </ion-tabs>
+</ion-content>
+<ion-footer>
+  <footer [activeButtonTitle]="'swichers'" [preventNav]="['swichers']"></footer>
+</ion-footer>

@@ -1,18 +1,15 @@
 <ion-toolbar color="primary">
   <ion-buttons>
-    <button *ngIf="isButtonEnabled" (click)="emitButtonClick('filter-menu')" ion-button icon-only>
-      <ion-icon class="icon-side-menu" name="icon-side-menu"></ion-icon>
-    </button>
     <button (click)="openPage('home')" ion-button icon-only>
-      <ion-icon class="icon-map" name="icon-map"></ion-icon>
+      <ion-icon class="icon-home" name="icon-home"></ion-icon>
     </button>
-    <button (click)="openPage('switchers')" ion-button icon-only>
+    <button *ngIf="isButtonEnabled" (click)="emitButtonClick('filter-menu')" ion-button icon-only>
       <ion-icon class="icon-filter" name="icon-filter"></ion-icon>
     </button>
   </ion-buttons>
   <ion-buttons *ngIf="isLoggedIn()" end>
-    <button *ngIf="isAdmin()" (click)="openPage('user-management')" ion-button icon-only>
-      <ion-icon class="icon-user" name="icon-user"></ion-icon>
+    <button (click)="openPage('preferences')" ion-button icon-only>
+      <ion-icon class="icon-preferences" name="icon-preferences"></ion-icon>
     </button>
     <button (click)="logout()" ion-button icon-only>
       <ion-icon class="icon-logout" name="icon-logout"></ion-icon>

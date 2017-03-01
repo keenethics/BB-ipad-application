@@ -9,7 +9,7 @@
   font-style: normal;
 }
 
-[class^="icon-"], [class*=" icon-"] {
+[class^="icon"], [class*=" icon"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'bbicons' !important;
   speak: none;
@@ -24,67 +24,67 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-check:before {
+[class*="icon-check"]:before {
   content: "\e900";
 }
-.icon-cities:before {
+[class*="icon-cities"]:before {
   content: "\e901";
 }
-.icon-countries:before {
+[class*="icon-countries"]:before {
   content: "\e902";
 }
-.icon-cross:before {
+[class*="icon-cross"]:before {
   content: "\e903";
 }
-.icon-delete:before {
+[class*="icon-delete"]:before {
   content: "\e904";
 }
-.icon-edit:before {
+[class*="icon-edit"]:before {
   content: "\e905";
 }
-.icon-filter:before {
+[class*="icon-filter"]:before {
   content: "\e906";
 }
-.icon-home:before {
+[class*="icon-home"]:before {
   content: "\e907";
 }
-.icon-logo:before {
+[class*="icon-logo"]:before {
   content: "\e908";
 }
-.icon-logout:before {
+[class*="icon-logout"]:before {
   content: "\e909";
 }
-.icon-map:before {
+[class*="icon-map"]:before {
   content: "\e90a";
 }
-.icon-markets:before {
+[class*="icon-markets"]:before {
   content: "\e90b";
 }
-.icon-preferences:before {
+[class*="icon-preferences"]:before {
   content: "\e90c";
 }
-.icon-search:before {
+[class*="icon-search"]:before {
   content: "\e90d";
 }
-.icon-security:before {
+[class*="icon-security"]:before {
   content: "\e90e";
 }
-.icon-side-menu-close:before {
+[class*="icon-side-menu-close"]:before {
   content: "\e90f";
 }
-.icon-side-menu:before {
+[class*="icon-side-menu"]:before {
   content: "\e910";
 }
-.icon-swichers:before {
+[class*="icon-swichers"]:before {
   content: "\e911";
 }
-.icon-types-and-units:before {
+[class*="icon-types-and-units"]:before {
   content: "\e912";
 }
-.icon-upload:before {
+[class*="icon-upload"]:before {
   content: "\e913";
 }
-.icon-user:before {
+[class*="icon-user"]:before {
   content: "\e914";
 }
 

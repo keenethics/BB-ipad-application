@@ -14,10 +14,7 @@ import { Authorization, RolesController } from '../../../authorization';
 import { DataUploader } from '../../../data-management';
 import { LoadingManager, ToastsManager } from '../../../common';
 
-import { SigninPage } from '../../index';
-import { HomePage } from '../../home/home.page';
-import { SwichersPage } from '../../swichers/swichers.page';
-import { UserManagementPage } from '../../user-management/user-management.page';
+import { SigninPage, HomePage, PreferencesPage } from '../../index';
 
 import { FilterController } from '../../../filters';
 
@@ -83,7 +80,6 @@ export class HeaderComponent {
   openPage(name: string) {
     switch (name) {
       case 'home': {
-        console.log(this.navCtrl.getActive());
         if (this.navCtrl.getActive().component === HomePage) {
           // this.filterCtrl.resetFilter(); break;
           break;
@@ -91,8 +87,7 @@ export class HeaderComponent {
           this.navCtrl.setRoot(HomePage); break;
         }
       }
-      case 'switchers': this.navCtrl.setRoot(SwichersPage); break;
-      case 'user-management': this.navCtrl.setRoot(UserManagementPage); break;
+      case 'preferences': this.navCtrl.setRoot(PreferencesPage); break;
     }
   }
 }
