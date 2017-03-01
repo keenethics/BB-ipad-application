@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 import styles from './preferences.page.scss';
@@ -13,7 +13,8 @@ import {
 @Component({
   selector: 'preferences-page',
   template,
-  styles: [styles]
+  styles: [styles],
+  encapsulation: ViewEncapsulation.None
 })
 export class PreferencesPage {
   public pages: {icon: string, title: string, selector: string, component: any }[] = [];
@@ -22,7 +23,8 @@ export class PreferencesPage {
     this.pages = [
       { icon: 'icon-preferences', title: 'PROFILE SETTINGS', selector: 'profile-settings-page', component: ProfileSettingsPage },
       { icon: 'icon-user', title: 'USER LIST', selector: 'user-management-page', component: UserManagementPage },
-      { icon: 'icon-swichers', title: 'PREFERENCES', selector: 'swichers-page', component: SwichersPage }
+      { icon: 'icon-swichers', title: 'PREFERENCES', selector: 'swichers-page', component: SwichersPage },
+      { icon: 'icon-types-and-units', title: 'TYPES AND UNITS', selector: 'types-and-units', component: null }
     ];
   }
 };
