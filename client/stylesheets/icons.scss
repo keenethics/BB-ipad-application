@@ -24,58 +24,67 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-bb-logo:before {
+.icon-check:before {
   content: "\e900";
 }
-.icon-bb-check:before {
+.icon-cities:before {
   content: "\e901";
 }
-.icon-bb-cities:before {
+.icon-countries:before {
   content: "\e902";
 }
-.icon-bb-countries:before {
+.icon-cross:before {
   content: "\e903";
 }
-.icon-bb-cross:before {
+.icon-delete:before {
   content: "\e904";
 }
-.icon-bb-delete:before {
+.icon-edit:before {
   content: "\e905";
 }
-.icon-bb-edit:before {
+.icon-filter:before {
   content: "\e906";
 }
-.icon-bb-filter:before {
+.icon-home:before {
   content: "\e907";
 }
-.icon-bb-logout:before {
+.icon-logo:before {
   content: "\e908";
 }
-.icon-bb-map:before {
+.icon-logout:before {
   content: "\e909";
 }
-.icon-bb-markets:before {
+.icon-map:before {
   content: "\e90a";
 }
-.icon-bb-preferences:before {
+.icon-markets:before {
   content: "\e90b";
 }
-.icon-bb-search:before {
+.icon-preferences:before {
   content: "\e90c";
 }
-.icon-bb-side-menu:before {
+.icon-search:before {
   content: "\e90d";
 }
-.icon-bb-side-menu-close:before {
+.icon-security:before {
   content: "\e90e";
 }
-.icon-bb-types:before {
+.icon-side-menu-close:before {
   content: "\e90f";
 }
-.icon-bb-upload:before {
+.icon-side-menu:before {
   content: "\e910";
 }
-.icon-bb-user:before {
+.icon-swichers:before {
   content: "\e911";
+}
+.icon-types-and-units:before {
+  content: "\e912";
+}
+.icon-upload:before {
+  content: "\e913";
+}
+.icon-user:before {
+  content: "\e914";
 }
 

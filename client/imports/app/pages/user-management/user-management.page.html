@@ -12,19 +12,19 @@
         <h2>{{u.emails[0].address}}</h2>
         <h3>{{u.roles[0]}}</h3>
         <button (click)="editUser(u)" ion-button small clear item-right icon-only>
-          <ion-icon class="icon-bb-edit" name="icon-bb-edit"></ion-icon>
+          <ion-icon class="icon-edit" name="icon-edit"></ion-icon>
         </button>
         <button (click)="userToDelete = u" ion-button small clear item-right icon-only>
-          <ion-icon class="icon-bb-delete" name="icon-bb-delete"></ion-icon>
+          <ion-icon class="icon-delete" name="icon-delete"></ion-icon>
         </button>
       </ion-item>
       <ion-item *ngIf="isDeleting(u._id)">
         Delete {{u.emails[0].address}} account?
         <button (click)="deleteUser(u._id)" ion-button small clear item-right icon-only>
-          <ion-icon class="icon-bb-check" name="icon-bb-check"></ion-icon>
+          <ion-icon class="icon-check" name="icon-check"></ion-icon>
         </button>
         <button (click)="userToDelete = null" ion-button small clear item-right icon-only>
-          <ion-icon class="icon-bb-cross" name="icon-bb-cross"></ion-icon>
+          <ion-icon class="icon-cross" name="icon-cross"></ion-icon>
         </button>
       </ion-item>
     </template>
