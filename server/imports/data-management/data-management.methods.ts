@@ -1,6 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import * as Baby from 'babyparse';
 import { toCamelCase } from '../../../both/helpers/to-camel-case';
+import { MarketCountries } from '../../../both/countries/market-countries.collection';
+import { AvailableCountries } from '../../../both/countries/available-countries.collection';
+import { setMarketCountries, setAvailableCountries } from '../../../both/countries/helpers';
 
 import {
   BusinessData,
@@ -49,6 +52,12 @@ export const uploadFile = new ValidatedMethod({
       .titles as string[];
     UnitsTitles.remove({});
     titles.forEach(t => UnitsTitles.insert({ title: t }));
+
+    MarketCountries.remove({});
+    AvailableCountries.remove({});
+
+    setMarketCountries();
+    setAvailableCountries();
 
     return 'Data uploaded!';
   }

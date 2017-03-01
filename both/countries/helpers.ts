@@ -29,7 +29,7 @@ export const getNotMatchedCountries = (businessData: BusinessDataUnit[], countri
 export const setAvailableCountries = () => {
   const countries = (BusinessData as any).aggregate([
     { $match: { country: { $ne: 'Total' } } },
-    { $group : { _id : '$country' } }
+    { $group: { _id: '$country' } }
   ]) as any[];
 
   countries.forEach((c) => {
@@ -44,6 +44,6 @@ export const setMarketCountries = () => {
   ]) as any[];
 
   marketCountries.forEach((item) => {
-    MarketCountries.insert(item);
+    if (item._id) MarketCountries.insert(item);
   });
 };
