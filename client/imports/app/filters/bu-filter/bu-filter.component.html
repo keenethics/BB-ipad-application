@@ -1,0 +1,8 @@
+<ion-toolbar>
+  <ion-buttons>
+    <button (click)="label.click()" [ngClass]="{ 'active': isInQueryObject(t.value) || queryObject.n2 === 'Total'}" class="disable-hover" ion-button color="primary" *ngFor="let t of filter.buTitles$ | async">
+      <label #label [for]="t.title">{{t.title}}</label>
+      <input (change)="select({title: t.value, value: checkbox.checked})" [checked]="isInQueryObject(t.value)" #checkbox hidden [id]="t.title" type="checkbox">
+    </button>
+  </ion-buttons>
+</ion-toolbar>

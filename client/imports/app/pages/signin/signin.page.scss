@@ -1,0 +1,69 @@
+$colors: (
+  primary: #0B409C,
+  secondary: #A7C1E3,
+  light: #E2E8F0,
+  dark: #47494D,
+  dark-blue: #173567,
+  light-blue: #3B65AD,
+  ui-light: #ECEFF4
+);
+
+signin-page {
+
+  ion-content {
+
+    div.scroll-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      form {
+        width: 500px;
+        height: 420px;
+        padding: 40px 50px !important;
+        background: map-get($colors, 'light');
+        h1, h2 {
+          font-weight: 400;
+          color: map-get($colors, 'primary');
+        }
+
+        h1 {
+          font-size: 22px;
+        }
+
+        h2 {
+          font-size: 15px;
+          width: 295px;
+          line-height: 23px;
+        }
+
+        div.inputs {
+          overflow: hidden;
+          margin-top: 30px;
+
+          ion-input {
+            width: 100%;
+            font-size: 15px;
+            line-height: 28px;
+            margin: 10px 0;
+            float: left;
+            background: white;
+            border-radius: 4px;
+            padding: 0 30px;
+          }
+
+          button {
+            font-size: 13px;
+            font-weight: bold;
+            width: initial;
+            height: 55px;
+            padding: 0px 56px;
+            border-radius: 28px;
+            margin-top: 20px;
+            float: left;
+          }
+        }
+      }
+    }
+  }
+}

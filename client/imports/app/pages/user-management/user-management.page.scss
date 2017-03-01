@@ -1,0 +1,96 @@
+$colors: (
+  primary: #0B409C,
+  secondary: #A7C1E3,
+  light: #E2E8F0,
+  dark: #47494D,
+  dark-blue: #173567,
+  light-blue: #3B65AD,
+  ui-light: #ECEFF4
+);
+
+user-management-page {
+  ion-toolbar.subheader {
+    padding-top: 77px;
+
+    div.toolbar-background {
+      background: transparent;
+      border: none;
+    }
+
+    div.toolbar-content {
+      width: 450px;
+      flex: none;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      color: map-get($colors, 'light-blue');
+
+      button[ion-button] {
+        width: 40px;
+        height: 40px;
+        padding: 0px;
+        margin-right: 10px;
+
+        span.button-inner {
+          font-size: 30px;
+          position: absolute;
+          top: -3px;
+          left: 1px;
+        }
+      }
+    }
+  }
+
+  ion-toolbar.subfooter {
+    padding-bottom: 77px;
+    div.toolbar-background {
+      background: transparent;
+      border: none;
+    }
+
+    div.toolbar-content {
+      width: 450px;
+      flex: none;
+      margin: auto;
+    }
+  }
+
+  ion-content.content {
+    ion-list {
+      width: 450px;
+      margin: auto;
+      &>ion-item.item.item-block:first-child {
+        div.item-inner {
+          border: none;
+        }
+      } 
+      &>ion-item.item.item-block {
+        div.item-inner {
+          border: none;
+        }
+        border-bottom: none;
+        border: none;
+        padding: 0;
+        background: transparent;
+        margin: initial;
+        color: map-get($colors, 'light-blue');
+        border-radius: 5px;
+      }
+    }
+  }
+
+  div.pagination {
+    button[ion-button] {
+      background-color: map-get($colors, 'light');
+      border-radius: 5px;
+      margin: 0 11px;
+      font-weight: bold;
+      color: map-get($colors, 'light-blue');
+
+      &.active {
+        background-color: map-get($colors, 'light-blue');
+        color: map-get($colors, 'light');
+      }
+    }
+  }
+}

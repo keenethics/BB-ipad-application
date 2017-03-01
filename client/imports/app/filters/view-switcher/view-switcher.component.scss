@@ -1,0 +1,31 @@
+view-switcher {
+  position: absolute;
+  top: 33px;
+  right: 33px;
+  width: 187px;
+
+  & > ion-segment.segment > ion-segment-button.segment-button {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 16px;
+    height: auto;
+    line-height: 12px;
+    background: #fff;
+    border: none;
+
+    &:hover:not(.segment-activated) {
+      background-color: #fff;
+    }
+
+    &:last-of-type {
+      border-top-right-radius: 26px;
+      border-bottom-right-radius: 26px;
+    }
+
+    &:first-of-type {
+      max-width: 80px;
+      border-top-left-radius: 26px;
+      border-bottom-left-radius: 26px;
+    }
+  }
+}

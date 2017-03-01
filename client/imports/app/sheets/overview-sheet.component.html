@@ -1,0 +1,30 @@
+<div (click)="close()" class="overlay"></div>
+<ion-card>
+  <ion-card-header>
+    <div class="card-header">
+      <p>LE: <span class="title">{{selectedItem[entityKey]}}</span></p>
+      <ion-buttons end>
+        <button class="active" ion-button>OVERVIEW</button>
+        <button (click)="openFactSheet()" ion-button>FACT SHEET</button>
+      </ion-buttons>
+    </div>
+  </ion-card-header>
+  <ion-card-content>
+    <table>
+      <thead>
+        <tr class="row-color-4">
+          <th>in HC</th>
+          <th *ngFor="let period of periods | exclude:excludedPeriods">LE {{period}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of rowsDescs; let i = index;" class="{{row.color}}">
+          <td>{{row.title}}</td>
+          <td *ngFor="let period of periods | exclude:excludedPeriods">
+            {{getCellValue(row.dataSources, period, i === 0)}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ion-card-content>
+</ion-card>

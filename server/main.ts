@@ -1,14 +1,11 @@
 import { Meteor } from 'meteor/meteor';
-import { loadD3Map } from './imports/fixtures/d3map.fixtures';
-import { loadUser } from './imports/fixtures/users.fixtures';
 
-import './imports/methods/d3map.methods';
-import './imports/methods/users.methods';
+import './imports/users';
+import './imports/data-management';
+import './imports/countries';
 
 Meteor.startup(() => {
   Accounts.config({
-    forbidClientAccountCreation : true
+    forbidClientAccountCreation: false
   });
-  loadD3Map()
-  loadUser()
 });

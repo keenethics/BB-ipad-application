@@ -1,0 +1,47 @@
+fact-sheet {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  margin: 0 auto;
+  right: 0;
+  width: 92%;
+  table {
+    line-height: 30px;
+    th, td {
+      padding: 0 4px;
+      font-size: 10px;
+    }
+
+    th:first-child, td:first-child {
+      padding: 0 5px;
+    }
+
+    td:last-child, th:last-child {
+      padding: 0 5px;
+    }
+
+    td.colored:after {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-radius: 7px;
+      background-color: transparent;
+      display: inline-block;
+      position: relative;
+      bottom: 7px;
+      right: 4px;
+    }
+
+    td.colored.red:after {
+      background-color: rgb(189,61,62);
+    }
+
+    td.colored.orange:after {
+      background-color: rgb(227,136,12);
+    }
+
+    td.colored.yellow:after {
+      background-color: rgb(255,196,1);
+    }
+  }
+}

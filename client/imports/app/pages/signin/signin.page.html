@@ -1,0 +1,18 @@
+<ion-header>
+  <header [isButtonEnabled]="false"></header>
+</ion-header>
+<ion-content>
+  <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate padding>
+    <div>
+      <h1>WELCOME BACK,</h1>
+      <h2>Log into your account to start exploring and comparing markets across the globe</h2>
+    </div>
+    <div class="inputs">
+      <ion-input [(ngModel)]="loginCredentials.email" formControlName='email' type="text" placeholder="E-mail"></ion-input>
+      <ion-input [(ngModel)]="loginCredentials.password" formControlName='password' type="password" placeholder="Password"></ion-input>
+      <button type="submit" ion-button block [disabled]="isFormValid(loginForm)">SIGN IN</button>
+    </div>
+  </form>
+</ion-content>
+<ion-footer>
+</ion-footer>

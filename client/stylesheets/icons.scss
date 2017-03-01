@@ -1,0 +1,90 @@
+@font-face {
+  font-family: 'bbicons';
+  src:  url('/fonts/bbicons.eot?d946jl');
+  src:  url('/fonts/bbicons.eot?d946jl#iefix') format('embedded-opentype'),
+    url('/fonts/bbicons.ttf?d946jl') format('truetype'),
+    url('/fonts/bbicons.woff?d946jl') format('woff'),
+    url('/fonts/bbicons.svg?d946jl#bbicons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon"], [class*=" icon"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'bbicons' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class*="icon-check"]:before {
+  content: "\e900";
+}
+[class*="icon-cities"]:before {
+  content: "\e901";
+}
+[class*="icon-countries"]:before {
+  content: "\e902";
+}
+[class*="icon-cross"]:before {
+  content: "\e903";
+}
+[class*="icon-delete"]:before {
+  content: "\e904";
+}
+[class*="icon-edit"]:before {
+  content: "\e905";
+}
+[class*="icon-filter"]:before {
+  content: "\e906";
+}
+[class*="icon-home"]:before {
+  content: "\e907";
+}
+[class*="icon-logo"]:before {
+  content: "\e908";
+}
+[class*="icon-logout"]:before {
+  content: "\e909";
+}
+[class*="icon-map"]:before {
+  content: "\e90a";
+}
+[class*="icon-markets"]:before {
+  content: "\e90b";
+}
+[class*="icon-preferences"]:before {
+  content: "\e90c";
+}
+[class*="icon-search"]:before {
+  content: "\e90d";
+}
+[class*="icon-security"]:before {
+  content: "\e90e";
+}
+[class*="icon-side-menu-close"]:before {
+  content: "\e90f";
+}
+[class*="icon-side-menu"]:before {
+  content: "\e910";
+}
+[class*="icon-swichers"]:before {
+  content: "\e911";
+}
+[class*="icon-types-and-units"]:before {
+  content: "\e912";
+}
+[class*="icon-upload"]:before {
+  content: "\e913";
+}
+[class*="icon-user"]:before {
+  content: "\e914";
+}
+

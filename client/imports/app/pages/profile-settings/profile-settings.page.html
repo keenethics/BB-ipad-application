@@ -1,0 +1,25 @@
+<ion-content>
+  <div class="content-container">
+    <div>
+      <h1>PROFILE SETTINGS</h1>
+    </div>
+    <form [formGroup]="passwordsForm" (ngSubmit)="changePassword()" novalidate>
+      <div class="inputs">
+        <ion-input [(ngModel)]="passwords.oldPassword" formControlName='oldPassword' type="password" placeholder="Old Password"></ion-input>
+        <ion-input [(ngModel)]="passwords.password" formControlName='password' type="password" placeholder="New Password"></ion-input>
+        <ion-input [(ngModel)]="passwords.confPass" formControlName='confPass' type="password" placeholder="Confirm Password"></ion-input>
+        <button [disabled]="isFormValid(passwordsForm)" type="submit" ion-button block>SAVE SETTINGS</button>
+      </div>
+      <div class="error-messages">
+        <p *ngIf="passwordsForm.controls.confPass?.errors?.validateEqual === false">
+          The new passwords don't match.
+        </p>
+        <p *ngIf="passwordsForm.controls.password?.errors?.minlength ||
+        passwordsForm.controls.confPass?.errors?.minlength ||
+        passwordsForm.controls.oldPassword?.errors?.minlength">
+          The minimal length of a password is 6 symbols.
+        </p>
+      </div>
+    </form>
+  </div>
+</ion-content>
