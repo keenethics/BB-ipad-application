@@ -319,7 +319,7 @@ export class DataFilterComponent implements OnInit, OnDestroy {
   }
 
   private doDataQuery(filterObj: any, isVirtualOfficesIncluded: boolean = false) {
-    if(!isVirtualOfficesIncluded) filterObj.city = Object.assign({ $nin:  ['Non Nokia Site', 'Virtual Office'] }, filterObj.city);
+    if (!isVirtualOfficesIncluded) filterObj.city = Object.assign({ $nin: ['Non Nokia Site', 'Virtual Office'] }, filterObj.city);
     this.filterCtrl.currentFilter$ = filterObj;
   }
 }
