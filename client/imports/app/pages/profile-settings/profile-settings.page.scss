@@ -16,9 +16,9 @@ profile-settings-page {
       background: #F8F9FA;
 
       h1 {
-        font-weight: 400;
-        font-size: 22px;
-        color: map-get($colors, 'primary');
+        font-weight: 300;
+        font-size: 16px;
+        color: #000;
       }
 
       div.content-container {
@@ -26,14 +26,13 @@ profile-settings-page {
         height: 420px;
         padding: 40px 50px !important;
         margin: auto;
-        margin-top: 10%;
       }
 
       form {
-
+        display: flex;
+        flex-direction: column;
         div.inputs {
-          overflow: hidden;
-          margin-top: 30px;
+          overflow: visible;
 
           ion-input {
             width: 100%;
@@ -44,6 +43,7 @@ profile-settings-page {
             background: white;
             border-radius: 4px;
             padding: 0 30px;
+            box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.05);
           }
 
           button {
@@ -55,6 +55,7 @@ profile-settings-page {
             border-radius: 28px;
             margin-top: 20px;
             float: left;
+            box-shadow: 0px 5px 15px 0px rgba(11,64,156,0.5);
           }
         }
 

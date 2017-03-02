@@ -197,6 +197,10 @@ ion-footer {
   }
 }
 
+.button-ios:not([class*="button-clear"]) {
+  background-color: map-get($colors, "light-blue");
+}
+
 @import '../imports/app/filters/data-filter/filter.component.scss';
 @import '../imports/app/sheets/overview-sheet.component.scss';
 @import '../imports/app/sheets/sheets.styles.scss';
