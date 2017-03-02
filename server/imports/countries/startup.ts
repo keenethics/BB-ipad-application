@@ -4,9 +4,5 @@ import { AvailableCountries } from '../../../both/countries/available-countries.
 import { setMarketCountries, setAvailableCountries } from '../../../both/countries/helpers';
 
 Meteor.startup(() => {
-  MarketCountries.remove({});
-  AvailableCountries.remove({});
 
-  setMarketCountries();
-  setAvailableCountries();
 });
