@@ -11,7 +11,6 @@ import { AppComponent } from './app.component';
 
 import '../../stylesheets/global.scss';
 
-
 @NgModule({
   imports: [
     BrowserModule,

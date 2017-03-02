@@ -34,6 +34,15 @@ export class BuFilterComponnet {
     });
   }
 
+  checkToggle(title: string) {
+    const state = this.isInQueryObject(title);
+    if (state) {
+      this.select({ title, value: false });
+    } else {
+      this.select({ title, value: true });
+    }
+  }
+
   select(item: { title: any, value: boolean }) {
     if (item.title === 'Total') {
       this.queryObject.n2 = 'Total';
@@ -55,7 +64,9 @@ export class BuFilterComponnet {
       //     }
       //   }
       // } else {
-        this.queryObject.n2 = { $in: Array.isArray(item.title) ? [...item.title] : [item.title] };
+      
+      this.queryObject.n2 = { $in: Array.isArray(item.title) ? [...item.title] : [item.title] };
+
       // }
     } else {
       if (Array.isArray(item.title)) {
