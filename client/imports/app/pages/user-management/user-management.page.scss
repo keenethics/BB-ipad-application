@@ -5,57 +5,14 @@ $colors: (
   dark: #47494D,
   dark-blue: #173567,
   light-blue: #3B65AD,
-  ui-light: #ECEFF4
+  ui-light: #ECEFF4,
+  page-background: #F8F9FA
 );
 
 user-management-page {
-  ion-toolbar.subheader {
-    padding-top: 77px;
-
-    div.toolbar-background {
-      background: transparent;
-      border: none;
-    }
-
-    div.toolbar-content {
-      width: 450px;
-      flex: none;
-      margin: auto;
-      display: flex;
-      align-items: center;
-      color: map-get($colors, 'light-blue');
-
-      button[ion-button] {
-        width: 40px;
-        height: 40px;
-        padding: 0px;
-        margin-right: 10px;
-
-        span.button-inner {
-          font-size: 30px;
-          position: absolute;
-          top: -3px;
-          left: 1px;
-        }
-      }
-    }
-  }
-
-  ion-toolbar.subfooter {
-    padding-bottom: 77px;
-    div.toolbar-background {
-      background: transparent;
-      border: none;
-    }
-
-    div.toolbar-content {
-      width: 450px;
-      flex: none;
-      margin: auto;
-    }
-  }
-
   ion-content.content {
+    background-color: map-get($colors, "page-background");
+
     ion-list {
       width: 450px;
       margin: auto;
@@ -65,9 +22,7 @@ user-management-page {
         }
       } 
       &>ion-item.item.item-block {
-        div.item-inner {
-          border: none;
-        }
+        width: 450px;
         border-bottom: none;
         border: none;
         padding: 0;
@@ -75,21 +30,59 @@ user-management-page {
         margin: initial;
         color: map-get($colors, 'light-blue');
         border-radius: 5px;
-      }
-    }
-  }
 
-  div.pagination {
-    button[ion-button] {
-      background-color: map-get($colors, 'light');
-      border-radius: 5px;
-      margin: 0 11px;
-      font-weight: bold;
-      color: map-get($colors, 'light-blue');
+        h1 {
+          font-size: 16px;
+          color: #173567;
+        }
 
-      &.active {
-        background-color: map-get($colors, 'light-blue');
-        color: map-get($colors, 'light');
+        h2 {
+          font-size: 14px;
+          color: map-get($colors, "ight-blue")
+        }
+
+        div.item-inner {
+          padding: 10px 10px 10px 25px;
+          border: none;
+        }
+
+        &.selected {
+          height: 79px;
+          box-shadow: 1px 0px 20px 0px rgba(0, 0, 0, 0.05);
+
+          div.item-inner {
+            background: #fff;
+            box-shadow: 10px 0px 20px 0px rgba(0,0,0,0.1);
+
+            button.button {
+              margin: 0;
+              padding: 20px;
+              border-radius: initial;
+              padding-right: 20px;
+              border-right: 1px solid #E2E8F0;
+
+              &:last-child {
+                border-right: none;
+                padding-right: 10px;
+              }
+            }
+          }
+        }
+
+        &.deleting {
+          h1 {
+            text-align: center;
+          }
+          div.item-inner {
+            div.buttons {
+              width: 123px;
+              margin: auto;
+              button.button {
+                padding: 10px;
+              }
+            }
+          }
+        }
       }
     }
   }

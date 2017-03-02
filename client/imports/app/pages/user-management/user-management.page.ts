@@ -28,9 +28,11 @@ import { SigninPage } from '../signin/signin.page';
   encapsulation: ViewEncapsulation.None
 })
 export class UserManagementPage implements OnInit {
-  public usersLimit: number = 5;
-  private selectedItem: any;
+  private usersLimit: number = 50;
+  private usersSkip: number = 0;
+  private selectedUser: any;
   private userToDelete: any;
+  private countSubscr: Subscription;
 
   constructor(
     public navCtrl: NavController,
@@ -43,11 +45,17 @@ export class UserManagementPage implements OnInit {
     private menuCtrl: MenuController,
     private popoverCtrl: PopoverController
   ) {
-    this.usersCtrl.limit = this.usersLimit;
   }
 
   ngOnInit() {
-    this.usersCtrl.getUsers(this.usersLimit, 0);
+    this.countSubscr = this.usersCtrl.usersCount$.subscribe((count: number) => {
+      this.usersSkip = count;
+    });
+    this.usersCtrl.getUsers(0, this.usersLimit);
+  }
+
+  ngOnDestroy() {
+    if (this.countSubscr) this.countSubscr.unsubscribe();
   }
 
   ionViewCanEnter() {
@@ -56,10 +64,6 @@ export class UserManagementPage implements OnInit {
     } catch (err) {
       return false;
     }
-  }
-
-  setPage(skip: number) {
-    this.usersCtrl.getUsers(this.usersLimit, skip);
   }
 
   addUser() {
@@ -78,10 +82,21 @@ export class UserManagementPage implements OnInit {
   }
 
   isSelected(id: any) {
-    return this.selectedItem ? id === this.selectedItem._id : false;
+    return this.selectedUser ? id === this.selectedUser._id : false;
   }
 
   isDeleting(id: any) {
     return this.userToDelete ? id === this.userToDelete._id : false;
+  }
+
+  doInfinite(infiniteScroll: any) {
+    this.usersCtrl.getUsers(this.usersSkip, this.usersLimit)
+      .then(() => {
+        infiniteScroll.complete();
+      });
+  }
+
+  select(user: Meteor.User) {
+    this.selectedUser = user;
   }
 }

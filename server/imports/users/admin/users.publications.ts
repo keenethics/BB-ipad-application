@@ -7,3 +7,12 @@ Meteor.publish('allUsers', function (userId: string) {
 
   return this.ready();
 });
+
+Meteor.publish('users', function (userId: string, skip: number, limit: number) {
+  if (Roles.userIsInRole(userId, 'Administrator')) {
+    const users = Meteor.users.find({}, { skip, limit });
+    return users;
+  }
+
+  return this.ready();
+});

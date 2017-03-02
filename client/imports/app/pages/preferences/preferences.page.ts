@@ -24,7 +24,7 @@ export class PreferencesPage {
       { icon: 'icon-preferences', title: 'PROFILE SETTINGS', selector: 'profile-settings-page', component: ProfileSettingsPage },
       { icon: 'icon-user', title: 'USER LIST', selector: 'user-management-page', component: UserManagementPage },
       { icon: 'icon-swichers', title: 'PREFERENCES', selector: 'swichers-page', component: SwichersPage },
-      { icon: 'icon-types-and-units', title: 'TYPES AND UNITS', selector: 'types-and-units', component: null }
+      // { icon: 'icon-types-and-units', title: 'TYPES AND UNITS', selector: 'types-and-units', component: null }
     ];
   }
 };
