@@ -13,6 +13,25 @@ user-management-page {
   ion-content.content {
     background-color: map-get($colors, "page-background");
 
+    &>div.scroll-content {
+      width: 520px;
+      margin: auto;
+    }
+
+    div.add-button-wrap {
+      justify-content: flex-end;
+      display: flex;
+      align-items: center;
+      padding: 15px 32px;
+
+      &>span {
+        font-size: 13px;
+        font-weight: bold;
+        color: map-get($colors, 'light-blue');
+        margin-right: 15px;
+      }
+    }
+
     ion-list {
       width: 450px;
       margin: auto;

@@ -52,7 +52,13 @@ export class MapSwichers implements OnInit, OnChanges {
     }
   }
 
-  emitChanges() {
+  emitChanges(swicher: any) {
+    swicher.value = !swicher.value;
+    this.onChanges.emit(this.swichersForm.getRawValue());
+  }
+
+  setValue(control: FormControl, value: boolean) {
+    control.setValue(value);
     this.onChanges.emit(this.swichersForm.getRawValue());
   }
 }

@@ -1,4 +1,10 @@
 <ion-content>
+  <div class="add-button-wrap">
+    <span>ADD USER</span>
+    <button (click)="addUser()" ion-button icon-only round>
+      <ion-icon name="add" mode="md"></ion-icon>
+    </button>
+  </div>
   <ion-list>
     <template ngFor let-u [ngForOf]="usersCtrl.users$ | async">
       <ion-item *ngIf="!isDeleting(u._id)" (click)="select(u)" [ngClass]="{ 'selected': isSelected(u._id) }">

@@ -5,15 +5,16 @@ $colors: (
   dark: #47494D,
   dark-blue: #173567,
   light-blue: #3B65AD,
-  ui-light: #ECEFF4
+  ui-light: #ECEFF4,
+  page-background: #F8F9FA
 );
 
 edit-user-page, create-user-page {
   &>form {
-    background: #F8F9FA;
+    background: map-get($colors, 'page-background');
     padding: 50px;
     h1 {
-      margin-top: 0;
+      margin: 0 0 10px 10px;
       font-weight: 400;
       font-size: 22px;
       color: map-get($colors, 'primary');
@@ -53,7 +54,9 @@ edit-user-page, create-user-page {
           border-radius: 5px;
           line-height: 28px;
           color: #9b9b9b;
-          margin: 10px 0;
+          margin: 10px;
+          box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.05);
+
           ion-select {
             color: map-get($colors, 'light-blue');
             div.select-icon {
@@ -71,11 +74,12 @@ edit-user-page, create-user-page {
         width: 100%;
         font-size: 15px;
         line-height: 28px;
-        margin: 10px 0;
+        margin: 10px 10px;
         float: left;
         background: white;
         border-radius: 4px;
         padding: 0 30px;
+        box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.05);
       }
 
       button {
@@ -87,6 +91,8 @@ edit-user-page, create-user-page {
         border-radius: 28px;
         margin-top: 20px;
         float: left;
+        margin-left: 10px;
+        margin-bottom: 10px;
 
         &.secondary {
           background: none;
@@ -100,9 +106,5 @@ edit-user-page, create-user-page {
 ion-popover.edit-form, ion-popover.create-form {
   .popover-content {
     width: 500px
-  }
-
-  ion-backdrop {
-    opacity: 0.3;
   }
 }

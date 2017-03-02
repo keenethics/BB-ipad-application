@@ -1,12 +1,9 @@
-<form [formGroup]="swichersForm" (ngSubmit)="emitChanges()">
+<form [formGroup]="swichersForm">
   <div class="toggle-line" *ngFor="let s of swichers">
-    <button [ngClass]="{ 'active': !swichersForm.controls[s.key].value }" (click)="swichersForm.controls[s.key].setValue(false)"
+    <button [ngClass]="{ 'active': !swichersForm.controls[s.key].value }" (click)="setValue(swichersForm.controls[s.key], false)"
       type="button" ion-button clear>{{s.labels[0]}}</button>
-      <ion-toggle [formControlName]="s.key" checked="s.value"></ion-toggle>
-    <button [ngClass]="{ 'active': swichersForm.controls[s.key].value }" (click)="swichersForm.controls[s.key].setValue(true)"
+      <ion-toggle [formControlName]="s.key" checked="s.value" (ionChange)="emitChanges(s)"></ion-toggle>
+    <button [ngClass]="{ 'active': swichersForm.controls[s.key].value }" (click)="setValue(swichersForm.controls[s.key], true)"
       type="button" ion-button clear>{{s.labels[1]}}</button>
-  </div>
-  <div>
-    <button ion-button>Save changes</button>
   </div>
 </form>
