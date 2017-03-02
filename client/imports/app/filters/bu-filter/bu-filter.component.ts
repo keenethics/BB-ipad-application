@@ -64,7 +64,9 @@ export class BuFilterComponnet {
       //     }
       //   }
       // } else {
+      
       this.queryObject.n2 = { $in: Array.isArray(item.title) ? [...item.title] : [item.title] };
+
       // }
     } else {
       if (Array.isArray(item.title)) {

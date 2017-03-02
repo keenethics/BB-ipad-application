@@ -77,6 +77,7 @@ export class UserManagementPage implements OnInit {
     this.usersCtrl.deleteUser(userId);
   }
 
+
   isSelected(id: any) {
     return this.selectedItem ? id === this.selectedItem._id : false;
   }

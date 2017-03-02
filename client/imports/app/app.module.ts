@@ -8,8 +8,8 @@ import { DataManagementModule } from './data-management/data-management.module';
 import { SharedModule } from './shared/shared.module';
 import { FiltersModule } from './filters';
 import { AppComponent } from './app.component';
-import '../../stylesheets/global.scss';
 
+import '../../stylesheets/global.scss';
 
 @NgModule({
   imports: [

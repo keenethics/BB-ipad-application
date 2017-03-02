@@ -32,7 +32,6 @@
     "typescript-extends": "^1.0.1"
   },
   "dependencies": {
-
     "@angular/common": "2.2.1",
     "@angular/compiler": "2.2.1",
     "@angular/compiler-cli": "2.2.1",
