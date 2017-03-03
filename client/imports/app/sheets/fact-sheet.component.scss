@@ -6,19 +6,72 @@ fact-sheet {
   right: 0;
   width: 92%;
   table {
+    background: #fff;
     line-height: 30px;
+
     th, td {
-      padding: 0 4px;
-      font-size: 10px;
+      font-size: 13px;
+      border: 1px solid #c1c1c1;
+      text-align: right;
+      line-height: 19px;
+      padding: 0 2px;
     }
 
-    th:first-child, td:first-child {
-      padding: 0 5px;
+    td:first-child {
+      text-align: left;
+      font-weight: bold;
     }
 
-    td:last-child, th:last-child {
-      padding: 0 5px;
+    th, td {
+      &.l-border {
+        border-left: 2px solid black;
+      }
+
+      &.r-border {
+        border-right: 2px solid black;
+      }
+
+      &.b-border {
+        border-bottom: 1px solid black;
+      }
     }
+
+    th {
+      text-align: center;
+      background: gray;
+      color: #fff;
+      font-weight: normal;
+
+      &.background-light {
+        background: #E2E8F0;
+        color: black;
+      }
+    }
+
+    tr {
+      &:first-child {
+        th:first-child {
+          border-bottom: none;
+        }
+      }
+      &+tr{
+        th:first-child {
+          border-top: none;
+        }
+      }
+    }
+
+    thead {
+      tr:last-child {
+        th {
+          border-bottom: 1px solid black;
+        }
+      }
+    }
+
+    // td:last-child, th:last-child {
+    //   padding: 0 5px;
+    // }
 
     td.colored:after {
       content: '';

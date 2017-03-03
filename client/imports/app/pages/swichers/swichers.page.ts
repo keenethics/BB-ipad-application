@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 import { HomePage } from '../home/home.page';
@@ -12,7 +12,8 @@ import template from './swichers.page.html';
 @Component({
   selector: 'swichers-page',
   template,
-  styles: [styles]
+  styles: [styles],
+  encapsulation: ViewEncapsulation.None
 })
 export class SwichersPage {
   public swichersState: any;
@@ -25,6 +26,5 @@ export class SwichersPage {
 
   applySettingsToMap(swichersState: any) {
     localStorage.setItem('mapSettings', JSON.stringify(swichersState));
-    this.navCtrl.setRoot(HomePage);
   }
 };

@@ -7,21 +7,12 @@ import { ToastsManager } from '../common/toasts-manager';
 
 @Injectable()
 export class UsersController {
-  public limit = 0;
   public editableUser: Meteor.User = null;
-
   private _users: BehaviorSubject<Meteor.User> = new BehaviorSubject([]);
   private _usersCount: BehaviorSubject<Meteor.User> = new BehaviorSubject(0);
-  private lastOptions = { limit: 0, skip: 0 };
 
   constructor(private toasts: ToastsManager) {
-    MeteorObservable
-      .subscribe('allUsers', Meteor.userId())
-      .subscribe((users: Mongo.Collection<Meteor.User>) => {
-        const usersCollection = Meteor.users.find({});
-        this._users.next(Meteor.users.find({}, { limit: this.limit }).fetch());
-        this._usersCount.next(usersCollection.count());
-      });
+
   }
 
   get usersCount$() {
@@ -32,18 +23,23 @@ export class UsersController {
     return this._users.asObservable();
   }
 
-  getUsers(limit: number = 0, skip: number = 0) {
-    this.lastOptions = { skip, limit };
-    const users = Meteor.users.find({}, this.lastOptions).fetch();
-    this._users.next(users);
-    this._usersCount.next(Meteor.users.find({}).count());
+  getUsers(skip: number, limit: number) {
+    return new Promise((resolve) => {
+      MeteorObservable.subscribe('users', Meteor.userId(), skip, limit)
+        .subscribe(() => {
+          const users = Meteor.users.find({}).fetch();
+          this._users.next(users);
+          this._usersCount.next(users.length);
+          resolve();
+        });
+    });
   }
 
   deleteUser(userId: string) {
     MeteorObservable.call('users.remove', { userId })
       .subscribe((res) => {
-        const {limit, skip} = this.lastOptions;
-        this.getUsers(limit, skip);
+        const users = Meteor.users.find({}).fetch();
+        this._users.next(users);
       }, (err) => {
         this.toasts.okToast(err.reason);
       });
@@ -53,8 +49,7 @@ export class UsersController {
     return new Promise((resolve, reject) => {
       MeteorObservable.call('users.update', { userId, email, password, roleId })
         .subscribe(res => {
-          const {limit, skip} = this.lastOptions;
-          this.getUsers(limit, skip);
+
           resolve(res);
         }, err => {
           this.toasts.okToast(err.reason);

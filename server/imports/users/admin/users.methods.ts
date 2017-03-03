@@ -118,3 +118,18 @@ export const removeUser = new ValidatedMethod({
     return `User ${userId} removed successfully`;
   }
 });
+
+export const addUsers = new ValidatedMethod({
+  name: 'users.addTestUsers',
+  validate: new SimpleSchema({
+    count: { type: Number }
+  }).validator(),
+  run({ count }) {
+    for (let i = 0; i < count; i++) {
+      const userId = Accounts.createUser({ email: `user${i}@mail.com`, password: '111111' });
+      console.log(userId);
+      Roles.addUsersToRoles(userId, 'User');
+    }
+    return `Added ${count} users`;
+  }
+});

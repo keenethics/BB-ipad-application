@@ -14,21 +14,21 @@
       <thead>
         <tr class="row-color-4">
           <th></th>
-          <th colspan="4" *ngFor="let p of periods | exclude:['Actuals', 'Baseline']" class="t-right">
+          <th colspan="4" class="l-border r-border" *ngFor="let p of periods | exclude:['Actuals', 'Baseline']">
             {{p}}
           </th>
           <th></th>
         </tr>
         <tr>
           <th></th>
-          <th *ngFor="let col of columnsDescs" class="t-right">
+          <th *ngFor="let col of columnsDescs" [ngClass]="col.class">
             {{col.title}}
           </th>
       </thead>
       <tbody>
         <tr *ngFor="let row of rowsDescs">
           <td>{{row.title}}</td>
-          <td *ngFor="let col of columnsDescs|exclude:[lastColumnsDesc]">
+          <td *ngFor="let col of columnsDescs|exclude:[lastColumnsDesc]" [ngClass]="[col.class || '', row.class || '']">
             {{getCellValue(row, col)}}
           </td>
           <td [colored]="getCellValue(row, lastColumnsDesc)">{{getCellValue(row, lastColumnsDesc)|percentage}}</td>

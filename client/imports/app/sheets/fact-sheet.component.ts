@@ -49,29 +49,29 @@ export class FactSheetComponent {
 
   initTableDescriptions() {
     this.columnsDescs = [
-      { title: 'P12', dataSources: { period: '2016', highLevelCategory: 'Landing point' } },
-      { title: 'Ramp up', dataSources: { period: '2016', highLevelCategory: 'Ramp up' } },
-      { title: 'Ramp down', dataSources: { period: '2016', highLevelCategory: 'Ramp down' } },
-      { title: 'Other flows', dataSources: { period: '2016', highLevelCategory: ['Other in', 'Other out'] } },
-      { title: 'LP', dataSources: { period: '2017', highLevelCategory: 'Landing point' } },
-      { title: 'Ramp up', dataSources: { period: '2017', highLevelCategory: 'Ramp up' } },
-      { title: 'Ramp down', dataSources: { period: '2017', highLevelCategory: 'Ramp down' } },
-      { title: 'Other flows', dataSources: { period: '2017', highLevelCategory: ['Other in', 'Other out'] } },
-      { title: 'LP', dataSources: { period: '2018', highLevelCategory: 'Landing point' } },
-      { title: 'Ramp up', dataSources: { period: '2018', highLevelCategory: 'Ramp up' } },
-      { title: 'Ramp down', dataSources: { period: '2018', highLevelCategory: 'Ramp down' } },
-      { title: 'Other flows', dataSources: { period: '2018', highLevelCategory: ['Other in', 'Other out'] } },
-      { title: 'LP', dataSources: { period: '2019', highLevelCategory: 'Landing point' } },
-      { title: 'Ramp up', dataSources: { period: '2019', highLevelCategory: 'Ramp up' } },
-      { title: 'Ramp down', dataSources: { period: '2019', highLevelCategory: 'Ramp down' } },
-      { title: 'Other flows', dataSources: { period: '2019', highLevelCategory: ['Other in', 'Other out'] } },
+      { title: 'Ramp up', class: 'background-light l-border', dataSources: { period: 'Actuals', highLevelCategory: 'Ramp up' } },
+      { title: 'Ramp down', class: 'background-light', dataSources: { period: 'Actuals', highLevelCategory: 'Ramp down' } },
+      { title: 'Other flows', class: 'background-light', dataSources: { period: 'Actuals', highLevelCategory: ['Other in', 'Other out'] } },
+      { title: 'P12', class: 'r-border', dataSources: { period: 'Actuals', highLevelCategory: 'Landing point' } },
+      { title: 'Ramp up', class: 'background-light l-border', dataSources: { period: '2017', highLevelCategory: 'Ramp up' } },
+      { title: 'Ramp down', class: 'background-light', dataSources: { period: '2017', highLevelCategory: 'Ramp down' } },
+      { title: 'Other flows', class: 'background-light', dataSources: { period: '2017', highLevelCategory: ['Other in', 'Other out'] } },
+      { title: 'LP', class: 'r-border', dataSources: { period: '2017', highLevelCategory: 'Landing point' } },
+      { title: 'Ramp up', class: 'background-light l-border', dataSources: { period: '2018', highLevelCategory: 'Ramp up' } },
+      { title: 'Ramp down', class: 'background-light', dataSources: { period: '2018', highLevelCategory: 'Ramp down' } },
+      { title: 'Other flows', class: 'background-light', dataSources: { period: '2018', highLevelCategory: ['Other in', 'Other out'] } },
+      { title: 'LP', class: 'r-border', dataSources: { period: '2018', highLevelCategory: 'Landing point' } },
+      { title: 'Ramp up', class: 'background-light l-border', dataSources: { period: '2019', highLevelCategory: 'Ramp up' } },
+      { title: 'Ramp down', class: 'background-light', dataSources: { period: '2019', highLevelCategory: 'Ramp down' } },
+      { title: 'Other flows', class: 'background-light', dataSources: { period: '2019', highLevelCategory: ['Other in', 'Other out'] } },
+      { title: 'LP', class: 'r-border', dataSources: { period: '2019', highLevelCategory: 'Landing point' } },
       {
         title: 'LP2019 vs P122016',
-        dataSources: { period: ['2016', '2019'], highLevelCategory: 'Landing point' },
+        class: 'background-light', dataSources: { period: ['Actuals', '2019'], highLevelCategory: 'Landing point' },
         calc: (inputs: any[]) => {
           if (inputs.length > 1) {
             const lp = inputs.filter((item: any) => item.period === '2019')[0];
-            const fp = inputs.filter((item: any) => item.period === '2016')[0];
+            const fp = inputs.filter((item: any) => item.period === 'Actuals')[0];
             return (Number(lp.value - fp.value) / Number(fp.value) * 100);
           }
 
@@ -93,7 +93,7 @@ export class FactSheetComponent {
       { title: 'COO', dataSources: { n2: 'COO' } },
       { title: 'CM', dataSources: { n2: 'Commercial Management' } },
       { title: 'CTO', dataSources: { n2: 'CTO' } },
-      { title: 'Mgmt', dataSources: { n2: ['Central Team', 'Business and Portfolio Integration Leadership'] } },
+      { title: 'Mgmt', class: 'b-border', dataSources: { n2: ['Central Team', 'Business and Portfolio Integration Leadership'] } },
       { title: 'MNTotal', dataSources: { n2: 'Total' } }
     ];
 
@@ -127,17 +127,17 @@ export class FactSheetComponent {
     // this.rowsDescs = [
     //   {
     //     title: `Baseline P12/${baseLineYear}`,
-    //     dataSources: { period: 'Baseline', highLevelCategory: 'Landing point' },
+    //     class: 'background-light', dataSources: { period: 'Baseline', highLevelCategory: 'Landing point' },
     //     color: ''
     //   },
     //   {
     //     title: `P12/${firstPeriod}`,
-    //     dataSources: { period: String(firstPeriod), highLevelCategory: 'Landing point' },
+    //     class: 'background-light', dataSources: { period: String(firstPeriod), highLevelCategory: 'Landing point' },
     //     color: 'row-color-3'
     //   },
     //   {
     //     title: `Net down/up P12/${firstPeriod} - ${lastPeriod}`,
-    //     dataSources: { period: [String(lastPeriod), String(firstPeriod)], highLevelCategory: 'Landing point' },
+    //     class: 'background-light', dataSources: { period: [String(lastPeriod), String(firstPeriod)], highLevelCategory: 'Landing point' },
     // calc: (inputs: any[]) => {
     //   if (inputs.length > 1) {
     //     const lp = inputs.filter((item: any) => item.period === String(lastPeriod))[0];
@@ -150,12 +150,12 @@ export class FactSheetComponent {
     //   },
     //   {
     //     title: `Landing point ${lastPeriod}`,
-    //     dataSources: { period: String(lastPeriod), highLevelCategory: 'Landing point' },
+    //     class: 'background-light', dataSources: { period: String(lastPeriod), highLevelCategory: 'Landing point' },
     //     color: 'row-color-3'
     //   },
     //   {
     //     title: `YE${lastPeriod} vs. P12/${firstPeriod}`,
-    //     dataSources: { period: [String(firstPeriod), String(lastPeriod)], highLevelCategory: 'Landing point' },
+    //     class: 'background-light', dataSources: { period: [String(firstPeriod), String(lastPeriod)], highLevelCategory: 'Landing point' },
     // calc: (inputs: any[]) => {
     //   if (inputs.length > 1) {
     //     const lp = inputs.filter((item: any) => item.period === String(lastPeriod))[0];

@@ -1,7 +1,10 @@
 <ion-content>
   <div class="content-container">
     <div>
-      <h1>PROFILE SETTINGS</h1>
+      <h1>
+        <ion-icon name="icon-security"></ion-icon>
+        Security
+      </h1>
     </div>
     <form [formGroup]="passwordsForm" (ngSubmit)="changePassword()" novalidate>
       <div class="inputs">
@@ -18,7 +21,7 @@
         passwordsForm.controls.confPass?.errors?.minlength ||
         passwordsForm.controls.oldPassword?.errors?.minlength">
           The minimal length of a password is 6 symbols.
-        </p>
+          </p>
       </div>
     </form>
   </div>

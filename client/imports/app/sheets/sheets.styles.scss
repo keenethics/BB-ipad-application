@@ -21,74 +21,6 @@ overview-sheet, fact-sheet {
   position: absolute;
   top: 0;
   left: 0;
-
-  table {
-    width: 100%;
-    border-radius: 6px;
-    border-collapse: collapse;
-    background: white;
-    white-space: nowrap;
-    font-size: 12px;
-    line-height: 65px;
-    overflow: hidden;
-    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
-
-    th, td {
-      text-align: right;
-      padding: 0 20px;
-      color: map-get($colors,'light-blue');
-    }
-
-    td:first-child, th:first-child {
-      padding-left: 30px;
-      text-align: left;
-      font-weight: normal;
-      color: #000;
-    }
-
-    tr {
-      border-top: 1px solid map-get($colors,'light');
-      border-bottom: 1px solid map-get($colors,'light');
-    }
-
-    td:last-child, th:last-child {
-      padding-right: 30px;
-    } 
-
-    th.t-italic {
-      font-weight: 100;
-      font-style: italic;
-    }
-
-    th.t-right, td.t-right {
-      text-align: right;
-    }
-
-    .row-color-1 {
-      background-color: $row-color-1;
-    }
-
-    .row-color-2 {
-      background-color: $row-color-2;
-    }
-
-    .row-color-3 {
-      background-color: map-get($colors,'light');
-      font-weight: bold;
-      color: map-get($colors,'light-blue');
-    }
-
-    .row-color-4 {
-      & {
-        th {
-          color: #FFF !important;
-          font-weight: bold;
-        }
-      }
-      color: #FFF !important;
-      background-color: map-get($colors,'light-blue');
-    }
-  }
   
   ion-card.card {
     margin: 0;
@@ -136,6 +68,7 @@ overview-sheet, fact-sheet {
             padding: 0 25px;
             background-color: map-get($colors,'light');
             color: map-get($colors,'light-blue');
+            box-shadow: none;
 
             &.active {
               background-color: map-get($colors,'light-blue');

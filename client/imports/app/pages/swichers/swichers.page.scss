@@ -1,0 +1,16 @@
+$colors: (
+  primary: #0B409C,
+  secondary: #A7C1E3,
+  light: #E2E8F0,
+  dark: #47494D,
+  dark-blue: #173567,
+  light-blue: #3B65AD,
+  ui-light: #ECEFF4,
+  page-background: #F8F9FA
+);
+
+swichers-page {
+  ion-content.content {
+    background-color: map-get($colors, 'page-background');
+  }
+}

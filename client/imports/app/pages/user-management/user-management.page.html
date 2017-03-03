@@ -1,32 +1,36 @@
 <ion-content>
-  <ion-toolbar class="subheader">
-    <button id="add-user-button" (click)="addUser()" ion-button round>+</button>
-    <label for="add-user-button">ADD USER</label>
-  </ion-toolbar>
+  <div class="add-button-wrap">
+    <span>ADD USER</span>
+    <button (click)="addUser()" ion-button icon-only round>
+      <ion-icon name="add" mode="md"></ion-icon>
+    </button>
+  </div>
   <ion-list>
     <template ngFor let-u [ngForOf]="usersCtrl.users$ | async">
-      <ion-item *ngIf="!isDeleting(u._id)" (click)="selectedItem = u">
-        <h2>{{u.emails[0].address}}</h2>
-        <h3>{{u.roles[0]}}</h3>
-        <button (click)="editUser(u)" ion-button small clear item-right icon-only>
+      <ion-item *ngIf="!isDeleting(u._id)" (click)="select(u)" [ngClass]="{ 'selected': isSelected(u._id) }">
+        <h1>{{u.emails[0].address}}</h1>
+        <h2>{{u.roles[0]}}</h2>
+        <button *ngIf="isSelected(u._id)" (click)="editUser(u)" ion-button small clear item-right icon-only>
           <ion-icon class="icon-edit" name="icon-edit"></ion-icon>
         </button>
-        <button (click)="userToDelete = u" ion-button small clear item-right icon-only>
+        <button *ngIf="isSelected(u._id)" (click)="userToDelete = u" ion-button small clear item-right icon-only>
           <ion-icon class="icon-delete" name="icon-delete"></ion-icon>
         </button>
       </ion-item>
-      <ion-item *ngIf="isDeleting(u._id)">
-        Delete {{u.emails[0].address}} account?
-        <button (click)="deleteUser(u._id)" ion-button small clear item-right icon-only>
-          <ion-icon class="icon-check" name="icon-check"></ion-icon>
-        </button>
-        <button (click)="userToDelete = null" ion-button small clear item-right icon-only>
-          <ion-icon class="icon-cross" name="icon-cross"></ion-icon>
-        </button>
+      <ion-item *ngIf="isDeleting(u._id)" class="selected deleting">
+        <h1>Delete {{u.emails[0].address}} account?</h1>
+        <div class="buttons">
+          <button (click)="deleteUser(u._id)" ion-button small clear item-right icon-only>
+            <ion-icon class="icon-check" name="icon-check"></ion-icon>
+          </button>
+          <button (click)="userToDelete = null" ion-button small clear item-right icon-only>
+            <ion-icon class="icon-cross" name="icon-cross"></ion-icon>
+          </button>
+        </div>
       </ion-item>
     </template>
   </ion-list>
-  <ion-toolbar class="subfooter">
-    <pagination [allUsersCount]="usersCtrl.usersCount$ | async" [limit]="usersLimit" (onSelect)="setPage($event)"></pagination>
-  </ion-toolbar>
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
