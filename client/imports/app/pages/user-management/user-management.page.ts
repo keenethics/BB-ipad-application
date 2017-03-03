@@ -28,7 +28,7 @@ import { SigninPage } from '../signin/signin.page';
   encapsulation: ViewEncapsulation.None
 })
 export class UserManagementPage implements OnInit {
-  private usersLimit: number = 50;
+  private usersLimit: number = 25;
   private usersSkip: number = 0;
   private selectedUser: any;
   private userToDelete: any;

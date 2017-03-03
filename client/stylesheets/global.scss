@@ -133,25 +133,24 @@ ion-header {
     ion-buttons {
       button.bar-button {
         font-size: 7px;
-        padding-left: 24px;
-        padding-top: 7px;
+        padding: 7px 15px 0;
         ion-icon {
-          font-size: 15px;
+          font-size: 22px;
         }
         &:hover {
           color: map-get($colors,'light');
+        }
+
+        &:first-child {
+          padding-left: 30px;
         }
       }
     }
 
     ion-buttons[end] {
       button.bar-button {
-        padding-right: 24px;
-        &.export-btn {
-          padding: 7px 0 0;
-          font-size: 13px;
-          font-weight: bold;
-          color: map-get($colors, 'light-blue');
+         &:last-child {
+          padding-right: 30px;
         }
       }
     }
