@@ -1,6 +1,47 @@
+$colors: (
+  primary: #0B409C,
+  secondary: #A7C1E3,
+  light: #E2E8F0,
+  dark: #47494D,
+  dark-blue: #173567,
+  light-blue: #3B65AD,
+  ui-light: #ECEFF4
+);
+
 preferences-page {
   ion-content {
-    ion-tabs.tabs {
+    ion-tabs.tabs[tabsPlacement="top"] {
+      div.tabbar {
+        border: none;
+        background-color: #F8F9FA;
+
+        a.tab-button {
+          padding: 0 2px 0 16px;
+          max-width: 160px;
+          min-height: 100px;
+          margin: 20px 10px;
+          border-radius: 4px;
+          font-size: 13px;
+          align-items: flex-start;
+          justify-content: flex-start;
+          background-color: #fff;
+          box-shadow: 10px 0px 20px 0px rgba(0,0,0,0.1);
+
+          &[aria-selected=true]{
+            background-color: map-get($colors, 'light-blue');
+            color: #fff;
+          }
+
+          ion-icon {
+            align-self: flex-start;
+          }
+
+          .tab-button-text {
+            align-self: flex-start;
+            margin: 16px 0;
+          }
+        }
+      }
       
       ion-tab {
 

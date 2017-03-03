@@ -65,18 +65,6 @@ export class HeaderComponent {
     return this.rolesCtrl.userIsInRole(userId, roles);
   }
 
-  uploadData(file: File) {
-    this.loadingCtrl.loading('Uploading data...');
-    this.dataUploader.uploadFile(file)
-      .then((res: string) => {
-        this.loadingCtrl.loadingInst.dismiss();
-        this.toastCtrl.okToast(res);
-      })
-      .catch((err) => {
-        this.toastCtrl.okToast(err.reason || err.message || err);
-      });
-  }
-
   openPage(name: string) {
     switch (name) {
       case 'home': {

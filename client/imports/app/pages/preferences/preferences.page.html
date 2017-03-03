@@ -3,7 +3,9 @@
 </ion-header>
 <ion-content>
   <ion-tabs tabsPlacement="top" tabsLayout="icon-bottom">
-    <ion-tab *ngFor="let p of pages" [tabIcon]="p.icon" [tabTitle]="p.title" [root]="p.component"></ion-tab>
+    <template ngFor let-p [ngForOf]="pages">
+      <ion-tab *ngIf="p.guard()" [tabIcon]="p.icon" [tabTitle]="p.title" [root]="p.component"></ion-tab>
+    </template>
   </ion-tabs>
 </ion-content>
 <ion-footer>

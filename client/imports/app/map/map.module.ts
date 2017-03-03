@@ -3,10 +3,12 @@ import { IonicModule } from 'ionic-angular';
 import { WorldMap } from './world-map.component';
 import { MapSwichers } from './swichers/swichers.component';
 import { MarketCountriesProvider } from './countries/market-countries';
+import { CommonAppModule } from '../common';
 
 @NgModule({
   imports: [
-    IonicModule
+    IonicModule,
+    CommonAppModule
   ],
   declarations: [
     WorldMap,
