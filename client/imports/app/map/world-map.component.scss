@@ -1,12 +1,12 @@
 svg {
   * {
-    vector-effect: non-scaling-stroke;
+    // vector-effect: non-scaling-stroke;
   }
   g.map {
     path {
       stroke-linejoin: round;
       stroke-linecap: round;
-      vector-effect: non-scaling-stroke;
+      // vector-effect: non-scaling-stroke;
       stroke: #3b65ad;
     }
 
@@ -22,7 +22,7 @@ svg {
       pointer-events: all;
       fill: #0B409C;
       stroke: #EFF3FA;
-      vector-effect: non-scaling-stroke;
+      // vector-effect: non-scaling-stroke;
 
       &>circle {
         stroke-width: 4px;
