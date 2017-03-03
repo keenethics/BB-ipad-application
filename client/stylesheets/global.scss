@@ -32,7 +32,8 @@ $colors: (
   dark: #47494D,
   dark-blue: #173567,
   light-blue: #3B65AD,
-  ui-light: #ECEFF4
+  ui-light: #ECEFF4,
+  page-background: #F8F9FA
 );
 
 // App iOS Variables
@@ -132,25 +133,24 @@ ion-header {
     ion-buttons {
       button.bar-button {
         font-size: 7px;
-        padding-left: 24px;
-        padding-top: 7px;
+        padding: 7px 15px 0;
         ion-icon {
-          font-size: 15px;
+          font-size: 22px;
         }
         &:hover {
           color: map-get($colors,'light');
+        }
+
+        &:first-child {
+          padding-left: 30px;
         }
       }
     }
 
     ion-buttons[end] {
       button.bar-button {
-        padding-right: 24px;
-        &.export-btn {
-          padding: 7px 0 0;
-          font-size: 13px;
-          font-weight: bold;
-          color: map-get($colors, 'light-blue');
+         &:last-child {
+          padding-right: 30px;
         }
       }
     }
@@ -197,6 +197,15 @@ ion-footer {
   }
 }
 
+.button[ion-button]:not([class*="button-clear"]) {
+  background-color: map-get($colors, "light-blue");
+  box-shadow: 0px 5px 15px 0px rgba(11, 64, 156, 0.5);
+}
+
+ion-backdrop {
+  background-color: map-get($colors, 'light-blue');
+}
+
 @import '../imports/app/filters/data-filter/filter.component.scss';
 @import '../imports/app/sheets/overview-sheet.component.scss';
 @import '../imports/app/sheets/sheets.styles.scss';
@@ -209,3 +218,4 @@ ion-footer {
 @import '../imports/app/pages/components/header/header.component.scss';
 @import '../imports/app/filters/bu-filter/bu-filter.component.scss';
 @import '../imports/app/filters/view-switcher/view-switcher.component.scss';
+@import '../imports/app/pages/swichers/swichers.page.scss';

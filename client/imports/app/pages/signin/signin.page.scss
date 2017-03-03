@@ -5,7 +5,8 @@ $colors: (
   dark: #47494D,
   dark-blue: #173567,
   light-blue: #3B65AD,
-  ui-light: #ECEFF4
+  ui-light: #ECEFF4,
+  page-background: #F8F9FA
 );
 
 signin-page {
@@ -16,12 +17,19 @@ signin-page {
       display: flex;
       align-items: center;
       justify-content: center;
+      background-color: #E4E8ED;
 
       form {
         width: 500px;
         height: 420px;
         padding: 40px 50px !important;
-        background: map-get($colors, 'light');
+        border-radius: 4px;
+        background-color: map-get($colors, 'page-background');
+
+        &>div:first-child {
+          margin-left: 5px;
+        }
+
         h1, h2 {
           font-weight: 400;
           color: map-get($colors, 'primary');
@@ -42,14 +50,15 @@ signin-page {
           margin-top: 30px;
 
           ion-input {
-            width: 100%;
+            width: 98%;
             font-size: 15px;
             line-height: 28px;
-            margin: 10px 0;
+            margin: 10px 5px;
             float: left;
             background: white;
             border-radius: 4px;
             padding: 0 30px;
+            box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.05);
           }
 
           button {
@@ -61,6 +70,7 @@ signin-page {
             border-radius: 28px;
             margin-top: 20px;
             float: left;
+            margin: 10px;
           }
         }
       }

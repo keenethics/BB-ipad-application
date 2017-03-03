@@ -8,8 +8,12 @@ import {
   AfterViewInit,
   OnChanges
 } from '@angular/core';
+import { Platform } from 'ionic-angular';
 
 import { FormArray, FormControl, FormBuilder, FormGroup } from '@angular/forms';
+import { RolesController } from '../../authorization';
+import { DataUploader } from '../../data-management';
+import { LoadingManager, ToastsManager } from '../../common';
 
 import template from './swichers.component.html';
 import styles from './swichers.component.scss';
@@ -21,13 +25,19 @@ import styles from './swichers.component.scss';
   template
 })
 export class MapSwichers implements OnInit, OnChanges {
-
   public swichersForm: FormGroup;
   @Input('swichers') swichers: any;
   @Input('swichersState') swichersState: any;
   @Output('onChanges') onChanges = new EventEmitter();
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private roles: RolesController,
+    private dataUploader: DataUploader,
+    private loadingCtrl: LoadingManager,
+    private toastCtrl: ToastsManager,
+    private platform: Platform
+  ) { }
 
   ngOnInit() {
     if (!this.swichers) {
@@ -52,7 +62,29 @@ export class MapSwichers implements OnInit, OnChanges {
     }
   }
 
-  emitChanges() {
+  emitChanges(swicher: any) {
+    swicher.value = !swicher.value;
     this.onChanges.emit(this.swichersForm.getRawValue());
+  }
+
+  setValue(control: FormControl, value: boolean) {
+    control.setValue(value);
+    this.onChanges.emit(this.swichersForm.getRawValue());
+  }
+
+  canUpload() {
+    return (this.roles.userIsInRole(Meteor.userId(), ['Administrator', 'DataUpload']) && this.platform.is('core'));
+  }
+
+  uploadData(file: File) {
+    this.loadingCtrl.loading('Uploading data...');
+    this.dataUploader.uploadFile(file)
+      .then((res: string) => {
+        this.loadingCtrl.loadingInst.dismiss();
+        this.toastCtrl.okToast(res);
+      })
+      .catch((err) => {
+        this.toastCtrl.okToast(err.reason || err.message || err);
+      });
   }
 }

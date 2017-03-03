@@ -123,8 +123,10 @@ export class WorldMap implements OnChanges {
         .on('zoom', () => {
           const { x, y, k } = d3.event.transform;
           this.mapTransform = d3.event.transform;
-          const map = this.svg.select('g');
+          const map = this.svg.select('g.map');
           map.attr('transform', `translate(${x}, ${y})scale(${k})`);
+          map.selectAll('path, .marker rect').style('stroke-width', 1 / k);
+          map.selectAll('.marker circle').style('stroke-width', 4 / k);
           this.renderMarkers(k);
         });
 
