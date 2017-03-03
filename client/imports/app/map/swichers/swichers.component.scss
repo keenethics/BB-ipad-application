@@ -1,8 +1,41 @@
+$colors: (
+  primary: #0B409C,
+  secondary: #A7C1E3,
+  light: #E2E8F0,
+  dark: #47494D,
+  dark-blue: #173567,
+  light-blue: #3B65AD,
+  ui-light: #ECEFF4,
+  page-background: #F8F9FA
+);
+
 map-swichers {
 
   form {
     width: 394px;
     margin: 105px auto;
+
+    div.upload-button-wrap {
+      justify-content: center;
+      display: flex;
+      align-items: center;
+      padding: 20px 32px;
+      margin-top: 30px;
+      border-top: 1px solid map-get($colors, 'light');
+
+      &>button.button {
+        width: 40px;
+        height: 40px;
+        font-size: 12px;
+      }
+
+      &>span {
+        font-size: 13px;
+        font-weight: bold;
+        color: map-get($colors, 'light-blue');
+        margin-right: 15px;
+      }
+    }
   }
 
   div.toggle-line {
@@ -10,6 +43,16 @@ map-swichers {
     align-items: center;
     justify-content: space-between;
     position: relative;
+
+    &>button.button {
+      color: black;
+      font-weight: 400;
+      
+      &.active {
+        font-weight: 600;
+      }
+    }
+
     ion-toggle {
       width: 60px;
       height: 30px;
@@ -54,7 +97,7 @@ map-swichers {
           height: 22px;
           width: 22px;
           border-radius: 14px;
-          background-color: #3B65AD;
+          background-color: map-get($colors, 'light-blue');
           box-shadow: 0px 0px 15px 0px rgba(11, 64, 156, 0.5)
         }
       }

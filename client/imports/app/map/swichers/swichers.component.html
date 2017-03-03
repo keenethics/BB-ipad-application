@@ -6,4 +6,11 @@
     <button [ngClass]="{ 'active': swichersForm.controls[s.key].value }" (click)="setValue(swichersForm.controls[s.key], true)"
       type="button" ion-button clear>{{s.labels[1]}}</button>
   </div>
+  <div *ngIf="canUpload()" class="upload-button-wrap">
+    <span>DATA UPLOAD</span>
+    <button #button ion-button icon-only round>
+      <pick-file fileType="text/csv" [emitterElement]="button" (onFileSelected)="uploadData($event)"></pick-file>
+      <ion-icon name="icon-upload"></ion-icon>
+    </button>
+  </div>
 </form>

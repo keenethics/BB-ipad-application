@@ -4,6 +4,8 @@ import { NavController } from 'ionic-angular';
 import styles from './preferences.page.scss';
 import template from './preferences.page.html';
 
+import { RolesController } from '../../authorization';
+
 import {
   ProfileSettingsPage,
   UserManagementPage,
@@ -17,13 +19,15 @@ import {
   encapsulation: ViewEncapsulation.None
 })
 export class PreferencesPage {
-  public pages: {icon: string, title: string, selector: string, component: any }[] = [];
+  public pages: {icon: string, title: string, selector: string, component: any, guard: Function }[] = [];
 
-  constructor() {
+  constructor(private roles: RolesController) {
     this.pages = [
-      { icon: 'icon-preferences', title: 'PROFILE SETTINGS', selector: 'profile-settings-page', component: ProfileSettingsPage },
-      { icon: 'icon-user', title: 'USER LIST', selector: 'user-management-page', component: UserManagementPage },
-      { icon: 'icon-swichers', title: 'PREFERENCES', selector: 'swichers-page', component: SwichersPage },
+      { icon: 'icon-preferences', title: 'PROFILE SETTINGS', selector: 'profile-settings-page', component: ProfileSettingsPage, guard: () => true },
+      { icon: 'icon-user', title: 'USER LIST', selector: 'user-management-page', component: UserManagementPage, guard: () => {
+        return this.roles.userIsInRole(Meteor.userId(), 'Administrator');
+      } },
+      { icon: 'icon-swichers', title: 'PREFERENCES', selector: 'swichers-page', component: SwichersPage, guard: () => true },
       // { icon: 'icon-types-and-units', title: 'TYPES AND UNITS', selector: 'types-and-units', component: null }
     ];
   }
