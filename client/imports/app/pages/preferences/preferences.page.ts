@@ -23,11 +23,11 @@ export class PreferencesPage {
 
   constructor(private roles: RolesController) {
     this.pages = [
+      { icon: 'icon-swichers', title: 'PREFERENCES', selector: 'swichers-page', component: SwichersPage, guard: () => true },
       { icon: 'icon-preferences', title: 'PROFILE SETTINGS', selector: 'profile-settings-page', component: ProfileSettingsPage, guard: () => true },
       { icon: 'icon-user', title: 'USER LIST', selector: 'user-management-page', component: UserManagementPage, guard: () => {
         return this.roles.userIsInRole(Meteor.userId(), 'Administrator');
       } },
-      { icon: 'icon-swichers', title: 'PREFERENCES', selector: 'swichers-page', component: SwichersPage, guard: () => true },
       // { icon: 'icon-types-and-units', title: 'TYPES AND UNITS', selector: 'types-and-units', component: null }
     ];
   }
