@@ -49,10 +49,10 @@ export class FactSheetComponent {
 
   initTableDescriptions() {
     this.columnsDescs = [
-      { title: 'Ramp up', class: 'background-light l-border', dataSources: { period: '2016', highLevelCategory: 'Ramp up' } },
-      { title: 'Ramp down', class: 'background-light', dataSources: { period: '2016', highLevelCategory: 'Ramp down' } },
-      { title: 'Other flows', class: 'background-light', dataSources: { period: '2016', highLevelCategory: ['Other in', 'Other out'] } },
-      { title: 'P12', class: 'r-border', dataSources: { period: '2016', highLevelCategory: 'Landing point' } },
+      { title: 'Ramp up', class: 'background-light l-border', dataSources: { period: 'Actuals', highLevelCategory: 'Ramp up' } },
+      { title: 'Ramp down', class: 'background-light', dataSources: { period: 'Actuals', highLevelCategory: 'Ramp down' } },
+      { title: 'Other flows', class: 'background-light', dataSources: { period: 'Actuals', highLevelCategory: ['Other in', 'Other out'] } },
+      { title: 'P12', class: 'r-border', dataSources: { period: 'Actuals', highLevelCategory: 'Landing point' } },
       { title: 'Ramp up', class: 'background-light l-border', dataSources: { period: '2017', highLevelCategory: 'Ramp up' } },
       { title: 'Ramp down', class: 'background-light', dataSources: { period: '2017', highLevelCategory: 'Ramp down' } },
       { title: 'Other flows', class: 'background-light', dataSources: { period: '2017', highLevelCategory: ['Other in', 'Other out'] } },
@@ -67,11 +67,11 @@ export class FactSheetComponent {
       { title: 'LP', class: 'r-border', dataSources: { period: '2019', highLevelCategory: 'Landing point' } },
       {
         title: 'LP2019 vs P122016',
-        class: 'background-light', dataSources: { period: ['2016', '2019'], highLevelCategory: 'Landing point' },
+        class: 'background-light', dataSources: { period: ['Actuals', '2019'], highLevelCategory: 'Landing point' },
         calc: (inputs: any[]) => {
           if (inputs.length > 1) {
             const lp = inputs.filter((item: any) => item.period === '2019')[0];
-            const fp = inputs.filter((item: any) => item.period === '2016')[0];
+            const fp = inputs.filter((item: any) => item.period === 'Actuals')[0];
             return (Number(lp.value - fp.value) / Number(fp.value) * 100);
           }
 

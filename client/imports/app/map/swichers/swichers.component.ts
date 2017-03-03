@@ -8,6 +8,7 @@ import {
   AfterViewInit,
   OnChanges
 } from '@angular/core';
+import { Platform } from 'ionic-angular';
 
 import { FormArray, FormControl, FormBuilder, FormGroup } from '@angular/forms';
 import { RolesController } from '../../authorization';
@@ -34,7 +35,8 @@ export class MapSwichers implements OnInit, OnChanges {
     private roles: RolesController,
     private dataUploader: DataUploader,
     private loadingCtrl: LoadingManager,
-    private toastCtrl: ToastsManager
+    private toastCtrl: ToastsManager,
+    private platform: Platform
   ) { }
 
   ngOnInit() {
@@ -71,7 +73,7 @@ export class MapSwichers implements OnInit, OnChanges {
   }
 
   canUpload() {
-    return this.roles.userIsInRole(Meteor.userId(), ['Administrator', 'DataUpload']);
+    return (this.roles.userIsInRole(Meteor.userId(), ['Administrator', 'DataUpload']) && this.platform.is('core'));
   }
 
   uploadData(file: File) {
