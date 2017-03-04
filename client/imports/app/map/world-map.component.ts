@@ -116,10 +116,12 @@ export class WorldMap implements OnChanges {
         .translate([this.svgWidth() / 2, this.svgHeight() / 2]);
 
       this.mapPath = d3.geoPath(this.projection);
-
       this.zoom = d3.zoom()
         .scaleExtent(this.zoomScaleExtend)
         .translateExtent([[0, 0], [this.svgWidth(), this.svgHeight()]])
+        // .filter(() => {
+        //   return true;
+        // })
         .on('zoom', () => {
           const { x, y, k } = d3.event.transform;
           this.mapTransform = d3.event.transform;
@@ -244,13 +246,15 @@ export class WorldMap implements OnChanges {
         .attr('class', 'bar')
         .attr('width', 10 / scale)
         .attr('height', (d: any) => barScale(parseInt(d.value) | 0) / scale)
-        .attr('x', -5 / scale);
+        .attr('x', -5 / scale)
+        .style('stroke-width', 1 / scale);
 
       if (this.labels || this.values) {
         groupEnter.append('rect')
           .attr('class', 'label-bg')
           .attr('fill', '#fff')
-          .attr('rx', 4 / scale);
+          .attr('rx', 4 / scale)
+          .style('stroke-width', 1 / scale);
 
         groupEnter.append('text')
           .text((d: any) => this.getLabelText(d))
@@ -349,12 +353,14 @@ export class WorldMap implements OnChanges {
         });
 
       groupEnter.append('circle')
-        .attr('r', (d: any) => radiusScale(parseInt(d.value) | 0) / scale);
+        .attr('r', (d: any) => radiusScale(parseInt(d.value) | 0) / scale)
+        .style('stroke-width', 4 / scale);
 
       if (this.labels || this.values) {
         groupEnter.append('rect')
           .attr('fill', '#fff')
-          .attr('rx', 4 / scale);
+          .attr('rx', 4 / scale)
+          .style('stroke-width', 1 / scale);
 
         groupEnter.append('text')
           .text((d: any) => this.getLabelText(d))
