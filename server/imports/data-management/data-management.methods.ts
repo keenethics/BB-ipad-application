@@ -9,7 +9,8 @@ import {
   BusinessData,
   BusinessDataUnit,
   ColumnNamesCollection,
-  UnitsTitles
+  UnitsTitles,
+  GeoCoordinates
 } from '../../../both/data-management';
 
 export const uploadFile = new ValidatedMethod({
@@ -60,5 +61,38 @@ export const uploadFile = new ValidatedMethod({
     setAvailableCountries();
 
     return 'Data uploaded!';
+  }
+});
+
+export const uploadCoordinates = new ValidatedMethod({
+  name: 'data.uploadCoordinates',
+  validate: new SimpleSchema({
+    fileData: { type: String },
+  }).validator(),
+  run({ fileData }) {
+    if (!this.userId) {
+      throw new Meteor.Error('premission denied', 'Please login first.');
+    }
+
+    if (!Roles.userIsInRole(this.userId, ['DataUpload', 'Administrator'])) {
+      throw new Meteor.Error('premission denied', 'You are not a data manager.');
+    }
+
+    const parsedData = Baby.parse(fileData, { skipEmptyLines: true, delimiter: ';' }).data;
+    const keys: string[] = parsedData[0];
+
+    GeoCoordinates.remove({});
+
+    parsedData.forEach((item: string[], index: number) => {
+      if (index !== 0) {
+        const doc = {} as any;
+        keys.forEach((key, i) => {
+          doc[toCamelCase(key.toLowerCase())] = item[i];
+        });
+        GeoCoordinates.insert(doc);
+      }
+    });
+
+    return 'Coordinates uploaded!';
   }
 });
