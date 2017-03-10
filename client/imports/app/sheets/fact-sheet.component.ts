@@ -51,10 +51,10 @@ export class FactSheetComponent {
     this.columnsDescs = [
       { title: 'P12', class: 'l-border', dataSources: { period: 'Actuals', highLevelCategory: 'Landing point' } },
       { title: 'LP', class: 'r-border', dataSources: { period: '2016', highLevelCategory: 'Landing point' } },
-      { title: 'Ramp up', class: 'background-light l-border', dataSources: { period: '2017', highLevelCategory: 'Ramp up' } },
-      { title: 'Ramp down', class: 'background-light', dataSources: { period: '2017', highLevelCategory: 'Ramp down' } },
+      { title: 'RU', class: 'background-light l-border', dataSources: { period: '2017', highLevelCategory: 'Ramp up' } },
+      { title: 'RD', class: 'background-light', dataSources: { period: '2017', highLevelCategory: 'Ramp down' } },
       {
-        title: 'Other flows',
+        title: 'OTHER',
         class: 'background-light',
         dataSources: {
           period: '2017', highLevelCategory: ['Other in', 'Other out', 'Transfer in', 'Transfer out']
@@ -67,10 +67,10 @@ export class FactSheetComponent {
         }
       },
       { title: 'LP', class: 'r-border', dataSources: { period: '2017', highLevelCategory: 'Landing point' } },
-      { title: 'Ramp up', class: 'background-light l-border', dataSources: { period: '2018', highLevelCategory: 'Ramp up' } },
-      { title: 'Ramp down', class: 'background-light', dataSources: { period: '2018', highLevelCategory: 'Ramp down' } },
+      { title: 'RU', class: 'background-light l-border', dataSources: { period: '2018', highLevelCategory: 'Ramp up' } },
+      { title: 'RD', class: 'background-light', dataSources: { period: '2018', highLevelCategory: 'Ramp down' } },
       {
-        title: 'Other flows',
+        title: 'OTHER',
         class: 'background-light',
         dataSources: { period: '2018', highLevelCategory: ['Other in', 'Other out', 'Transfer in', 'Transfer out'] },
         calc: (inputs: any[]) => {
@@ -81,10 +81,10 @@ export class FactSheetComponent {
         }
       },
       { title: 'LP', class: 'r-border', dataSources: { period: '2018', highLevelCategory: 'Landing point' } },
-      { title: 'Ramp up', class: 'background-light l-border', dataSources: { period: '2019', highLevelCategory: 'Ramp up' } },
-      { title: 'Ramp down', class: 'background-light', dataSources: { period: '2019', highLevelCategory: 'Ramp down' } },
+      { title: 'RU', class: 'background-light l-border', dataSources: { period: '2019', highLevelCategory: 'Ramp up' } },
+      { title: 'RD', class: 'background-light', dataSources: { period: '2019', highLevelCategory: 'Ramp down' } },
       {
-        title: 'Other flows',
+        title: 'OTHER',
         class: 'background-light',
         dataSources: { period: '2019', highLevelCategory: ['Other in', 'Other out', 'Transfer in', 'Transfer out'] },
         calc: (inputs: any[]) => {
@@ -96,7 +96,8 @@ export class FactSheetComponent {
       },
       { title: 'LP', class: 'r-border', dataSources: { period: '2019', highLevelCategory: 'Landing point' } },
       {
-        title: 'LP2019 vs P122016',
+        title: `LP 2019 vs
+        P12 2016`,
         class: 'background-light', dataSources: { period: ['Actuals', '2019'], highLevelCategory: 'Landing point' },
         calc: (inputs: any[]) => {
           if (inputs.length > 1) {

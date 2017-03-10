@@ -34,6 +34,9 @@ fact-sheet {
       &.b-border {
         border-bottom: 1px solid black;
       }
+
+      min-width: 50px;
+      max-width: 70px;
     }
 
     th {
@@ -50,12 +53,12 @@ fact-sheet {
 
     tr {
       &:first-child {
-        th:first-child {
+        th:first-child, th:last-child {
           border-bottom: none;
         }
       }
       &+tr{
-        th:first-child {
+        th:first-child, th:last-child {
           border-top: none;
         }
       }
@@ -75,14 +78,15 @@ fact-sheet {
 
     td.colored:after {
       content: '';
-      width: 7px;
-      height: 7px;
-      border-radius: 7px;
+      width: 10px;
+      height: 10px;
+      border-radius: 10px;
       background-color: transparent;
       display: inline-block;
       position: relative;
-      bottom: 7px;
-      right: 4px;
+      bottom: 0px;
+      right: 40%;
+      margin: auto;
     }
 
     td.colored.red:after {
