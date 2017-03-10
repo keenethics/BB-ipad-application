@@ -74,55 +74,160 @@ export const uploadFile = new ValidatedMethod({
         }, { values: {} });
 
         return doc;
-
-        // BusinessData.insert(doc);
       }
     }).filter((item) => item);
 
-    const metropolises = Array.from(new Set(businessData.map((item: any) => item.metropolis)).values());
-    metropolises.forEach((m) => {
-      if (!m) return;
-
-      const total = businessData.reduce((acc, d) => {
-        if (d.metropolis === m) {
-          if (!acc) {
-            acc = d;
-            acc.city = 'Total';
-            acc.metropolis = 'Total';
-          } else {
-            acc.values.actual + parseInt(d.values.actual, 10);
-          }
+    const totalCities = businessData.reduce((acc: Map<string, any>, item) => {
+      const key = item.country + item.category;
+      const total = acc.get(key);
+      if (!total) {
+        item.city = 'Total';
+        acc.set(key, item);
+      } else {
+        const keys = Object.getOwnPropertyNames(total.values);
+        for (let i = 0; i < keys.length; i++) {
+          const result = +total.values[keys[i]] + +item.values[keys[i]];
+          if (isNaN(result)) return acc;
+          total.values[keys[i]] = result;
         }
-        return acc;
-      }, null);
+        acc.set(key, total);
+      }
+      return acc;
+    }, new Map()) as Map<string, any>;
 
-      console.log(`Metropolis ${m}: ${total.values.actual}`);
-      businessData.push(total);
+    const totalCountries = Array.from(totalCities.values()).reduce((acc: Map<string, any>, item) => {
+      const key = item.market + item.category;
+      const total = acc.get(key);
+      if (!total) {
+        item.country = 'Total';
+        acc.set(key, item);
+      } else {
+        const keys = Object.getOwnPropertyNames(total.values);
+        for (let i = 0; i < keys.length; i++) {
+          const result = +total.values[keys[i]] + +item.values[keys[i]];
+          if (isNaN(result)) return acc;
+          total.values[keys[i]] = result;
+        }
+        acc.set(key, total);
+      }
+      return acc;
+    }, new Map()) as Map<string, any>;
+
+    const totalMarkets = Array.from(totalCountries.values()).reduce((acc: Map<string, any>, item) => {
+      const key = item.category;
+      const total = acc.get(key);
+      if (!total) {
+        item.market = 'Total';
+        acc.set(key, item);
+      } else {
+        const keys = Object.getOwnPropertyNames(total.values);
+        for (let i = 0; i < keys.length; i++) {
+          const result = +total.values[keys[i]] + +item.values[keys[i]];
+          if (isNaN(result)) return acc;
+          total.values[keys[i]] = result;
+        }
+        acc.set(key, total);
+      }
+      return acc;
+    }, new Map()) as Map<string, any>;
+
+    totalCities.forEach((t) => {
+      BusinessData.insert(t);
     });
 
-    // const countries = Array.from(new Set(businessData.map((item: any) => item.country)).values());
-    // countries.forEach((c) => {
-    //   if (!c) return;
-
-    //   const total = businessData.reduce((acc, d) => {
-    //     if (d.country === c && ) return acc + parseInt(d.values.actual, 10);
-    //     return acc;
-    //   }, 0);
-
-    //   console.log(`Country ${c}: ${total}`);
+    // totalCountries.forEach((t) => {
+    //   BusinessData.insert(t);
     // });
 
-    // const markets = Array.from(new Set(businessData.map((item: any) => item.market)).values());
-    // markets.forEach((m) => {
-    //   if (!m) return;
-
-    //   const total = businessData.reduce((acc, d) => {
-    //     if (d.market === m) return acc + parseInt(d.values.actual, 10);
-    //     return acc;
-    //   }, 0);
-
-    //   console.log(`Market ${m}: ${total}`);
+    // totalMarkets.forEach((t) => {
+    //   BusinessData.insert(t);
     // });
+
+    // businessData.forEach((item) => {
+    //   BusinessData.insert(item);
+    // });
+
+    // businessData.forEach((item) => {
+    //   BusinessData.insert(item);
+    // });
+
+    // const exludedFields = ['_id', 'n3', 'n4', 'city', 'pLLineBusiness', 'reasoning', 'values'];
+    // const cityTotals = businessData.reduce((acc, item) => {
+    //   debugger
+    //   const isInAcc = Boolean(acc.filter((accItem: any) => isObjectEquivalent(accItem, item, exludedFields)).length);
+    //   if (!isInAcc) {
+    //     const { n1, n2, market, country, metropolis, resourceType, hcLc, category } = item;
+    //     const group = BusinessData.find({ n1, n2, market, country, metropolis, resourceType, hcLc, category }).fetch();
+    //     const total = getTotalFromGroup(group, 'city');
+    //     acc.push(total);
+    //     return acc;
+    //   }
+    //   return acc;
+    // }, []) as any[];
+
+    // BusinessData.remove({});
+
+    // cityTotals.forEach((item) => {
+    //   BusinessData.insert(item);
+    // });
+
+    // const test = businessData.reduce((acc, item) => {
+    //   acc.forEach((accItem: any) => {
+    //     if (!isObjectEquivalent(item, accItem, ['actual', '2017', '2016'])) {
+    //       acc.push(item);
+    //     }
+    //   });
+    // }, []);
+
+    // const testGroup = getDataGroup(
+    //   businessData,
+    //   businessData[0],
+    //   ['n3', 'n4', 'city', 'pLLineBusiness', 'reasoning', 'values']
+    // );
+
+    // const total = getTotalFromGroup(testGroup, 'city');
+
+    // const exludedFields = ['n3', 'n4', 'city', 'pLLineBusiness', 'reasoning', 'values'];
+    // const totalCities = businessData.reduce((acc, item, index, source) => {
+    //   const isInAcc = Boolean(acc.filter((accItem: any) => isObjectEquivalent(accItem, item, exludedFields)).length);
+
+    //   if (isInAcc) return acc;
+
+    //   const group = getDataGroup(source, item, exludedFields);
+    //   const groupTotal = getTotalFromGroup(group, 'city');
+    //   acc.push(groupTotal);
+
+    //   return acc;
+    // }, []);
+
+    // function isObjectEquivalent(a: any, b: any, exludedFields: string[] = []) {
+    //   const aProps = Object.getOwnPropertyNames(a).filter(p => exludedFields.indexOf(p) === -1);
+    //   const bProps = Object.getOwnPropertyNames(b).filter(p => exludedFields.indexOf(p) === -1);
+
+    //   if (aProps.length !== bProps.length) return false;
+
+    //   for (let i = 0; i < aProps.length; i++) {
+    //     if (a[aProps[i]] !== b[bProps[i]]) return false;
+    //   }
+
+    //   return true;
+    // }
+
+    // function getDataGroup(source: any[], pattern: any, exludedFields: string[] = []) {
+    //   return source.filter((item) => {
+    //     return isObjectEquivalent(pattern, item, exludedFields);
+    //   });
+    // }
+
+    // function getTotalFromGroup(group: any[], totalBy: string) {
+    //   group[0][totalBy] = 'Total';
+    //   return group.reduce((acc, item) => {
+    //     Object.getOwnPropertyNames(acc.values).forEach(key => {
+    //       acc.values[key] = parseInt(acc.values[key], 10) + parseInt(item.values[key], 10);
+    //     });
+    //     return acc;
+    //   });
+    // }
 
     // const titles = (BusinessData as any)
     //   .aggregate([{ $group: { _id: null, titles: { $addToSet: '$n2' } } }])[0]
