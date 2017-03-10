@@ -14,7 +14,10 @@
       <thead>
         <tr class="row-color-4">
           <th></th>
-          <th colspan="4" class="l-border r-border" *ngFor="let p of periods | exclude:['Actuals', 'Baseline']">
+          <th colspan="2" class="l-border r-border">
+            {{periods[0]}}
+          </th>
+          <th colspan="4" class="l-border r-border" *ngFor="let p of periods | exclude:['Actuals', 'Baseline', '2016']">
             {{p}}
           </th>
           <th></th>
@@ -31,7 +34,7 @@
           <td *ngFor="let col of columnsDescs|exclude:[lastColumnsDesc]" [ngClass]="[col.class || '', row.class || '']">
             {{getCellValue(row, col)}}
           </td>
-          <td [colored]="getCellValue(row, lastColumnsDesc)">{{getCellValue(row, lastColumnsDesc)|percentage}}</td>
+          <td>{{getCellValue(row, lastColumnsDesc)|percentage}}</td>
         </tr>
       </tbody>
     </table>

@@ -49,21 +49,51 @@ export class FactSheetComponent {
 
   initTableDescriptions() {
     this.columnsDescs = [
-      { title: 'Ramp up', class: 'background-light l-border', dataSources: { period: 'Actuals', highLevelCategory: 'Ramp up' } },
-      { title: 'Ramp down', class: 'background-light', dataSources: { period: 'Actuals', highLevelCategory: 'Ramp down' } },
-      { title: 'Other flows', class: 'background-light', dataSources: { period: 'Actuals', highLevelCategory: ['Other in', 'Other out'] } },
-      { title: 'P12', class: 'r-border', dataSources: { period: 'Actuals', highLevelCategory: 'Landing point' } },
+      { title: 'P12', class: 'l-border', dataSources: { period: 'Actuals', highLevelCategory: 'Landing point' } },
+      { title: 'LP', class: 'r-border', dataSources: { period: '2016', highLevelCategory: 'Landing point' } },
       { title: 'Ramp up', class: 'background-light l-border', dataSources: { period: '2017', highLevelCategory: 'Ramp up' } },
       { title: 'Ramp down', class: 'background-light', dataSources: { period: '2017', highLevelCategory: 'Ramp down' } },
-      { title: 'Other flows', class: 'background-light', dataSources: { period: '2017', highLevelCategory: ['Other in', 'Other out'] } },
+      {
+        title: 'Other flows',
+        class: 'background-light',
+        dataSources: {
+          period: '2017', highLevelCategory: ['Other in', 'Other out', 'Transfer in', 'Transfer out']
+        },
+        calc: (inputs: any[]) => {
+          return inputs.reduce((acc, item) => {
+            acc.value = +acc.value + +item.value;
+            return acc;
+          }).value;
+        }
+      },
       { title: 'LP', class: 'r-border', dataSources: { period: '2017', highLevelCategory: 'Landing point' } },
       { title: 'Ramp up', class: 'background-light l-border', dataSources: { period: '2018', highLevelCategory: 'Ramp up' } },
       { title: 'Ramp down', class: 'background-light', dataSources: { period: '2018', highLevelCategory: 'Ramp down' } },
-      { title: 'Other flows', class: 'background-light', dataSources: { period: '2018', highLevelCategory: ['Other in', 'Other out'] } },
+      {
+        title: 'Other flows',
+        class: 'background-light',
+        dataSources: { period: '2018', highLevelCategory: ['Other in', 'Other out', 'Transfer in', 'Transfer out'] },
+        calc: (inputs: any[]) => {
+          return inputs.reduce((acc, item) => {
+            acc.value = +acc.value + +item.value;
+            return acc;
+          }).value;
+        }
+      },
       { title: 'LP', class: 'r-border', dataSources: { period: '2018', highLevelCategory: 'Landing point' } },
       { title: 'Ramp up', class: 'background-light l-border', dataSources: { period: '2019', highLevelCategory: 'Ramp up' } },
       { title: 'Ramp down', class: 'background-light', dataSources: { period: '2019', highLevelCategory: 'Ramp down' } },
-      { title: 'Other flows', class: 'background-light', dataSources: { period: '2019', highLevelCategory: ['Other in', 'Other out'] } },
+      {
+        title: 'Other flows',
+        class: 'background-light',
+        dataSources: { period: '2019', highLevelCategory: ['Other in', 'Other out', 'Transfer in', 'Transfer out'] },
+        calc: (inputs: any[]) => {
+          return inputs.reduce((acc, item) => {
+            acc.value = +acc.value + +item.value;
+            return acc;
+          }).value;
+        }
+      },
       { title: 'LP', class: 'r-border', dataSources: { period: '2019', highLevelCategory: 'Landing point' } },
       {
         title: 'LP2019 vs P122016',
