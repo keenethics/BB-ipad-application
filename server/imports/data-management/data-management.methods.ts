@@ -115,7 +115,7 @@ export const uploadFile = new ValidatedMethod({
       const total = acc.get(key);
       if (!total) {
         item.city = 'Total';
-        item.identifier = 'Market';
+        item.identifier = 'Metropolis';
         acc.set(key, item);
       } else {
         const keys = Object.getOwnPropertyNames(total.periods);
@@ -194,7 +194,27 @@ export const uploadFile = new ValidatedMethod({
       ...Array.from(totals.values())
     ];
 
-    allData.forEach((d) => {
+    const uniqueData = allData.reduce((acc, item) => {
+      const key =
+        item['n1'] +
+        item['n2'] +
+        item['market'] +
+        item['city'] +
+        item['country'] +
+        item['metropolis'] +
+        item['resourceType'] +
+        item['highLevelCategory'];
+
+      const uniqueItem = acc.get(key);
+
+      if (!uniqueItem && item.n1) {
+        acc.set(key, item);
+      }
+
+      return acc;
+    }, new Map());
+
+    Array.from(uniqueData.values()).forEach((d: any) => {
       BusinessData.insert(d);
     });
 
