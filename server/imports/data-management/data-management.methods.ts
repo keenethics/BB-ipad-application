@@ -114,6 +114,7 @@ export const uploadFile = new ValidatedMethod({
       const key = item['n1'] + item['n2'] + item['metropolis'] + item['resourceType'] + item['highLevelCategory'];
       const total = acc.get(key);
       if (!total) {
+        item = Object.assign({}, item);
         item.city = 'Total';
         item.identifier = 'Metropolis';
         acc.set(key, item);
@@ -133,6 +134,7 @@ export const uploadFile = new ValidatedMethod({
       const key = item['n1'] + item['n2'] + item['country'] + item['resourceType'] + item['highLevelCategory'];
       const total = acc.get(key);
       if (!total) {
+        item = Object.assign({}, item);
         item.metropolis = 'Total';
         item.identifier = 'Country';
         acc.set(key, item);
@@ -152,6 +154,7 @@ export const uploadFile = new ValidatedMethod({
       const key = item['n1'] + item['n2'] + item['market'] + item['resourceType'] + item['highLevelCategory'];
       const total = acc.get(key);
       if (!total) {
+        item = Object.assign({}, item);
         item.country = 'Total';
         item.identifier = 'Market';
         acc.set(key, item);
@@ -171,6 +174,7 @@ export const uploadFile = new ValidatedMethod({
       const key = item['n1'] + item['n2'] + item['resourceType'] + item['highLevelCategory'];
       const total = acc.get(key);
       if (!total) {
+        item = Object.assign({}, item);
         item.market = 'Total';
         item.identifier = 'Global';
         acc.set(key, item);
@@ -217,22 +221,6 @@ export const uploadFile = new ValidatedMethod({
     Array.from(uniqueData.values()).forEach((d: any) => {
       BusinessData.insert(d);
     });
-
-    // totalCountries.forEach((t) => {
-    //   BusinessData.insert(t);
-    // });
-
-    // totalMarkets.forEach((t) => {
-    //   BusinessData.insert(t);
-    // });
-
-    // businessData.forEach((item) => {
-    //   BusinessData.insert(item);
-    // });
-
-    // businessData.forEach((item) => {
-    //   BusinessData.insert(item);
-    // });
 
     // const exludedFields = ['_id', 'n3', 'n4', 'city', 'pLLineBusiness', 'reasoning', 'values'];
     // const cityTotals = businessData.reduce((acc, item) => {
@@ -312,17 +300,17 @@ export const uploadFile = new ValidatedMethod({
     //   });
     // }
 
-    // const titles = (BusinessData as any)
-    //   .aggregate([{ $group: { _id: null, titles: { $addToSet: '$n2' } } }])[0]
-    //   .titles as string[];
-    // UnitsTitles.remove({});
-    // titles.forEach(t => UnitsTitles.insert({ title: t }));
+    const titles = (BusinessData as any)
+      .aggregate([{ $group: { _id: null, titles: { $addToSet: '$n2' } } }])[0]
+      .titles as string[];
+    UnitsTitles.remove({});
+    titles.forEach(t => UnitsTitles.insert({ title: t }));
 
-    // MarketCountries.remove({});
-    // AvailableCountries.remove({});
+    MarketCountries.remove({});
+    AvailableCountries.remove({});
 
-    // setMarketCountries();
-    // setAvailableCountries();
+    setMarketCountries();
+    setAvailableCountries();
 
     return 'Data uploaded!';
   }

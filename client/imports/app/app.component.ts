@@ -3,7 +3,7 @@ import { Platform, Nav, MenuController, ToastController } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
 import { Authorization } from './authorization/authorization';
-import { DataProvider } from './data-management';
+import { DataProvider, SumBusinessUnitsPipe } from './data-management';
 import { FilterController } from './filters';
 
 import { HomePage } from './pages/home/home.page';
@@ -53,7 +53,9 @@ export class AppComponent {
   ngAfterViewInit() {
     this.initializeApp();
     this.filterCtrl.currentFilter$.subscribe((f: any) => {
-      this.dataProvider.query(f);
+      this.dataProvider.query(f, (arr: any) => {
+        return new SumBusinessUnitsPipe().transform(arr, (f.identifier as string).toLowerCase());
+      });
     });
   }
 
