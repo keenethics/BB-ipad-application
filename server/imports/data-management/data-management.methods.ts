@@ -13,6 +13,35 @@ import {
   GeoCoordinates
 } from '../../../both/data-management';
 
+const HIGHT_LEVEL_CATEGORIES = new Map([
+  ['Opening', 'Opening'],
+  ['IN Employee Ramp Up Replacements', 'Ramp up'],
+  ['IN Employee From PNA/LOA', 'Others'],
+  ['IN Employee Transfer Position from other BG/Function', 'Others'],
+  ['IN Employee Acquisition Insourcing', 'Ramp up'],
+  ['IN Employee Transfer from own BG/Function', 'Others'],
+  ['OUT Employee Voluntary Leave', 'Ramp down'],
+  ['OUT Employee Restructuring', 'Ramp down'],
+  ['OUT Employee Employee moving to other BG/Function', 'Others'],
+  ['OUT Employee To PNA/LOA', 'Others'],
+  ['OUT Employee Transfer to other BG/Function', 'Others'],
+  ['OUT Employee Divestment Outsourcing', 'Ramp down'],
+  ['OUT Employee Transfer to own BG/Function', 'Others'],
+  ['IN Contractor New Contract', 'Ramp up'],
+  ['IN Contractor Acquisition Insourcing', 'Ramp down'],
+  ['IN Contractor Transfer from own BG/Function', 'Others'],
+  ['OUT Contractor End of Contract', 'Ramp down'],
+  ['OUT Contractor Divestment Outsourcing', 'Ramp down'],
+  ['OUT Contractor Transfer to own BG/Function', 'Others'],
+  ['Landing point', 'Landing point'],
+  ['IN Employee New External Hire', 'Ramp up'],
+  ['IN Employee Attrition Replacement by ext hire', 'Ramp up'],
+  ['IN Employee Internal Move IN', 'Others'],
+  ['OUT Employee Internal Move OUT', 'Others'],
+  ['IN Contractor Internal Move IN', 'Others'],
+  ['OUT Contractor Internal Move OUT', 'Others']
+]);
+
 export const uploadFile = new ValidatedMethod({
   name: 'data.upload',
   validate: new SimpleSchema({
@@ -38,6 +67,7 @@ export const uploadFile = new ValidatedMethod({
 
     BusinessData.remove({});
 
+    // 1. Add periods like separate value and add highLevelCategory
     const businessData = parsedData.map((item: string[], index: number) => {
       if (index !== 0) {
         // from parsed data
@@ -46,93 +76,126 @@ export const uploadFile = new ValidatedMethod({
           return acc;
         }, {});
 
-        // totals
-
         // longitude latitude
-        // const { city, market, country } = doc;
+        const { city, market, country } = doc;
 
-        // const cords = GeoCoordinates.findOne({
-        //   country: new RegExp(`^${country}$`, 'i'),
-        //   market: new RegExp(`^${market}$`, 'i'),
-        //   city: new RegExp(`^${city}$`, 'i')
-        // });
+        const cords = GeoCoordinates.findOne({
+          country: new RegExp(`^${country}$`, 'i'),
+          market: new RegExp(`^${market}$`, 'i'),
+          city: new RegExp(`^${city}$`, 'i')
+        });
 
-        // if (cords) {
-        //   const { longitude, latitude } = cords;
-        //   doc = Object.assign({ longitude, latitude }, doc);
-        // } else {
-        //   doc = Object.assign({ longitude: 'NO CORDS', latitude: 'NO CORDS' }, doc);
-        // }
+        if (cords) {
+          const { longitude, latitude } = cords;
+          doc = Object.assign({ longitude, latitude }, doc);
+        } else {
+          doc = Object.assign({ longitude: 'NO CORDS', latitude: 'NO CORDS' }, doc);
+        }
 
+        // periods
         doc = Object.keys(doc).reduce((acc: any, key) => {
           if (key.toLowerCase() === 'actual' || !isNaN(Number(key))) {
-            acc.values[key] = doc[key];
+            acc.periods[key] = doc[key];
           } else {
             acc[key] = doc[key];
           }
           return acc;
-        }, { values: {} });
+        }, { periods: {} });
+
+        // highLevelCategory
+        doc['highLevelCategory'] = HIGHT_LEVEL_CATEGORIES.get(doc.category);
+        doc['identifier'] = 'City';
 
         return doc;
       }
     }).filter((item) => item);
 
-    const totalCities = businessData.reduce((acc: Map<string, any>, item) => {
-      const key = item.country + item.category;
+    const totalsMetropolis = businessData.reduce((acc: Map<string, any>, item) => {
+      const key = item['n1'] + item['n2'] + item['metropolis'] + item['resourceType'] + item['highLevelCategory'];
       const total = acc.get(key);
       if (!total) {
         item.city = 'Total';
+        item.identifier = 'Market';
         acc.set(key, item);
       } else {
-        const keys = Object.getOwnPropertyNames(total.values);
+        const keys = Object.getOwnPropertyNames(total.periods);
         for (let i = 0; i < keys.length; i++) {
-          const result = +total.values[keys[i]] + +item.values[keys[i]];
+          const result = +total.periods[keys[i]] + +item.periods[keys[i]];
           if (isNaN(result)) return acc;
-          total.values[keys[i]] = result;
+          total.periods[keys[i]] = result;
         }
         acc.set(key, total);
       }
       return acc;
     }, new Map()) as Map<string, any>;
 
-    const totalCountries = Array.from(totalCities.values()).reduce((acc: Map<string, any>, item) => {
-      const key = item.market + item.category;
+    const totalsCountry = Array.from(totalsMetropolis.values()).reduce((acc: Map<string, any>, item) => {
+      const key = item['n1'] + item['n2'] + item['country'] + item['resourceType'] + item['highLevelCategory'];
+      const total = acc.get(key);
+      if (!total) {
+        item.metropolis = 'Total';
+        item.identifier = 'Country';
+        acc.set(key, item);
+      } else {
+        const keys = Object.getOwnPropertyNames(total.periods);
+        for (let i = 0; i < keys.length; i++) {
+          const result = +total.periods[keys[i]] + +item.periods[keys[i]];
+          if (isNaN(result)) return acc;
+          total.periods[keys[i]] = result;
+        }
+        acc.set(key, total);
+      }
+      return acc;
+    }, new Map()) as Map<string, any>;
+
+    const totalsMarket = Array.from(totalsCountry.values()).reduce((acc: Map<string, any>, item) => {
+      const key = item['n1'] + item['n2'] + item['market'] + item['resourceType'] + item['highLevelCategory'];
       const total = acc.get(key);
       if (!total) {
         item.country = 'Total';
+        item.identifier = 'Market';
         acc.set(key, item);
       } else {
-        const keys = Object.getOwnPropertyNames(total.values);
+        const keys = Object.getOwnPropertyNames(total.periods);
         for (let i = 0; i < keys.length; i++) {
-          const result = +total.values[keys[i]] + +item.values[keys[i]];
+          const result = +total.periods[keys[i]] + +item.periods[keys[i]];
           if (isNaN(result)) return acc;
-          total.values[keys[i]] = result;
+          total.periods[keys[i]] = result;
         }
         acc.set(key, total);
       }
       return acc;
     }, new Map()) as Map<string, any>;
 
-    const totalMarkets = Array.from(totalCountries.values()).reduce((acc: Map<string, any>, item) => {
-      const key = item.category;
+    const totals = Array.from(totalsMarket.values()).reduce((acc: Map<string, any>, item) => {
+      const key = item['n1'] + item['n2'] + item['resourceType'] + item['highLevelCategory'];
       const total = acc.get(key);
       if (!total) {
         item.market = 'Total';
+        item.identifier = 'Global';
         acc.set(key, item);
       } else {
-        const keys = Object.getOwnPropertyNames(total.values);
+        const keys = Object.getOwnPropertyNames(total.periods);
         for (let i = 0; i < keys.length; i++) {
-          const result = +total.values[keys[i]] + +item.values[keys[i]];
+          const result = +total.periods[keys[i]] + +item.periods[keys[i]];
           if (isNaN(result)) return acc;
-          total.values[keys[i]] = result;
+          total.periods[keys[i]] = result;
         }
         acc.set(key, total);
       }
       return acc;
     }, new Map()) as Map<string, any>;
 
-    totalCities.forEach((t) => {
-      BusinessData.insert(t);
+    const allData = [
+      ...businessData,
+      ...Array.from(totalsMetropolis.values()),
+      ...Array.from(totalsCountry.values()),
+      ...Array.from(totalsMarket.values()),
+      ...Array.from(totals.values())
+    ];
+
+    allData.forEach((d) => {
+      BusinessData.insert(d);
     });
 
     // totalCountries.forEach((t) => {
