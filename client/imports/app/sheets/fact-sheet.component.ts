@@ -38,9 +38,8 @@ export class FactSheetComponent {
   constructor(private dataProvider: DataProvider, private zone: NgZone) {
     this.dataProvider.data$.subscribe((data) => {
       if (data.length) {
-        this.periods = Object.keys(data[0].periods);
+        this.periods = ['FC 2017', 'LE 2018'];
         this.businessData = data;
-        console.log(this.businessData);
         this.initTableDescriptions();
       }
     });
@@ -52,7 +51,40 @@ export class FactSheetComponent {
 
   initTableDescriptions() {
     this.columnsDescs = [
-      // { title: 'P12', class: 'l-border', dataSources: { period: 'Actuals', highLevelCategory: 'Landing point' } },
+      {
+        title: 'act P01', class: 'l-border', period: 'Actuals', dataSources: { highLevelCategory: 'Landing point' },
+        calc: (inputs: any[], descs: any) => {
+          let keys: any;
+
+          if (Array.isArray(descs['n2'])) {
+            keys = [
+              descs['n2'][0] + 'Landing point',
+              descs['n2'][1] + 'Landing point'
+            ];
+          } else if (!descs['n2']) {
+            keys = [
+              'Landing point'
+            ];
+          } else {
+            keys = [
+              descs['n2'] + 'Landing point',
+            ];
+          }
+
+          const maches = inputs.reduce((acc, item) => {
+            const itemKey = descs['n2'] ? item['n2'] + item['highLevelCategory'] : item['highLevelCategory'];
+
+            keys.forEach((k: any) => {
+              if (itemKey === k) acc.push(item);
+            });
+
+            return acc;
+          }, []);
+
+          const res = maches.reduce((acc: number, item: any) => acc + Number(item.periods['actual']), 0);
+          return res;
+        }
+      },
       // { title: 'LP', class: 'r-border', dataSources: { period: '2016', highLevelCategory: 'Landing point' } },
       {
         title: 'RU', class: 'background-light l-border', period: '2017', dataSources: { highLevelCategory: 'Ramp up' },
@@ -76,7 +108,7 @@ export class FactSheetComponent {
           }
 
           const maches = inputs.reduce((acc, item) => {
-            const itemKey = item['n2'] + item['highLevelCategory'];
+            const itemKey = descs['n2'] ? item['n2'] + item['highLevelCategory'] : item['highLevelCategory'];
 
             keys.forEach((k: any) => {
               if (itemKey === k) acc.push(item);
@@ -111,7 +143,7 @@ export class FactSheetComponent {
           }
 
           const maches = inputs.reduce((acc, item) => {
-            const itemKey = item['n2'] + item['highLevelCategory'];
+            const itemKey = descs['n2'] ? item['n2'] + item['highLevelCategory'] : item['highLevelCategory'];
 
             keys.forEach((k: any) => {
               if (itemKey === k) acc.push(item);
@@ -125,7 +157,7 @@ export class FactSheetComponent {
         }
       },
       {
-        title: 'OTHER',
+        title: 'others',
         class: 'background-light',
         period: '2017',
         dataSources: {
@@ -155,7 +187,7 @@ export class FactSheetComponent {
           }
 
           const maches = inputs.reduce((acc, item) => {
-            const itemKey = item['n2'] + item['highLevelCategory'];
+            const itemKey = descs['n2'] ? item['n2'] + item['highLevelCategory'] : item['highLevelCategory'];
 
             keys.forEach((k: any) => {
               if (itemKey === k) acc.push(item);
@@ -190,7 +222,7 @@ export class FactSheetComponent {
 
 
           const maches = inputs.reduce((acc, item) => {
-            const itemKey = item['n2'] + item['highLevelCategory'];
+            const itemKey = descs['n2'] ? item['n2'] + item['highLevelCategory'] : item['highLevelCategory'];
 
             keys.forEach((k: any) => {
               if (itemKey === k) acc.push(item);
@@ -260,7 +292,7 @@ export class FactSheetComponent {
           }
 
           const maches = inputs.reduce((acc, item) => {
-            const itemKey = item['n2'] + item['highLevelCategory'];
+            const itemKey = descs['n2'] ? item['n2'] + item['highLevelCategory'] : item['highLevelCategory'];
 
             keys.forEach((k: any) => {
               if (itemKey === k) acc.push(item);
@@ -274,7 +306,7 @@ export class FactSheetComponent {
         }
       },
       {
-        title: 'OTHER',
+        title: 'others',
         class: 'background-light',
         period: '2018',
         dataSources: {
@@ -304,7 +336,7 @@ export class FactSheetComponent {
           }
 
           const maches = inputs.reduce((acc, item) => {
-            const itemKey = item['n2'] + item['highLevelCategory'];
+            const itemKey = descs['n2'] ? item['n2'] + item['highLevelCategory'] : item['highLevelCategory'];
 
             keys.forEach((k: any) => {
               if (itemKey === k) acc.push(item);
@@ -335,7 +367,7 @@ export class FactSheetComponent {
 
 
           const maches = inputs.reduce((acc, item) => {
-            const itemKey = item['n2'] + item['highLevelCategory'];
+            const itemKey = descs['n2'] ? item['n2'] + item['highLevelCategory'] : item['highLevelCategory'];
 
             keys.forEach((k: any) => {
               if (itemKey === k) acc.push(item);
@@ -362,23 +394,45 @@ export class FactSheetComponent {
       //   }
       // },
       // { title: 'LP', class: 'r-border', dataSources: { period: '2019', highLevelCategory: 'Landing point' } },
-      // {
-      //   title: `LP 2019 vs
-      //   P12 2016`,
-      //   class: 'background-light', dataSources: { period: ['Actuals', '2019'], highLevelCategory: 'Landing point' },
-      //   calc: (inputs: any[]) => {
-      //     if (inputs.length > 1) {
-      //       const lp = inputs.filter((item: any) => item.period === '2019')[0];
-      //       const fp = inputs.filter((item: any) => item.period === 'Actuals')[0];
-      //       return (Number(lp.value - fp.value) / Number(fp.value) * 100);
-      //     }
-
-      //     return Number(inputs[0].value);
-      //   }
-      // }
     ];
 
-    this.lastColumnsDesc = this.columnsDescs[this.columnsDescs.length - 1];
+    this.lastColumnsDesc = {
+      title: null,
+      class: 'background-light', dataSources: { highLevelCategory: 'Landing point' },
+      calc: (inputs: any[], descs: any) => {
+
+        let keys: any;
+
+        if (Array.isArray(descs['n2'])) {
+          keys = [
+            descs['n2'][0] + 'Landing point',
+            descs['n2'][1] + 'Landing point'
+          ];
+        } else {
+          keys = [
+            descs['n2'] + 'Landing point',
+          ];
+        }
+
+
+        const maches = inputs.reduce((acc, item) => {
+          const itemKey = descs['n2'] ? item['n2'] + item['highLevelCategory'] : item['highLevelCategory'];
+
+          keys.forEach((k: any) => {
+            if (itemKey === k) acc.push(item);
+          });
+
+          return acc;
+        }, []);
+
+        const r2018 = maches.reduce((acc: number, item: any) => acc + Number(item.periods['2018']), 0);
+        const actual = maches.reduce((acc: number, item: any) => acc + Number(item.periods['actual']), 0);
+
+        // const lp = inputs.filter((item: any) => item.period === '2019')[0];
+        //   const fp = inputs.filter((item: any) => item.period === 'Actuals')[0];
+        return (Number(r2018 - actual) / Number(actual) * 100);
+      }
+    };
 
 
     this.rowsDescs = [
