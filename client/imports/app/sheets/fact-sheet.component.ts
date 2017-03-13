@@ -65,6 +65,10 @@ export class FactSheetComponent {
               descs['n2'][0] + 'Ramp up',
               descs['n2'][1] + 'Ramp up'
             ];
+          } else if (!descs['n2']) {
+            keys = [
+              'Ramp up'
+            ];
           } else {
             keys = [
               descs['n2'] + 'Ramp up',
@@ -88,14 +92,28 @@ export class FactSheetComponent {
       {
         title: 'RD', class: 'background-light', period: '2017', dataSources: { highLevelCategory: 'Ramp down' },
         calc: (inputs: any[], descs: any) => {
-          const keys = [
-            descs['n2'] + 'Ramp down',
-          ];
+
+          let keys: any;
+
+          if (Array.isArray(descs['n2'])) {
+            keys = [
+              descs['n2'][0] + 'Ramp down',
+              descs['n2'][1] + 'Ramp down'
+            ];
+          } else if (!descs['n2']) {
+            keys = [
+              'Ramp down'
+            ];
+          } else {
+            keys = [
+              descs['n2'] + 'Ramp down',
+            ];
+          }
 
           const maches = inputs.reduce((acc, item) => {
             const itemKey = item['n2'] + item['highLevelCategory'];
 
-            keys.forEach((k) => {
+            keys.forEach((k: any) => {
               if (itemKey === k) acc.push(item);
             });
 
@@ -114,15 +132,32 @@ export class FactSheetComponent {
           highLevelCategory: ['Others', 'Transfers']
         },
         calc: (inputs: any[], descs: any) => {
-          const keys = [
-            descs['n2'] + 'Others',
-            descs['n2'] + 'Transfers'
-          ];
+          // const keys = [
+          //   descs['n2'] + 'Others',
+          //   descs['n2'] + 'Transfers'
+          // ];
+
+          let keys: any;
+
+          if (Array.isArray(descs['n2'])) {
+            keys = [
+              descs['n2'][0] + 'Ramp up',
+              descs['n2'][1] + 'Ramp up'
+            ];
+          } else if (!descs['n2']) {
+            keys = [
+              'Ramp up'
+            ];
+          } else {
+            keys = [
+              descs['n2'] + 'Ramp up',
+            ];
+          }
 
           const maches = inputs.reduce((acc, item) => {
             const itemKey = item['n2'] + item['highLevelCategory'];
 
-            keys.forEach((k) => {
+            keys.forEach((k: any) => {
               if (itemKey === k) acc.push(item);
             });
 
@@ -136,14 +171,28 @@ export class FactSheetComponent {
       {
         title: 'LP', class: 'r-border', period: '2017', dataSources: { highLevelCategory: 'Landing point' },
         calc: (inputs: any[], descs: any) => {
-          const keys = [
-            descs['n2'] + 'Landing point'
-          ];
+          let keys: any;
+
+          if (Array.isArray(descs['n2'])) {
+            keys = [
+              descs['n2'][0] + 'Landing point',
+              descs['n2'][1] + 'Landing point'
+            ];
+          } else if (!descs['n2']) {
+            keys = [
+              'Ramp up'
+            ];
+          } else {
+            keys = [
+              descs['n2'] + 'Landing point',
+            ];
+          }
+
 
           const maches = inputs.reduce((acc, item) => {
             const itemKey = item['n2'] + item['highLevelCategory'];
 
-            keys.forEach((k) => {
+            keys.forEach((k: any) => {
               if (itemKey === k) acc.push(item);
             });
 
@@ -154,25 +203,31 @@ export class FactSheetComponent {
           return res;
         }
       },
-      { title: 'RU', class: 'background-light l-border', period: '2018', dataSources: { highLevelCategory: 'Ramp up' } },
-      { title: 'RD', class: 'background-light', period: '2018', dataSources: { highLevelCategory: 'Ramp down' } },
       {
-        title: 'OTHER',
-        class: 'background-light',
-        period: '2018',
-        dataSources: {
-          highLevelCategory: ['Others', 'Transfers']
-        },
+        title: 'RU', class: 'background-light l-border', period: '2018', dataSources: { highLevelCategory: 'Ramp up' },
         calc: (inputs: any[], descs: any) => {
-          const keys = [
-            descs['n2'] + 'Others',
-            descs['n2'] + 'Transfers'
-          ];
+
+          let keys: any;
+
+          if (Array.isArray(descs['n2'])) {
+            keys = [
+              descs['n2'][0] + 'Ramp up',
+              descs['n2'][1] + 'Ramp up'
+            ];
+          } else if (!descs['n2']) {
+            keys = [
+              'Ramp up'
+            ];
+          } else {
+            keys = [
+              descs['n2'] + 'Ramp up',
+            ];
+          }
 
           const maches = inputs.reduce((acc, item) => {
-            const itemKey = item['n2'] + item['highLevelCategory'];
+            const itemKey = descs['n2'] ? item['n2'] + item['highLevelCategory'] : item['highLevelCategory'];
 
-            keys.forEach((k) => {
+            keys.forEach((k: any) => {
               if (itemKey === k) acc.push(item);
             });
 
@@ -183,7 +238,116 @@ export class FactSheetComponent {
           return res;
         }
       },
-      { title: 'LP', class: 'r-border', period: '2018', dataSources: { highLevelCategory: 'Landing point' } },
+      {
+        title: 'RD', class: 'background-light', period: '2018', dataSources: { highLevelCategory: 'Ramp down' },
+        calc: (inputs: any[], descs: any) => {
+
+          let keys: any;
+
+          if (Array.isArray(descs['n2'])) {
+            keys = [
+              descs['n2'][0] + 'Ramp down',
+              descs['n2'][1] + 'Ramp down'
+            ];
+          } else if (!descs['n2']) {
+            keys = [
+              'Ramp down'
+            ];
+          } else {
+            keys = [
+              descs['n2'] + 'Ramp down',
+            ];
+          }
+
+          const maches = inputs.reduce((acc, item) => {
+            const itemKey = item['n2'] + item['highLevelCategory'];
+
+            keys.forEach((k: any) => {
+              if (itemKey === k) acc.push(item);
+            });
+
+            return acc;
+          }, []);
+
+          const res = maches.reduce((acc: number, item: any) => acc + Number(item.periods['2018']), 0);
+          return res;
+        }
+      },
+      {
+        title: 'OTHER',
+        class: 'background-light',
+        period: '2018',
+        dataSources: {
+          highLevelCategory: ['Others', 'Transfers']
+        },
+        calc: (inputs: any[], descs: any) => {
+
+          let keys: any;
+
+          if (Array.isArray(descs['n2'])) {
+            keys = [
+              descs['n2'][0] + 'Others',
+              descs['n2'][1] + 'Transfers',
+              descs['n2'][0] + 'Transfers',
+              descs['n2'][1] + 'Others'
+            ];
+          } else if (!descs['n2']) {
+            keys = [
+              'Others',
+              'Transfers'
+            ];
+          } else {
+            keys = [
+              descs['n2'] + 'Others',
+              descs['n2'] + 'Transfers'
+            ];
+          }
+
+          const maches = inputs.reduce((acc, item) => {
+            const itemKey = item['n2'] + item['highLevelCategory'];
+
+            keys.forEach((k: any) => {
+              if (itemKey === k) acc.push(item);
+            });
+
+            return acc;
+          }, []);
+
+          const res = maches.reduce((acc: number, item: any) => acc + Number(item.periods['2018']), 0);
+          return res;
+        }
+      },
+      {
+        title: 'LP', class: 'r-border', period: '2018', dataSources: { highLevelCategory: 'Landing point' },
+        calc: (inputs: any[], descs: any) => {
+          let keys: any;
+
+          if (Array.isArray(descs['n2'])) {
+            keys = [
+              descs['n2'][0] + 'Landing point',
+              descs['n2'][1] + 'Landing point'
+            ];
+          } else {
+            keys = [
+              descs['n2'] + 'Landing point',
+            ];
+          }
+
+
+          const maches = inputs.reduce((acc, item) => {
+            const itemKey = item['n2'] + item['highLevelCategory'];
+
+            keys.forEach((k: any) => {
+              if (itemKey === k) acc.push(item);
+            });
+
+            return acc;
+          }, []);
+
+          const res = maches.reduce((acc: number, item: any) => acc + Number(item.periods['2018']), 0);
+          return res;
+        }
+      },
       // { title: 'RU', class: 'background-light l-border', dataSources: { period: '2019', highLevelCategory: 'Ramp up' } },
       // { title: 'RD', class: 'background-light', dataSources: { period: '2019', highLevelCategory: 'Ramp down' } },
       // {
