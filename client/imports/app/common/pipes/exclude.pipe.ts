@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'exclude'
 })
 export class ExcludePipe implements PipeTransform {
-  transform(arr: any[], exclude: any[]): any[] {
+  transform(arr: any[] = [], exclude: any[] = []): any[] {
     return arr.filter(item => exclude.indexOf(item) === -1);
   }
 }
