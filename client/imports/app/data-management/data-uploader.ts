@@ -101,7 +101,7 @@ export class DataUploader {
 
         function sumData(data: any[], highLevelCategory: string, n2: string, city: string) {
           const filtered = data
-            .filter((item) => item['resourceType'] === 'Internals')
+            .filter((item) => item['resourceType'] === 'Internals' || item['resourceType'] === 'ServCo')
             .filter((item) => item['n2'] === n2)
             .filter((item) => item['highLevelCategory'] === highLevelCategory)
             .filter((item) => item['city'] === city);
@@ -179,22 +179,15 @@ export class DataUploader {
             BUs.forEach((n2) => {
               const group = citieTotals
                 .filter((item) => item)
-                .filter((item) => item['resourceType'] === 'Internals')
+                .filter((item) => item['resourceType'] === 'Internals' || item['resourceType'] === 'ServCo')
                 .filter((item) => item['n2'] === n2)
                 .filter((item) => item['highLevelCategory'] === category)
                 .filter((item) => item['country'] === country);
 
-
-
-              // const virtualOffices: any[] = group.filter((item) => {
-              //   return (item['city'] === 'Virtual Office' && item['country'] === country) ||
-              //     (item['city'] === 'Non Nokia Site' && item['country'] === country);
-              // });
-
-              // ...virtualOffices
-
               if (group.length) {
                 const countryTotal = group.reduce((acc, item) => {
+                  if (item.city === 'Virtual Office' || item.city === 'Non Nokia Site') debugger;
+
                   acc.periods['actual'] = +acc.periods['actual'] + +item.periods['actual'];
                   acc.periods['2017'] = +acc.periods['2017'] + +item.periods['2017'];
                   acc.periods['2018'] = +acc.periods['2018'] + +item.periods['2018'];
@@ -215,6 +208,8 @@ export class DataUploader {
             });
           });
         });
+
+        debugger;
 
 
 
