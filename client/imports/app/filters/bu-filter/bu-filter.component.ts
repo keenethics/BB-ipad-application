@@ -51,6 +51,8 @@ export class BuFilterComponnet {
     }
 
     if (item.value) {
+      // if (!this.queryObject.n2) this.queryObject.n2 = { $in: [] };
+
       // if (this.queryObject.n2.$in) {
       //   if (Array.isArray(item.title)) {
       //     item.title.forEach((t) => {
@@ -64,11 +66,10 @@ export class BuFilterComponnet {
       //     }
       //   }
       // } else {
-      
+
       this.queryObject.n2 = { $in: Array.isArray(item.title) ? [...item.title] : [item.title] };
 
       // }
-    } else {
       if (Array.isArray(item.title)) {
         item.title.forEach((t) => this.queryObject.n2.$in.push(t));
       } else {
