@@ -4,6 +4,7 @@ import { toCamelCase } from '../../../both/helpers/to-camel-case';
 import { MarketCountries } from '../../../both/countries/market-countries.collection';
 import { AvailableCountries } from '../../../both/countries/available-countries.collection';
 import { setMarketCountries, setAvailableCountries } from '../../../both/countries/helpers';
+import { DataUpdates } from '../../../both/data-management/data-updates.collections';
 
 import {
   BusinessData,
@@ -101,6 +102,7 @@ export const uploadFile = new ValidatedMethod({
         doc['highLevelCategory'] = HIGHT_LEVEL_CATEGORIES.get(doc.category);
         doc['resourceTypeKey'] = RESOURCE_TYPES.get(doc.resourceType);
         doc['cityKey'] = doc.country + doc.city;
+        doc['identifier'] = 'City';
 
         return doc;
       }
@@ -196,6 +198,7 @@ export const uploadFile = new ValidatedMethod({
             const countryTotal = sumGroup(group);
             countryTotal['city'] = 'Total';
             countryTotal['metropolis'] = 'Total';
+            countryTotal['identifier'] = 'Country';
             countryTotals.push(countryTotal);
           }
         });
@@ -216,6 +219,7 @@ export const uploadFile = new ValidatedMethod({
           if (group.length) {
             const marketTotal = sumGroup(group);
             marketTotal['country'] = 'Total';
+            marketTotal['identifier'] = 'Market';
             marketTotals.push(marketTotal);
           }
         });
@@ -234,6 +238,7 @@ export const uploadFile = new ValidatedMethod({
         if (group.length) {
           const globalTotal = sumGroup(group);
           globalTotal['market'] = 'Total';
+          globalTotal['identifier'] = 'Global';
           globalTotals.push(globalTotal);
         }
       });
@@ -282,7 +287,9 @@ export const uploadFile = new ValidatedMethod({
     console.log('Data uploaded');
     console.timeEnd();
 
-    return 'Data uploaded!';
+    DataUpdates.update({}, { lastDataUpdateDate: new Date() }, { upsert: true });
+
+    return 'Data will be available in few minutes';
   }
 });
 

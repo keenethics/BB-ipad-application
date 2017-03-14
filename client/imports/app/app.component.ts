@@ -1,6 +1,9 @@
 import { Component, ViewChild, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Platform, Nav, MenuController, ToastController } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
+import { MeteorObservable } from 'meteor-rxjs';
+
+import { DataUpdates } from '../../../both/data-management/data-updates.collections';
 
 import { Authorization } from './authorization/authorization';
 import { DataProvider, SumBusinessUnitsPipe } from './data-management';
@@ -70,6 +73,15 @@ export class AppComponent {
       StatusBar.overlaysWebView(true);
       StatusBar.styleLightContent();
       Splashscreen.hide();
+    });
+
+    MeteorObservable.subscribe('dataUpdates').subscribe(() => {
+      const lastDataUpdate = DataUpdates.findOne().lastDataUpdateDate as Date;
+      if (lastDataUpdate.toString() !== localStorage.getItem('lastDataUpdate')) {
+        localStorage.removeItem('filters');
+        localStorage.setItem('lastDataUpdate', lastDataUpdate.toString());
+        this.toastCtrl.create('Data was updated. All filters reset.');
+      }
     });
   }
 

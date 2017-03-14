@@ -38,10 +38,9 @@ export class OverviewSheetComponent {
     if (!this.rowsDescs) {
       this.rowsDescs = [
         { title: 'Opening', dataSources: ['Opening'], color: 'row-color-3' },
-        { title: 'OUT Real Ramp down', dataSources: ['Ramp down'], color: '' },
-        { title: 'IN Real Ramp up', dataSources: ['Ramp up'], color: '' },
-        { title: 'NET Transfer', dataSources: ['Transfers'], color: '' },
-        { title: 'NET Others', dataSources: ['Others'], color: '' },
+        { title: 'Ramp up', dataSources: ['Ramp up'], color: '' },
+        { title: 'Ramp down', dataSources: ['Ramp down'], color: '' },
+        { title: 'Other HC flow', dataSources: ['Others'], color: '' },
         { title: 'Landing point', dataSources: ['Landing point'], color: 'row-color-3' }
       ];
     }
@@ -69,7 +68,8 @@ export class OverviewSheetComponent {
     this.entityKey = this.selectedItem.identifier.toLowerCase();
     const query = {
       [this.entityKey]: this.selectedItem[this.entityKey],
-      identifier: this.selectedItem.identifier
+      identifier: this.selectedItem.identifier,
+      n2: 'Total'
     };
     this.dataProvider.query(query);
   }
