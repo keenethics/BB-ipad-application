@@ -117,10 +117,9 @@ export class DataFilterComponent implements OnInit, OnDestroy {
 
   initFilters() {
     this.query = {
-      n2: 'Total',
-      identifier: '',
+      identifier: 'Global',
       highLevelCategory: 'Landing point',
-      period: 'Actuals'
+      resourceType: 'Internals'
     };
 
     this.filterQuery = Object.assign({}, this.query);
@@ -150,10 +149,8 @@ export class DataFilterComponent implements OnInit, OnDestroy {
     switch (this.category) {
       case 'market': {
         this.filterQuery = {
-          n2: 'Total',
           identifier: 'Market',
           highLevelCategory: 'Landing point',
-          period: 'Actuals'
         };
         this.query.identifier = 'Market';
         break;

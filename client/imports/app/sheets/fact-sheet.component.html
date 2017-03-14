@@ -14,30 +14,40 @@
       <thead>
         <tr class="row-color-4">
           <th></th>
-          <th colspan="2" class="l-border r-border">
-            {{periods[0]}}
+          <th class="l-border r-border">
+            2017
           </th>
-          <th colspan="4" class="l-border r-border" *ngFor="let p of periods | exclude:['Actuals', 'Baseline', '2016']">
+          <th colspan="4" class="l-border r-border" *ngFor="let p of periods">
             {{p}}
           </th>
-          <th></th>
-          <th></th>
+          <th colspan="2" rowspan="2">LP 2018 vs P01'17</th>
         </tr>
         <tr>
           <th></th>
           <th *ngFor="let col of columnsDescs" [ngClass]="col.class">
             {{col.title}}
           </th>
-          <th></th>
+          <!--<th></th>-->
       </thead>
       <tbody>
         <tr *ngFor="let row of rowsDescs">
-          <td>{{row.title}}</td>
-          <td *ngFor="let col of columnsDescs|exclude:[lastColumnsDesc]" [ngClass]="[col.class || '', row.class || '']">
+          <td *ngIf="row.title">{{row.title}}</td>
+          <!--<td *ngFor="let col of columnsDescs|exclude:[lastColumnsDesc]" [ngClass]="[col.class || '', row.class || '']">-->
+          <td *ngFor="let col of columnsDescs" [ngClass]="[col.class || '', row.class || '']">
             {{getCellValue(row, col)}}
           </td>
           <td>{{getCellValue(row, lastColumnsDesc)|percentage}}</td>
           <td [colored]="getCellValue(row, lastColumnsDesc)"></td>
+        </tr>
+        <tr>
+          <td class="color-lable" colspan="12">
+            <h3 class="yellow">More than 25% net down of P01'17 HC</h3>
+          </td>
+        </tr>
+        <tr>
+          <td class="color-lable" colspan="12">
+            <h3 class="red">More than 50% net down of P01'17 HC</h3>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -62,6 +72,6 @@
           <td [colored]="getCellValue(row, col)" *ngFor="let col of columnsDescs;">{{getCellValue(row, col)|percentage}}</td>
         </tr>
       </tbody>
-    </table>-->
+    </table>-->    
   </ion-card-content>
 </ion-card>
