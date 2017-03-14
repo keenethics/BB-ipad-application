@@ -79,6 +79,7 @@ export class DataUploader {
 
             // highLevelCategory
             doc['highLevelCategory'] = HIGHT_LEVEL_CATEGORIES.get(doc.category);
+            doc['cityKey'] = doc.country + doc.city;
             // doc['identifier'] = 'City';
 
             return doc;
@@ -128,11 +129,13 @@ export class DataUploader {
         //     }
         //   });
 
+
         const highLevelCategories = Array.from(new Set(HIGHT_LEVEL_CATEGORIES.values()));
         const BUs = Array.from(new Set(businessData.map(i => i.n2)));
         const cities = Array.from(new Set(businessData.map(i => i.city)));
         const countries = Array.from(new Set(businessData.map(i => i.country)));
         const markets = Array.from(new Set(businessData.map(i => i.market)));
+        const cityKeys = Array.from(new Set(businessData.map(i => i.cityKey)));
         const totalN3: any = [];
         const totalMNs: any = [];
 
@@ -178,30 +181,25 @@ export class DataUploader {
                 .filter((item) => item)
                 .filter((item) => item['resourceType'] === 'Internals')
                 .filter((item) => item['n2'] === n2)
-                .filter((item) => item['highLevelCategory'] === category);
+                .filter((item) => item['highLevelCategory'] === category)
+                .filter((item) => item['country'] === country);
 
-              const countries = group.filter((item) => item['country'] === country);
+
 
               // const virtualOffices: any[] = group.filter((item) => {
               //   return (item['city'] === 'Virtual Office' && item['country'] === country) ||
               //     (item['city'] === 'Non Nokia Site' && item['country'] === country);
               // });
 
-              // const virtualOffices = businessData
-              // .filter(item => item['country'] === country)
-              // .filter(item => item['city'] === 'Virtual Office' || item['city'] === 'Non Nokia Site');
-
               // ...virtualOffices
 
-              const all = [...countries];
-
               if (group.length) {
-                const countryTotal = all.reduce((acc, item) => {
+                const countryTotal = group.reduce((acc, item) => {
                   acc.periods['actual'] = +acc.periods['actual'] + +item.periods['actual'];
                   acc.periods['2017'] = +acc.periods['2017'] + +item.periods['2017'];
                   acc.periods['2018'] = +acc.periods['2018'] + +item.periods['2018'];
                   return acc;
-                }, Object.assign({}, all[0], {
+                }, Object.assign({}, group[0], {
                   periods: {
                     'actual': 0,
                     '2017': 0,
@@ -220,7 +218,7 @@ export class DataUploader {
 
 
 
-        console.log(countryTotals);
+        // console.log(countryTotals);
 
         resolve();
 
