@@ -22,8 +22,7 @@ export class BuFilter {
       ['COO', 'COO'],
       ['Commercial Management', 'CM'],
       ['CTO', 'CTO'],
-      ['Central Team', 'MGMT'],
-      ['Business and Portfolio Integration Leadership', 'MGMT'],
+      ['Central Team', 'MGMT']
     ]);
   }
 
@@ -39,16 +38,7 @@ export class BuFilter {
             }
             return acc;
           }, []);
-
-        const mergedMGMT = mapedTitles
-          .filter((item: any) => item.title === 'MGMT')
-          .reduce((acc: any, item: any) => {
-            acc.value.push(item.value);
-            return acc;
-          }, { title: 'MGMT', value: [] });
-
-        const result = [...mapedTitles.filter((item: any) => item.title !== 'MGMT'), mergedMGMT];
-        this.buTitles.next(result);
+        this.buTitles.next(mapedTitles);
       });
   }
 
