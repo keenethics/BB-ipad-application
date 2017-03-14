@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import * as Baby from 'babyparse';
 import { toCamelCase } from '../../../both/helpers/to-camel-case';
-
 import { MarketCountries } from '../../../both/countries/market-countries.collection';
 import { AvailableCountries } from '../../../both/countries/available-countries.collection';
 import { setMarketCountries, setAvailableCountries } from '../../../both/countries/helpers';
@@ -43,6 +42,14 @@ const HIGHT_LEVEL_CATEGORIES = new Map([
   ['OUT Contractor Internal Move OUT', 'Others']
 ]);
 
+const RESOURCE_TYPES = new Map([
+  ['Internals', 'TotalInternals'],
+  ['ServCo Internals', 'TotalInternals'],
+  ['Externals', 'TotalExternals'],
+  ['ServCo Externals', 'TotalExternals'],
+  ['Trainees', 'Trainees']
+]);
+
 export const uploadFile = new ValidatedMethod({
   name: 'data.upload',
   validate: new SimpleSchema({
@@ -61,6 +68,9 @@ export const uploadFile = new ValidatedMethod({
       throw new Meteor.Error('no coordinates', 'Please upload geo coordinates first.');
     }
 
+    console.time();
+    console.log('Calculating data...');
+
     const parsedData = Baby.parse(fileData, { skipEmptyLines: true, delimiter: ';' }).data;
     const keys: string[] = parsedData[0];
 
@@ -72,16 +82,13 @@ export const uploadFile = new ValidatedMethod({
 
     BusinessData.remove({});
 
-    // 1. Add periods like separate value and add highLevelCategory
     const businessData = parsedData.map((item: string[], index: number) => {
       if (index !== 0) {
-        // from parsed data
         let doc = keys.reduce((acc: any, key, i) => {
           if (key) acc[toCamelCase(key.toLowerCase())] = item[i];
           return acc;
         }, {});
 
-        // periods
         doc = Object.keys(doc).reduce((acc: any, key) => {
           if (key.toLowerCase() === 'actual' || !isNaN(Number(key))) {
             acc.periods[key] = doc[key];
@@ -91,147 +98,174 @@ export const uploadFile = new ValidatedMethod({
           return acc;
         }, { periods: {} });
 
-        // highLevelCategory
         doc['highLevelCategory'] = HIGHT_LEVEL_CATEGORIES.get(doc.category);
-        // doc['identifier'] = 'City';
+        doc['resourceTypeKey'] = RESOURCE_TYPES.get(doc.resourceType);
+        doc['cityKey'] = doc.country + doc.city;
 
         return doc;
       }
     }).filter((item) => item);
 
-    const internals = businessData
-    .filter((item) => item['resourceType'] === 'Internals')
-    .filter((item) => item['n2'] === 'Global Services')
-    .filter((item) => item['highLevelCategory'] === 'Opening')
-    .filter((item) => item['city'] === 'Dublin');
+    function sumData(data: any[], highLevelCategory: string, n2: string, cityKey: string) {
+      const filtered = data
+        .filter((item) => item['resourceTypeKey'] === 'TotalInternals')
+        .filter((item) => item['n2'] === n2)
+        .filter((item) => item['highLevelCategory'] === highLevelCategory)
+        .filter((item) => item['cityKey'] === cityKey);
 
-    // const totalsMetropolis = businessData.reduce((acc: Map<string, any>, item) => {
-    //   const key = item['n1'] + item['n2'] + item['metropolis'] + item['resourceType'] + item['highLevelCategory'];
-    //   const total = acc.get(key);
-    //   if (!total) {
-    //     item = Object.assign({}, item);
-    //     item.city = 'Total';
-    //     item.identifier = 'Metropolis';
-    //     acc.set(key, item);
-    //   } else {
-    //     const keys = Object.getOwnPropertyNames(total.periods);
-    //     for (let i = 0; i < keys.length; i++) {
-    //       const result = +total.periods[keys[i]] + +item.periods[keys[i]];
-    //       if (isNaN(result)) return acc;
-    //       total.periods[keys[i]] = result;
-    //     }
-    //     acc.set(key, total);
-    //   }
-    //   return acc;
-    // }, new Map()) as Map<string, any>;
+      if (filtered.length) {
+        return filtered.reduce((acc, item) => {
+          acc.periods['actual'] = +acc.periods['actual'] + +item.periods['actual'];
+          acc.periods['2017'] = +acc.periods['2017'] + +item.periods['2017'];
+          acc.periods['2018'] = +acc.periods['2018'] + +item.periods['2018'];
+          return acc;
+        });
+      }
 
-    // const totalsCountry = Array.from(totalsMetropolis.values()).reduce((acc: Map<string, any>, item) => {
-    //   const key = item['n1'] + item['n2'] + item['country'] + item['resourceType'] + item['highLevelCategory'];
-    //   const total = acc.get(key);
-    //   if (!total) {
-    //     item = Object.assign({}, item);
-    //     item.metropolis = 'Total';
-    //     item.identifier = 'Country';
-    //     acc.set(key, item);
-    //   } else {
-    //     const keys = Object.getOwnPropertyNames(total.periods);
-    //     for (let i = 0; i < keys.length; i++) {
-    //       const result = +total.periods[keys[i]] + +item.periods[keys[i]];
-    //       if (isNaN(result)) return acc;
-    //       total.periods[keys[i]] = result;
-    //     }
-    //     acc.set(key, total);
-    //   }
-    //   return acc;
-    // }, new Map()) as Map<string, any>;
+      return null;
+    }
 
-    // const totalsMarket = Array.from(totalsCountry.values()).reduce((acc: Map<string, any>, item) => {
-    //   const key = item['n1'] + item['n2'] + item['market'] + item['resourceType'] + item['highLevelCategory'];
-    //   const total = acc.get(key);
-    //   if (!total) {
-    //     item = Object.assign({}, item);
-    //     item.country = 'Total';
-    //     item.identifier = 'Market';
-    //     acc.set(key, item);
-    //   } else {
-    //     const keys = Object.getOwnPropertyNames(total.periods);
-    //     for (let i = 0; i < keys.length; i++) {
-    //       const result = +total.periods[keys[i]] + +item.periods[keys[i]];
-    //       if (isNaN(result)) return acc;
-    //       total.periods[keys[i]] = result;
-    //     }
-    //     acc.set(key, total);
-    //   }
-    //   return acc;
-    // }, new Map()) as Map<string, any>;
+    function sumGroup(group: any[]) {
+      return group.reduce((acc, item) => {
+        acc.periods['actual'] = +acc.periods['actual'] + +item.periods['actual'];
+        acc.periods['2017'] = +acc.periods['2017'] + +item.periods['2017'];
+        acc.periods['2018'] = +acc.periods['2018'] + +item.periods['2018'];
+        return acc;
+      }, Object.assign({}, group[0], {
+        periods: {
+          'actual': 0,
+          '2017': 0,
+          '2018': 0
+        }
+      }));
+    }
 
-    // const totals = Array.from(totalsMarket.values()).reduce((acc: Map<string, any>, item) => {
-    //   const key = item['n1'] + item['n2'] + item['resourceType'] + item['highLevelCategory'];
-    //   const total = acc.get(key);
-    //   if (!total) {
-    //     item = Object.assign({}, item);
-    //     item.market = 'Total';
-    //     item.identifier = 'Global';
-    //     acc.set(key, item);
-    //   } else {
-    //     const keys = Object.getOwnPropertyNames(total.periods);
-    //     for (let i = 0; i < keys.length; i++) {
-    //       const result = +total.periods[keys[i]] + +item.periods[keys[i]];
-    //       if (isNaN(result)) return acc;
-    //       total.periods[keys[i]] = result;
-    //     }
-    //     acc.set(key, total);
-    //   }
-    //   return acc;
-    // }, new Map()) as Map<string, any>;
+    const highLevelCategories = Array.from(new Set(HIGHT_LEVEL_CATEGORIES.values()));
+    const BUs = Array.from(new Set(businessData.map(i => i.n2)));
+    const cities = Array.from(new Set(businessData.map(i => i.city)));
+    const countries = Array.from(new Set(businessData.map(i => i.country)));
+    const markets = Array.from(new Set(businessData.map(i => i.market)));
+    const cityKeys = Array.from(new Set(businessData.map(i => i.cityKey)));
+    const resourceTypes = Array.from(new Set(businessData.map(i => i.resourceType)));
+    const totalN3: any = [];
+    const totalMNs: any = [];
 
-    // const allData = [
-    //   ...businessData,
-    //   ...Array.from(totalsMetropolis.values()),
-    //   ...Array.from(totalsCountry.values()),
-    //   ...Array.from(totalsMarket.values()),
-    //   ...Array.from(totals.values())
-    // ];
+    cityKeys.forEach((cityKey) => {
+      highLevelCategories.forEach((category) => {
+        let totalMN: any = null;
+        BUs.forEach((n2) => {
+          const bu = sumData(businessData, category, n2, cityKey);
+          if (bu) {
+            bu.n3 = 'Total';
 
-    // const uniqueData = allData.reduce((acc, item) => {
-    //   const key =
-    //     item['n1'] +
-    //     item['n2'] +
-    //     item['market'] +
-    //     item['city'] +
-    //     item['country'] +
-    //     item['metropolis'] +
-    //     item['resourceType'] +
-    //     item['highLevelCategory'];
+            if (!totalMN) {
+              totalMN = Object.assign({}, bu, { periods: {} });
+              totalMN.n2 = 'Total';
+              totalMN.periods['actual'] = +bu.periods['actual'];
+              totalMN.periods['2017'] = +bu.periods['2017'];
+              totalMN.periods['2018'] = +bu.periods['2018'];
+            } else {
+              totalMN.periods['actual'] = +totalMN.periods['actual'] + +bu.periods['actual'];
+              totalMN.periods['2017'] = +totalMN.periods['2017'] + +bu.periods['2017'];
+              totalMN.periods['2018'] = +totalMN.periods['2018'] + +bu.periods['2018'];
+            }
 
-    //   const uniqueItem = acc.get(key);
+            totalN3.push(bu);
+          }
+        });
+        totalMNs.push(totalMN);
+      });
+    });
 
-    //   if (!uniqueItem && item.n1) {
-    //     // longitude latitude
-    //     const { city, market, country } = item;
+    const cityTotals = [...totalN3, ...totalMNs];
+    BUs.push('Total');
+    highLevelCategories.push('Total');
 
-    //     const cords = GeoCoordinates.findOne({
-    //       country: new RegExp(`^${country}$`, 'i'),
-    //       market: new RegExp(`^${market}$`, 'i'),
-    //       city: new RegExp(`^${city}$`, 'i')
-    //     });
+    const countryTotals: any[] = [];
+    countries.forEach((country) => {
+      highLevelCategories.forEach((category) => {
+        BUs.forEach((n2) => {
+          const group = cityTotals
+            .filter((item) => item)
+            .filter((item) => item['resourceTypeKey'] === 'TotalInternals')
+            .filter((item) => item['n2'] === n2)
+            .filter((item) => item['highLevelCategory'] === category)
+            .filter((item) => item['country'] === country);
 
-    //     if (cords) {
-    //       const { longitude, latitude } = cords;
-    //       item = Object.assign({ longitude, latitude }, item);
-    //     } else {
-    //       item = Object.assign({ longitude: 'NO CORDS', latitude: 'NO CORDS' }, item);
-    //     }
+          if (group.length) {
+            const countryTotal = sumGroup(group);
+            countryTotal['city'] = 'Total';
+            countryTotal['metropolis'] = 'Total';
+            countryTotals.push(countryTotal);
+          }
+        });
+      });
+    });
 
-    //     acc.set(key, item);
-    //   }
+    const marketTotals: any[] = [];
+    markets.forEach((market) => {
+      highLevelCategories.forEach((category) => {
+        BUs.forEach((n2) => {
+          const group = countryTotals
+            .filter((item) => item)
+            .filter((item) => item['resourceTypeKey'] === 'TotalInternals')
+            .filter((item) => item['n2'] === n2)
+            .filter((item) => item['highLevelCategory'] === category)
+            .filter((item) => item['market'] === market);
 
-    //   return acc;
-    // }, new Map());
+          if (group.length) {
+            const marketTotal = sumGroup(group);
+            marketTotal['country'] = 'Total';
+            marketTotals.push(marketTotal);
+          }
+        });
+      });
+    });
 
-    // Array.from(uniqueData.values()).forEach((d: any) => {
-    //   BusinessData.insert(d);
-    // });
+    const globalTotals: any[] = [];
+    highLevelCategories.forEach((category) => {
+      BUs.forEach((n2) => {
+        const group = marketTotals
+          .filter((item) => item)
+          .filter((item) => item['resourceTypeKey'] === 'TotalInternals')
+          .filter((item) => item['n2'] === n2)
+          .filter((item) => item['highLevelCategory'] === category);
+
+        if (group.length) {
+          const globalTotal = sumGroup(group);
+          globalTotal['market'] = 'Total';
+          globalTotals.push(globalTotal);
+        }
+      });
+    });
+
+    const allData = [...businessData, ...cityTotals, ...countryTotals, ...marketTotals, ...globalTotals];
+
+    const dataWithCords = allData.map((item) => {
+      if (!item) return;
+      const { city, market, country } = item;
+
+      const cords = GeoCoordinates.findOne({
+        country: new RegExp(`^${country}$`, 'i'),
+        market: new RegExp(`^${market}$`, 'i'),
+        city: new RegExp(`^${city}$`, 'i')
+      });
+
+      if (cords) {
+        const { longitude, latitude } = cords;
+        item = Object.assign({ longitude, latitude }, item);
+      } else {
+        item = Object.assign({ longitude: 'NO CORDS', latitude: 'NO CORDS' }, item);
+      }
+
+      return item;
+    }).filter(item => item);
+
+    console.log('Inserting data...');
+
+    dataWithCords.forEach((d: any) => {
+      BusinessData.insert(d);
+    });
 
     const titles = (BusinessData as any)
       .aggregate([{ $group: { _id: null, titles: { $addToSet: '$n2' } } }])[0]
@@ -244,6 +278,9 @@ export const uploadFile = new ValidatedMethod({
 
     setMarketCountries();
     setAvailableCountries();
+
+    console.log('Data uploaded');
+    console.timeEnd();
 
     return 'Data uploaded!';
   }
