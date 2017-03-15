@@ -29,6 +29,8 @@ import styles from './world-map.component.scss';
 import { BusinessDataUnit } from '../../../../both/data-management/business-data.collection';
 import { DataProvider } from '../data-management';
 import { MarketCountriesProvider } from './countries/market-countries';
+import { SepPipe } from '../common/pipes/comma-separator.pipe';
+
 
 @Component({
   selector: 'world-map',
@@ -46,6 +48,7 @@ export class WorldMap implements OnChanges {
   private isZoomingNow: boolean = false;
   private zoom: d3.ZoomBehavior<any, any>;
   private selectedMarkerElement: SVGCircleElement | SVGRectElement;
+  private sepPipe: SepPipe;
 
   width: number;
   height: number;
@@ -80,6 +83,8 @@ export class WorldMap implements OnChanges {
   ) {
     this.mapTransform = { x: 0, y: 0, k: 1 };
     this.zoomScaleExtend = [1, 30];
+
+    this.sepPipe = new SepPipe();
   }
 
   ngOnChanges(changes: any) {
@@ -116,10 +121,12 @@ export class WorldMap implements OnChanges {
         .translate([this.svgWidth() / 2, this.svgHeight() / 2]);
 
       this.mapPath = d3.geoPath(this.projection);
-
       this.zoom = d3.zoom()
         .scaleExtent(this.zoomScaleExtend)
         .translateExtent([[0, 0], [this.svgWidth(), this.svgHeight()]])
+        // .filter(() => {
+        //   return true;
+        // })
         .on('zoom', () => {
           const { x, y, k } = d3.event.transform;
           this.mapTransform = d3.event.transform;
@@ -188,10 +195,10 @@ export class WorldMap implements OnChanges {
     if (this.isMapReady) {
       const map = this.svg.select('g.map');
       const data = this.dataToDraw.filter((item) => {
-        return Boolean(item.value);
+        return Boolean(item.periods.actual);
       });
       const ranges = data.map((item) => {
-        return parseInt(item.value);
+        return parseInt(item.periods.actual);
       });
 
 
@@ -228,10 +235,10 @@ export class WorldMap implements OnChanges {
         .attr('class', 'marker')
         .attr('style', 'cursor: pointer')
         .attr('transform', (d: any) => {
-          const position = this.projection([parseInt(d.longitude, 10) || 0, parseInt(d.latitude, 10) || 0]);
+          const position = this.projection([parseFloat(d.longitude) || 0, parseFloat(d.latitude) || 0]);
           return `translate(${[
             position[0],
-            position[1] - barScale(parseInt(d.value) | 0) / scale
+            position[1] - barScale(parseInt(d.periods.actual) | 0) / scale
           ]})`;
         })
         .on('click', function (d: any) {
@@ -243,14 +250,16 @@ export class WorldMap implements OnChanges {
       groupEnter.append('rect')
         .attr('class', 'bar')
         .attr('width', 10 / scale)
-        .attr('height', (d: any) => barScale(parseInt(d.value) | 0) / scale)
-        .attr('x', -5 / scale);
+        .attr('height', (d: any) => barScale(parseInt(d.periods.actual) | 0) / scale)
+        .attr('x', -5 / scale)
+        .style('stroke-width', 1 / scale);
 
       if (this.labels || this.values) {
         groupEnter.append('rect')
           .attr('class', 'label-bg')
           .attr('fill', '#fff')
-          .attr('rx', 4 / scale);
+          .attr('rx', 4 / scale)
+          .style('stroke-width', 1 / scale);
 
         groupEnter.append('text')
           .text((d: any) => this.getLabelText(d))
@@ -262,7 +271,7 @@ export class WorldMap implements OnChanges {
             d.textSize = { width, height };
             return `translate(${[
               -(width / 2) / scale,
-              (barScale(parseInt(d.value) | 0) + 15) / scale
+              (barScale(parseInt(d.periods.actual) | 0) + 15) / scale
             ]})`;
           });
 
@@ -273,22 +282,22 @@ export class WorldMap implements OnChanges {
             const { width, height } = this.getBoundingClientRect();
             return `translate(${[
               -(width / 2) / scale,
-              (barScale(parseInt(d.value) | 0) + 2) / scale
+              (barScale(parseInt(d.periods.actual) | 0) + 2) / scale
             ]})`;
           });
       }
 
       const groupScale = placeholders
         .attr('transform', (d: any) => {
-          const position = this.projection([parseInt(d.longitude, 10) || 0, parseInt(d.latitude, 10) || 0]);
+          const position = this.projection([parseFloat(d.longitude) || 0, parseFloat(d.latitude) || 0]);
           return `translate(${[
             position[0],
-            position[1] - barScale(parseInt(d.value) | 0) / scale
+            position[1] - barScale(parseInt(d.periods.actual) | 0) / scale
           ]})`;
         });
 
       groupScale.select('rect.bar')
-        .attr('height', (d: any) => barScale(parseInt(d.value) | 0) / scale)
+        .attr('height', (d: any) => barScale(parseInt(d.periods.actual) | 0) / scale)
         .attr('width', 10 / scale)
         .attr('x', -5 / scale);
 
@@ -301,7 +310,7 @@ export class WorldMap implements OnChanges {
             d.textSize = { width, height };
             return `translate(${[
               -(width / 2) / scale,
-              (barScale(parseInt(d.value) | 0) + 15) / scale
+              (barScale(parseInt(d.periods.actual) | 0) + 15) / scale
             ]})`;
           });
 
@@ -313,7 +322,7 @@ export class WorldMap implements OnChanges {
             const { width, height } = this.getBoundingClientRect();
             return `translate(${[
               -(width / 2) / scale,
-              (barScale(parseInt(d.value) | 0) + 2) / scale
+              (barScale(parseInt(d.periods.actual) | 0) + 2) / scale
             ]})`;
           });
       }
@@ -336,10 +345,10 @@ export class WorldMap implements OnChanges {
         .attr('class', 'marker')
         .attr('style', 'cursor: pointer')
         .attr('transform', (d: any) => {
-          const position = this.projection([parseInt(d.longitude, 10) || 0, parseInt(d.latitude, 10) || 0]);
+          const position = this.projection([parseFloat(d.longitude) || 0, parseFloat(d.latitude) || 0]);
           return `translate(${[
             position[0],
-            position[1] - radiusScale(parseInt(d.value) | 0) / scale
+            position[1] - radiusScale(parseInt(d.periods.actual) | 0) / scale
           ]})`;
         })
         .on('click', function (d: any) {
@@ -349,12 +358,14 @@ export class WorldMap implements OnChanges {
         });
 
       groupEnter.append('circle')
-        .attr('r', (d: any) => radiusScale(parseInt(d.value) | 0) / scale);
+        .attr('r', (d: any) => radiusScale(parseInt(d.periods.actual) | 0) / scale)
+        .style('stroke-width', 4 / scale);
 
       if (this.labels || this.values) {
         groupEnter.append('rect')
           .attr('fill', '#fff')
-          .attr('rx', 4 / scale);
+          .attr('rx', 4 / scale)
+          .style('stroke-width', 1 / scale);
 
         groupEnter.append('text')
           .text((d: any) => this.getLabelText(d))
@@ -366,7 +377,7 @@ export class WorldMap implements OnChanges {
             d.textSize = { width, height };
             return `translate(${[
               (-width / 2) / scale,
-              (radiusScale(parseInt(d.value) | 0) + 17) / scale
+              (radiusScale(parseInt(d.periods.actual) | 0) + 17) / scale
             ]})`;
           });
 
@@ -378,22 +389,22 @@ export class WorldMap implements OnChanges {
             const { width, height } = this.getBoundingClientRect();
             return `translate(${[
               -width / 2 / scale,
-              (radiusScale(parseInt(d.value) | 0) + 4) / scale
+              (radiusScale(parseInt(d.periods.actual) | 0) + 4) / scale
             ]})`;
           });
       }
 
       const groupScale = placeholders
         .attr('transform', (d: any) => {
-          const position = this.projection([parseInt(d.longitude, 10) || 0, parseInt(d.latitude, 10) || 0]);
+          const position = this.projection([parseFloat(d.longitude) || 0, parseFloat(d.latitude) || 0]);
           return `translate(${[
             position[0],
-            position[1] - radiusScale(parseInt(d.value) | 0) / scale
+            position[1] - radiusScale(parseInt(d.periods.actual) | 0) / scale
           ]})`;
         });
 
       groupScale.select('circle')
-        .attr('r', (d: any) => radiusScale(parseInt(d.value) | 0) / scale);
+        .attr('r', (d: any) => radiusScale(parseInt(d.periods.actual) | 0) / scale);
 
       if (this.labels || this.values) {
         groupScale.select('text.label-text')
@@ -404,7 +415,7 @@ export class WorldMap implements OnChanges {
             d.textSize = { width, height };
             return `translate(${[
               (-width / 2) / scale,
-              (radiusScale(parseInt(d.value) | 0) + 17) / scale
+              (radiusScale(parseInt(d.periods.actual) | 0) + 17) / scale
             ]})`;
           });
 
@@ -416,7 +427,7 @@ export class WorldMap implements OnChanges {
             const { width, height } = this.getBoundingClientRect();
             return `translate(${[
               -width / 2 / scale,
-              (radiusScale(parseInt(d.value) | 0) + 4) / scale
+              (radiusScale(parseInt(d.periods.actual) | 0) + 4) / scale
             ]})`;
           });
       }
@@ -435,11 +446,11 @@ export class WorldMap implements OnChanges {
       text = dataUnit.market;
     }
 
-    if (this.values && this.labels) return `${text} ${text ? '•' : ''} ${dataUnit.value}`;
+    if (this.values && this.labels) return `${text} ${text ? '•' : ''} ${this.sepPipe.transform(dataUnit.periods.actual.toString())}`;
 
     if (this.labels) return text;
 
-    if (this.values) return dataUnit.value;
+    if (this.values) return this.sepPipe.transform(dataUnit.periods.actual.toString());
   }
 
   zoomToMarkers() {
@@ -455,8 +466,8 @@ export class WorldMap implements OnChanges {
       let k: number;
 
       if (markersData.length > 0) {
-        const sitesLongs = markersData.map((item: any) => parseInt(item.longitude, 10) || 0);
-        const sitesLats = markersData.map((item: any) => parseInt(item.latitude, 10) || 0);
+        const sitesLongs = markersData.map((item: any) => parseFloat(item.longitude) || 0);
+        const sitesLats = markersData.map((item: any) => parseFloat(item.latitude) || 0);
         const minPoint = this.projection([Math.min(...sitesLongs), Math.min(...sitesLats)]);
         const maxPoint = this.projection([Math.max(...sitesLongs), Math.max(...sitesLats)]);
 

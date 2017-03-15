@@ -9,6 +9,8 @@ import {
   ColumnNamesCollection
 } from '../../../../both/data-management';
 
+import { SumBusinessUnitsPipe } from './sum-bu.pipe';
+
 @Injectable()
 export class DataProvider {
   private _data: BehaviorSubject<BusinessDataUnit[]> = new BehaviorSubject([]);
@@ -38,7 +40,7 @@ export class DataProvider {
     return this._columnNames.asObservable();
   }
 
-  query(queryObject: any = {}) {
+  query(queryObject: any = {}, calc?: any) {
     const result = BusinessData.find(queryObject).fetch();
 
     if (this._subscription) {
@@ -47,7 +49,8 @@ export class DataProvider {
 
     this._subscription = MeteorObservable.subscribe('businessData', queryObject)
       .subscribe(() => {
-        const data = BusinessData.find(queryObject).fetch();
+        let data = BusinessData.find(queryObject).fetch();
+        if (calc) data = calc(data);
         this._data.next(data);
       });
   }

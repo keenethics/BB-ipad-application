@@ -76,9 +76,9 @@ export class MapSwichers implements OnInit, OnChanges {
     return (this.roles.userIsInRole(Meteor.userId(), ['Administrator', 'DataUpload']) && this.platform.is('core'));
   }
 
-  uploadData(file: File) {
+  uploadData(file: File, type: string) {
     this.loadingCtrl.loading('Uploading data...');
-    this.dataUploader.uploadFile(file)
+    this.dataUploader.uploadFile(file, type)
       .then((res: string) => {
         this.loadingCtrl.loadingInst.dismiss();
         this.toastCtrl.okToast(res);

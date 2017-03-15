@@ -10,12 +10,12 @@ export interface BusinessDataUnit {
   market: string;
   country: string;
   city: string;
+  metropolis: string;
   resourceType: string;
   hcLc: string;
   highLevelCategory: string;
   latitude: number;
   longitude: number;
-  period: string;
-  value: number;
+  periods: any;
   identifier: string;
 }

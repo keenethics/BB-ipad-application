@@ -8,18 +8,21 @@ fact-sheet {
   table {
     background: #fff;
     line-height: 30px;
+    margin: auto;
 
     th, td {
       font-size: 13px;
       border: 1px solid #c1c1c1;
       text-align: right;
       line-height: 19px;
-      padding: 0 2px;
+      padding: 0 6px;
     }
 
     td:first-child {
       text-align: left;
       font-weight: bold;
+      border-bottom: none;
+      border-top: none;
     }
 
     th, td {
@@ -34,6 +37,33 @@ fact-sheet {
       &.b-border {
         border-bottom: 1px solid black;
       }
+
+      &.color-lable > h3 {
+        text-align: right;
+        &:before {
+          content: '';
+          width: 10px;
+          height: 10px;
+          border-radius: 10px;
+          background-color: transparent;
+          display: inline-block;
+          position: relative;
+          bottom: 0px;
+          right: 1%;
+          margin: auto;
+        }
+
+        &.yellow:before {
+          background-color: rgb(255,196,1);
+        }
+
+        &.red:before {
+          background-color: rgb(189,61,62);
+        }
+      }
+
+      min-width: 50px;
+      max-width: 70px;
     }
 
     th {
@@ -50,12 +80,12 @@ fact-sheet {
 
     tr {
       &:first-child {
-        th:first-child {
+        th:first-child, th:last-child {
           border-bottom: none;
         }
       }
       &+tr{
-        th:first-child {
+        th:first-child, th:last-child {
           border-top: none;
         }
       }
@@ -75,14 +105,15 @@ fact-sheet {
 
     td.colored:after {
       content: '';
-      width: 7px;
-      height: 7px;
-      border-radius: 7px;
+      width: 10px;
+      height: 10px;
+      border-radius: 10px;
       background-color: transparent;
       display: inline-block;
       position: relative;
-      bottom: 7px;
-      right: 4px;
+      bottom: 0px;
+      right: 40%;
+      margin: auto;
     }
 
     td.colored.red:after {

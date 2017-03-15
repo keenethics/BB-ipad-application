@@ -1,9 +1,12 @@
 import { Component, ViewChild, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Platform, Nav, MenuController, ToastController } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
+import { MeteorObservable } from 'meteor-rxjs';
+
+import { DataUpdates } from '../../../both/data-management/data-updates.collections';
 
 import { Authorization } from './authorization/authorization';
-import { DataProvider } from './data-management';
+import { DataProvider, SumBusinessUnitsPipe } from './data-management';
 import { FilterController } from './filters';
 
 import { HomePage } from './pages/home/home.page';
@@ -53,7 +56,22 @@ export class AppComponent {
   ngAfterViewInit() {
     this.initializeApp();
     this.filterCtrl.currentFilter$.subscribe((f: any) => {
-      this.dataProvider.query(f);
+      this.dataProvider.query(f, (arr: any[]) => {
+        const uniqueData = arr.reduce((acc, item) => {
+          const result = acc
+            .filter((accItem: any) => accItem.n2 === item.n2)
+            .filter((accItem: any) => accItem.market === item.market)
+            .filter((accItem: any) => accItem.country === item.country)
+            .filter((accItem: any) => accItem.city === item.city)
+            .filter((accItem: any) => accItem.n3 === item.n3) as any[];
+
+          if (!result.length) acc.push(item);
+
+          return acc;
+        }, []);
+
+        return new SumBusinessUnitsPipe().transform(uniqueData, (f.identifier as string).toLowerCase());
+      });
     });
   }
 
@@ -69,6 +87,17 @@ export class AppComponent {
       StatusBar.styleLightContent();
       Splashscreen.hide();
     });
+
+    localStorage.removeItem('filters');
+
+    // MeteorObservable.subscribe('dataUpdates').subscribe(() => {
+    //   const lastDataUpdate = DataUpdates.findOne().lastDataUpdateDate as Date;
+    //   if (lastDataUpdate.toString() !== localStorage.getItem('lastDataUpdate')) {
+    //     localStorage.removeItem('filters');
+    //     localStorage.setItem('lastDataUpdate', lastDataUpdate.toString());
+    //     this.toastCtrl.create('Data was updated. All filters reset.');
+    //   }
+    // });
   }
 
   openPage(page: any) {
