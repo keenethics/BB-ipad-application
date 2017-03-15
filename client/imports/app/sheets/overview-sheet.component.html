@@ -23,7 +23,7 @@
         <tr *ngFor="let row of rowsDescs; let i = index;" class="{{row.color}}">
           <td>{{row.title}}</td>
           <td *ngFor="let period of periods | exclude:excludedPeriods">
-            {{getCellValue(row.dataSources, period, i === 0)}}
+            {{getCellValue(row.dataSources, period, i === 0) | sep}}
           </td>
         </tr>
       </tbody>

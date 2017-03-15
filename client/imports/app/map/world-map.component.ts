@@ -29,6 +29,8 @@ import styles from './world-map.component.scss';
 import { BusinessDataUnit } from '../../../../both/data-management/business-data.collection';
 import { DataProvider } from '../data-management';
 import { MarketCountriesProvider } from './countries/market-countries';
+import { SepPipe } from '../common/pipes/comma-separator.pipe';
+
 
 @Component({
   selector: 'world-map',
@@ -46,6 +48,7 @@ export class WorldMap implements OnChanges {
   private isZoomingNow: boolean = false;
   private zoom: d3.ZoomBehavior<any, any>;
   private selectedMarkerElement: SVGCircleElement | SVGRectElement;
+  private sepPipe: SepPipe;
 
   width: number;
   height: number;
@@ -80,6 +83,8 @@ export class WorldMap implements OnChanges {
   ) {
     this.mapTransform = { x: 0, y: 0, k: 1 };
     this.zoomScaleExtend = [1, 30];
+
+    this.sepPipe = new SepPipe();
   }
 
   ngOnChanges(changes: any) {
@@ -230,7 +235,7 @@ export class WorldMap implements OnChanges {
         .attr('class', 'marker')
         .attr('style', 'cursor: pointer')
         .attr('transform', (d: any) => {
-          const position = this.projection([parseFloat(d.longitude)|| 0, parseFloat(d.latitude) || 0]);
+          const position = this.projection([parseFloat(d.longitude) || 0, parseFloat(d.latitude) || 0]);
           return `translate(${[
             position[0],
             position[1] - barScale(parseInt(d.periods.actual) | 0) / scale
@@ -441,11 +446,11 @@ export class WorldMap implements OnChanges {
       text = dataUnit.market;
     }
 
-    if (this.values && this.labels) return `${text} ${text ? '•' : ''} ${dataUnit.periods.actual}`;
+    if (this.values && this.labels) return `${text} ${text ? '•' : ''} ${this.sepPipe.transform(dataUnit.periods.actual.toString())}`;
 
     if (this.labels) return text;
 
-    if (this.values) return dataUnit.periods.actual;
+    if (this.values) return this.sepPipe.transform(dataUnit.periods.actual.toString());
   }
 
   zoomToMarkers() {
