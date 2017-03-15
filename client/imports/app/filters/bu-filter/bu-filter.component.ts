@@ -45,73 +45,84 @@ export class BuFilterComponnet {
 
   select(item: { title: any, value: boolean }) {
     if (item.title === 'Total') {
-      delete this.queryObject.n2;
+      this.queryObject.n2 = 'Total';
       this.filterCtrl.currentFilter$ = this.queryObject;
       return;
     }
 
-    if (item.value) {
-      // if (!this.queryObject.n2) this.queryObject.n2 = { $in: [] };
-
-      // if (this.queryObject.n2.$in) {
-      //   if (Array.isArray(item.title)) {
-      //     item.title.forEach((t) => {
-      //       if (this.queryObject.n2.$in.indexOf(t) === -1) {
-      //         this.queryObject.n2.$in.push(t);
-      //       }
-      //     });
-      //   } else {
-      //     if (this.queryObject.n2.$in.indexOf(item.title) === -1) {
-      //       this.queryObject.n2.$in.push(item.title);
-      //     }
-      //   }
-      // } else {
-
-      this.queryObject.n2 = { $in: Array.isArray(item.title) ? [...item.title] : [item.title] };
-
-      // }
-      if (Array.isArray(item.title)) {
-        item.title.forEach((t) => this.queryObject.n2.$in.push(t));
-      } else {
-        this.queryObject.n2.$in.push(item.title);
-      }
+    if (this.queryObject.n2.$in) {
+      this.queryObject.n2.$in.push(item.title);
     } else {
-      this.queryObject.n2.$in = this.queryObject.n2.$in.filter((i: any) => i !== item.title);
+      this.queryObject.n2 = { $in: [item.title] };
     }
 
+    if (this.queryObject.n2.$in.length === 10) {
+      this.queryObject.n2 = 'Total';
+    }
+
+    this.filterCtrl.currentFilter$ = this.queryObject;
     // if (item.value) {
-    //   if (this.queryObject.n2.$in) {
-    //     if (Array.isArray(item.title)) {
-    //       item.title.forEach((t) => {
-    //         if (this.queryObject.n2.$in.indexOf(t) === -1) {
-    //           this.queryObject.n2.$in.push(t);
-    //         }
-    //       });
-    //     } else {
-    //       if (this.queryObject.n2.$in.indexOf(item.title) === -1) {
-    //         this.queryObject.n2.$in.push(item.title);
-    //       }
-    //     }
+    //   // if (!this.queryObject.n2) this.queryObject.n2 = { $in: [] };
+
+    //   // if (this.queryObject.n2.$in) {
+    //   //   if (Array.isArray(item.title)) {
+    //   //     item.title.forEach((t) => {
+    //   //       if (this.queryObject.n2.$in.indexOf(t) === -1) {
+    //   //         this.queryObject.n2.$in.push(t);
+    //   //       }
+    //   //     });
+    //   //   } else {
+    //   //     if (this.queryObject.n2.$in.indexOf(item.title) === -1) {
+    //   //       this.queryObject.n2.$in.push(item.title);
+    //   //     }
+    //   //   }
+    //   // } else {
+
+    //   this.queryObject.n2 = { $in: Array.isArray(item.title) ? [...item.title] : [item.title] };
+
+    //   // }
+    //   if (Array.isArray(item.title)) {
+    //     item.title.forEach((t) => this.queryObject.n2.$in.push(t));
     //   } else {
-    //     this.queryObject.n2 = { $in: Array.isArray(item.title) ? [...item.title] : [item.title] };
+    //     this.queryObject.n2.$in.push(item.title);
     //   }
     // } else {
-    //   if (Array.isArray(item.title)) {
-    //     item.title.forEach((t: any) => {
-    //       this.queryObject.n2.$in = this.queryObject.n2.$in.filter((i: string) => i !== t);
-    //     });
-    //   } else {
-    //     this.queryObject.n2.$in = this.queryObject.n2.$in.filter((i: string) => i !== item.title);
-    //   }
-
-    //   if (!this.queryObject.n2.$in.length) delete this.queryObject.n2;
+    //   this.queryObject.n2.$in = this.queryObject.n2.$in.filter((i: any) => i !== item.title);
     // }
-    this.filterCtrl.currentFilter$ = this.queryObject;
-    console.log(item);
+
+    // // if (item.value) {
+    // //   if (this.queryObject.n2.$in) {
+    // //     if (Array.isArray(item.title)) {
+    // //       item.title.forEach((t) => {
+    // //         if (this.queryObject.n2.$in.indexOf(t) === -1) {
+    // //           this.queryObject.n2.$in.push(t);
+    // //         }
+    // //       });
+    // //     } else {
+    // //       if (this.queryObject.n2.$in.indexOf(item.title) === -1) {
+    // //         this.queryObject.n2.$in.push(item.title);
+    // //       }
+    // //     }
+    // //   } else {
+    // //     this.queryObject.n2 = { $in: Array.isArray(item.title) ? [...item.title] : [item.title] };
+    // //   }
+    // // } else {
+    // //   if (Array.isArray(item.title)) {
+    // //     item.title.forEach((t: any) => {
+    // //       this.queryObject.n2.$in = this.queryObject.n2.$in.filter((i: string) => i !== t);
+    // //     });
+    // //   } else {
+    // //     this.queryObject.n2.$in = this.queryObject.n2.$in.filter((i: string) => i !== item.title);
+    // //   }
+
+    // //   if (!this.queryObject.n2.$in.length) delete this.queryObject.n2;
+    // // }
+    // this.filterCtrl.currentFilter$ = this.queryObject;
+    // console.log(item);
   }
 
   isInQueryObject(title: string | string[]) {
-    if (!this.queryObject.n2) return true;
+    if (this.queryObject.n2 === 'Total') return true;
 
     const titlesArr = Array.isArray(title) ? title : [title];
     for (let i = 0; i < titlesArr.length; i++) {
@@ -121,5 +132,6 @@ export class BuFilterComponnet {
         return this.queryObject.n2 === titlesArr[i];
       }
     }
+    return false;
   }
 }

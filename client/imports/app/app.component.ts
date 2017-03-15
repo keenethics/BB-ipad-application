@@ -75,6 +75,8 @@ export class AppComponent {
       Splashscreen.hide();
     });
 
+    localStorage.removeItem('filters');
+
     MeteorObservable.subscribe('dataUpdates').subscribe(() => {
       const lastDataUpdate = DataUpdates.findOne().lastDataUpdateDate as Date;
       if (lastDataUpdate.toString() !== localStorage.getItem('lastDataUpdate')) {
