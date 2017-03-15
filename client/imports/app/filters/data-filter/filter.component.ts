@@ -119,7 +119,7 @@ export class DataFilterComponent implements OnInit, OnDestroy {
     this.query = {
       identifier: 'Global',
       highLevelCategory: 'Landing point',
-      resourceType: 'Internals',
+      resourceTypeKey: 'TotalInternals',
       n2: 'Total'
     };
 
