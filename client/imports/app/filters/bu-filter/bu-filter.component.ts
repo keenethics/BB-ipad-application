@@ -31,6 +31,7 @@ export class BuFilterComponnet {
   ngOnInit() {
     this.filterCtrl.currentFilter$.subscribe((qObj) => {
       this.queryObject = qObj;
+      this.queryObject.n3 = 'Total';
     });
   }
 

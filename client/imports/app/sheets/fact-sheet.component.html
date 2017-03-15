@@ -34,7 +34,7 @@
           <td *ngIf="row.title">{{row.title}}</td>
           <!--<td *ngFor="let col of columnsDescs|exclude:[lastColumnsDesc]" [ngClass]="[col.class || '', row.class || '']">-->
           <td *ngFor="let col of columnsDescs" [ngClass]="[col.class || '', row.class || '']">
-            {{getCellValue(row, col)}}
+            {{getCellValue(row, col) | sep}}
           </td>
           <td>{{getCellValue(row, lastColumnsDesc)|percentage}}</td>
           <td [colored]="getCellValue(row, lastColumnsDesc)"></td>

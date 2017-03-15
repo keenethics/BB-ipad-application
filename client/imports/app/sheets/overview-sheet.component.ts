@@ -69,7 +69,8 @@ export class OverviewSheetComponent {
     const query = {
       [this.entityKey]: this.selectedItem[this.entityKey],
       identifier: this.selectedItem.identifier,
-      n2: 'Total'
+      n2: 'Total',
+      n3: 'Total'
     };
     this.dataProvider.query(query);
   }

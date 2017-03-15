@@ -119,17 +119,17 @@ export class FactSheetComponent {
 
 
     this.rowsDescs = [
-      { title: 'GS', dataSources: { n2: 'Global Services' } },
-      { title: 'P', dataSources: { n2: 'MN Products-RN' } },
-      { title: 'CC', dataSources: { n2: 'MN Products-CC' } },
-      { title: 'AMS', dataSources: { n2: 'Advanced MN Solutions' } },
-      { title: 'PPS', dataSources: { n2: 'Product Portfolio Sales' } },
-      { title: 'SPS', dataSources: { n2: 'Services Portfolio Sales' } },
-      { title: 'COO', dataSources: { n2: 'COO' } },
-      { title: 'CM', dataSources: { n2: 'Commercial Management' } },
-      { title: 'CTO', dataSources: { n2: 'CTO' } },
-      { title: 'Mgmt', class: 'b-border', dataSources: { n2: 'Central Team' } },
-      { title: 'MNTotal', dataSources: { n2: 'Total' } }
+      { title: 'GS', dataSources: { n2: 'Global Services', n3: 'Total' } },
+      { title: 'P', dataSources: { n2: 'MN Products-RN', n3: 'Total' } },
+      { title: 'CC', dataSources: { n2: 'MN Products-CC', n3: 'Total' } },
+      { title: 'AMS', dataSources: { n2: 'Advanced MN Solutions', n3: 'Total' } },
+      { title: 'PPS', dataSources: { n2: 'Product Portfolio Sales', n3: 'Total' } },
+      { title: 'SPS', dataSources: { n2: 'Services Portfolio Sales', n3: 'Total' } },
+      { title: 'COO', dataSources: { n2: 'COO', n3: 'Total' } },
+      { title: 'CM', dataSources: { n2: 'Commercial Management', n3: 'Total' } },
+      { title: 'CTO', dataSources: { n2: 'CTO', n3: 'Total' } },
+      { title: 'Mgmt', class: 'b-border', dataSources: { n2: 'Central Team', n3: 'Total' } },
+      { title: 'MNTotal', dataSources: { n2: 'Total', n3: 'Total' } }
     ];
   }
 

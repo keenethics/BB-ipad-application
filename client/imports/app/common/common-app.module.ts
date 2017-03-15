@@ -12,6 +12,7 @@ import { Draggable } from './directives/draggable';
 import { DebounceClick } from './directives/debounceClick';
 
 import { PickFileComponent } from './components/pick-file/pick-file.component';
+import { SepPipe } from './pipes/comma-separator.pipe';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { PickFileComponent } from './components/pick-file/pick-file.component';
     Draggable,
     ExcludePipe,
     DebounceClick,
-    PickFileComponent
+    PickFileComponent,
+    SepPipe
   ],
   exports: [
     ObjectAsArray,
@@ -35,7 +37,8 @@ import { PickFileComponent } from './components/pick-file/pick-file.component';
     Draggable,
     ExcludePipe,
     DebounceClick,
-    PickFileComponent
+    PickFileComponent,
+    SepPipe
   ]
 })
 export class CommonAppModule {
