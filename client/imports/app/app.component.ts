@@ -90,14 +90,14 @@ export class AppComponent {
 
     localStorage.removeItem('filters');
 
-    MeteorObservable.subscribe('dataUpdates').subscribe(() => {
-      const lastDataUpdate = DataUpdates.findOne().lastDataUpdateDate as Date;
-      if (lastDataUpdate.toString() !== localStorage.getItem('lastDataUpdate')) {
-        localStorage.removeItem('filters');
-        localStorage.setItem('lastDataUpdate', lastDataUpdate.toString());
-        this.toastCtrl.create('Data was updated. All filters reset.');
-      }
-    });
+    // MeteorObservable.subscribe('dataUpdates').subscribe(() => {
+    //   const lastDataUpdate = DataUpdates.findOne().lastDataUpdateDate as Date;
+    //   if (lastDataUpdate.toString() !== localStorage.getItem('lastDataUpdate')) {
+    //     localStorage.removeItem('filters');
+    //     localStorage.setItem('lastDataUpdate', lastDataUpdate.toString());
+    //     this.toastCtrl.create('Data was updated. All filters reset.');
+    //   }
+    // });
   }
 
   openPage(page: any) {
