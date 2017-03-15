@@ -21,6 +21,7 @@ import styles from './bu-filter.component.scss';
 })
 export class BuFilterComponnet {
   private queryObject: any;
+  private buTitles: string[];
 
   constructor(
     public filter: BuFilter,
@@ -33,93 +34,43 @@ export class BuFilterComponnet {
       this.queryObject = qObj;
       this.queryObject.n3 = 'Total';
     });
+
+    this.filter.buTitles$.subscribe((titles) => {
+      this.buTitles = titles;
+    });
   }
 
   checkToggle(title: string) {
     const state = this.isInQueryObject(title);
     if (state) {
-      this.select({ title, value: false });
+      this.select({ title });
     } else {
-      this.select({ title, value: true });
+      this.select({ title });
     }
   }
 
-  select(item: { title: any, value: boolean }) {
-    if (item.title === 'Total') {
-      this.queryObject.n2 = 'Total';
-      this.filterCtrl.currentFilter$ = this.queryObject;
-      return;
-    }
+  select(item: { title: any }) {
+    if (this.isInQueryObject(item.title)) {
+      if (item.title === 'Total') this.queryObject.n2 = { $in: [] };
 
-    if (this.queryObject.n2.$in) {
-      this.queryObject.n2.$in.push(item.title);
+      if (this.queryObject.n2 === 'Total') {
+        this.queryObject.n2 = { $in: this.buTitles.map((t: any) => t.value).filter((t) => t !== item.title && t !== 'Total') };
+      } else {
+        this.queryObject.n2 = { $in: this.queryObject.n2.$in.filter((t: any) => t !== item.title) };
+      }
     } else {
-      this.queryObject.n2 = { $in: [item.title] };
-    }
+      if (item.title === 'Total') {
+        this.queryObject.n2 = 'Total';
+      } else {
+        this.queryObject.n2.$in.push(item.title);
 
-    if (this.queryObject.n2.$in.length === 10) {
-      this.queryObject.n2 = 'Total';
+        if (this.queryObject.n2.$in.length === 10) {
+          this.queryObject.n2 = 'Total';
+        }
+      }
     }
 
     this.filterCtrl.currentFilter$ = this.queryObject;
-    // if (item.value) {
-    //   // if (!this.queryObject.n2) this.queryObject.n2 = { $in: [] };
-
-    //   // if (this.queryObject.n2.$in) {
-    //   //   if (Array.isArray(item.title)) {
-    //   //     item.title.forEach((t) => {
-    //   //       if (this.queryObject.n2.$in.indexOf(t) === -1) {
-    //   //         this.queryObject.n2.$in.push(t);
-    //   //       }
-    //   //     });
-    //   //   } else {
-    //   //     if (this.queryObject.n2.$in.indexOf(item.title) === -1) {
-    //   //       this.queryObject.n2.$in.push(item.title);
-    //   //     }
-    //   //   }
-    //   // } else {
-
-    //   this.queryObject.n2 = { $in: Array.isArray(item.title) ? [...item.title] : [item.title] };
-
-    //   // }
-    //   if (Array.isArray(item.title)) {
-    //     item.title.forEach((t) => this.queryObject.n2.$in.push(t));
-    //   } else {
-    //     this.queryObject.n2.$in.push(item.title);
-    //   }
-    // } else {
-    //   this.queryObject.n2.$in = this.queryObject.n2.$in.filter((i: any) => i !== item.title);
-    // }
-
-    // // if (item.value) {
-    // //   if (this.queryObject.n2.$in) {
-    // //     if (Array.isArray(item.title)) {
-    // //       item.title.forEach((t) => {
-    // //         if (this.queryObject.n2.$in.indexOf(t) === -1) {
-    // //           this.queryObject.n2.$in.push(t);
-    // //         }
-    // //       });
-    // //     } else {
-    // //       if (this.queryObject.n2.$in.indexOf(item.title) === -1) {
-    // //         this.queryObject.n2.$in.push(item.title);
-    // //       }
-    // //     }
-    // //   } else {
-    // //     this.queryObject.n2 = { $in: Array.isArray(item.title) ? [...item.title] : [item.title] };
-    // //   }
-    // // } else {
-    // //   if (Array.isArray(item.title)) {
-    // //     item.title.forEach((t: any) => {
-    // //       this.queryObject.n2.$in = this.queryObject.n2.$in.filter((i: string) => i !== t);
-    // //     });
-    // //   } else {
-    // //     this.queryObject.n2.$in = this.queryObject.n2.$in.filter((i: string) => i !== item.title);
-    // //   }
-
-    // //   if (!this.queryObject.n2.$in.length) delete this.queryObject.n2;
-    // // }
-    // this.filterCtrl.currentFilter$ = this.queryObject;
-    // console.log(item);
   }
 
   isInQueryObject(title: string | string[]) {
