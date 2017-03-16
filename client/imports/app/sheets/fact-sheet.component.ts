@@ -164,10 +164,10 @@ export class FactSheetComponent {
 
     if (calc) return calc(result, asKeys);
 
-    if (result.length) {
-      return result[0]['periods'][colDesc.period];
+    if (result.length === 1) {
+      return result[0]['periods'][colDesc.period].toString();
     } else {
-      return '';
+      return '0';
     }
 
 
