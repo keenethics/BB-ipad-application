@@ -159,14 +159,15 @@ export class FactSheetComponent {
 
     const result = this.businessData
       .filter((item) => item.highLevelCategory === asKeys.highLevelCategory)
-      .filter((item) => item.n2 === asKeys.n2);
+      .filter((item) => item.n2 === asKeys.n2)
+      .filter((item) => item.n3 === asKeys.n3);
 
     if (calc) return calc(result, asKeys);
 
-    if (result.length) {
-      return result[0]['periods'][colDesc.period];
+    if (result.length === 1) {
+      return result[0]['periods'][colDesc.period].toString();
     } else {
-      return '';
+      return '0';
     }
 
 
