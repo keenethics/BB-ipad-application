@@ -5,6 +5,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class PercentagePipe implements PipeTransform {
   transform(val: any): string {
-    return !isNaN(val) ? Math.round(val) + '%' : '';
+    return !isNaN(val) && isFinite(val) ? Math.round(val) + '%' : '';
   }
 }
