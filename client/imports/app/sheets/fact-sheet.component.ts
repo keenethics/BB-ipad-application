@@ -159,7 +159,8 @@ export class FactSheetComponent {
 
     const result = this.businessData
       .filter((item) => item.highLevelCategory === asKeys.highLevelCategory)
-      .filter((item) => item.n2 === asKeys.n2);
+      .filter((item) => item.n2 === asKeys.n2)
+      .filter((item) => item.n3 === asKeys.n3);
 
     if (calc) return calc(result, asKeys);
 
