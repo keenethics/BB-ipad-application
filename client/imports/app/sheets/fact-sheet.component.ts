@@ -164,7 +164,11 @@ export class FactSheetComponent {
 
     if (calc) return calc(result, asKeys);
 
-    if (result.length) {
+    if (result.length === 1) {
+      return result[0]['periods'][colDesc.period].toString();
+    } else if (result.length > 1) {
+      console.log(`%cWARNING! Two selections in factsheet cell: ${rowDesc.title + ' ' + colDesc.title} `,
+        'background-color: red; color: #fff; padding: 1px;');
       return result[0]['periods'][colDesc.period].toString();
     } else {
       return '0';
