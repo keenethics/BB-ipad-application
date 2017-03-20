@@ -137,7 +137,9 @@ mongoClient.connect(mongoUrl, (err, db) => {
       function setCords(data) {
         return data.map((item) => {
           if (!item) return;
-          const { city, market, country } = item;
+          const city = item.city;
+          const market = item.market;
+          const country = item.country;
 
           const cords = geoCoordinates
             .filter((i) => i.country === country)
@@ -145,8 +147,9 @@ mongoClient.connect(mongoUrl, (err, db) => {
             .filter((i) => i.city === city)[0];
 
           if (cords) {
-            const { longitude, latitude } = cords;
-            item = Object.assign({ longitude, latitude }, item);
+            const longitude = cords.longitude;
+            const latitude = cords.latitude;
+            item = Object.assign({ longitude: longitude, latitude: latitude }, item);
           } else {
             item = Object.assign({ longitude: 'NO CORDS', latitude: 'NO CORDS' }, item);
           }
@@ -192,7 +195,7 @@ mongoClient.connect(mongoUrl, (err, db) => {
         });
       });
 
-      const cityTotals = [...totalN3, ...totalMNs];
+      const cityTotals = totalN3.concat(totalMNs);
       BUs.push('Total');
       highLevelCategories.push('Total');
 
@@ -257,7 +260,7 @@ mongoClient.connect(mongoUrl, (err, db) => {
         });
       });
 
-      const allData = [...cityTotals, ...countryTotals, ...marketTotals, ...globalTotals];
+      const allData = cityTotals.concat(countryTotals, marketTotals, globalTotals);
 
       const dataWithCords = setCords(allData);
       const sourcesDataWithCords = setCords(businessDataSources);
