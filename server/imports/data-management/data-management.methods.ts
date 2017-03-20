@@ -8,7 +8,6 @@ import { MarketCountries } from '../../../both/countries/market-countries.collec
 import { AvailableCountries } from '../../../both/countries/available-countries.collection';
 import { setMarketCountries, setAvailableCountries } from '../../../both/countries/helpers';
 import { DataUpdates } from '../../../both/data-management/data-updates.collections';
-import { calculateData } from './calculate.job';
 
 import {
   BusinessData,

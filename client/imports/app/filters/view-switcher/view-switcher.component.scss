@@ -2,7 +2,7 @@ view-switcher {
   position: absolute;
   top: 33px;
   right: 33px;
-  width: 187px;
+  width: 415px;
 
   & > ion-segment.segment > ion-segment-button.segment-button {
     font-size: 12px;
@@ -23,7 +23,7 @@ view-switcher {
     }
 
     &:first-of-type {
-      max-width: 80px;
+      max-width: 105px;
       border-top-left-radius: 26px;
       border-bottom-left-radius: 26px;
     }

@@ -57,7 +57,7 @@ export class FilterController {
   }
 
   emitChangeCategory(category: string) {
-    if (category === 'country' || category === 'city') {
+    if (category === 'country' || category === 'city' || category === 'market' || category === 'global') {
       this.onChangeCategory.emit(category);
     }
   }
