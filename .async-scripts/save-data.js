@@ -1,3 +1,5 @@
+'use strict';
+
 const fs = require('fs');
 const Baby = require('babyparse');
 const mongoClient = require('mongodb').MongoClient;
