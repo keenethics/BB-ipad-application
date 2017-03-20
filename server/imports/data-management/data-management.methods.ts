@@ -110,7 +110,7 @@ export const uploadFile = new ValidatedMethod({
       });
     });
 
-    return 'Data will be available in few minutes';
+    return 'You will be notified about data update status in few minutes.';
   }
 });
 
