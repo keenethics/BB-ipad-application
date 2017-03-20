@@ -21,43 +21,6 @@ import {
 
 declare const process: any;
 
-const HIGHT_LEVEL_CATEGORIES = new Map([
-  ['Opening', 'Opening'],
-  ['IN Employee Ramp Up Replacements', 'Ramp up'],
-  ['IN Employee From PNA/LOA', 'Others'],
-  ['IN Employee Transfer Position from other BG/Function', 'Others'],
-  ['IN Employee Acquisition Insourcing', 'Ramp up'],
-  ['IN Employee Transfer from own BG/Function', 'Others'],
-  ['OUT Employee Voluntary Leave', 'Ramp down'],
-  ['OUT Employee Restructuring', 'Ramp down'],
-  ['OUT Employee Employee moving to other BG/Function', 'Others'],
-  ['OUT Employee To PNA/LOA', 'Others'],
-  ['OUT Employee Transfer to other BG/Function', 'Others'],
-  ['OUT Employee Divestment Outsourcing', 'Ramp down'],
-  ['OUT Employee Transfer to own BG/Function', 'Others'],
-  ['IN Contractor New Contract', 'Ramp up'],
-  ['IN Contractor Acquisition Insourcing', 'Ramp up'],
-  ['IN Contractor Transfer from own BG/Function', 'Others'],
-  ['OUT Contractor End of Contract', 'Ramp down'],
-  ['OUT Contractor Divestment Outsourcing', 'Ramp down'],
-  ['OUT Contractor Transfer to own BG/Function', 'Others'],
-  ['Landing point', 'Landing point'],
-  ['IN Employee New External Hire', 'Ramp up'],
-  ['IN Employee Attrition Replacement by ext hire', 'Ramp up'],
-  ['IN Employee Internal Move IN', 'Others'],
-  ['OUT Employee Internal Move OUT', 'Others'],
-  ['IN Contractor Internal Move IN', 'Others'],
-  ['OUT Contractor Internal Move OUT', 'Others']
-]);
-
-const RESOURCE_TYPES = new Map([
-  ['Internals', 'TotalInternals'],
-  ['ServCo Internals', 'TotalInternals'],
-  ['Externals', 'TotalExternals'],
-  ['ServCo Externals', 'TotalExternals'],
-  ['Trainees', 'Trainees']
-]);
-
 export const uploadFile = new ValidatedMethod({
   name: 'data.upload',
   validate: new SimpleSchema({
