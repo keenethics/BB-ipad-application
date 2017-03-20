@@ -20,10 +20,11 @@ export class ColoredDirective {
     if (value <= -50) {
       color = 'red';
     } else if (value <= -25 && value > -50) {
-      color = 'orange';
-    } else if (value <= -10 && value > -25) {
       color = 'yellow';
     }
+    // } else if (value <= -10 && value > -25) {
+    //   color = 'yellow';
+    // }
     (this.elRef.nativeElement as HTMLElement).classList.add(color || 'transparent');
   }
 }

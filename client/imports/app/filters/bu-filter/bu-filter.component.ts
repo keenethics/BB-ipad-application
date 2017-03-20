@@ -21,6 +21,7 @@ import styles from './bu-filter.component.scss';
 })
 export class BuFilterComponnet {
   private queryObject: any;
+  private buTitles: string[];
 
   constructor(
     public filter: BuFilter,
@@ -31,58 +32,51 @@ export class BuFilterComponnet {
   ngOnInit() {
     this.filterCtrl.currentFilter$.subscribe((qObj) => {
       this.queryObject = qObj;
+      this.queryObject.n3 = 'Total';
+    });
+
+    this.filter.buTitles$.subscribe((titles) => {
+      this.buTitles = titles;
     });
   }
 
   checkToggle(title: string) {
     const state = this.isInQueryObject(title);
     if (state) {
-      this.select({ title, value: false });
+      this.select({ title });
     } else {
-      this.select({ title, value: true });
+      this.select({ title });
     }
   }
 
-  select(item: { title: any, value: boolean }) {
-    if (item.title === 'Total') {
-      this.queryObject.n2 = 'Total';
-      this.filterCtrl.currentFilter$ = this.queryObject;
-      return;
-    }
+  select(item: { title: any }) {
+    if (this.isInQueryObject(item.title)) {
+      if (item.title === 'Total') this.queryObject.n2 = { $in: [] };
 
-    if (item.value) {
-      // if (this.queryObject.n2.$in) {
-      //   if (Array.isArray(item.title)) {
-      //     item.title.forEach((t) => {
-      //       if (this.queryObject.n2.$in.indexOf(t) === -1) {
-      //         this.queryObject.n2.$in.push(t);
-      //       }
-      //     });
-      //   } else {
-      //     if (this.queryObject.n2.$in.indexOf(item.title) === -1) {
-      //       this.queryObject.n2.$in.push(item.title);
-      //     }
-      //   }
-      // } else {
-      this.queryObject.n2 = { $in: Array.isArray(item.title) ? [...item.title] : [item.title] };
-      // }
-    } else {
-      if (Array.isArray(item.title)) {
-        item.title.forEach((t: any) => {
-          this.queryObject.n2.$in = this.queryObject.n2.$in.filter((i: string) => i !== t);
-        });
+      if (this.queryObject.n2 === 'Total') {
+        this.queryObject.n2 = { $in: this.buTitles.map((t: any) => t.value).filter((t) => t !== item.title && t !== 'Total') };
       } else {
-        this.queryObject.n2.$in = this.queryObject.n2.$in.filter((i: string) => i !== item.title);
+        this.queryObject.n2 = { $in: this.queryObject.n2.$in.filter((t: any) => t !== item.title) };
       }
+    } else {
+      if (item.title === 'Total') {
+        this.queryObject.n2 = 'Total';
+      } else {
+        this.queryObject.n2.$in.push(item.title);
 
-      if (!this.queryObject.n2.$in.length) this.queryObject.n2 = 'Total';
+        if (this.queryObject.n2.$in.length === 10) {
+          this.queryObject.n2 = 'Total';
+        }
+      }
     }
+
     this.filterCtrl.currentFilter$ = this.queryObject;
   }
 
   isInQueryObject(title: string | string[]) {
-    const titlesArr = Array.isArray(title) ? title : [title];
+    if (this.queryObject.n2 === 'Total') return true;
 
+    const titlesArr = Array.isArray(title) ? title : [title];
     for (let i = 0; i < titlesArr.length; i++) {
       if (this.queryObject.n2.$in) {
         return (this.queryObject.n2.$in.indexOf(titlesArr[i]) !== -1);
@@ -90,5 +84,6 @@ export class BuFilterComponnet {
         return this.queryObject.n2 === titlesArr[i];
       }
     }
+    return false;
   }
 }

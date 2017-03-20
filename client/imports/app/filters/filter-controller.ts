@@ -23,8 +23,13 @@ export class FilterController {
 
   set currentFilter$(f) {
     this.currentFilter.next(f);
-    const { category, activeFilters, filterQueryObject } = this.getFromStorage();
-    this.saveToStorage(category, activeFilters, filterQueryObject, f);
+    try {
+      const { category, activeFilters, filterQueryObject } = this.getFromStorage();
+      this.saveToStorage(category, activeFilters, filterQueryObject, f);
+    } catch (err) {
+      this.filterCmp.initFilters();
+     // this.saveToStorage(category, activeFilters, filterQueryObject, f);
+    }
   }
 
   setFilterComponetn(cmp: DataFilterComponent) {

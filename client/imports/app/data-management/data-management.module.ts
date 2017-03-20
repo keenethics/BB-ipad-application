@@ -8,6 +8,7 @@ import { DataUploader } from './data-uploader';
 // import { DataFilterComponent } from './filter.component';
 // import { AppliedFiltersComponent } from './applied-filters.component';
 import { AutoHeightDirective } from './auto-height.directive';
+import { SumBusinessUnitsPipe } from './sum-bu.pipe';
 // import { FilterController } from './filter-controller';
 
 @NgModule({
@@ -19,8 +20,8 @@ import { AutoHeightDirective } from './auto-height.directive';
     DataProvider,
     DataUploader,
   ],
-  declarations: [AutoHeightDirective],
-  exports: [AutoHeightDirective]
+  declarations: [AutoHeightDirective, SumBusinessUnitsPipe],
+  exports: [AutoHeightDirective, SumBusinessUnitsPipe]
 })
 export class DataManagementModule {
 }

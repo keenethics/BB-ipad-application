@@ -14,14 +14,16 @@
       <thead>
         <tr class="row-color-4">
           <th>IN HC</th>
-          <th *ngFor="let period of periods | exclude:excludedPeriods">LE {{period}}</th>
+          <th>FC 2017</th>
+          <th>LE 2018</th>
+          <!--<th *ngFor="let period of periods | exclude:excludedPeriods">LE {{period}}</th>-->
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let row of rowsDescs; let i = index;" class="{{row.color}}">
           <td>{{row.title}}</td>
           <td *ngFor="let period of periods | exclude:excludedPeriods">
-            {{getCellValue(row.dataSources, period, i === 0)}}
+            {{getCellValue(row.dataSources, period, i === 0) | sep}}
           </td>
         </tr>
       </tbody>

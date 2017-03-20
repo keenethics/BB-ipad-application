@@ -1,6 +1,6 @@
 <ion-toolbar>
   <ion-buttons>
-    <button (click)="checkToggle(t.value)" [ngClass]="{ 'active': isInQueryObject(t.value) || queryObject.n2 === 'Total'}" class="disable-hover" ion-button color="primary" *ngFor="let t of filter.buTitles$ | async">
+    <button (click)="select({ title: t.value })" [ngClass]="{ 'active': isInQueryObject(t.value) }" class="disable-hover" ion-button color="primary" *ngFor="let t of filter.buTitles$ | async">
       <label>{{t.title}}</label>
     </button>
   </ion-buttons>
