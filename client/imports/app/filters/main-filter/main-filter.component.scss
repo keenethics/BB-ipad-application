@@ -9,7 +9,7 @@ $colors: (
   ui-light: #ECEFF4
 );
 
-data-filter {
+main-filter {
   background-color: map-get($colors, 'light-blue');
 
   &>ion-list.list {
