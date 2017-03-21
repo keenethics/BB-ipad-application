@@ -7,7 +7,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { BuFilter } from './bu-filter';
+import { BuTitlesProvider } from './bu-titles-provider';
 import { FilterController } from '../filter-controller';
 
 import template from './bu-filter.component.html';
@@ -24,7 +24,7 @@ export class BuFilterComponnet {
   private buTitles: string[];
 
   constructor(
-    public filter: BuFilter,
+    public buTitlesProvider: BuTitlesProvider,
     private filterCtrl: FilterController
   ) {
   }
@@ -35,7 +35,7 @@ export class BuFilterComponnet {
       this.queryObject.n3 = 'Total';
     });
 
-    this.filter.buTitles$.subscribe((titles) => {
+    this.buTitlesProvider.buTitles$.subscribe((titles: string[]) => {
       this.buTitles = titles;
     });
   }

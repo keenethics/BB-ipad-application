@@ -12,20 +12,20 @@ import {
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import template from './filter.component.html';
-import styles from './filter.component.scss';
+import template from './main-filter.component.html';
+import styles from './main-filter.component.scss';
 
 import { DataProvider } from '../../data-management';
 import { BusinessDataUnit } from '../../../../../both/data-management';
 import { FilterController } from '../filter-controller';
 
 @Component({
-  selector: 'data-filter',
+  selector: 'main-filter',
   template,
   styles: [styles],
   providers: [DataProvider]
 })
-export class DataFilterComponent implements OnInit, OnDestroy {
+export class MainFilterComponent implements OnInit, OnDestroy {
   private businessData: BusinessDataUnit[];
   private filters: any[];
   private query: any;

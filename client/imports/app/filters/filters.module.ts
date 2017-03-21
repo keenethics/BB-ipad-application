@@ -4,12 +4,12 @@ import { IonicModule } from 'ionic-angular';
 import { CommonAppModule } from '../common/common-app.module';
 
 import { BuFilterComponnet } from './bu-filter/bu-filter.component';
-import { BuFilter } from './bu-filter/bu-filter';
+import { BuTitlesProvider } from './bu-filter/bu-titles-provider';
 import { CutPipe } from './bu-filter/cut.pipe';
 import { FilterController } from './filter-controller';
-import { AppliedFiltersComponent } from './data-filter/applied-filters.component';
-import { DataFilterComponent } from './data-filter/filter.component';
-import { ViewSwitcherComponent } from './view-switcher/view-switcher.component';
+import { AppliedFiltersComponent } from './main-filter/applied-filters.component';
+import { MainFilterComponent } from './main-filter/main-filter.component';
+import { CategoryFilterComponent } from './category-filter/category-filter.component';
 
 
 @NgModule({
@@ -19,18 +19,18 @@ import { ViewSwitcherComponent } from './view-switcher/view-switcher.component';
   ],
   declarations: [
     BuFilterComponnet,
-    DataFilterComponent,
+    MainFilterComponent,
     AppliedFiltersComponent,
-    ViewSwitcherComponent,
+    CategoryFilterComponent,
     CutPipe
   ],
   exports: [
     BuFilterComponnet,
-    DataFilterComponent,
-    ViewSwitcherComponent
+    MainFilterComponent,
+    CategoryFilterComponent
   ],
   providers: [
-    BuFilter,
+    BuTitlesProvider,
     FilterController
   ]
 })

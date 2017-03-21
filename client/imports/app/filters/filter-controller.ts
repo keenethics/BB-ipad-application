@@ -1,11 +1,11 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { DataFilterComponent } from './data-filter/filter.component';
+import { MainFilterComponent } from './main-filter/main-filter.component';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { AvailableCountries } from '../../../../both/countries/available-countries.collection';
 
 export class FilterController {
-  private filterCmp: DataFilterComponent;
+  private filterCmp: MainFilterComponent;
   private currentFilter = new BehaviorSubject(this.getFromStorage());
   private availableCountries: string[] = [];
   public onChangeCategory = new EventEmitter();
@@ -32,7 +32,7 @@ export class FilterController {
     }
   }
 
-  setFilterComponetn(cmp: DataFilterComponent) {
+  setFilterComponetn(cmp: MainFilterComponent) {
     this.filterCmp = cmp;
   }
 
