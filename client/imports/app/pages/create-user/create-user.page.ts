@@ -50,7 +50,7 @@ export class CreateUserPage implements OnInit {
 
   ionViewCanEnter() {
     try {
-      return this.auth.user().roles.includes('Administrator');
+      return (this.auth.user() as any).roles.includes('Administrator');
     } catch (err) {
       return false;
     }
@@ -109,7 +109,7 @@ export class CreateUserPage implements OnInit {
   }
 
   createUser() {
-    this.loadingManager.loading('Registration...');
+    this.loadingManager.loading('registration');
     this.auth.createUser(this.newUserCredentials)
       .then((res: any) => {
         this.loadingManager.loadingInst.dismiss();

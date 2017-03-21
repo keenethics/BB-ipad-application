@@ -27,25 +27,25 @@ export const uploadFile = new ValidatedMethod({
   }).validator(),
   run({ fileData }) {
     if (!this.userId) {
-      throw new Meteor.Error('premission denied', 'Please login first.');
+      throw new Meteor.Error('permission_denied', 'permission_denied');
     }
 
     if (!Roles.userIsInRole(this.userId, ['DataUpload', 'Administrator'])) {
-      throw new Meteor.Error('premission denied', 'You are not a data manager.');
+      throw new Meteor.Error('permission_denied', 'permission_denied');
     }
 
     if (!GeoCoordinates.find({}).count()) {
-      throw new Meteor.Error('no coordinates', 'Please upload geo coordinates first.');
+      throw new Meteor.Error('no coordinates', 'no_coordinates');
     }
 
 
     const tempFileURI = '../../../../../.async-scripts/temp';
     const mongoUrl = process.env.MONGO_URL;
 
-    if (fs.existsSync(tempFileURI)) throw new Meteor.Error('data uploading in process', 'Data uploading in process.');
+    if (fs.existsSync(tempFileURI)) throw new Meteor.Error('data uploading in process', 'data_calculation_in_process');
 
     fs.writeFile(tempFileURI, fileData, function (err: any) {
-      if (err) throw new Meteor.Error(err.message, 'Can\'t wtite temp file.');
+      if (err) throw new Meteor.Error(err.message, err.message);
       console.log('Data saved to the temp file.');
       console.time();
 
@@ -72,7 +72,7 @@ export const uploadFile = new ValidatedMethod({
       });
     });
 
-    return 'You will be notified about data update status in few minutes.';
+    return 'data_calculation_start';
   }
 });
 
@@ -83,11 +83,11 @@ export const uploadCoordinates = new ValidatedMethod({
   }).validator(),
   run({ fileData }) {
     if (!this.userId) {
-      throw new Meteor.Error('premission denied', 'Please login first.');
+      throw new Meteor.Error('permission_denied', 'permission_denied');
     }
 
     if (!Roles.userIsInRole(this.userId, ['DataUpload', 'Administrator'])) {
-      throw new Meteor.Error('premission denied', 'You are not a data manager.');
+      throw new Meteor.Error('permission_denied', 'permission_denied');
     }
 
     const parsedData = Baby.parse(fileData, { skipEmptyLines: true, delimiter: ';' }).data;
@@ -105,6 +105,6 @@ export const uploadCoordinates = new ValidatedMethod({
       }
     });
 
-    return 'Coordinates uploaded!';
+    return 'coordinates_uploaded';
   }
 });

@@ -11,11 +11,11 @@ export const createUser = new ValidatedMethod({
   }).validator(),
   run({ email, password, roleId }) {
     if (!this.userId) {
-      throw new Meteor.Error('permission denied', 'Please login first.');
+      throw new Meteor.Error('permission_denied', 'permission_denied');
     }
 
     if (!Roles.userIsInRole(this.userId, 'Administrator')) {
-      throw new Meteor.Error('permission denied', 'You are not an Administrator.');
+      throw new Meteor.Error('permission_denied', 'permission_denied');
     }
 
     const userId = Accounts.createUser({ email, password });
@@ -30,11 +30,11 @@ export const createUser = new ValidatedMethod({
         Roles.addUsersToRoles(userId, existRole);
       } else {
         Roles.addUsersToRoles(userId, 'User');
-        return 'Created user with role: "User".';
+        return 'default_user_created';
       }
     }
 
-    return 'User created successfully';
+    return 'user_created';
   }
 });
 
@@ -48,22 +48,22 @@ export const updateUser = new ValidatedMethod({
   }).validator(),
   run({ userId, email, password, roleId }) {
     if (!this.userId) {
-      throw new Meteor.Error('permission denied', 'Please login first.');
+      throw new Meteor.Error('permission_denied', 'permission_denied');
     }
 
     if (!Roles.userIsInRole(this.userId, 'Administrator')) {
-      throw new Meteor.Error('permission denied', 'You are not an Administrator.');
+      throw new Meteor.Error('permission_denied', 'permission_denied');
     }
 
     const user = Meteor.users.findOne(userId);
-    if (!user) throw new Meteor.Error('user doesn\'t exist', 'User doesn\'t exist');
+    if (!user) throw new Meteor.Error('no_user', 'no_user');
 
-    if (!getEmailRegExp().test(email)) throw new Meteor.Error('email is not valid', 'Email is not valid');
+    if (!getEmailRegExp().test(email)) throw new Meteor.Error('email_invalid', 'email_invalid');
 
-    if (password.length < 6) throw new Meteor.Error('password must contain minimum 6 symbols', 'Password must contain minimum 6 symbols');
+    if (password.length < 6) throw new Meteor.Error('password_invalid_min_length', 'password_invalid_min_length');
 
     const role = Meteor.roles.findOne(roleId);
-    if (!role) throw new Meteor.Error('role doesn\'t exist', 'Role doesn\'t exist');
+    if (!role) throw new Meteor.Error('no_role', 'no_role');
     if (!Roles.userIsInRole(userId, role)) {
       Roles.removeUsersFromRoles(userId, [
         'Administrator',
@@ -88,7 +88,7 @@ export const updateUser = new ValidatedMethod({
         }
       });
 
-    return 'User updated successfully';
+    return 'user_updated';
   }
 });
 
@@ -99,37 +99,37 @@ export const removeUser = new ValidatedMethod({
   }).validator(),
   run({ userId }) {
     if (!this.userId) {
-      throw new Meteor.Error('permission denied', 'Please login first.');
+      throw new Meteor.Error('permission_denied', 'permission_denied');
     }
 
     if (!Roles.userIsInRole(this.userId, 'Administrator')) {
-      throw new Meteor.Error('permission denied', 'You are not an Administrator.');
+      throw new Meteor.Error('permission_denied', 'permission_denied');
     }
 
     if (this.userId === userId) {
-      throw new Meteor.Error('permission denied', 'You can\'t delete this user.');
+      throw new Meteor.Error('permission_denied', 'permission_denied');
     }
 
     const user = Meteor.users.findOne(userId);
-    if (!user) throw new Meteor.Error('user doesn\'t exist', 'User doesn\'t exist');
+    if (!user) throw new Meteor.Error('no_user', 'no_user');
 
     Meteor.users.remove(userId);
 
-    return `User ${userId} removed successfully`;
+    return 'user_removed';
   }
 });
 
-export const addUsers = new ValidatedMethod({
-  name: 'users.addTestUsers',
-  validate: new SimpleSchema({
-    count: { type: Number }
-  }).validator(),
-  run({ count }) {
-    for (let i = 0; i < count; i++) {
-      const userId = Accounts.createUser({ email: `user${i}@mail.com`, password: '111111' });
-      console.log(userId);
-      Roles.addUsersToRoles(userId, 'User');
-    }
-    return `Added ${count} users`;
-  }
-});
+// export const addUsers = new ValidatedMethod({
+//   name: 'users.addTestUsers',
+//   validate: new SimpleSchema({
+//     count: { type: Number }
+//   }).validator(),
+//   run({ count }) {
+//     for (let i = 0; i < count; i++) {
+//       const userId = Accounts.createUser({ email: `user${i}@mail.com`, password: '111111' });
+//       console.log(userId);
+//       Roles.addUsersToRoles(userId, 'User');
+//     }
+//     return `Added ${count} users`;
+//   }
+// });

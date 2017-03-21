@@ -9,6 +9,7 @@ import { Authorization } from './authorization/authorization';
 import { DataProvider, SumBusinessUnitsPipe } from './data-management';
 import { FilterController } from './filters';
 import { ToastsManager } from '../app/common/toasts-manager';
+// import { TextProvider } from './notifications';
 
 import { HomePage } from './pages/home/home.page';
 import { SigninPage } from './pages/signin/signin.page';
@@ -95,7 +96,7 @@ export class AppComponent {
         if (lastDataUpdate.toString() !== localStorage.getItem('lastDataUpdate')) {
           localStorage.setItem('lastDataUpdate', lastDataUpdate.toString());
           localStorage.removeItem('filters');
-          this.toastCtrl.okToast('Data was updated. All filters reset.');
+          this.toastCtrl.okToast('data_updated');
         }
       });
     });

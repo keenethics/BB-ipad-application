@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
+import { NotificationsModule } from '../notifications';
 
 import { ToastsManager } from './toasts-manager';
 import { LoadingManager } from './loading-manager';
@@ -16,7 +17,8 @@ import { SepPipe } from './pipes/comma-separator.pipe';
 
 @NgModule({
   imports: [
-    IonicModule
+    IonicModule,
+    NotificationsModule
   ],
   providers: [
     ToastsManager,
@@ -38,7 +40,8 @@ import { SepPipe } from './pipes/comma-separator.pipe';
     ExcludePipe,
     DebounceClick,
     PickFileComponent,
-    SepPipe
+    SepPipe,
+    NotificationsModule
   ]
 })
 export class CommonAppModule {
