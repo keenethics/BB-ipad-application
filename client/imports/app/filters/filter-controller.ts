@@ -4,12 +4,14 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { AvailableCountries } from '../../../../both/countries/available-countries.collection';
 
+@Injectable()
 export class FilterController {
-  private filterCmp: MainFilterComponent;
   private currentFilter = new BehaviorSubject(this.getFromStorage());
   private availableCountries: string[] = [];
   public onChangeCategory = new EventEmitter();
   public onSelectCountry = new EventEmitter();
+  public onResetFilters = new EventEmitter();
+  public onInitFilters = new EventEmitter();
 
   constructor() {
     MeteorObservable.subscribe('available-countries').subscribe(() => {
@@ -27,17 +29,16 @@ export class FilterController {
       const { category, activeFilters, filterQueryObject } = this.getFromStorage();
       this.saveToStorage(category, activeFilters, filterQueryObject, f);
     } catch (err) {
-      this.filterCmp.initFilters();
-     // this.saveToStorage(category, activeFilters, filterQueryObject, f);
+      this.onInitFilters.emit();
     }
   }
 
-  setFilterComponetn(cmp: MainFilterComponent) {
-    this.filterCmp = cmp;
+  initFilters() {
+    this.onInitFilters.emit();
   }
 
   resetFilter() {
-    if (this.filterCmp) this.filterCmp.resetFilter();
+    this.onResetFilters.emit();
     localStorage.removeItem('filters');
   }
 
