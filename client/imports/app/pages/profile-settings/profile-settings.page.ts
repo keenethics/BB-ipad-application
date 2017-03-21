@@ -71,12 +71,12 @@ export class ProfileSettingsPage implements OnInit {
   changePassword() {
     const { oldPassword, password } = this.passwords;
 
-    this.loadingManager.loading('Changing password...');
+    this.loadingManager.loading('changing_password');
     this.profileSettings.changePassword(oldPassword, password)
       .then(() => {
         this.passwordsForm.reset();
         this.loadingManager.loadingInst.dismiss();
-        this.toastManager.okToast('Password changed successfully');
+        this.toastManager.okToast('password_changed');
       })
       .catch((err) => {
         this.loadingManager.loadingInst.dismiss();

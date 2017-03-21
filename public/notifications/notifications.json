@@ -1,0 +1,22 @@
+{
+  "data_updated": "Data was updated. All filters reset.",
+  "password_changed": "Password changed successfully.",
+  "select_csv": "Please select csv file.",
+  "uploading_data": "Uploading data...",
+  "registration": "Registration...",
+  "changing_password": "Changing password...",
+  "login": "Logining...",
+  "data_calculation_start": "You will be notified about data update status in few minutes.",
+  "data_calculation_in_process": "Data uploading in process.",
+  "permission_denied": "Permission denied.",
+  "no_coordinates": "Please upload geo coordinates first.",
+  "coordinates_uploaded": "Coordinates uploaded!",
+  "default_user_created": "Created user with role: \"User\".",
+  "user_created": "User created successfully.",
+  "no_user": "User doesn't exist.",
+  "email_invalid" : "Email is not valid.",
+  "password_invalid_min_length": "Password must contain minimum 6 symbols.",
+  "no_role": "Role doesn't exist.",
+  "user_updated": "User updated successfully.",
+  "user_removed": "User removed successfully."
+}

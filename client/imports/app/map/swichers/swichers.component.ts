@@ -77,7 +77,7 @@ export class MapSwichers implements OnInit, OnChanges {
   }
 
   uploadData(file: File, type: string) {
-    this.loadingCtrl.loading('Uploading data...');
+    this.loadingCtrl.loading('uploading_data');
     this.dataUploader.uploadFile(file, type)
       .then((res: string) => {
         this.loadingCtrl.loadingInst.dismiss();
