@@ -38,8 +38,9 @@ export const uploadFile = new ValidatedMethod({
       throw new Meteor.Error('no coordinates', 'no_coordinates');
     }
 
+    const absoluteFilePath = Assets.absoluteFilePath('save-data.js');
+    const tempFileURI = `${absoluteFilePath.substring(0, absoluteFilePath.indexOf('save-data.js'))}temp`;
 
-    const tempFileURI = '../../../../../.async-scripts/temp';
     const mongoUrl = process.env.MONGO_URL;
 
     if (fs.existsSync(tempFileURI)) throw new Meteor.Error('data uploading in process', 'data_calculation_in_process');
@@ -49,7 +50,7 @@ export const uploadFile = new ValidatedMethod({
       console.log('Data saved to the temp file.');
       console.time();
 
-      exec(`node ../../../../../.async-scripts/save-data.js ${mongoUrl}`, function (err: any, stdout: any, strerr: any) {
+      exec(`node ${absoluteFilePath} ${mongoUrl}`, function (err: any, stdout: any, strerr: any) {
         if (err) throw new Meteor.Error(err.message, err.message);
         Fiber(() => {
           const titles = (BusinessData as any)
