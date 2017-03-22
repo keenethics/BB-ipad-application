@@ -45,7 +45,7 @@ export class UploadDataPage {
       this.file = file;
     } else {
       this.uploadFileForm.reset();
-      this.toastCtrl.okToast('Please select csv file');
+      this.toastCtrl.okToast('select_csv');
     }
   }
 
@@ -54,8 +54,8 @@ export class UploadDataPage {
   }
 
   uploadFile() {
-    this.loadingCtrl.loading('Uploading data...');
-    this.dataUploader.uploadFile(this.file)
+    this.loadingCtrl.loading('upload_data');
+    this.dataUploader.uploadFile(this.file, 'data')
       .then((res: string) => {
         this.uploadFileForm.reset();
         this.file = null;

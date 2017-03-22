@@ -4,7 +4,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { UnitsTitles } from '../../../../../both/data-management';
 
 @Injectable()
-export class BuFilter {
+export class BuTitlesProvider {
   private buTitles = new BehaviorSubject([]);
   private subscr: Subscription;
   public titlesMap: Map<string, string>;

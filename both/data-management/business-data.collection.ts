@@ -18,4 +18,6 @@ export interface BusinessDataUnit {
   longitude: number;
   periods: any;
   identifier: string;
+  cityKey: string;
+  resourceTypeKey: string;
 }

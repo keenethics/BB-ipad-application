@@ -9,18 +9,18 @@ import {
   OnChanges
 } from '@angular/core';
 
-import template from './view-switcher.component.html';
-import styles from './view-switcher.component.scss';
+import template from './category-filter.component.html';
+import styles from './category-filter.component.scss';
 
 import { FilterController } from '../filter-controller';
 
 @Component({
-  selector: 'view-switcher',
+  selector: 'category-filter',
   styles: [styles],
   encapsulation: ViewEncapsulation.None,
   template
 })
-export class ViewSwitcherComponent {
+export class CategoryFilterComponent {
   private category: string;
 
   constructor(private filterCtrl: FilterController) {

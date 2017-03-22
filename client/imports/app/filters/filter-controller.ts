@@ -1,15 +1,17 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { DataFilterComponent } from './data-filter/filter.component';
+import { MainFilterComponent } from './main-filter/main-filter.component';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { MeteorObservable } from 'meteor-rxjs';
 import { AvailableCountries } from '../../../../both/countries/available-countries.collection';
 
+@Injectable()
 export class FilterController {
-  private filterCmp: DataFilterComponent;
   private currentFilter = new BehaviorSubject(this.getFromStorage());
   private availableCountries: string[] = [];
   public onChangeCategory = new EventEmitter();
   public onSelectCountry = new EventEmitter();
+  public onResetFilters = new EventEmitter();
+  public onInitFilters = new EventEmitter();
 
   constructor() {
     MeteorObservable.subscribe('available-countries').subscribe(() => {
@@ -27,17 +29,16 @@ export class FilterController {
       const { category, activeFilters, filterQueryObject } = this.getFromStorage();
       this.saveToStorage(category, activeFilters, filterQueryObject, f);
     } catch (err) {
-      this.filterCmp.initFilters();
-     // this.saveToStorage(category, activeFilters, filterQueryObject, f);
+      this.onInitFilters.emit();
     }
   }
 
-  setFilterComponetn(cmp: DataFilterComponent) {
-    this.filterCmp = cmp;
+  initFilters() {
+    this.onInitFilters.emit();
   }
 
   resetFilter() {
-    if (this.filterCmp) this.filterCmp.resetFilter();
+    this.onResetFilters.emit();
     localStorage.removeItem('filters');
   }
 
@@ -57,7 +58,7 @@ export class FilterController {
   }
 
   emitChangeCategory(category: string) {
-    if (category === 'country' || category === 'city') {
+    if (category === 'country' || category === 'city' || category === 'market' || category === 'global') {
       this.onChangeCategory.emit(category);
     }
   }

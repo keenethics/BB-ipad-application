@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { Platform, Nav, MenuController, ToastController } from 'ionic-angular';
+import { Platform, Nav, MenuController } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 import { MeteorObservable } from 'meteor-rxjs';
 
@@ -8,6 +8,8 @@ import { DataUpdates } from '../../../both/data-management/data-updates.collecti
 import { Authorization } from './authorization/authorization';
 import { DataProvider, SumBusinessUnitsPipe } from './data-management';
 import { FilterController } from './filters';
+import { ToastsManager } from '../app/common/toasts-manager';
+// import { TextProvider } from './notifications';
 
 import { HomePage } from './pages/home/home.page';
 import { SigninPage } from './pages/signin/signin.page';
@@ -40,7 +42,7 @@ export class AppComponent {
     public platform: Platform,
     private auth: Authorization,
     private menuCtrl: MenuController,
-    private toastCtrl: ToastController,
+    private toastCtrl: ToastsManager,
     public dataProvider: DataProvider,
     private filterCtrl: FilterController
   ) {
@@ -88,16 +90,16 @@ export class AppComponent {
       Splashscreen.hide();
     });
 
-    localStorage.removeItem('filters');
-
-    // MeteorObservable.subscribe('dataUpdates').subscribe(() => {
-    //   const lastDataUpdate = DataUpdates.findOne().lastDataUpdateDate as Date;
-    //   if (lastDataUpdate.toString() !== localStorage.getItem('lastDataUpdate')) {
-    //     localStorage.removeItem('filters');
-    //     localStorage.setItem('lastDataUpdate', lastDataUpdate.toString());
-    //     this.toastCtrl.create('Data was updated. All filters reset.');
-    //   }
-    // });
+    MeteorObservable.subscribe('dataUpdates').subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        const lastDataUpdate = DataUpdates.findOne().lastDataUpdateDate as Date;
+        if (lastDataUpdate.toString() !== localStorage.getItem('lastDataUpdate')) {
+          localStorage.setItem('lastDataUpdate', lastDataUpdate.toString());
+          localStorage.removeItem('filters');
+          this.toastCtrl.okToast('data_updated');
+        }
+      });
+    });
   }
 
   openPage(page: any) {

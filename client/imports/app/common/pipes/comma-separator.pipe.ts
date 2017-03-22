@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class SepPipe implements PipeTransform {
   transform(str: number | string) {
-    if (!str) return '0';
+    if (!str || str === '0') return '';
     return str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 }

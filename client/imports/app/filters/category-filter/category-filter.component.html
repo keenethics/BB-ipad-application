@@ -1,0 +1,14 @@
+<ion-segment [(ngModel)]="category" (ionChange)="select($event)">
+  <ion-segment-button value="global">
+    TOTAL
+  </ion-segment-button>
+  <ion-segment-button value="market">
+    MARKETS
+  </ion-segment-button>
+  <ion-segment-button value="country">
+    COUNTRIES
+  </ion-segment-button>
+  <ion-segment-button value="city">
+    CITIES
+  </ion-segment-button>
+</ion-segment>
