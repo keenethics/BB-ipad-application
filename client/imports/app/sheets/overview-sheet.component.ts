@@ -10,6 +10,7 @@ import {
 import { DataProvider, SumBusinessUnitsPipe } from '../data-management';
 import { BusinessDataUnit } from '../../../../both/data-management';
 import { FactSheetComponent } from './fact-sheet.component';
+import { FilterController } from '../filters';
 
 import template from './overview-sheet.component.html';
 import styles from './sheets.styles.scss';
@@ -34,7 +35,7 @@ export class OverviewSheetComponent {
   public entityKey: string;
   private businessData: BusinessDataUnit[];
 
-  constructor(private dataProvider: DataProvider) {
+  constructor(private dataProvider: DataProvider, private filterCtrl: FilterController) {
     if (!this.rowsDescs) {
       this.rowsDescs = [
         { title: 'Opening', dataSources: ['Opening'], color: 'row-color-3' },
@@ -51,27 +52,30 @@ export class OverviewSheetComponent {
   }
 
   ngOnInit() {
-    this.getTableData();
+    this.filterCtrl.currentFilter$
+      .subscribe((queryObj) => {
+        this.getTableData(queryObj);
+      });
   }
 
   ngAfterViewInit() {
     const sum = new SumBusinessUnitsPipe().transform;
     this.dataProvider.data$.subscribe((data) => {
-      if (data.length) {
+      if (data) {
         this.businessData = sum(data, 'highLevelCategory');
-        this.periods = Object.keys(this.businessData[0].periods);
+        if (data.length) {
+          this.periods = Object.keys(this.businessData[0].periods);
+        }
       }
     });
   }
 
-  getTableData() {
+  getTableData(currentQuery: any) {
     this.entityKey = this.selectedItem.identifier.toLowerCase();
-    const query = {
-      [this.entityKey]: this.selectedItem[this.entityKey],
-      identifier: this.selectedItem.identifier,
-      n2: 'Total',
-      n3: 'Total'
-    };
+    const query = Object.assign({}, currentQuery);
+    query[this.entityKey] = this.selectedItem[this.entityKey];
+    query.identifier = this.selectedItem.identifier;
+    delete query.highLevelCategory;
     this.dataProvider.query(query);
   }
 
