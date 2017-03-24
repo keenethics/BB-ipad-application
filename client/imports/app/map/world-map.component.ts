@@ -572,7 +572,7 @@ export class WorldMap implements OnChanges {
       case 'City': className = 'selected-city'; break;
       case 'Country': className = 'selected-country'; break;
       case 'Market': className = 'selected-market'; break;
-      default: className = '';
+      default: className = 'selected-market';
     }
 
     this.selectedMarkerElement.classList.add(className);
