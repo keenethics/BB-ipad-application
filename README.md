@@ -12,6 +12,9 @@ Required nodejs and meteor.
 ## Run the app
 > Watch this instruction: https://guide.meteor.com/mobile.html#running-your-app
 
+## Dosc
+[Black Book Application Documentation](docs/README.md)
+
 ## Links
 > Staging server: https://bb-ipad.herokuapp.com
 > Registered users: admin@mail.com, data@mail.com, user@mail.com . Each user have his own role. Password for all of them: 111111
