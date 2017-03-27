@@ -43,24 +43,30 @@ This section is represented by SwichersPage, that in its turn contains component
 Also SwichersPage contains buttons for uploading coordinates and business data to the server.Loading is carried out with the help of PickFile component and service DataUploader.
 ![Upload](img/8.jpg)
 ### Profile settings
-This section represents ProfileSettingsPage component and ProfileSettings service. This component contains form where a user can enter his/her new password. Data from a form comes to ProfileSettings service and through Meteor method ProfileSettings passes the data to the server where password changes.
-![Profile settings](img/9.jpg)
+This section represents ProfileSettingsPage component and ProfileSettings service. This component contains form where a user can enter his/her new password. Data from a form comes to ProfileSettings service and  through Meteor 
+ ProfileSettings passes the data to the server where password chnges.
 ### Users list
 This section is only available to the administrator. Main part of it are components UserManagementPage, CreateUserPage, EditUserPage and services UsersController and PopoverController. UserManagementPage received a list from UsersController and renders them in a list. You can select a user from the list and call 2 actions upon it, edit or delete. Also you can add a new user. When editing PopoverController opens a new modal window which contains a EditUserPage component. In order to change data EditUserPage calls UsersController service which in its turn connects to the server (through meteor methods) where the the user data is changed. The modal window also opens when creating a new user, but with a CreateUserPage component, that uses UsersController as well. Deletion of a user is too carried out through UsersController
-![Users list](img/10.jpg)
+
+
+
+
 # Server
 In the previos section we looked at how our app works on the client, now it is time to have a look at what goes on in the server.We will be following the same order as in “Client” paragraph.
 ## Home page
-As you may have noticed all the data that we use on HomePage, we take from DataProvider service. In order for DataProvider to be able to receive that data there is a collection with BusinessData data on the server that provides access to client through subscription to the data from our collection. Publication “businessData” receives parameters mongoQuery object, choses data that match what is in mongoQuery object and returns this data with DDP method.
-![Home page](img/11.jpg)
+As you may have noticed all the data that we use on HomePage, we take from DataProvider service. In order for DataProvider to be able to receive that data there is a collection with BusinessData data on the server that provides access to client through subscription to the data from our collection. Publication “businessData” receives parameters mongoQuery object, choses data that match what is in mongoQuery object and returns this data with DDP method. 
 ## Settings page
 ### Preferences
 Since settings of the map are not saved on the server, lets go on to the upload process. We have 2 methods  “data.upload” and “data.uploadCoordinates”. Method “data.upload” receives file data from the client and starts paralel process. In this process data is calculated and added to BusinessData collection. Then a paralel process ends and the work continues in the  “data.upload” method. Some additional data is generated and entered into related collections.
-![Data upload](img/12.jpg)
+
+
+
 Now lets move on to “data.uploadCoordinates” method which is even easier. The method receives data from file and simply writes them into the collection GeoCoordinates. here is what it looks like:
-![Coords upload](img/13.jpg)
+
 ### Profile settings
-Here we use standard meteor metheod [Accounts.cahngePassword](https://docs.meteor.com/api/passwords.html#Accounts-changePassword).
+Here we use standard meteor metheod Accounts.cahngePassword
 ### Users list
 We have 3 methods for work with users ‘users.create’, ‘users.update’ and ‘users.remove’ all of them are accessible only to administrator and use a standard collection Meteor.users. In order for administrator to be able to view collection of users on the client we publish that data through “users” publication. “users” publication receives paramenters limit and count. These 2 parameters are for pagination.
-![Users list](img/14.jpg)
+
+
+
