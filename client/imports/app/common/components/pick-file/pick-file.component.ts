@@ -39,13 +39,22 @@ export class PickFileComponent implements AfterViewInit {
       const target = this.emitterElement._elementRef.nativeElement || this.emitterElement;
       const onClick = Observable.fromEvent(target, 'click');
       this.onClickSbscr = onClick.subscribe(() => {
-        (this.fileInput.nativeElement as HTMLInputElement).click();
+        this.select();
       });
     }
   }
 
   ngOnDestroy() {
     this.onClickSbscr.unsubscribe();
+  }
+
+  select() {
+    this.clear();
+    (this.fileInput.nativeElement as HTMLInputElement).click();
+  }
+
+  clear() {
+    (this.fileInput.nativeElement as HTMLInputElement).value = '';
   }
 
   onChange(event: Event) {
@@ -59,7 +68,6 @@ export class PickFileComponent implements AfterViewInit {
       }
 
       this.onFileSelected.emit(file);
-      (event.target as HTMLInputElement).value = '';
     }
   }
 }

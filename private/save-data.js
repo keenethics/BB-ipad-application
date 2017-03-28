@@ -49,8 +49,14 @@ const RESOURCE_TYPES = new Map([
 ]);
 
 const mongoUrl = process.argv[2];
-const fileData = fs.readFileSync(__dirname + '/temp', 'utf8');
-const parsedData = Baby.parse(fileData, { skipEmptyLines: true, delimiter: ';' }).data;
+const currentData = fs.readFileSync(__dirname + '/temp1', 'utf8');
+const histData = fs.readFileSync(__dirname + '/temp2', 'utf8');
+
+const parsedData = Baby.parse(currentData, { skipEmptyLines: true, delimiter: ';' }).data;
+const parsedHistData = Baby.parse(histData, { skipEmptyLines: true, delimiter: ';' }).data;
+
+console.log('From current:', parsedData[0]);
+console.log('From hist:', parsedHistData[0]);
 
 mongoClient.connect(mongoUrl, (err, db) => {
   if (err) console.log(err);
@@ -75,7 +81,7 @@ mongoClient.connect(mongoUrl, (err, db) => {
 
       console.log('Calculating data...');
 
-      const businessDataSources = parsedData.map((item, index) => {
+      const currentDataSources = parsedData.map((item, index) => {
         if (index !== 0) {
           let doc = keys.reduce((acc, key, i) => {
             if (key) acc[toCamelCase(key.toLowerCase())] = item[i];
@@ -99,6 +105,64 @@ mongoClient.connect(mongoUrl, (err, db) => {
           return doc;
         }
       }).filter((item) => item);
+
+      const histKeys = parsedHistData[0];
+      const histDataSources = parsedHistData.map((item, index) => {
+        if (index !== 0) {
+          let doc = histKeys.reduce((acc, key, i) => {
+            if (key) acc[toCamelCase(key.toLowerCase())] = item[i];
+            return acc;
+          }, {});
+
+          doc = Object.keys(doc).reduce((acc, key) => {
+            if (key.toLowerCase() === 'actual' || key.toLowerCase() === '2017ytd' || key.toLowerCase() === '2015-12' || !isNaN(Number(key))) {
+              acc.periods[key] = doc[key];
+            } else {
+              acc[key] = doc[key];
+            }
+            return acc;
+          }, { periods: {} });
+
+          doc['highLevelCategory'] = HIGHT_LEVEL_CATEGORIES.get(doc.category);
+          doc['resourceTypeKey'] = RESOURCE_TYPES.get(doc.resourceType);
+          doc['cityKey'] = doc.country + doc.city;
+          doc['identifier'] = 'City';
+
+          return doc;
+        }
+      }).filter((item) => item);
+
+      // const machedDataSources = currentDataSources.reduce((acc, item, index) => {
+      //   const machedItem = histDataSources.find((hItem) => {
+      //     return (
+      //       hItem.n1 === item.n1 &&
+      //       hItem.n2 === item.n2 &&
+      //       hItem.market === item.market &&
+      //       hItem.country === hItem.country &&
+      //       hItem.city === item.city &&
+      //       hItem.resourceType === item.resourceType &&
+      //       hItem.category === item.category
+      //     );
+      //   });
+      //   if(machedItem) acc.push(machedItem);
+      //   return acc;
+      // }, []);
+
+      histDataSources.forEach((d) => {
+        BusinessDataSources.insert(d);
+      });
+
+      currentDataSources.forEach((d) => {
+        BusinessData.insert(d);
+      });
+
+      db.close();
+      fs.unlinkSync(__dirname + '/temp1');
+      fs.unlinkSync(__dirname + '/temp2');
+
+      return;
+
+      const businessDataSources = [];
 
       function sumData(data, highLevelCategory, n2, cityKey) {
         const filtered = data
@@ -279,7 +343,8 @@ mongoClient.connect(mongoUrl, (err, db) => {
       });
 
       db.close();
-      fs.unlinkSync(__dirname + '/temp');
+      fs.unlinkSync(__dirname + '/temp1');
+      fs.unlinkSync(__dirname + '/temp2');
     });
   });
 });
