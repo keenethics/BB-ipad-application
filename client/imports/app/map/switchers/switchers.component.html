@@ -1,0 +1,9 @@
+<form [formGroup]="switchersForm">
+  <div class="toggle-line" *ngFor="let s of switchers">
+    <button [ngClass]="{ 'active': !switchersForm.controls[s.key].value }" (click)="setValue(switchersForm.controls[s.key], false)"
+      type="button" ion-button clear>{{s.labels[0]}}</button>
+    <ion-toggle [formControlName]="s.key" checked="s.value" (ionChange)="emitChanges(s)"></ion-toggle>
+    <button [ngClass]="{ 'active': switchersForm.controls[s.key].value }" (click)="setValue(switchersForm.controls[s.key], true)"
+      type="button" ion-button clear>{{s.labels[1]}}</button>
+  </div>
+</form>

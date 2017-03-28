@@ -16,7 +16,7 @@ import { UsersController } from '../../settings/users-controller';
 
 import { HomePage } from '../home/home.page';
 import { ProfileSettingsPage } from '../profile-settings/profile-settings.page';
-import { SwichersPage } from '../swichers/swichers.page';
+import { SwitchersPage } from '../switchers/switchers.page';
 import { CreateUserPage } from '../create-user/create-user.page';
 import { EditUserPage } from '../edit-user/edit-user.page';
 import { SigninPage } from '../signin/signin.page';

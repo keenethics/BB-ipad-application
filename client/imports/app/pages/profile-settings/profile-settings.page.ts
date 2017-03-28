@@ -9,7 +9,7 @@ import { ProfileSettings } from '../../settings';
 import template from './profile-settings.page.html';
 import styles from './profile-settings.page.scss';
 
-import { SwichersPage } from '../swichers/swichers.page';
+import { SwitchersPage } from '../switchers/switchers.page';
 import { HomePage } from '../home/home.page';
 import { UserManagementPage } from '../user-management/user-management.page';
 import { SigninPage } from '../signin/signin.page';
