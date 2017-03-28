@@ -1,1 +1,1 @@
-<input #file type="file" hidden (change)="onChange($event)">
+<input #file type="file" [accept]="fileType" hidden (change)="onChange($event)">

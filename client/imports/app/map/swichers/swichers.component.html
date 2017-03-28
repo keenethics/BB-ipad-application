@@ -6,18 +6,4 @@
     <button [ngClass]="{ 'active': swichersForm.controls[s.key].value }" (click)="setValue(swichersForm.controls[s.key], true)"
       type="button" ion-button clear>{{s.labels[1]}}</button>
   </div>
-  <div *ngIf="canUpload()" class="upload-button-wrap">
-    <span>DATA UPLOAD</span>
-    <button #dataButton ion-button icon-only round>
-      <pick-file fileType="text/csv" [emitterElement]="dataButton" (onFileSelected)="uploadData($event, 'data')"></pick-file>
-      <ion-icon name="icon-upload"></ion-icon>
-    </button>
-  </div>
-  <div *ngIf="canUpload()" class="upload-button-wrap" style="margin-top: 0px">
-    <span>COORDINATES UPLOAD</span>
-    <button #geoCordsButton ion-button icon-only round>
-      <pick-file fileType="text/csv" [emitterElement]="geoCordsButton" (onFileSelected)="uploadData($event, 'cords')"></pick-file>
-      <ion-icon name="icon-upload"></ion-icon>
-    </button>
-  </div>
 </form>

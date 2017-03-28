@@ -1,22 +1,22 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Upload new data</ion-title>
-    <ion-buttons end>
-      <button (click)="menuToggle()" ion-button icon-only>
-        <ion-icon name="menu"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
 <ion-content>
-  <form [formGroup]="uploadFileForm" (ngSubmit)="uploadFile()" novalidate padding>
-    <ion-list>
-      <ion-item>
-        <input  type="file" accept="text/csv" formControlName="file" (change)="onChange($event)"/>
-      </ion-item>
-      <ion-item>
-        <button type="submit" [disabled]="!isFileSelected()" ion-button block>Upload file</button>
-      </ion-item>
-    </ion-list>
-  </form>
+  <div class="buttons-container">
+    <div *ngIf="canUpload()" class="upload-button-wrap">
+      <button #dataButton ion-button round>
+        <pick-file fileType="text/csv" [emitterElement]="dataButton" (onFileSelected)="uploadData($event, 'data')" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
+        CURRENT DATA
+      </button>
+    </div>
+    <div *ngIf="canUpload()" class="upload-button-wrap">
+      <button #dataButton ion-button round>
+        <pick-file fileType="text/csv" [emitterElement]="dataButton" (onFileSelected)="uploadData($event, 'hist')" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
+        HISTORIC DATA
+      </button>
+    </div>
+    <div *ngIf="canUpload()" class="upload-button-wrap" style="margin-top: 0px">
+      <button #geoCordsButton ion-button round>
+        <pick-file fileType="text/csv" [emitterElement]="geoCordsButton" (onFileSelected)="uploadData($event, 'cords')" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
+        COORDINATES
+      </button>
+    </div>
+  </div>
 </ion-content>

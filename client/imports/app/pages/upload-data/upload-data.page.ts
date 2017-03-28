@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 
-import { MenuController } from 'ionic-angular';
+import { MenuController, Platform } from 'ionic-angular';
+import { RolesController } from '../../authorization';
 
 import { ToastsManager, LoadingManager } from '../../common';
 import { DataUploader } from '../../data-management';
@@ -11,54 +12,27 @@ import template from './upload-data.page.html';
 @Component({
   selector: 'upload-data-page',
   template,
-  styles: [styles]
+  styles: [styles],
+  encapsulation: ViewEncapsulation.None
 })
 export class UploadDataPage {
-  public file: File;
-  public fileData: String;
-  public uploadFileForm: FormGroup;
-
   constructor(
-    private toastCtrl: ToastsManager,
-    private loadingCtrl: LoadingManager,
-    private formBuilder: FormBuilder,
     private dataUploader: DataUploader,
-    private menuCtrl: MenuController
-  ) {
-    this.buildUploadFileForm();
+    private loadingCtrl: LoadingManager,
+    private toastCtrl: ToastsManager,
+    private platform: Platform,
+    private formBuilder: FormBuilder,
+    private roles: RolesController
+  ) { }
+
+  canUpload() {
+    return (this.roles.userIsInRole(Meteor.userId(), ['Administrator', 'DataUpload']) && this.platform.is('core'));
   }
 
-  buildUploadFileForm() {
-    this.uploadFileForm = this.formBuilder.group({
-      file: [
-        this.file,
-        [
-          Validators.required
-        ]
-      ]
-    });
-  }
-
-  onChange(event: Event) {
-    const file = (event.srcElement as HTMLInputElement).files[0];
-    if (file.type === 'text/csv') {
-      this.file = file;
-    } else {
-      this.uploadFileForm.reset();
-      this.toastCtrl.okToast('select_csv');
-    }
-  }
-
-  isFileSelected() {
-    return Boolean(this.file);
-  }
-
-  uploadFile() {
-    this.loadingCtrl.loading('upload_data');
-    this.dataUploader.uploadFile(this.file, 'data')
+  uploadData(file: File, type: string) {
+    this.loadingCtrl.loading('uploading_data');
+    this.dataUploader.uploadFile(file, type)
       .then((res: string) => {
-        this.uploadFileForm.reset();
-        this.file = null;
         this.loadingCtrl.loadingInst.dismiss();
         this.toastCtrl.okToast(res);
       })
@@ -67,7 +41,18 @@ export class UploadDataPage {
       });
   }
 
-  menuToggle() {
-    this.menuCtrl.toggle();
+  isCsvFile(target: any) {
+    const file = target.files[0];
+    const fileNameArr = (file.name as string).split('.');
+    const fileType = fileNameArr[fileNameArr.length - 1].toLowerCase();
+
+    if (!file) return false;
+    if (fileType !== 'csv') return false;
+
+    return true;
+  }
+
+  wrongFileType() {
+    this.toastCtrl.okToast('wrong_file_type');
   }
 };
