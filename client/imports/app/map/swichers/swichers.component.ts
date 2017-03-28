@@ -32,11 +32,7 @@ export class MapSwichers implements OnInit, OnChanges {
 
   constructor(
     private formBuilder: FormBuilder,
-    private roles: RolesController,
-    private dataUploader: DataUploader,
-    private loadingCtrl: LoadingManager,
-    private toastCtrl: ToastsManager,
-    private platform: Platform
+    private roles: RolesController
   ) { }
 
   ngOnInit() {
@@ -70,21 +66,5 @@ export class MapSwichers implements OnInit, OnChanges {
   setValue(control: FormControl, value: boolean) {
     control.setValue(value);
     this.onChanges.emit(this.swichersForm.getRawValue());
-  }
-
-  canUpload() {
-    return (this.roles.userIsInRole(Meteor.userId(), ['Administrator', 'DataUpload']) && this.platform.is('core'));
-  }
-
-  uploadData(file: File, type: string) {
-    this.loadingCtrl.loading('uploading_data');
-    this.dataUploader.uploadFile(file, type)
-      .then((res: string) => {
-        this.loadingCtrl.loadingInst.dismiss();
-        this.toastCtrl.okToast(res);
-      })
-      .catch((err) => {
-        this.toastCtrl.okToast(err.reason || err.message || err);
-      });
   }
 }
