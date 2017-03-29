@@ -47,7 +47,7 @@ export class OverviewSheetComponent {
     }
 
     if (!this.excludedPeriods) {
-      this.excludedPeriods = [2016, 'actual'];
+      this.excludedPeriods = ['2016', 'actual', '201512', '2017Ytd'];
     }
   }
 
