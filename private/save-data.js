@@ -132,37 +132,7 @@ mongoClient.connect(mongoUrl, (err, db) => {
         }
       }).filter((item) => item);
 
-      // const machedDataSources = currentDataSources.reduce((acc, item, index) => {
-      //   const machedItem = histDataSources.find((hItem) => {
-      //     return (
-      //       hItem.n1 === item.n1 &&
-      //       hItem.n2 === item.n2 &&
-      //       hItem.market === item.market &&
-      //       hItem.country === hItem.country &&
-      //       hItem.city === item.city &&
-      //       hItem.resourceType === item.resourceType &&
-      //       hItem.category === item.category
-      //     );
-      //   });
-      //   if(machedItem) acc.push(machedItem);
-      //   return acc;
-      // }, []);
-
-      histDataSources.forEach((d) => {
-        BusinessDataSources.insert(d);
-      });
-
-      currentDataSources.forEach((d) => {
-        BusinessData.insert(d);
-      });
-
-      db.close();
-      fs.unlinkSync(__dirname + '/temp1');
-      fs.unlinkSync(__dirname + '/temp2');
-
-      return;
-
-      const businessDataSources = [];
+      const businessDataSources = currentDataSources.concat(histDataSources);
 
       function sumData(data, highLevelCategory, n2, cityKey) {
         const filtered = data
@@ -173,9 +143,14 @@ mongoClient.connect(mongoUrl, (err, db) => {
 
         if (filtered.length) {
           return filtered.reduce((acc, item) => {
-            acc.periods['actual'] = +acc.periods['actual'] + +item.periods['actual'];
-            acc.periods['2017'] = +acc.periods['2017'] + +item.periods['2017'];
-            acc.periods['2018'] = +acc.periods['2018'] + +item.periods['2018'];
+            acc.periods['actual'] = (+acc.periods['actual'] || 0) + (+item.periods['actual'] || 0);
+            acc.periods['2017'] = (+acc.periods['2017'] || 0) + (+item.periods['2017'] || 0);
+            acc.periods['2018'] = (+acc.periods['2018'] || 0) + (+item.periods['2018'] || 0);
+
+            acc.periods['2017Ytd'] = (+acc.periods['2017Ytd'] || 0) + (+item.periods['2017Ytd'] || 0);
+            acc.periods['201512'] = (+acc.periods['201512'] || 0) + (+item.periods['201512'] || 0);
+            acc.periods['2016'] = (+acc.periods['2016'] || 0) + (+item.periods['2016'] || 0);
+
             return Object.assign({}, acc);
           });
         }
@@ -185,15 +160,23 @@ mongoClient.connect(mongoUrl, (err, db) => {
 
       function sumGroup(group) {
         return group.reduce((acc, item) => {
-          acc.periods['actual'] = +acc.periods['actual'] + +item.periods['actual'];
-          acc.periods['2017'] = +acc.periods['2017'] + +item.periods['2017'];
-          acc.periods['2018'] = +acc.periods['2018'] + +item.periods['2018'];
+          acc.periods['actual'] = (+acc.periods['actual'] || 0) + (+item.periods['actual'] || 0);
+          acc.periods['2017'] = (+acc.periods['2017'] || 0) + (+item.periods['2017'] || 0);
+          acc.periods['2018'] = (+acc.periods['2018'] || 0) + (+item.periods['2018'] || 0);
+
+          acc.periods['2017Ytd'] = (+acc.periods['2017Ytd'] || 0) + (+item.periods['2017Ytd'] || 0);
+          acc.periods['201512'] = (+acc.periods['201512'] || 0) + (+item.periods['201512'] || 0);
+          acc.periods['2016'] = (+acc.periods['2016'] || 0) + (+item.periods['2016'] || 0);
+
           return acc;
         }, Object.assign({}, group[0], {
           periods: {
             'actual': 0,
             '2017': 0,
-            '2018': 0
+            '2018': 0,
+            '2017Ytd': 0,
+            '201512': 0,
+            '2016': 0
           }
         }));
       }
@@ -243,13 +226,22 @@ mongoClient.connect(mongoUrl, (err, db) => {
               if (!totalMN) {
                 totalMN = Object.assign({}, bu, { periods: {} });
                 totalMN.n2 = 'Total';
-                totalMN.periods['actual'] = +bu.periods['actual'];
-                totalMN.periods['2017'] = +bu.periods['2017'];
-                totalMN.periods['2018'] = +bu.periods['2018'];
+                totalMN.periods['actual'] = +bu.periods['actual'] || 0;
+                totalMN.periods['2017'] = +bu.periods['2017'] || 0;
+                totalMN.periods['2018'] = +bu.periods['2018'] || 0;
+
+                totalMN.periods['2017Ytd'] = +bu.periods['2017Ytd'] || 0;
+                totalMN.periods['201512'] = +bu.periods['201512'] || 0;
+                totalMN.periods['2016'] = +bu.periods['2016'] || 0;
+
               } else {
-                totalMN.periods['actual'] = +totalMN.periods['actual'] + +bu.periods['actual'];
-                totalMN.periods['2017'] = +totalMN.periods['2017'] + +bu.periods['2017'];
-                totalMN.periods['2018'] = +totalMN.periods['2018'] + +bu.periods['2018'];
+                totalMN.periods['actual'] = (+totalMN.periods['actual'] || 0) + (+bu.periods['actual'] || 0);
+                totalMN.periods['2017'] = (+totalMN.periods['2017'] || 0) + (+bu.periods['2017'] || 0);
+                totalMN.periods['2018'] = (+totalMN.periods['2018'] || 0) + (+bu.periods['2018'] || 0);
+
+                totalMN.periods['2017Ytd'] = (+totalMN.periods['2017Ytd'] || 0) + (+bu.periods['2017Ytd'] || 0);
+                totalMN.periods['201512'] = (+totalMN.periods['201512'] || 0) + (+bu.periods['201512'] || 0);
+                totalMN.periods['2016'] = (+totalMN.periods['2016'] || 0) + (+bu.periods['2016'] || 0);
               }
 
               totalN3.push(bu);
