@@ -21,7 +21,7 @@ import { SheetsController, OverviewSheetComponent, SheetsPortalComponent } from 
 import { FilterController } from '../../filters';
 
 import { SigninPage } from '../signin/signin.page';
-import { SwichersPage } from '../swichers/swichers.page';
+import { SwitchersPage } from '../switchers/switchers.page';
 import { ProfileSettingsPage } from '../profile-settings/profile-settings.page';
 import { UserManagementPage } from '../user-management/user-management.page';
 

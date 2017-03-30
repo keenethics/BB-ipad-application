@@ -3,13 +3,13 @@
     <div *ngIf="!_dataFiles[0]" class="upload-button-wrap">
       <button #dataButton ion-button round>
         <pick-file fileType="text/csv" [emitterElement]="dataButton" (onFileSelected)="pickDataBehaviour($event)" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
-        CURRENT DATA
+        OXYGEN SUBMISSION
       </button>
     </div>
     <div *ngIf="_dataFiles[0]" class="upload-button-wrap">
       <button #histDataButton ion-button round>
         <pick-file fileType="text/csv" [emitterElement]="histDataButton" (onFileSelected)="pickDataBehaviour($event)" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
-        HISTORY DATA
+        EVOLUTION REPORT
       </button>
     </div>
     <div class="upload-button-wrap" style="margin-top: 0px">

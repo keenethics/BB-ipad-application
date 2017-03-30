@@ -9,7 +9,7 @@ $colors: (
   page-background: #F8F9FA
 );
 
-swichers-page {
+switchers-page {
   ion-content.content {
     background-color: map-get($colors, 'page-background');
   }

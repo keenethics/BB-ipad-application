@@ -9,7 +9,7 @@ import { RolesController } from '../../authorization';
 import {
   ProfileSettingsPage,
   UserManagementPage,
-  SwichersPage,
+  SwitchersPage,
   UploadDataPage
 } from '../index';
 
@@ -24,7 +24,7 @@ export class PreferencesPage {
 
   constructor(private roles: RolesController, private platform: Platform) {
     this.pages = [
-      { icon: 'icon-swichers', title: 'PREFERENCES', selector: 'swichers-page', component: SwichersPage, guard: () => true },
+      { icon: 'icon-switchers', title: 'PREFERENCES', selector: 'switchers-page', component: SwitchersPage, guard: () => true },
       { icon: 'icon-preferences', title: 'PROFILE SETTINGS', selector: 'profile-settings-page', component: ProfileSettingsPage, guard: () => true },
       {
         icon: 'icon-user', title: 'USER LIST', selector: 'user-management-page', component: UserManagementPage, guard: () => {

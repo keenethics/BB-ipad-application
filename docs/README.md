@@ -17,12 +17,12 @@ The app is split into to 2 parts, client and server, they communicate through [D
    * User list - this section is only for the administrator so that he can add, delete and edit members/users.
 3. Sign in - The name speaks for itself, page for entering the system.
 # Client
-Now we will go through all the pages and investigate how our application works on a level of angular components and services. We will only consider main elements and ignore less important ones. 
+Now we will go through all the pages and investigate how our application works on a level of angular components and services. We will only consider main elements and ignore less important ones.
 ## Home page
 Three main entities can be outlined: map, filter and tables.
 Home page is presented though a HomePage component.
 ### Map
-The entity of the map is represented in angular component WorldMap. It uses library d3 in order to render a map and business units in SVG. WorldMap receives data that needs to be render from a parent component HomePage through HTML attribute “data-to-render”. HomePage in its turn receives that data from the DataProvider service. 
+The entity of the map is represented in angular component WorldMap. It uses library d3 in order to render a map and business units in SVG. WorldMap receives data that needs to be render from a parent component HomePage through HTML attribute “data-to-render”. HomePage in its turn receives that data from the DataProvider service.
 DataProvider is responsible for providing data from the server by mogoDB request. Here is what it looks like schematically.
 ![Map](img/2.jpg)
 ### Filter
@@ -38,29 +38,32 @@ Tables represented by two components Overview and Factsheet and one service Shee
 This page is presented by PreferencesPage component. This component uses Ionic Tabs to show three sections: Preferences, Profile, Settings and User list.
 ![Settings](img/6.jpg)
 ### Preferences
-This section is represented by SwichersPage, that in its turn contains component MapSwichers. This component contains a set of triggers, that adjusts the showing of BU on WorldMap and SwichersPage interact through their parent components. They (parent components) in their turn pass an object with settings from one to another through LocalStorage. This allows not to reset settings when finishing working with the application.
+This section is represented by SwitchersPage, that in its turn contains component MapSwitchers. This component contains a set of triggers, that adjusts the showing of BU on WorldMap and SwitchersPage interact through their parent components. They (parent components) in their turn pass an object with settings from one to another through LocalStorage. This allows not to reset settings when finishing working with the application.
 ![Preferences](img/7.jpg)
-Also SwichersPage contains buttons for uploading coordinates and business data to the server.Loading is carried out with the help of PickFile component and service DataUploader.
+Also SwitchersPage contains buttons for uploading coordinates and business data to the server.Loading is carried out with the help of PickFile component and service DataUploader.
 ![Upload](img/8.jpg)
 ### Profile settings
-This section represents ProfileSettingsPage component and ProfileSettings service. This component contains form where a user can enter his/her new password. Data from a form comes to ProfileSettings service and through Meteor method ProfileSettings passes the data to the server where password changes.
-![Profile settings](img/9.jpg)
+This section represents ProfileSettingsPage component and ProfileSettings service. This component contains form where a user can enter his/her new password. Data from a form comes to ProfileSettings service and  through Meteor
+ ProfileSettings passes the data to the server where password chnges.
 ### Users list
 This section is only available to the administrator. Main part of it are components UserManagementPage, CreateUserPage, EditUserPage and services UsersController and PopoverController. UserManagementPage received a list from UsersController and renders them in a list. You can select a user from the list and call 2 actions upon it, edit or delete. Also you can add a new user. When editing PopoverController opens a new modal window which contains a EditUserPage component. In order to change data EditUserPage calls UsersController service which in its turn connects to the server (through meteor methods) where the the user data is changed. The modal window also opens when creating a new user, but with a CreateUserPage component, that uses UsersController as well. Deletion of a user is too carried out through UsersController
-![Users list](img/10.jpg)
+
+
+
+
 # Server
 In the previos section we looked at how our app works on the client, now it is time to have a look at what goes on in the server.We will be following the same order as in “Client” paragraph.
 ## Home page
 As you may have noticed all the data that we use on HomePage, we take from DataProvider service. In order for DataProvider to be able to receive that data there is a collection with BusinessData data on the server that provides access to client through subscription to the data from our collection. Publication “businessData” receives parameters mongoQuery object, choses data that match what is in mongoQuery object and returns this data with DDP method.
-![Home page](img/11.jpg)
 ## Settings page
 ### Preferences
 Since settings of the map are not saved on the server, lets go on to the upload process. We have 2 methods  “data.upload” and “data.uploadCoordinates”. Method “data.upload” receives file data from the client and starts paralel process. In this process data is calculated and added to BusinessData collection. Then a paralel process ends and the work continues in the  “data.upload” method. Some additional data is generated and entered into related collections.
-![Data upload](img/12.jpg)
+
+
+
 Now lets move on to “data.uploadCoordinates” method which is even easier. The method receives data from file and simply writes them into the collection GeoCoordinates. here is what it looks like:
-![Coords upload](img/13.jpg)
+
 ### Profile settings
-Here we use standard meteor metheod [Accounts.cahngePassword](https://docs.meteor.com/api/passwords.html#Accounts-changePassword).
+Here we use standard meteor metheod Accounts.cahngePassword
 ### Users list
 We have 3 methods for work with users ‘users.create’, ‘users.update’ and ‘users.remove’ all of them are accessible only to administrator and use a standard collection Meteor.users. In order for administrator to be able to view collection of users on the client we publish that data through “users” publication. “users” publication receives paramenters limit and count. These 2 parameters are for pagination.
-![Users list](img/14.jpg)
