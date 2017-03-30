@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, Platform } from 'ionic-angular';
 
 import styles from './preferences.page.scss';
 import template from './preferences.page.html';
@@ -22,7 +22,7 @@ import {
 export class PreferencesPage {
   public pages: { icon: string, title: string, selector: string, component: any, guard: Function }[] = [];
 
-  constructor(private roles: RolesController) {
+  constructor(private roles: RolesController, private platform: Platform) {
     this.pages = [
       { icon: 'icon-switchers', title: 'PREFERENCES', selector: 'switchers-page', component: SwitchersPage, guard: () => true },
       { icon: 'icon-preferences', title: 'PROFILE SETTINGS', selector: 'profile-settings-page', component: ProfileSettingsPage, guard: () => true },
@@ -33,7 +33,7 @@ export class PreferencesPage {
       },
       {
         icon: 'icon-upload', title: 'UPLOAD DATA', selector: 'upload-data-page', component: UploadDataPage,
-        guard: () => this.roles.userIsInRole(Meteor.userId(), ['Administrator', 'DataUpload'])
+        guard: () => (this.roles.userIsInRole(Meteor.userId(), ['Administrator', 'DataUpload']) && this.platform.is('core'))
       }
       // { icon: 'icon-types-and-units', title: 'TYPES AND UNITS', selector: 'types-and-units', component: null }
     ];

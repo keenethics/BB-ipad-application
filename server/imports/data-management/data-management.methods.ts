@@ -24,9 +24,14 @@ declare const __dirname: string;
 export const uploadFile = new ValidatedMethod({
   name: 'data.upload',
   validate: new SimpleSchema({
-    fileData: { type: String },
+    current: { type: String },
+    hist: { type: String }
   }).validator(),
-  run({ fileData }) {
+  run({ current, hist }) {
+    if (!current || !hist) {
+      throw new Meteor.Error('wrong_upload_params', 'wrong_upload_params');
+    }
+
     if (!this.userId) {
       throw new Meteor.Error('permission_denied', 'permission_denied');
     }
@@ -44,37 +49,38 @@ export const uploadFile = new ValidatedMethod({
     const assetsPath = absoluteFilePath.substring(0, absoluteFilePath.indexOf('save-data.js'));
     const babyparseLinkCommand = `${rootPath}/npm/node_modules/babyparse ${assetsPath}node_modules/babyparse`;
     const mongodbLinkCommand = `${rootPath}/npm/node_modules/mongodb ${assetsPath}node_modules/mongodb`;
-    const tempFileURI = `${absoluteFilePath.substring(0, absoluteFilePath.indexOf('save-data.js'))}temp`;
+    const currentDataFileURI = `${absoluteFilePath.substring(0, absoluteFilePath.indexOf('save-data.js'))}temp1`;
+    const histDataFileURI = `${absoluteFilePath.substring(0, absoluteFilePath.indexOf('save-data.js'))}temp2`;
     const mongoUrl = process.env.MONGO_URL;
 
-    if (fs.existsSync(tempFileURI)) throw new Meteor.Error('data uploading in process', 'data_calculation_in_process');
+    if (fs.existsSync(currentDataFileURI)) throw new Meteor.Error('data uploading in process', 'data_calculation_in_process');
 
     exec(`ln -s -f ${babyparseLinkCommand} && ln -s -f ${mongodbLinkCommand}`, () => {
-      fs.writeFile(tempFileURI, fileData, function (err: any) {
+      fs.writeFile(currentDataFileURI, current, function (err: any) {
         if (err) throw new Meteor.Error(err.message, err.message);
-        console.log('Data saved to the temp file.');
-        console.time();
 
-        exec(`node ${absoluteFilePath} ${mongoUrl}`, function (err: any, stdout: any, strerr: any) {
-          if (err) throw new Meteor.Error(err.message, err.message);
-          Fiber(() => {
-            const titles = (BusinessData as any)
-              .aggregate([{ $group: { _id: null, titles: { $addToSet: '$n2' } } }])[0]
-              .titles as string[];
-            UnitsTitles.remove({});
-            titles.forEach(t => UnitsTitles.insert({ title: t }));
+        fs.writeFile(histDataFileURI, hist, function (err: any) {
+          console.time();
 
-            MarketCountries.remove({});
-            AvailableCountries.remove({});
+          exec(`node ${absoluteFilePath} ${mongoUrl}`, function (err: any, stdout: any, strerr: any) {
+            if (err) throw new Meteor.Error(err.message, err.message);
+            Fiber(() => {
+              const titles = (BusinessData as any)
+                .aggregate([{ $group: { _id: null, titles: { $addToSet: '$n2' } } }])[0]
+                .titles as string[];
+              UnitsTitles.remove({});
+              titles.forEach(t => UnitsTitles.insert({ title: t }));
 
-            setMarketCountries();
-            setAvailableCountries();
+              MarketCountries.remove({});
+              AvailableCountries.remove({});
 
-            console.log('Data uploaded');
-            console.timeEnd();
+              setMarketCountries();
+              setAvailableCountries();
 
-            DataUpdates.update({}, { lastDataUpdateDate: new Date() }, { upsert: true });
-          }).run();
+              console.timeEnd();
+              DataUpdates.update({}, { lastDataUpdateDate: new Date() }, { upsert: true });
+            }).run();
+          });
         });
       });
     });

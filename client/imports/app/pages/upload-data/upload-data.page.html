@@ -1,21 +1,21 @@
 <ion-content>
   <div class="buttons-container">
-    <div *ngIf="canUpload()" class="upload-button-wrap" style="margin-top: 0px">
+    <div *ngIf="!_dataFiles[0]" class="upload-button-wrap">
+      <button #dataButton ion-button round>
+        <pick-file fileType="text/csv" [emitterElement]="dataButton" (onFileSelected)="pickDataBehaviour($event)" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
+        OXYGEN SUBMISSION
+      </button>
+    </div>
+    <div *ngIf="_dataFiles[0]" class="upload-button-wrap">
+      <button #histDataButton ion-button round>
+        <pick-file fileType="text/csv" [emitterElement]="histDataButton" (onFileSelected)="pickDataBehaviour($event)" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
+        EVOLUTION REPORT
+      </button>
+    </div>
+    <div class="upload-button-wrap" style="margin-top: 0px">
       <button #geoCordsButton ion-button round>
-        <pick-file fileType="text/csv" [emitterElement]="geoCordsButton" (onFileSelected)="uploadData($event, 'cords')" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
-        1) Update location geocoordinates
-      </button>
-    </div>
-    <div *ngIf="canUpload()" class="upload-button-wrap">
-      <button #dataButton ion-button round>
-        <pick-file fileType="text/csv" [emitterElement]="dataButton" (onFileSelected)="uploadData($event, 'data')" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
-        2) Upload Oxygen submission
-      </button>
-    </div>
-    <div *ngIf="canUpload()" class="upload-button-wrap">
-      <button #dataButton ion-button round>
-        <pick-file fileType="text/csv" [emitterElement]="dataButton" (onFileSelected)="uploadData($event, 'hist')" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
-        3) Upload HC Evolution report
+        <pick-file fileType="text/csv" [emitterElement]="geoCordsButton" (onFileSelected)="uploadCoords($event)" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
+        COORDINATES
       </button>
     </div>
   </div>
