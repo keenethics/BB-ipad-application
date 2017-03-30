@@ -1,94 +1,184 @@
-$colors: (
-  primary: #0B409C,
-  secondary: #A7C1E3,
-  light: #E2E8F0,
-  dark: #47494D,
-  dark-blue: #173567,
-  light-blue: #3B65AD,
-  ui-light: #ECEFF4
-);
-
-$window-color: #d9d9d9;
-$window-buttons-color: #ABABAB;
-
-$row-color-1: #DCE6F1;
-$row-color-2: #BEC8D2;
-$row-color-3: #5B9BD5;
-$row-color-4: #04368C;
-
 overview-sheet {
+  $table-color: rgb(236,242,245);
+  $table-grey: rgb(213,220,228);
+  $head-grey: rgb(151,162,175);
+  $bu-grey: rgb(189,200,211);
+  $dark-grey: rgb(76,86,103);
+  $table-blue: rgb(25,55,147);
+  $table-border-color: rgb(219,235,248);
+
+  .bold {
+    font-weight: bold;
+  }
+
+  .dark-grey {
+    @extend .bold;
+    background-color: $dark-grey;
+    color: #fff;
+  }
+
+  .blue {
+    @extend .dark-grey;
+    background-color: $table-blue;
+  }
+
+  .head-grey {
+    @extend .bold;
+    background-color: $head-grey;
+  }
+
+  .bu {
+    @extend .bold;
+    background-color: $bu-grey;
+    text-align: left;
+  }
+
+  th.bu {
+    text-align: center;
+  }
+
+  .table-grey {
+    @extend .bold;
+    background-color: $table-grey;
+  }
+
+  .clear {
+    color: black;
+    font-weight: normal;
+    background-color: $table-color;
+    &.grey {
+      @extend .bold;
+      background-color: $table-grey;
+    }
+  }
+
+  .initial-width {
+    max-width: 40px;
+    min-width: initial;
+    width: initial;
+  }
+
+  .tb-bold {
+    border-top: 3px solid #fff;
+  }
+
   position: absolute;
   top: 30px;
   left: 0;
   margin: 0 auto;
   right: 0;
-  width: 50%;
-
+  width: 92%;
   table {
-    width: 100%;
-    border-radius: 6px;
-    border-collapse: collapse;
-    background: white;
-    white-space: nowrap;
-    font-size: 12px;
-    line-height: 65px;
-    overflow: hidden;
-    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
+    background: $table-color;
+    line-height: 30px;
+    margin: auto;
+    border: 10px solid $table-border-color;
 
     th, td {
+      font-size: 13px;
+      border: 1px solid #fff;
       text-align: right;
-      padding: 0 20px;
-      color: map-get($colors,'light-blue');
+      line-height: 19px;
+      padding: 0 6px;
     }
 
-    td:first-child, th:first-child {
-      padding-left: 30px;
-      text-align: left;
+    th, td {
+      // &.color-lable > h3 {
+      //   text-align: right;
+      //   &:before {
+      //     content: '';
+      //     width: 10px;
+      //     height: 10px;
+      //     border-radius: 10px;
+      //     background-color: transparent;
+      //     display: inline-block;
+      //     position: relative;
+      //     bottom: 0px;
+      //     right: 1%;
+      //     margin: auto;
+      //   }
+
+      //   &.yellow:before {
+      //     background-color: rgb(255,196,1);
+      //   }
+
+      //   &.red:before {
+      //     background-color: rgb(189,61,62);
+      //   }
+      // }
+
+      width: 60px;
+      min-width: 60px;
+      max-width: 70px;
+    }
+
+    th {
+      text-align: center;
       font-weight: normal;
-      color: #000;
     }
 
-    tr {
-      border-top: 1px solid map-get($colors,'light');
-      border-bottom: 1px solid map-get($colors,'light');
-    }
-
-    td:last-child, th:last-child {
-      padding-right: 30px;
-    } 
-
-    th.t-italic {
-      font-weight: 100;
-      font-style: italic;
-    }
-
-    th.t-right, td.t-right {
-      text-align: right;
-    }
-
-    .row-color-1 {
-      background-color: $row-color-1;
-    }
-
-    .row-color-2 {
-      background-color: $row-color-2;
-    }
-
-    .row-color-3 {
-      background-color: map-get($colors,'light');
-      font-weight: bold;
-      color: map-get($colors,'light-blue');
-    }
-
-    .row-color-4 {
-      & {
-        th {
-          color: #FFF !important;
-          font-weight: bold;
-        }
+    tfoot {
+      tr, td {
+        border: none;
       }
-      color: #FFF !important;
-      background-color: map-get($colors,'light-blue');
+
+      td {
+        background-color: #dbebf8;
+      }
+    }
+
+    // tr {
+    //   &:first-child {
+    //     th:first-child, th:last-child {
+    //       border-bottom: none;
+    //     }
+    //   }
+    //   &+tr{
+    //     th:first-child, th:last-child {
+    //       border-top: none;
+    //     }
+    //   }
+    // }
+  }
+
+  .colored:after {
+    content: '';
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    background-color: transparent;
+    display: inline-block;
+    position: relative;
+    bottom: -3px;
+    right: 0%;
+    margin: auto;
+  }
+
+  .colored.red:after {
+    background-color: rgb(189,61,62);
+  }
+
+  .colored.orange:after {
+    background-color: rgb(227,136,12);
+  }
+
+  .colored.yellow:after {
+    background-color: rgb(255,196,1);
+  }
+
+  .legend{
+    position: relative;
+    font-size: 8px;
+    text-align: right;
+    top: -5px;
+    height: 10px;
+    padding-right: 10px;
+
+    & .colored:after {
+      width: 8px;
+      height: 8px;
+      border-radius: 8px;
+      bottom: -2px;
     }
   }
 }
