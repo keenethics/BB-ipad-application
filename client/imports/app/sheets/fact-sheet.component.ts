@@ -173,7 +173,7 @@ export class FactSheetComponent {
       { title: 'CM', class: 'clear', dataSources: { n2: 'Commercial Management', n3: 'Total' } },
       { title: 'CTO', class: 'clear', dataSources: { n2: 'CTO', n3: 'Total' } },
       { title: 'MGMT', class: 'clear', dataSources: { n2: 'Central Team', n3: 'Total' } },
-      { title: 'Total', class: '', dataSources: { n2: 'Total', n3: 'Total' } }
+      { title: 'Total', class: 'tb-bold', dataSources: { n2: 'Total', n3: 'Total' } }
     ];
   }
 

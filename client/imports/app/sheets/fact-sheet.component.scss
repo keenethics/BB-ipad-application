@@ -53,9 +53,13 @@ fact-sheet {
   }
 
   .initial-width {
-    max-width: 30px;
+    max-width: 40px;
     min-width: initial;
     width: initial;
+  }
+
+  .tb-bold {
+    border-top: 3px solid #fff;
   }
 
   position: absolute;
@@ -68,6 +72,8 @@ fact-sheet {
     background: $table-color;
     line-height: 30px;
     margin: auto;
+    border: 10px solid $table-border-color;
+    border-bottom: none;
 
     th, td {
       font-size: 13px;
@@ -78,29 +84,29 @@ fact-sheet {
     }
 
     th, td {
-      &.color-lable > h3 {
-        text-align: right;
-        &:before {
-          content: '';
-          width: 10px;
-          height: 10px;
-          border-radius: 10px;
-          background-color: transparent;
-          display: inline-block;
-          position: relative;
-          bottom: 0px;
-          right: 1%;
-          margin: auto;
-        }
+      // &.color-lable > h3 {
+      //   text-align: right;
+      //   &:before {
+      //     content: '';
+      //     width: 10px;
+      //     height: 10px;
+      //     border-radius: 10px;
+      //     background-color: transparent;
+      //     display: inline-block;
+      //     position: relative;
+      //     bottom: 0px;
+      //     right: 1%;
+      //     margin: auto;
+      //   }
 
-        &.yellow:before {
-          background-color: rgb(255,196,1);
-        }
+      //   &.yellow:before {
+      //     background-color: rgb(255,196,1);
+      //   }
 
-        &.red:before {
-          background-color: rgb(189,61,62);
-        }
-      }
+      //   &.red:before {
+      //     background-color: rgb(189,61,62);
+      //   }
+      // }
 
       width: 60px;
       min-width: 60px;
@@ -110,6 +116,16 @@ fact-sheet {
     th {
       text-align: center;
       font-weight: normal;
+    }
+
+    tfoot {
+      tr, td {
+        border: none;
+      }
+
+      td {
+        background-color: #dbebf8;
+      }
     }
 
     // tr {
@@ -124,30 +140,46 @@ fact-sheet {
     //     }
     //   }
     // }
+  }
 
-    td.colored:after {
-      content: '';
-      width: 15px;
-      height: 15px;
-      border-radius: 15px;
-      background-color: transparent;
-      display: inline-block;
-      position: relative;
-      bottom: -3px;
-      right: 0%;
-      margin: auto;
-    }
+  .colored:after {
+    content: '';
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    background-color: transparent;
+    display: inline-block;
+    position: relative;
+    bottom: -3px;
+    right: 0%;
+    margin: auto;
+  }
 
-    td.colored.red:after {
-      background-color: rgb(189,61,62);
-    }
+  .colored.red:after {
+    background-color: rgb(189,61,62);
+  }
 
-    td.colored.orange:after {
-      background-color: rgb(227,136,12);
-    }
+  .colored.orange:after {
+    background-color: rgb(227,136,12);
+  }
 
-    td.colored.yellow:after {
-      background-color: rgb(255,196,1);
+  .colored.yellow:after {
+    background-color: rgb(255,196,1);
+  }
+
+  .legend{
+    position: relative;
+    font-size: 8px;
+    text-align: right;
+    top: -5px;
+    height: 10px;
+    padding-right: 10px;
+
+    & .colored:after {
+      width: 8px;
+      height: 8px;
+      border-radius: 8px;
+      bottom: -2px;
     }
   }
 }

@@ -27,47 +27,21 @@
       </thead>
       <tbody>
         <tr *ngFor="let row of rowsDescs">
-          <td *ngIf="row.title" class="bu">{{row.title}}</td>
-          <!--<td *ngFor="let col of columnsDescs|exclude:[lastColumnsDesc]" [ngClass]="[col.class || '', row.class || '']">-->
+          <td *ngIf="row.title" class="bu" [ngClass]="{'tb-bold': row.title === 'Total'}">{{row.title}}</td>
           <td *ngFor="let col of columnsDescs" [ngClass]="[col.class || '', row.class || '']">
             {{getCellValue(row, col) | sep}}
           </td>
           <td [ngClass]="[lastColumnsDesc.class || '', row.class || '']">{{getCellValue(row, lastColumnsDesc)|percentage}}</td>
           <td [ngClass]="[lastColumnsDesc.class || '', row.class || '', 'initial-width']" [colored]="getCellValue(row, lastColumnsDesc)"></td>
         </tr>
-        <!--<tr>
-          <td class="color-lable" colspan="12">
-            <h3 class="yellow">More than 25% net down of P01'17 HC</h3>
-          </td>
-        </tr>
+      </tbody>
+      <tfoot>
         <tr>
-          <td class="color-lable" colspan="12">
-            <h3 class="red">More than 50% net down of P01'17 HC</h3>
+          <td colspan="20">
+            <div class="legend">delta > -25% (<i class="colored yellow"></i>); > -50% (<i class="colored red"></i>)</p>
           </td>
-        </tr>-->
-      </tbody>
+        </tr>
+      </tfoot>
     </table>
-    <!--<table>
-      <thead>
-        <tr class="row-color-4">
-          <th>In HC</th>
-          <th *ngFor="let col of columnsDescs" class="t-right">
-            {{col.title}}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="{{row.color}}" *ngFor="let row of rowsDescs | exclude:excludedRowsDescs">
-          <td>{{row.title}}</td>
-          <td *ngFor="let col of columnsDescs">
-            {{getCellValue(row, col)}}
-          </td>
-        </tr>
-        <tr class="{{row.color}}" *ngFor="let row of excludedRowsDescs">
-          <td>{{row.title}}</td>
-          <td [colored]="getCellValue(row, col)" *ngFor="let col of columnsDescs;">{{getCellValue(row, col)|percentage}}</td>
-        </tr>
-      </tbody>
-    </table>-->
   </ion-card-content>
 </ion-card>
