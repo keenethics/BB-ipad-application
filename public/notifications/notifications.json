@@ -18,5 +18,7 @@
   "password_invalid_min_length": "Password must contain minimum 6 symbols.",
   "no_role": "Role doesn't exist.",
   "user_updated": "User updated successfully.",
-  "user_removed": "User removed successfully."
+  "user_removed": "User removed successfully.",
+  "wrong_file_type": "Wrong file type.",
+  "wrong_upload_params": "Wrong files."
 }

@@ -22,6 +22,7 @@ export class PickFileComponent implements AfterViewInit {
 
   @Input('emitterElement') emitterElement: any;
   @Input('fileType') fileType: string;
+  @Input('validator') validator: Function;
 
   @Output('onFileSelected') onFileSelected = new EventEmitter();
   @Output('onWrongType') onWrongType = new EventEmitter();
@@ -38,7 +39,7 @@ export class PickFileComponent implements AfterViewInit {
       const target = this.emitterElement._elementRef.nativeElement || this.emitterElement;
       const onClick = Observable.fromEvent(target, 'click');
       this.onClickSbscr = onClick.subscribe(() => {
-        (this.fileInput.nativeElement as HTMLInputElement).click();
+        this.select();
       });
     }
   }
@@ -47,13 +48,25 @@ export class PickFileComponent implements AfterViewInit {
     this.onClickSbscr.unsubscribe();
   }
 
+  select() {
+    this.clear();
+    (this.fileInput.nativeElement as HTMLInputElement).click();
+  }
+
+  clear() {
+    (this.fileInput.nativeElement as HTMLInputElement).value = '';
+  }
+
   onChange(event: Event) {
     const file = (event.target as HTMLInputElement).files.length && (event.target as HTMLInputElement).files[0];
     if (file) {
-      if (this.fileType && (this.fileType !== file.type)) {
-        this.onWrongType.emit(file);
-        return;
+      if (this.validator) {
+        if (!this.validator(event.target)) {
+          this.onWrongType.emit();
+          return;
+        }
       }
+
       this.onFileSelected.emit(file);
     }
   }
