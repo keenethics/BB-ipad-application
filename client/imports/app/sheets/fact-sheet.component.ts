@@ -155,8 +155,8 @@ export class FactSheetComponent {
       calc: (inputs: any[], descs: any) => {
         if (inputs.length) {
           const r2018 = inputs[0].periods['2018'];
-          const actual = inputs[0].periods['actual'];
-          return (Number(r2018 - actual) / Number(actual) * 100);
+          const p201512 = inputs[0].periods['201512'];
+          return (+r2018 - +p201512) / +p201512 * 100;
         }
       }
     };
