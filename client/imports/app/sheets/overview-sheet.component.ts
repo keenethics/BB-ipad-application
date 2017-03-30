@@ -27,7 +27,7 @@ export class OverviewSheetComponent {
   @Input() selectedItem: any;
   @Input() options: any;
   @Input() rowsDescs: any[];
-  @Input() excludedPeriods: any[];
+  @Input() columnsDescs: any[];
   @Output() onClickEmitter = new EventEmitter();
   @Output() onCloseEmitter = new EventEmitter();
 
@@ -36,19 +36,81 @@ export class OverviewSheetComponent {
   private businessData: BusinessDataUnit[];
 
   constructor(private dataProvider: DataProvider, private filterCtrl: FilterController) {
-    if (!this.rowsDescs) {
-      this.rowsDescs = [
-        { title: 'Opening', dataSources: ['Opening'], color: 'row-color-3' },
-        { title: 'Ramp up', dataSources: ['Ramp up'], color: '' },
-        { title: 'Ramp down', dataSources: ['Ramp down'], color: '' },
-        { title: 'Other HC flow', dataSources: ['Others'], color: '' },
-        { title: 'Landing point', dataSources: ['Landing point'], color: 'row-color-3' }
-      ];
-    }
+    this.periods = [
+      { title: 'P12 2016', colspan: '1', rowspan: '2', class: 'dark-grey' },
+      { title: 'YTD 2017', colspan: '3', rowspan: '1', class: 'blue' },
+      { title: '2017 act P01', colspan: '1', rowspan: '2', class: 'blue' },
+      { title: 'Delta to go', colspan: '1', rowspan: '2', class: 'head-grey' },
+      { title: 'LP 2017', colspan: '1', rowspan: '2', class: 'head-grey' },
+      { title: 'LP 2018', colspan: '1', rowspan: '2', class: 'head-grey' },
+    ];
+    this.dataProvider.data$.subscribe((data) => {
+      if (data.length) {
+        this.businessData = data;
+        this.initTableDescriptions();
+      }
+    });
+  }
 
-    if (!this.excludedPeriods) {
-      this.excludedPeriods = ['2016', 'actual', '201512', '2017Ytd'];
+  getCellValue(rowDesc: any, colDesc: any, p: any) {
+    const asKeys = Object.assign(rowDesc.dataSources, colDesc.dataSources);
+    const calc = rowDesc.calc || colDesc.calc;
+
+    const result = this.businessData
+      .filter((item) => item.highLevelCategory === asKeys.highLevelCategory);
+
+    if (calc) return calc(result, asKeys);
+
+    if (result.length) {
+      return (result.reduce((acc, item) => {
+        return acc + +item.periods[colDesc.period];
+      }, 0).toString());
+    } else {
+      return '0';
     }
+  }
+
+  initTableDescriptions() {
+    this.columnsDescs = [
+      {
+        title: '', class: 'dark-grey', period: '2016', dataSources: { highLevelCategory: 'Landing point' }
+      }, // 2017 YTD
+      {
+        title: 'RD', class: 'blue', period: '2017Ytd', dataSources: { highLevelCategory: 'Ramp down' }
+      },
+      {
+        title: 'RU', class: 'blue', period: '2017Ytd', dataSources: { highLevelCategory: 'Ramp up' }
+      },
+      {
+        title: 'Others',
+        class: 'blue',
+        period: '2017Ytd',
+        dataSources: {
+          highLevelCategory: 'Others'
+        }
+      },
+      {
+        title: '', class: 'blue', period: 'actual', dataSources: { highLevelCategory: 'Landing point' }
+      },
+      {
+        title: '', class: 'head-grey', dataSources: { highLevelCategory: 'Landing point' },
+        calc: (inputs: any) => {
+          return (inputs.reduce((acc: any, item: any) => {
+            return acc + (+item.periods[2017] - +item.periods['actual']);
+          }, 0).toString());
+        }
+      }, // 2017
+      {
+        title: '', class: 'head-grey', period: '2017', dataSources: { highLevelCategory: 'Landing point' }
+      }, // 2018
+      {
+        title: '', class: 'head-grey', period: '2018', dataSources: { highLevelCategory: 'Landing point' }
+      },
+    ];
+
+    this.rowsDescs = [
+      { title: '', class: 'clear', dataSources: {} },
+    ];
   }
 
   ngOnInit() {
@@ -56,18 +118,6 @@ export class OverviewSheetComponent {
       .subscribe((queryObj) => {
         this.getTableData(queryObj);
       });
-  }
-
-  ngAfterViewInit() {
-    const sum = new SumBusinessUnitsPipe().transform;
-    this.dataProvider.data$.subscribe((data) => {
-      if (data) {
-        this.businessData = sum(data, 'highLevelCategory');
-        if (data.length) {
-          this.periods = Object.keys(this.businessData[0].periods);
-        }
-      }
-    });
   }
 
   getTableData(currentQuery: any) {
@@ -85,17 +135,5 @@ export class OverviewSheetComponent {
 
   close() {
     this.onCloseEmitter.emit();
-  }
-
-  getCellValue(sources: string[], period: number, fromPrev: boolean) {
-    // period = fromPrev ? period - 1 : period;
-    return this.businessData.reduce((acc, item) => {
-      for (let i = 0; i < sources.length; i++) {
-        if (sources[i] === item.highLevelCategory) {
-          return acc + Number(item.periods[period]);
-        }
-      }
-      return acc;
-    }, 0);
   }
 }
