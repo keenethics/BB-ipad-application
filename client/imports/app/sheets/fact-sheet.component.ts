@@ -66,10 +66,10 @@ export class FactSheetComponent {
         title: '', class: 'dark-grey', period: '201512', dataSources: { highLevelCategory: 'Landing point' }
       }, // 2016
       {
-        title: 'RU', class: 'dark-grey', period: '2016', dataSources: { highLevelCategory: 'Ramp up' }
+        title: 'RD', class: 'dark-grey', period: '2016', dataSources: { highLevelCategory: 'Ramp down' }
       },
       {
-        title: 'RD', class: 'dark-grey', period: '2016', dataSources: { highLevelCategory: 'Ramp down' }
+        title: 'RU', class: 'dark-grey', period: '2016', dataSources: { highLevelCategory: 'Ramp up' }
       },
       {
         title: 'others',
@@ -83,10 +83,10 @@ export class FactSheetComponent {
         title: 'P12', class: 'dark-grey grey', period: '2016', dataSources: { highLevelCategory: 'Landing point' }
       }, // 2017 YTD
       {
-        title: 'RU', class: 'blue', period: '2017Ytd', dataSources: { highLevelCategory: 'Ramp up' }
+        title: 'RD', class: 'blue', period: '2017Ytd', dataSources: { highLevelCategory: 'Ramp down' }
       },
       {
-        title: 'RD', class: 'blue', period: '2017Ytd', dataSources: { highLevelCategory: 'Ramp down' }
+        title: 'RU', class: 'blue', period: '2017Ytd', dataSources: { highLevelCategory: 'Ramp up' }
       },
       {
         title: 'others',
@@ -100,10 +100,10 @@ export class FactSheetComponent {
         title: '', class: 'blue grey', period: 'actual', dataSources: { highLevelCategory: 'Landing point' }
       },
       {
-        title: 'RU', class: 'head-grey', period: '2017', dataSources: { highLevelCategory: 'Ramp up' }
+        title: 'RD', class: 'head-grey', period: '2017', dataSources: { highLevelCategory: 'Ramp down' }
       },
       {
-        title: 'RD', class: 'head-grey', period: '2017', dataSources: { highLevelCategory: 'Ramp down' }
+        title: 'RU', class: 'head-grey', period: '2017', dataSources: { highLevelCategory: 'Ramp up' }
       },
       {
         title: 'others',
@@ -117,10 +117,10 @@ export class FactSheetComponent {
         title: '', class: 'head-grey grey', period: '2017', dataSources: { highLevelCategory: 'Landing point' }
       }, // 2018
       {
-        title: 'RU', class: 'head-grey', period: '2018', dataSources: { highLevelCategory: 'Ramp up' }
+        title: 'RD', class: 'head-grey', period: '2018', dataSources: { highLevelCategory: 'Ramp down' }
       },
       {
-        title: 'RD', class: 'head-grey', period: '2018', dataSources: { highLevelCategory: 'Ramp down' }
+        title: 'RU', class: 'head-grey', period: '2018', dataSources: { highLevelCategory: 'Ramp up' }
       },
       {
         title: 'others',
@@ -209,11 +209,11 @@ export class FactSheetComponent {
     if (calc) return calc(result, asKeys);
 
     if (result.length === 1) {
-      return result[0]['periods'][colDesc.period].toString();
+      return (result[0]['periods'][colDesc.period] || 0).toString();
     } else if (result.length > 1) {
       console.log(`%cWARNING! Two selections in factsheet cell: ${rowDesc.title + ' ' + colDesc.title} `,
         'background-color: red; color: #fff; padding: 1px;');
-      return result[0]['periods'][colDesc.period].toString();
+      return (result[0]['periods'][colDesc.period] || 0).toString();
     } else {
       return '0';
     }
