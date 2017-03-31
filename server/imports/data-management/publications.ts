@@ -21,6 +21,6 @@ Meteor.publish('unitsTitles', function () {
     return UnitsTitles.find({});
 });
 
-Meteor.publish('dataUpdates', function() {
+Meteor.publish('dataUpdates', function () {
     return DataUpdates.find({});
 });

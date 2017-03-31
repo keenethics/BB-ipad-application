@@ -20,5 +20,7 @@
   "user_updated": "User updated successfully.",
   "user_removed": "User removed successfully.",
   "wrong_file_type": "Wrong file type.",
-  "wrong_upload_params": "Wrong files."
+  "wrong_upload_params": "Wrong files.",
+  "up_st_calculating": "Calculating data ",
+  "up_st_inserting": "Almost done! Insert data in DB "
 }

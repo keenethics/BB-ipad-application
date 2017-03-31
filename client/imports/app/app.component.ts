@@ -17,6 +17,7 @@ import { CreateUserPage } from './pages/create-user/create-user.page';
 import { UploadDataPage } from './pages/upload-data/upload-data.page';
 import { ProfileSettingsPage } from './pages/profile-settings/profile-settings.page';
 import { UserManagementPage } from './pages/user-management/user-management.page';
+import { SplashscreenPage } from './pages/splashscreen/splashscreen.page';
 
 import template from './app.component.html';
 import styles from './app.component.scss';
@@ -36,7 +37,7 @@ export class AppComponent {
   pages: Array<{ title: string, component: any }>;
 
   private subscriptions: any[] = [];
-  public rootPage = this.auth.isLoggedIn() ? HomePage : SigninPage;
+  public rootPage = SplashscreenPage;
 
   constructor(
     public platform: Platform,
@@ -92,11 +93,14 @@ export class AppComponent {
 
     MeteorObservable.subscribe('dataUpdates').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
-        const lastDataUpdate = DataUpdates.findOne().lastDataUpdateDate as Date;
-        if (lastDataUpdate.toString() !== localStorage.getItem('lastDataUpdate')) {
-          localStorage.setItem('lastDataUpdate', lastDataUpdate.toString());
-          localStorage.removeItem('filters');
-          this.toastCtrl.okToast('data_updated');
+        const lastDataUpdate = DataUpdates.findOne().lastDataUpdateDate as Date || '';
+
+        if (lastDataUpdate) {
+          if (lastDataUpdate.toString() !== localStorage.getItem('lastDataUpdate')) {
+            localStorage.setItem('lastDataUpdate', lastDataUpdate.toString());
+            localStorage.removeItem('filters');
+            this.toastCtrl.okToast('data_updated');
+          }
         }
       });
     });

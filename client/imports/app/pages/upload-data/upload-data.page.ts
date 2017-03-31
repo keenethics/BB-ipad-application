@@ -1,5 +1,7 @@
 import { Component, ViewEncapsulation, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { MeteorObservable } from 'meteor-rxjs';
+import { DataUpdates } from '../../../../../both/data-management';
 
 import { MenuController, Platform } from 'ionic-angular';
 import { RolesController } from '../../authorization';
@@ -19,6 +21,8 @@ import template from './upload-data.page.html';
 })
 export class UploadDataPage {
   private _dataFiles: File[] = [];
+  private _status: string;
+  private _updateDate: Date;
 
   constructor(
     private dataUploader: DataUploader,
@@ -26,7 +30,24 @@ export class UploadDataPage {
     private toastCtrl: ToastsManager,
     private formBuilder: FormBuilder,
     private roles: RolesController
-  ) { }
+  ) {
+    MeteorObservable.subscribe('dataUpdates').subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        const { status, lastDataUpdateDate } = DataUpdates.findOne();
+
+        switch (status) {
+          case 0: this._status = 'up_st_calculating'; break;
+          case 1: this._status = 'up_st_inserting'; break;
+          case 2:
+          default: this._status = '';
+        }
+
+        if (lastDataUpdateDate) {
+          this._updateDate = lastDataUpdateDate;
+        }
+      });
+    });
+  }
 
   isCsvFile(target: any) {
     const file = target.files[0];
@@ -44,15 +65,16 @@ export class UploadDataPage {
   }
 
   uploadData() {
-    this.loadingCtrl.loading('uploading_data');
+    // this.loadingCtrl.loading('uploading_data');
+    this._status = 'up_st_calculating';
     this.dataUploader.uploadData(this._dataFiles)
       .then((res: string) => {
-        this.loadingCtrl.loadingInst.dismiss();
-        this.toastCtrl.okToast(res);
+        // this.loadingCtrl.loadingInst.dismiss();
+        // this.toastCtrl.okToast(res);
         this._dataFiles = [];
       })
       .catch((err: any) => {
-        this.toastCtrl.okToast(err.reason || err.message || err);
+        // this.toastCtrl.okToast(err.reason || err.message || err);
         this._dataFiles = [];
       });
   }
