@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { exec } from 'child_process';
+import { exec, fork } from 'child_process';
 import * as Fiber from 'fibers';
 import * as fs from 'fs';
 import * as Baby from 'babyparse';
@@ -61,9 +61,9 @@ export const uploadFile = new ValidatedMethod({
 
         fs.writeFile(histDataFileURI, hist, function (err: any) {
           console.time();
+          const childProcess = fork(`${absoluteFilePath}`, [mongoUrl]);
 
-          exec(`node ${absoluteFilePath} ${mongoUrl}`, function (err: any, stdout: any, strerr: any) {
-            if (err) throw new Meteor.Error(err.message, err.message);
+          childProcess.on('close', () => {
             Fiber(() => {
               const titles = (BusinessData as any)
                 .aggregate([{ $group: { _id: null, titles: { $addToSet: '$n2' } } }])[0]
@@ -77,8 +77,22 @@ export const uploadFile = new ValidatedMethod({
               setMarketCountries();
               setAvailableCountries();
 
+              console.log('Updated');
               console.timeEnd();
-              DataUpdates.update({}, { lastDataUpdateDate: new Date() }, { upsert: true });
+              DataUpdates.update({}, { status: 2, lastDataUpdateDate: new Date() }, { upsert: true });
+            }).run();
+          });
+
+          childProcess.on('err', (err: any) => {
+            Fiber(() => {
+              console.log(err);
+            }).run();
+          });
+
+          childProcess.on('message', (m: any) => {
+            const { status } = m;
+            Fiber(() => {
+              DataUpdates.update({}, { status }, { upsert: true });
             }).run();
           });
         });

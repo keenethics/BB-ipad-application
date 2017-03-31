@@ -93,11 +93,14 @@ export class AppComponent {
 
     MeteorObservable.subscribe('dataUpdates').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
-        const lastDataUpdate = DataUpdates.findOne().lastDataUpdateDate as Date;
-        if (lastDataUpdate.toString() !== localStorage.getItem('lastDataUpdate')) {
-          localStorage.setItem('lastDataUpdate', lastDataUpdate.toString());
-          localStorage.removeItem('filters');
-          this.toastCtrl.okToast('data_updated');
+        const lastDataUpdate = DataUpdates.findOne().lastDataUpdateDate as Date || '';
+
+        if (lastDataUpdate) {
+          if (lastDataUpdate.toString() !== localStorage.getItem('lastDataUpdate')) {
+            localStorage.setItem('lastDataUpdate', lastDataUpdate.toString());
+            localStorage.removeItem('filters');
+            this.toastCtrl.okToast('data_updated');
+          }
         }
       });
     });

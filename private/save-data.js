@@ -55,9 +55,6 @@ const histData = fs.readFileSync(__dirname + '/temp2', 'utf8');
 const parsedData = Baby.parse(currentData, { skipEmptyLines: true, delimiter: ';' }).data;
 const parsedHistData = Baby.parse(histData, { skipEmptyLines: true, delimiter: ';' }).data;
 
-console.log('From current:', parsedData[0]);
-console.log('From hist:', parsedHistData[0]);
-
 mongoClient.connect(mongoUrl, (err, db) => {
   if (err) console.log(err);
 
@@ -80,6 +77,7 @@ mongoClient.connect(mongoUrl, (err, db) => {
       ColumnNamesCollection.update({}, columnNames, { upsert: true });
 
       console.log('Calculating data...');
+      process.send({ status: 0 });
 
       const currentDataSources = parsedData.map((item, index) => {
         if (index !== 0) {
@@ -322,6 +320,7 @@ mongoClient.connect(mongoUrl, (err, db) => {
       const sourcesDataWithCords = setCords(businessDataSources);
 
       console.log('Inserting data...');
+      process.send({ status: 1 });
 
       BusinessDataSources.remove({});
       BusinessData.remove({});
