@@ -43,7 +43,7 @@ export class FactSheetComponent {
           { title: '2015 P12', colspan: '1', rowspan: '2', class: 'dark-grey' },
           { title: '2016', colspan: '4', rowspan: '1', class: 'dark-grey' },
           { title: 'YTD 2017', colspan: '3', rowspan: '1', class: 'blue' },
-          { title: '2017 act P01', colspan: '1', rowspan: '2', class: 'blue' },
+          { title: '2017 act P03', colspan: '1', rowspan: '2', class: 'blue' },
           { title: 'FC 2017', colspan: '3', rowspan: '1', class: 'head-grey' },
           { title: 'LP 2017', colspan: '1', rowspan: '2', class: 'head-grey' },
           { title: 'FC 2018', colspan: '3', rowspan: '1', class: 'head-grey' },
