@@ -79,7 +79,7 @@ export const uploadFile = new ValidatedMethod({
 
               console.log('Updated');
               console.timeEnd();
-              DataUpdates.update({}, { status: 2, lastDataUpdateDate: new Date() }, { upsert: true });
+              DataUpdates.update({}, { status: 'up_data_done', lastDataUpdateDate: new Date() }, { upsert: true });
             }).run();
           });
 

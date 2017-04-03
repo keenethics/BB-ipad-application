@@ -2,7 +2,7 @@
 <ion-card>
   <ion-card-header>
     <div class="card-header">
-      <p>LE: <span class="title">{{selectedItem[entityKey]}}</span></p>
+      <p>LE: <span class="title">{{entityKey === 'global' ? 'Total' : selectedItem[entityKey]}}</span></p>
       <ion-buttons end>
         <button class="active" ion-button>OVERVIEW</button>
         <button (click)="openFactSheet()" ion-button>FACT SHEET</button>

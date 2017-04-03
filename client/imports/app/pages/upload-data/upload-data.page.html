@@ -1,7 +1,7 @@
 <ion-content>
   <div class="buttons-container">
     <p class="last-update" *ngIf="_updateDate">Last update date: {{_updateDate.toLocaleDateString()}}</p>
-    <p class="update-status" *ngIf="_status">{{_status | text}} <ion-spinner name="dots"></ion-spinner></p>
+    <p class="update-status" *ngIf="_status">{{_status | text}} <ion-spinner style="margin-left: 10px" name="dots"></ion-spinner></p>
     <div *ngIf="!_dataFiles[0]" class="upload-button-wrap">
       <button #dataButton ion-button round>
         <pick-file fileType="text/csv" [emitterElement]="dataButton" (onFileSelected)="pickDataBehaviour($event)" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
