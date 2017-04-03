@@ -206,6 +206,15 @@ ion-backdrop {
   background-color: map-get($colors, 'light-blue');
 }
 
+.splash-screen {
+  width: 100%;
+  height: 100%;
+  background-image: url(/img/ipad_landscape_2x.png);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 @import '../imports/app/filters/bu-filter/bu-filter.component.scss';
 @import '../imports/app/filters/category-filter/category-filter.component.scss';
 @import '../imports/app/filters/main-filter/main-filter.component.scss';
@@ -219,3 +228,4 @@ ion-backdrop {
 @import '../imports/app/pages/edit-user/edit-user.page.scss';
 @import '../imports/app/pages/components/header/header.component.scss';
 @import '../imports/app/pages/switchers/switchers.page.scss';
+@import '../imports/app/pages/splashscreen/splashscreen.page.scss';

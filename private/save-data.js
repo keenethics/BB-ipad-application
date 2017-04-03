@@ -55,9 +55,6 @@ const histData = fs.readFileSync(__dirname + '/temp2', 'utf8');
 const parsedData = Baby.parse(currentData, { skipEmptyLines: true, delimiter: ';' }).data;
 const parsedHistData = Baby.parse(histData, { skipEmptyLines: true, delimiter: ';' }).data;
 
-console.log('From current:', parsedData[0]);
-console.log('From hist:', parsedHistData[0]);
-
 mongoClient.connect(mongoUrl, (err, db) => {
   if (err) console.log(err);
 
@@ -79,7 +76,8 @@ mongoClient.connect(mongoUrl, (err, db) => {
       });
       ColumnNamesCollection.update({}, columnNames, { upsert: true });
 
-      console.log('Calculating data...');
+      console.log('Mapping source objects...');
+      process.send({ status: 'up_data_map_sources' });
 
       const currentDataSources = parsedData.map((item, index) => {
         if (index !== 0) {
@@ -215,6 +213,9 @@ mongoClient.connect(mongoUrl, (err, db) => {
       const totalN3 = [];
       const totalMNs = [];
 
+      console.log('Sum sources...');
+      process.send({ status: 'up_data_sum_sources' });
+
       cityKeys.forEach((cityKey) => {
         highLevelCategories.forEach((category) => {
           let totalMN = null;
@@ -251,6 +252,9 @@ mongoClient.connect(mongoUrl, (err, db) => {
         });
       });
 
+      console.log('Calculating cities totals...');
+      process.send({ status: 'up_data_calc_cities_totals' });
+
       const cityTotals = totalN3.concat(totalMNs);
       BUs.push('Total');
       highLevelCategories.push('Total');
@@ -277,6 +281,9 @@ mongoClient.connect(mongoUrl, (err, db) => {
         });
       });
 
+      console.log('Calculating markets totals...');
+      process.send({ status: 'up_data_calc_markets_totals' });
+
       const marketTotals = [];
       markets.forEach((market) => {
         highLevelCategories.forEach((category) => {
@@ -297,6 +304,9 @@ mongoClient.connect(mongoUrl, (err, db) => {
           });
         });
       });
+
+      console.log('Calculating global totals...');
+      process.send({ status: 'up_data_calc_globals_totals' });
 
       const globalTotals = [];
       highLevelCategories.forEach((category) => {
@@ -321,7 +331,8 @@ mongoClient.connect(mongoUrl, (err, db) => {
       const dataWithCords = setCords(allData);
       const sourcesDataWithCords = setCords(businessDataSources);
 
-      console.log('Inserting data...');
+      console.log('Insert data to DB...');
+      process.send({ status: 'up_data_insert_db' });
 
       BusinessDataSources.remove({});
       BusinessData.remove({});
