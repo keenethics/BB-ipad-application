@@ -2,7 +2,7 @@
 <ion-card>
   <ion-card-header>
     <div class="card-header">
-      <p>BU-SPECIFIC LOCATION INFO: <span class="title">{{selectedItem[entityKey]}}</span></p>
+      <p>BU-SPECIFIC LOCATION INFO: <span class="title">{{entityKey === 'global' ? 'Total' : selectedItem[entityKey]}}</span></p>
       <ion-buttons end>
         <button (click)="openOverviewSheet()" ion-button>OVERVIEW</button>
         <button class="active" ion-button>FACT SHEET</button>

@@ -14,13 +14,18 @@
   "default_user_created": "Created user with role: \"User\".",
   "user_created": "User created successfully.",
   "no_user": "User doesn't exist.",
-  "email_invalid" : "Email is not valid.",
+  "email_invalid": "Email is not valid.",
   "password_invalid_min_length": "Password must contain minimum 6 symbols.",
   "no_role": "Role doesn't exist.",
   "user_updated": "User updated successfully.",
   "user_removed": "User removed successfully.",
   "wrong_file_type": "Wrong file type.",
   "wrong_upload_params": "Wrong files.",
-  "up_st_calculating": "Calculating data ",
-  "up_st_inserting": "Almost done! Insert data in DB "
+  "up_data_map_sources": "Mapping source objects ",
+  "up_data_sum_sources": "Sum sources ",
+  "up_data_calc_cities_totals": "Calculating cities totals ",
+  "up_data_calc_markets_totals": "Calculating markets totals ",
+  "up_data_calc_globals_totals": "Calculating global totals ",
+  "up_data_insert_db": "Almost done! Insert data in DB ",
+  "up_data_done": ""
 }

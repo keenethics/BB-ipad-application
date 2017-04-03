@@ -34,14 +34,7 @@ export class UploadDataPage {
     MeteorObservable.subscribe('dataUpdates').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         const { status, lastDataUpdateDate } = DataUpdates.findOne();
-
-        switch (status) {
-          case 0: this._status = 'up_st_calculating'; break;
-          case 1: this._status = 'up_st_inserting'; break;
-          case 2:
-          default: this._status = '';
-        }
-
+        this._status = status === 'up_data_done' ? '' : status;
         if (lastDataUpdateDate) {
           this._updateDate = lastDataUpdateDate;
         }
@@ -66,7 +59,6 @@ export class UploadDataPage {
 
   uploadData() {
     // this.loadingCtrl.loading('uploading_data');
-    this._status = 'up_st_calculating';
     this.dataUploader.uploadData(this._dataFiles)
       .then((res: string) => {
         // this.loadingCtrl.loadingInst.dismiss();
