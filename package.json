@@ -1,5 +1,5 @@
 {
-  "name": "angular2-meteor-base",
+  "name": "black-book-app",
   "private": true,
   "scripts": {
     "start": "meteor run",
@@ -66,5 +66,6 @@
     "typescript": "^2.1.4",
     "underscore": "^1.8.3",
     "zone.js": "0.6.26"
-  }
+  },
+  "version": "1.0.0"
 }
