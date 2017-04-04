@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, ViewEncapsulation, ViewChild, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { MeteorObservable } from 'meteor-rxjs';
 import { DataUpdates } from '../../../../../both/data-management';
@@ -7,7 +7,7 @@ import { MenuController, Platform } from 'ionic-angular';
 import { RolesController } from '../../authorization';
 
 import { ToastsManager, LoadingManager } from '../../common';
-import { DataUploader } from '../../data-management';
+import { DataUploader, DataUpdateInfo } from '../../data-management';
 import { PickFileComponent } from '../../common/components/pick-file/pick-file.component';
 
 import styles from './upload-data.page.scss';
@@ -19,27 +19,32 @@ import template from './upload-data.page.html';
   styles: [styles],
   encapsulation: ViewEncapsulation.None
 })
-export class UploadDataPage {
+export class UploadDataPage implements OnDestroy, OnInit {
   private _dataFiles: File[] = [];
   private _status: string;
   private _updateDate: Date;
-
+  private _subscr: any;
   constructor(
     private dataUploader: DataUploader,
     private loadingCtrl: LoadingManager,
     private toastCtrl: ToastsManager,
     private formBuilder: FormBuilder,
-    private roles: RolesController
-  ) {
-    MeteorObservable.subscribe('dataUpdates').subscribe(() => {
-      MeteorObservable.autorun().subscribe(() => {
-        const { status, lastDataUpdateDate } = DataUpdates.findOne();
-        this._status = status === 'up_data_done' ? '' : status;
-        if (lastDataUpdateDate) {
-          this._updateDate = lastDataUpdateDate;
-        }
-      });
+    private roles: RolesController,
+    private dateInfo: DataUpdateInfo
+  ) { }
+
+  ngOnInit() {
+    this._subscr = this.dateInfo.info$.subscribe(info => {
+      const { status, updateDate } = info;
+      this._status = status === 'up_data_done' ? '' : status;
+      if (updateDate) {
+        this._updateDate = updateDate;
+      }
     });
+  }
+
+  ngOnDestroy() {
+    this._subscr.unsubscribe();
   }
 
   isCsvFile(target: any) {
