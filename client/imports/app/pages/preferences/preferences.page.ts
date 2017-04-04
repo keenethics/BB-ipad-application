@@ -10,7 +10,8 @@ import {
   ProfileSettingsPage,
   UserManagementPage,
   SwitchersPage,
-  UploadDataPage
+  UploadDataPage,
+  InfoPage
 } from '../index';
 
 @Component({
@@ -34,7 +35,9 @@ export class PreferencesPage {
       {
         icon: 'icon-upload', title: 'UPLOAD DATA', selector: 'upload-data-page', component: UploadDataPage,
         guard: () => (this.roles.userIsInRole(Meteor.userId(), ['Administrator', 'DataUpload']) && this.platform.is('core'))
-      }
+      },
+      { icon: 'information-circle', title: 'INFO', selector: 'info-page', component: InfoPage, guard: () => true },
+
       // { icon: 'icon-types-and-units', title: 'TYPES AND UNITS', selector: 'types-and-units', component: null }
     ];
   }

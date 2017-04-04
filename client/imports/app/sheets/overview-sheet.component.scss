@@ -75,11 +75,11 @@ overview-sheet {
     border: 10px solid $table-border-color;
 
     th, td {
-      font-size: 13px;
+      font-size: 11px;
       border: 1px solid #fff;
       text-align: right;
       line-height: 19px;
-      padding: 0 6px;
+      padding: 0 4px;
     }
 
     th, td {
@@ -108,7 +108,7 @@ overview-sheet {
       // }
 
       width: 60px;
-      min-width: 60px;
+      min-width: 30px;
       max-width: 70px;
     }
 
