@@ -15,9 +15,21 @@ export class FilterController {
   public onInitFilters = new EventEmitter();
 
   constructor() {
-    const { mapQueryObject, activeFilters } = this.getFromStorage();
-    this.currentFilter = new BehaviorSubject(mapQueryObject);
-    this.selectedOptions = new BehaviorSubject(activeFilters);
+    const filters = this.getFromStorage();
+    if (filters) {
+      const { mapQueryObject, activeFilters } = filters;
+      this.currentFilter = new BehaviorSubject(mapQueryObject);
+      this.selectedOptions = new BehaviorSubject(activeFilters);
+    } else {
+      this.initFilters();
+      this.currentFilter = new BehaviorSubject({
+        identifier: 'Global',
+        highLevelCategory: 'Landing point',
+        resourceTypeKey: 'TotalInternals',
+        n2: 'Total'
+      });
+      this.selectedOptions = new BehaviorSubject([]);
+    }
 
     MeteorObservable.subscribe('available-countries').subscribe(() => {
       this.availableCountries = AvailableCountries.find({}).fetch().map((c: any) => c.name);
