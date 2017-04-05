@@ -15,8 +15,6 @@ export class InfoPage {
   public version: string;
 
   constructor(public dataInfo: DataUpdateInfo) {
-    MeteorObservable.call('info.version').subscribe((v: string) => {
-      this.version = v;
-    });
+    this.version = (Meteor.settings.public as any).version;
   }
 }

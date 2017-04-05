@@ -93,8 +93,8 @@ export class AppComponent {
 
     MeteorObservable.subscribe('dataUpdates').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
-        const lastDataUpdate = DataUpdates.findOne().lastDataUpdateDate as Date || '';
-
+        const updates = DataUpdates.findOne();
+        const lastDataUpdate = updates ? updates.lastDataUpdateDate as Date || '' : '';
         if (lastDataUpdate) {
           if (lastDataUpdate.toString() !== localStorage.getItem('lastDataUpdate')) {
             localStorage.setItem('lastDataUpdate', lastDataUpdate.toString());
