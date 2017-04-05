@@ -10,6 +10,7 @@ import { FilterController } from './filter-controller';
 import { AppliedFiltersComponent } from './main-filter/applied-filters.component';
 import { MainFilterComponent } from './main-filter/main-filter.component';
 import { CategoryFilterComponent } from './category-filter/category-filter.component';
+import { FilterCounterComponent } from './filter-counter/filter-counter.component';
 
 
 @NgModule({
@@ -22,12 +23,14 @@ import { CategoryFilterComponent } from './category-filter/category-filter.compo
     MainFilterComponent,
     AppliedFiltersComponent,
     CategoryFilterComponent,
-    CutPipe
+    CutPipe,
+    FilterCounterComponent
   ],
   exports: [
     BuFilterComponnet,
     MainFilterComponent,
-    CategoryFilterComponent
+    CategoryFilterComponent,
+    FilterCounterComponent
   ],
   providers: [
     BuTitlesProvider,
