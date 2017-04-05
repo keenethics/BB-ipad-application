@@ -175,6 +175,7 @@ export class MainFilterComponent implements OnInit, OnDestroy {
               unit
             });
           }
+          this.filterCtrl.activeFilters$ = this.filters;
           this.selectedCountry = '';
           this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
         });
@@ -228,6 +229,8 @@ export class MainFilterComponent implements OnInit, OnDestroy {
       case 'market': this.category = 'country'; break;
       case 'country': this.category = 'city'; break;
     }
+
+    this.filterCtrl.activeFilters$ = this.filters;
     this.dataProvider.query(this.filterQuery);
     this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
     this.searchValue = '';
@@ -288,6 +291,7 @@ export class MainFilterComponent implements OnInit, OnDestroy {
       };
     }
 
+    this.filterCtrl.activeFilters$ = this.filters;
     this.doDataQuery(this.query);
     this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
   }
