@@ -12,7 +12,7 @@ export class DataUpdateInfo {
   }
 
   constructor() {
-    const { status, lastDataUpdateDate } = DataUpdates.findOne();
+    const { status, lastDataUpdateDate } = DataUpdates.findOne() || {status: '', lastDataUpdateDate: null};
     this._info = new BehaviorSubject({
       status,
       updateDate: lastDataUpdateDate
@@ -20,7 +20,7 @@ export class DataUpdateInfo {
 
     MeteorObservable.subscribe('dataUpdates').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
-        const { status, lastDataUpdateDate } = DataUpdates.findOne();
+        const { status, lastDataUpdateDate } = DataUpdates.findOne() || {status: '', lastDataUpdateDate: null};
         this._info.next({
           status,
           updateDate: lastDataUpdateDate
