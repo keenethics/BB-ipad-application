@@ -53,6 +53,12 @@ export const uploadFile = new ValidatedMethod({
     const histDataFileURI = `${absoluteFilePath.substring(0, absoluteFilePath.indexOf('save-data.js'))}temp2`;
     const mongoUrl = process.env.MONGO_URL;
 
+    const backupBDS = BusinessDataSources.find({}).fetch().filter(item => delete item._id);
+    const backupBD = BusinessData.find({}).fetch().filter(item => delete item._id);
+    const updateDateItem = DataUpdates.findOne({});
+
+    const restoreNeeded = { flag: false };
+
     if (fs.existsSync(currentDataFileURI)) throw new Meteor.Error('data uploading in process', 'data_calculation_in_process');
 
     exec(`ln -s -f ${babyparseLinkCommand} && ln -s -f ${mongodbLinkCommand}`, () => {
@@ -61,10 +67,37 @@ export const uploadFile = new ValidatedMethod({
 
         fs.writeFile(histDataFileURI, hist, function (err: any) {
           console.time();
+
           const childProcess = fork(`${absoluteFilePath}`, [mongoUrl]);
+
+          setTimeout(() => {
+            childProcess.kill();
+            restoreNeeded.flag = true;
+          }, 1800000);
 
           childProcess.on('close', () => {
             Fiber(() => {
+              if (restoreNeeded.flag) {
+                BusinessData.remove({});
+                BusinessDataSources.remove({});
+
+                console.log('Restoring data...');
+                DataUpdates.update({}, { status: 'up_data_err', lastDataUpdateDate: updateDateItem.lastDataUpdateDate }, { upsert: true });
+
+                backupBDS.forEach((d: any) => {
+                  BusinessDataSources.insert(d);
+                });
+
+                backupBD.forEach((d: any) => {
+                  BusinessData.insert(d);
+                });
+
+                DataUpdates.update({}, { status: 'up_data_done', lastDataUpdateDate: updateDateItem.lastDataUpdateDate }, { upsert: true });
+              }
+
+              fs.unlinkSync(currentDataFileURI);
+              fs.unlinkSync(histDataFileURI);
+
               const titles = (BusinessData as any)
                 .aggregate([{ $group: { _id: null, titles: { $addToSet: '$n2' } } }])[0]
                 .titles as string[];
@@ -83,10 +116,12 @@ export const uploadFile = new ValidatedMethod({
             }).run();
           });
 
-          childProcess.on('err', (err: any) => {
-            Fiber(() => {
+          childProcess.on('error', (err: any) => {
+            if (err) {
+              console.log('ERROR IN CALCULATION PROCESS:');
               console.log(err);
-            }).run();
+              restoreNeeded.flag = true;
+            }
           });
 
           childProcess.on('message', (m: any) => {
