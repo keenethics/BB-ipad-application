@@ -67,11 +67,11 @@ export class UploadDataPage implements OnDestroy, OnInit {
     this.dataUploader.uploadData(this._dataFiles)
       .then((res: string) => {
         // this.loadingCtrl.loadingInst.dismiss();
-        // this.toastCtrl.okToast(res);
+        this.toastCtrl.okToast(res);
         this._dataFiles = [];
       })
       .catch((err: any) => {
-        // this.toastCtrl.okToast(err.reason || err.message || err);
+        this.toastCtrl.okToast(err.reason || err.message || err);
         this._dataFiles = [];
       });
   }
