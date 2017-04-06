@@ -220,14 +220,15 @@ mongoClient.connect(mongoUrl, (err, db) => {
         const markets = Array.from(new Set(businessDataSources.map((i) => i.market)));
         const cityKeys = Array.from(new Set(businessDataSources.map((i) => i.cityKey)));
         const resourceTypes = Array.from(new Set(businessDataSources.map((i) => i.resourceType)));
-        const totalN3 = [];
-        const totalMNs = [];
 
         console.log('Maped object: ');
         console.log(businessDataSources[businessDataSources.length - 1]);
 
         console.log('Sum sources...');
         process.send({ status: 'up_data_sum_sources' });
+
+        const totalN3 = [];
+        const totalMNs = [];
 
         cityKeys.forEach((cityKey) => {
           highLevelCategories.forEach((category) => {
@@ -265,10 +266,57 @@ mongoClient.connect(mongoUrl, (err, db) => {
           });
         });
 
+        // const groupBy = (sourceArr, keys, maches) => {
+        //   maches = maches || {};
+        //   return Array.from(sourceArr.reduce((acc, item) => {
+
+        //     for (const machKey of Object.keys(maches)) {
+        //       if (maches[machKey] !== item[machKey]) return acc;
+        //     }
+
+        //     const key = keys.reduce((acc, keysItem) => {
+        //       return acc + item[keysItem];
+        //     }, '');
+
+        //     if (!acc[key]) {
+        //       acc.set(key, [item]);
+        //     } else {
+        //       acc.get(key).push(item);
+        //     }
+
+        //     return acc;
+        //   }, new Map()).values());
+        // };
+
+        // const totalN3 = groupBy(
+        //   businessDataSources,
+        //   ['n2', 'highLevelCategory', 'cityKey'],
+        //   { resourceTypeKey: "TotalInternals" }
+        // ).map((group) => {
+        //   console.log(group)
+        //   const sumItem = sumGroup(group);
+        //   sumItem.n3 = 'Total';
+        //   return sumItem;
+        // });
+
+        // console.log(totalN3.length);
+
+        // const totalMNs = groupBy(
+        //   totalN3,
+        //   ['highLevelCategory', 'cityKey']
+        // ).map((group) => {
+        //   const sumItem = sumGroup(group);
+        //   sumItem.n2 = 'Total';
+        //   return sumItem;
+        // });
+
+        // console.log(totalMNs.length);
+
         console.log('Calculating cities totals...');
         process.send({ status: 'up_data_calc_cities_totals' });
 
         const cityTotals = totalN3.concat(totalMNs);
+
         BUs.push('Total');
         highLevelCategories.push('Total');
 
