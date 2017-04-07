@@ -1,19 +1,36 @@
 <ion-content>
   <div class="buttons-container">
-    <p class="last-update" *ngIf="_updateDate">Last update date: {{_updateDate | date:'mediumDate'}}</p>
-    <p class="update-status" *ngIf="_status">{{_status | text}} <ion-spinner style="margin-left: 10px" name="dots"></ion-spinner></p>
-    <div *ngIf="!_dataFiles[0]" class="upload-button-wrap">
-      <button #dataButton ion-button round>
-        <pick-file fileType="text/csv" [emitterElement]="dataButton" (onFileSelected)="pickDataBehaviour($event)" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
-        OXYGEN SUBMISSION
-      </button>
-    </div>
-    <div *ngIf="_dataFiles[0]" class="upload-button-wrap">
-      <button #histDataButton ion-button round>
-        <pick-file fileType="text/csv" [emitterElement]="histDataButton" (onFileSelected)="pickDataBehaviour($event)" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
-        EVOLUTION REPORT
-      </button>
-    </div>
+    <form [formGroup]="_dataForm" (ngSubmit)="uploadData()" class="data-form" novalidate>
+      <p class="last-update" *ngIf="_updateDate">Last update date: {{_updateDate | date:'mediumDate'}}</p>
+      <p class="update-status" *ngIf="_status">{{_status | text}}
+        <ion-spinner style="margin-left: 10px" name="dots"></ion-spinner>
+      </p>
+      <div>
+        <ion-input [(ngModel)]="infoData.period" formControlName='period' placeholder="Period" type="text"></ion-input>
+      </div>
+      <div>
+        <ion-input [(ngModel)]="infoData.lastDataUpdate" formControlName='lastDataUpdate' placeholder="Last data update" type="text"></ion-input>
+      </div>
+      <div *ngIf="!_dataFiles[0]" class="upload-button-wrap">
+        <button type="button" #dataButton ion-button round>
+          <pick-file fileType="text/csv" [emitterElement]="dataButton" (onFileSelected)="pickDataBehaviour($event, 'oxygen')" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
+          <span *ngIf="!_dataFiles.get('oxygen')">OXYGEN SUBMISSION</span>
+          <span *ngIf="_dataFiles.get('oxygen')">{{_dataFiles.get('oxygen').name}}</span>
+        </button>
+      </div>
+      <div class="upload-button-wrap">
+        <button type="button" #histDataButton ion-button round>
+          <pick-file fileType="text/csv" [emitterElement]="histDataButton" (onFileSelected)="pickDataBehaviour($event, 'evolution')" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
+          <span *ngIf="!_dataFiles.get('evolution')">EVOLUTION REPORT</span>
+          <span *ngIf="_dataFiles.get('evolution')">{{_dataFiles.get('evolution').name}}</span>
+        </button>
+      </div>
+      <div class="upload-button-wrap">
+        <button [disabled]="!isFormValid()" type="submit" ion-button round>
+          UPLOAD
+        </button>
+      </div>
+    </form>
     <div class="upload-button-wrap" style="margin-top: 0px">
       <button #geoCordsButton ion-button round>
         <pick-file fileType="text/csv" [emitterElement]="geoCordsButton" (onFileSelected)="uploadCoords($event)" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>

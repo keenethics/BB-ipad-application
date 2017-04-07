@@ -9,10 +9,11 @@ export class DataUploader {
 
   }
 
-  uploadData(files: File[]) {
+  uploadData(current: any, hist: any, info: any) {
     const params: any = {
       current: null,
-      hist: null
+      hist: null,
+      info
     };
 
     return new Promise((resolve, reject) => {
@@ -20,7 +21,7 @@ export class DataUploader {
       reader.onload = () => {
         if (!params.current) {
           params.current = reader.result;
-          reader.readAsText(files[1]);
+          reader.readAsText(hist);
         } else {
           params.hist = reader.result;
           Meteor.call('data.upload', params, (err: Meteor.Error, res: string) => {
@@ -32,7 +33,7 @@ export class DataUploader {
           });
         }
       };
-      reader.readAsText(files[0]);
+      reader.readAsText(current);
     });
   }
 
