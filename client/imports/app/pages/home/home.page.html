@@ -8,6 +8,7 @@
     [map-width]="mapWidth" [map-height]="mapHeight" [zoom-on-update]="autoZoom" [data-to-draw]="dataProvider.data$ | async"
     (data-click)="showOverview($event)" (select-country)="selectCountry($event)"></world-map>
     <category-filter></category-filter>
+    <reset-filters-button></reset-filters-button>
     <sheets-portal></sheets-portal>
 </ion-content>
 <ion-footer>

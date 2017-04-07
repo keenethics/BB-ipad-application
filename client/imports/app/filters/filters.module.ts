@@ -11,7 +11,9 @@ import { AppliedFiltersComponent } from './main-filter/applied-filters.component
 import { MainFilterComponent } from './main-filter/main-filter.component';
 import { CategoryFilterComponent } from './category-filter/category-filter.component';
 import { FilterCounterComponent } from './filter-counter/filter-counter.component';
+import { ResetFiltersButtonComponent } from './reset-filters-button/reset-filters-button.component';
 
+console.log(FilterCounterComponent, ResetFiltersButtonComponent);
 
 @NgModule({
   imports: [
@@ -24,13 +26,15 @@ import { FilterCounterComponent } from './filter-counter/filter-counter.componen
     AppliedFiltersComponent,
     CategoryFilterComponent,
     CutPipe,
-    FilterCounterComponent
+    FilterCounterComponent,
+    ResetFiltersButtonComponent
   ],
   exports: [
     BuFilterComponnet,
     MainFilterComponent,
     CategoryFilterComponent,
-    FilterCounterComponent
+    FilterCounterComponent,
+    ResetFiltersButtonComponent
   ],
   providers: [
     BuTitlesProvider,
