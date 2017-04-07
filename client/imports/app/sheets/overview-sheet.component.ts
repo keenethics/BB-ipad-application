@@ -39,7 +39,7 @@ export class OverviewSheetComponent {
     this.periods = [
       { title: 'P12 2016', colspan: '1', rowspan: '2', class: 'dark-grey' },
       { title: 'YTD 2017', colspan: '3', rowspan: '1', class: 'blue' },
-      { title: '2017 act P03', colspan: '1', rowspan: '2', class: 'blue' },
+      { title: '2017 act P02', colspan: '1', rowspan: '2', class: 'blue' },
       { title: 'Delta to go', colspan: '1', rowspan: '2', class: 'head-grey' },
       { title: 'LP 2017', colspan: '1', rowspan: '2', class: 'head-grey' },
       { title: 'LP 2018', colspan: '1', rowspan: '2', class: 'head-grey' },
