@@ -20,10 +20,18 @@ import template from './upload-data.page.html';
   encapsulation: ViewEncapsulation.None
 })
 export class UploadDataPage implements OnDestroy, OnInit {
-  private _dataFiles: File[] = [];
+  private _dataFiles: Map<string, File> = new Map();
   private _status: string;
   private _updateDate: Date;
   private _subscr: any;
+  private _dataForm: FormGroup;
+  private _period: string;
+
+  infoData = {
+    period: '',
+    lastDataUpdate: ''
+  };
+
   constructor(
     private dataUploader: DataUploader,
     private loadingCtrl: LoadingManager,
@@ -34,17 +42,38 @@ export class UploadDataPage implements OnDestroy, OnInit {
   ) { }
 
   ngOnInit() {
+    this.buildDataForm();
+
     this._subscr = this.dateInfo.info$.subscribe(info => {
-      const { status, updateDate } = info;
-      this._status = status === 'up_data_done' ? '' : status;
-      if (updateDate) {
-        this._updateDate = updateDate;
+      if (info) {
+        const { status, lastDataUpdateDate } = info;
+        this._status = status === 'up_data_done' ? '' : status;
+        if (lastDataUpdateDate) {
+          this._updateDate = lastDataUpdateDate;
+        }
       }
     });
   }
 
   ngOnDestroy() {
     this._subscr.unsubscribe();
+  }
+
+  buildDataForm() {
+    this._dataForm = this.formBuilder.group({
+      period: [
+        this.infoData.period,
+        [
+          Validators.required
+        ]
+      ],
+      lastDataUpdate: [
+        this.infoData.lastDataUpdate,
+        [
+          Validators.required
+        ]
+      ]
+    });
   }
 
   isCsvFile(target: any) {
@@ -58,31 +87,34 @@ export class UploadDataPage implements OnDestroy, OnInit {
     return true;
   }
 
+  isFormValid() {
+    return (this._dataForm.valid) && (this._dataFiles.size === 2);
+  }
+
   wrongFileType() {
     this.toastCtrl.okToast('wrong_file_type');
   }
 
   uploadData() {
-    // this.loadingCtrl.loading('uploading_data');
-    this.dataUploader.uploadData(this._dataFiles)
+    const current = this._dataFiles.get('oxygen');
+    const hist = this._dataFiles.get('evolution');
+
+    this.dataUploader.uploadData(
+      current,
+      hist,
+      { ...this._dataForm.getRawValue(), fileNames: { current: current.name, hist: hist.name } })
       .then((res: string) => {
-        // this.loadingCtrl.loadingInst.dismiss();
-        // this.toastCtrl.okToast(res);
-        this._dataFiles = [];
+        this.toastCtrl.okToast(res);
+        this._dataFiles = new Map();
+        this._dataForm.reset();
       })
       .catch((err: any) => {
-        // this.toastCtrl.okToast(err.reason || err.message || err);
-        this._dataFiles = [];
+        this.toastCtrl.okToast(err.reason || err.message || err);
       });
   }
 
-  pickDataBehaviour(file: File) {
-    if (!this._dataFiles.length) {
-      this._dataFiles.push(file);
-    } else if (this._dataFiles.length === 1) {
-      this._dataFiles.push(file);
-      this.uploadData();
-    }
+  pickDataBehaviour(file: File, key: string) {
+    this._dataFiles.set(key, file);
   }
 
   uploadCoords(file: File) {

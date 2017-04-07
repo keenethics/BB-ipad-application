@@ -389,6 +389,11 @@ export class WorldMap implements OnChanges {
       let y: number;
       let k: number;
 
+      if (markersData.length === 1) {
+        this.isZoomingNow = false;
+        return;
+      }
+
       if (markersData.length > 0) {
         const sitesLongs = markersData.map((item: any) => parseFloat(item.longitude) || 0);
         const sitesLats = markersData.map((item: any) => parseFloat(item.latitude) || 0);
