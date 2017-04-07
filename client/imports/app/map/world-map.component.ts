@@ -132,9 +132,8 @@ export class WorldMap implements OnChanges {
           this.mapTransform = d3.event.transform;
           const map = this.svg.select('g.map');
           map.attr('transform', `translate(${x}, ${y})scale(${k})`);
-          map.selectAll('path, .marker rect').style('stroke-width', 1 / k);
-          map.selectAll('.marker circle').style('stroke-width', 4 / k);
-          this.renderMarkers(k);
+          map.selectAll('path').style('stroke-width', 1 / k);
+          this.renderMarkers(k, true);
         });
 
       this.svg.call(this.zoom);
@@ -168,30 +167,12 @@ export class WorldMap implements OnChanges {
 
           this.onSelectCountry.emit(names);
         });
-      // .on('mousedown', (d: any) => {
-      //   let isClicked = true;
-      //   setTimeout(() => { isClicked = false; }, 600);
-
-      //   const names = [
-      //     d.properties['name'],
-      //     d.properties['name_long'],
-      //     d.properties['formal_en'],
-      //     d.properties['admin']
-      //   ].reduce((acc: string[], n: string) => {
-      //     if (acc.indexOf(n) === -1) {
-      //       acc.push(n);
-      //     }
-      //     return acc;
-      //   }, []);
-
-      //   if (isClicked) this.onSelectCountry.emit(names);
-      // });
 
       this.onMapRendered.emit();
     }
   }
 
-  renderMarkers(scale?: number) {
+  renderMarkers(scale?: number, isZoom?: boolean) {
     if (this.isMapReady) {
       const map = this.svg.select('g.map');
       const data = this.dataToDraw.filter((item) => {
@@ -201,10 +182,13 @@ export class WorldMap implements OnChanges {
         return parseInt(item.periods.actual);
       });
 
-
       const path = d3.geoPath().projection(this.projection);
 
       scale = scale || this.mapTransform.k;
+
+      if (!isZoom) {
+        map.selectAll('g.marker').remove();
+      }
 
       const placeholders = map.selectAll('g.marker')
         .data(data);
@@ -216,7 +200,7 @@ export class WorldMap implements OnChanges {
       } else {
         this.renderCircles(ranges, scale, placeholders);
       }
-      this.selectCountries(this.dataToDraw);
+
       this.onMarkersRendered.emit();
     }
   }
@@ -239,7 +223,7 @@ export class WorldMap implements OnChanges {
           return `translate(${[
             position[0],
             position[1] - barScale(parseInt(d.periods.actual) | 0) / scale
-          ]})`;
+          ]})scale(${1 / scale})`;
         })
         .on('click', function (d: any) {
           mapContext.selectedMarkerElement = this;
@@ -249,40 +233,40 @@ export class WorldMap implements OnChanges {
 
       groupEnter.append('rect')
         .attr('class', 'bar')
-        .attr('width', 10 / scale)
-        .attr('height', (d: any) => barScale(parseInt(d.periods.actual) | 0) / scale)
-        .attr('x', -5 / scale)
-        .style('stroke-width', 1 / scale);
+        .attr('width', 10)
+        .attr('height', (d: any) => barScale(parseInt(d.periods.actual) | 0))
+        .attr('x', -5)
+        .style('stroke-width', 1);
 
       if (this.labels || this.values) {
         groupEnter.append('rect')
           .attr('class', 'label-bg')
           .attr('fill', '#fff')
-          .attr('rx', 4 / scale)
-          .style('stroke-width', 1 / scale);
+          .attr('rx', 4)
+          .style('stroke-width', 1);
 
         groupEnter.append('text')
           .text((d: any) => this.getLabelText(d))
           .attr('class', 'label-text')
           .attr('stroke', 'none')
-          .attr('font-size', 10 / scale)
+          .attr('font-size', 10)
           .attr('transform', function (d: any) {
             const { width, height } = this.getBoundingClientRect();
             d.textSize = { width, height };
             return `translate(${[
-              -(width / 2) / scale,
-              (barScale(parseInt(d.periods.actual) | 0) + 15) / scale
+              -(width / 2),
+              (barScale(parseInt(d.periods.actual) | 0) + 15)
             ]})`;
           });
 
         groupEnter.select('rect.label-bg')
-          .attr('height', (d: any) => (d.textSize.height + 8) / scale)
-          .attr('width', (d: any) => (d.textSize.width + 12) / scale)
+          .attr('height', (d: any) => (d.textSize.height + 8))
+          .attr('width', (d: any) => (d.textSize.width + 12))
           .attr('transform', function (d: any) {
             const { width, height } = this.getBoundingClientRect();
             return `translate(${[
-              -(width / 2) / scale,
-              (barScale(parseInt(d.periods.actual) | 0) + 2) / scale
+              -(width / 2),
+              (barScale(parseInt(d.periods.actual) | 0) + 2)
             ]})`;
           });
       }
@@ -293,39 +277,8 @@ export class WorldMap implements OnChanges {
           return `translate(${[
             position[0],
             position[1] - barScale(parseInt(d.periods.actual) | 0) / scale
-          ]})`;
+          ]})scale(${1 / scale})`;
         });
-
-      groupScale.select('rect.bar')
-        .attr('height', (d: any) => barScale(parseInt(d.periods.actual) | 0) / scale)
-        .attr('width', 10 / scale)
-        .attr('x', -5 / scale);
-
-      if (this.labels || this.values) {
-        groupScale.select('text.label-text')
-          .text((d: any) => this.getLabelText(d))
-          .attr('font-size', 10 / scale)
-          .attr('transform', function (d: any) {
-            const { width, height } = this.getBoundingClientRect();
-            d.textSize = { width, height };
-            return `translate(${[
-              -(width / 2) / scale,
-              (barScale(parseInt(d.periods.actual) | 0) + 15) / scale
-            ]})`;
-          });
-
-        groupScale.select('rect.label-bg')
-          .attr('height', (d: any) => (d.textSize.height + 8) / scale)
-          .attr('width', (d: any) => (d.textSize.width + 12) / scale)
-          .attr('rx', 4 / scale)
-          .attr('transform', function (d: any) {
-            const { width, height } = this.getBoundingClientRect();
-            return `translate(${[
-              -(width / 2) / scale,
-              (barScale(parseInt(d.periods.actual) | 0) + 2) / scale
-            ]})`;
-          });
-      }
     } catch (err) {
       console.log(err);
     }
@@ -349,7 +302,7 @@ export class WorldMap implements OnChanges {
           return `translate(${[
             position[0],
             position[1] - radiusScale(parseInt(d.periods.actual) | 0) / scale
-          ]})`;
+          ]})scale(${1 / scale})`;
         })
         .on('click', function (d: any) {
           mapContext.selectedMarkerElement = this;
@@ -358,38 +311,38 @@ export class WorldMap implements OnChanges {
         });
 
       groupEnter.append('circle')
-        .attr('r', (d: any) => radiusScale(parseInt(d.periods.actual) | 0) / scale)
-        .style('stroke-width', 4 / scale);
+        .attr('r', (d: any) => radiusScale(parseInt(d.periods.actual) | 0))
+        .style('stroke-width', 4);
 
       if (this.labels || this.values) {
         groupEnter.append('rect')
           .attr('fill', '#fff')
-          .attr('rx', 4 / scale)
-          .style('stroke-width', 1 / scale);
+          .attr('rx', 4)
+          .style('stroke-width', 1);
 
         groupEnter.append('text')
           .text((d: any) => this.getLabelText(d))
           .attr('class', 'label-text')
           .attr('stroke', 'none')
-          .attr('font-size', 10 / scale)
+          .attr('font-size', 10)
           .attr('transform', function (d: any) {
             const { width, height } = this.getBoundingClientRect();
             d.textSize = { width, height };
             return `translate(${[
-              (-width / 2) / scale,
-              (radiusScale(parseInt(d.periods.actual) | 0) + 17) / scale
+              (-width / 2),
+              (radiusScale(parseInt(d.periods.actual) | 0) + 17)
             ]})`;
           });
 
         groupEnter.select('rect')
           .attr('class', 'label-bg')
-          .attr('height', (d: any) => (d.textSize.height + 8) / scale)
-          .attr('width', (d: any) => (d.textSize.width + 12) / scale)
+          .attr('height', (d: any) => (d.textSize.height + 8))
+          .attr('width', (d: any) => (d.textSize.width + 12))
           .attr('transform', function (d: any) {
             const { width, height } = this.getBoundingClientRect();
             return `translate(${[
-              -width / 2 / scale,
-              (radiusScale(parseInt(d.periods.actual) | 0) + 4) / scale
+              -width / 2,
+              (radiusScale(parseInt(d.periods.actual) | 0) + 4)
             ]})`;
           });
       }
@@ -400,37 +353,8 @@ export class WorldMap implements OnChanges {
           return `translate(${[
             position[0],
             position[1] - radiusScale(parseInt(d.periods.actual) | 0) / scale
-          ]})`;
+          ]})scale(${1 / scale})`;
         });
-
-      groupScale.select('circle')
-        .attr('r', (d: any) => radiusScale(parseInt(d.periods.actual) | 0) / scale);
-
-      if (this.labels || this.values) {
-        groupScale.select('text.label-text')
-          .text((d: any) => this.getLabelText(d))
-          .attr('font-size', 10 / scale)
-          .attr('transform', function (d: any) {
-            const { width, height } = this.getBoundingClientRect();
-            d.textSize = { width, height };
-            return `translate(${[
-              (-width / 2) / scale,
-              (radiusScale(parseInt(d.periods.actual) | 0) + 17) / scale
-            ]})`;
-          });
-
-        groupScale.select('rect.label-bg')
-          .attr('height', (d: any) => (d.textSize.height + 8) / scale)
-          .attr('width', (d: any) => (d.textSize.width + 12) / scale)
-          .attr('rx', 4 / scale)
-          .attr('transform', function (d: any) {
-            const { width, height } = this.getBoundingClientRect();
-            return `translate(${[
-              -width / 2 / scale,
-              (radiusScale(parseInt(d.periods.actual) | 0) + 4) / scale
-            ]})`;
-          });
-      }
     } catch (err) {
       console.log(err);
     }
@@ -517,7 +441,7 @@ export class WorldMap implements OnChanges {
           this.isZoomingNow = false;
         });
 
-      this.renderMarkers(k);
+      this.renderMarkers(k, true);
     }
   }
 
