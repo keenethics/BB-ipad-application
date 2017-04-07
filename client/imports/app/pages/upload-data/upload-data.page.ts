@@ -45,10 +45,12 @@ export class UploadDataPage implements OnDestroy, OnInit {
     this.buildDataForm();
 
     this._subscr = this.dateInfo.info$.subscribe(info => {
-      const { status, lastDataUpdateDate } = info;
-      this._status = status === 'up_data_done' ? '' : status;
-      if (lastDataUpdateDate) {
-        this._updateDate = lastDataUpdateDate;
+      if (info) {
+        const { status, lastDataUpdateDate } = info;
+        this._status = status === 'up_data_done' ? '' : status;
+        if (lastDataUpdateDate) {
+          this._updateDate = lastDataUpdateDate;
+        }
       }
     });
   }
@@ -100,7 +102,7 @@ export class UploadDataPage implements OnDestroy, OnInit {
     this.dataUploader.uploadData(
       current,
       hist,
-      {...this._dataForm.getRawValue(), fileNames: { current: current.name, hist: hist.name }})
+      { ...this._dataForm.getRawValue(), fileNames: { current: current.name, hist: hist.name } })
       .then((res: string) => {
         this.toastCtrl.okToast(res);
         this._dataFiles = new Map();
