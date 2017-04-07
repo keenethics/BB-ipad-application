@@ -2,7 +2,7 @@
 <ion-card>
   <ion-card-header>
     <div class="card-header">
-      <p>LE: <span class="title">{{selectedItem[entityKey]}}</span></p>
+      <p>LE: <span class="title">{{entityKey === 'global' ? 'Total' : selectedItem[entityKey]}}</span></p>
       <ion-buttons end>
         <button class="active" ion-button>OVERVIEW</button>
         <button (click)="openFactSheet()" ion-button>FACT SHEET</button>
@@ -10,13 +10,12 @@
     </div>
   </ion-card-header>
   <ion-card-content>
-    <table>
+    <!--<table>
       <thead>
         <tr class="row-color-4">
           <th>IN HC</th>
           <th>FC 2017</th>
           <th>LE 2018</th>
-          <!--<th *ngFor="let period of periods | exclude:excludedPeriods">LE {{period}}</th>-->
         </tr>
       </thead>
       <tbody>
@@ -24,6 +23,30 @@
           <td>{{row.title}}</td>
           <td *ngFor="let period of periods | exclude:excludedPeriods">
             {{getCellValue(row.dataSources, period, i === 0) | sep}}
+          </td>
+        </tr>
+      </tbody>
+    </table>-->
+    <table>
+      <thead>
+        <tr>
+          <th [attr.rowspan]="p.rowspan" [attr.colspan]="p.colspan" [class]="p.class" *ngFor="let p of periods">
+            {{p.title}}
+          </th>
+        </tr>
+        <tr>
+          <template ngFor let-col [ngForOf]="columnsDescs">
+            <th *ngIf="col.title" [ngClass]="col.class">
+              {{col.title}}
+            </th>
+          </template>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of rowsDescs">
+          <td *ngIf="row.title" class="bu">{{row.title}}</td>
+          <td *ngFor="let col of columnsDescs" [ngClass]="[col.class || '', row.class || '']">
+            {{getCellValue(row, col) | sep}}
           </td>
         </tr>
       </tbody>

@@ -12,20 +12,20 @@ import {
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
-import template from './filter.component.html';
-import styles from './filter.component.scss';
+import template from './main-filter.component.html';
+import styles from './main-filter.component.scss';
 
 import { DataProvider } from '../../data-management';
 import { BusinessDataUnit } from '../../../../../both/data-management';
 import { FilterController } from '../filter-controller';
 
 @Component({
-  selector: 'data-filter',
+  selector: 'main-filter',
   template,
   styles: [styles],
   providers: [DataProvider]
 })
-export class DataFilterComponent implements OnInit, OnDestroy {
+export class MainFilterComponent implements OnInit, OnDestroy {
   private businessData: BusinessDataUnit[];
   private filters: any[];
   private query: any;
@@ -41,9 +41,7 @@ export class DataFilterComponent implements OnInit, OnDestroy {
   @Input() data: BusinessDataUnit[];
   @Input() currentQuery: any;
 
-  constructor(private dataProvider: DataProvider, private filterCtrl: FilterController) {
-    filterCtrl.setFilterComponetn(this);
-  }
+  constructor(private dataProvider: DataProvider, private filterCtrl: FilterController) { }
 
   ngOnInit() {
     const filtersState = this.filterCtrl.getFromStorage();
@@ -60,36 +58,11 @@ export class DataFilterComponent implements OnInit, OnDestroy {
     this.searchValue = '';
 
     this.changeCategory();
-
-    this.dataSubscr = this.dataProvider.data$.subscribe((data) => {
-      this.data = data.filter((d: BusinessDataUnit) => ((d.city !== 'Non Nokia Site') && (d.city !== 'Virtual Office')));
-      this.options = this.getOptions(this.category);
-    });
-
-    this.filterCtrl.onChangeCategory.subscribe((category: string) => {
-      if (this.category !== category) {
-        this.category = category;
-        this.changeCategory();
-      }
-    });
-
-    this.filterCtrl.onSelectCountry.subscribe((name: string) => {
-      if (this.query.country) {
-        const countries: string[] = this.query.country.$in;
-        if (countries.indexOf(name) === -1) countries.push(name);
-      } else {
-        this.query.country = { $in: [name] };
-      }
-      this.selectedCountry = name;
-      // this.filterCtrl.currentFilter$ = this.query;
-      this.doDataQuery(this.query);
-    });
+    this.subscribe();
   }
 
   ngOnDestroy() {
-    this.filterCtrl.onChangeCategory.unsubscribe();
-    this.filterCtrl.onSelectCountry.unsubscribe();
-    if (this.dataSubscr) this.dataSubscr.unsubscribe();
+    this.unsubscribe();
   }
 
   ngOnChanges(changes: any) {
@@ -179,7 +152,7 @@ export class DataFilterComponent implements OnInit, OnDestroy {
         break;
       }
     }
-    // this.filterCtrl.currentFilter$ = this.query;
+
     this.filterQuery.n2 = 'Total';
 
     this.doDataQuery(this.query);
@@ -202,6 +175,7 @@ export class DataFilterComponent implements OnInit, OnDestroy {
               unit
             });
           }
+          this.filterCtrl.activeFilters$ = this.filters;
           this.selectedCountry = '';
           this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
         });
@@ -249,13 +223,14 @@ export class DataFilterComponent implements OnInit, OnDestroy {
     }
     this.filterQuery.n2 = 'Total';
 
-    // this.filterCtrl.currentFilter$ = this.query;
     this.doDataQuery(this.query);
 
     switch (this.category) {
       case 'market': this.category = 'country'; break;
       case 'country': this.category = 'city'; break;
     }
+
+    this.filterCtrl.activeFilters$ = this.filters;
     this.dataProvider.query(this.filterQuery);
     this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
     this.searchValue = '';
@@ -316,7 +291,7 @@ export class DataFilterComponent implements OnInit, OnDestroy {
       };
     }
 
-    // this.filterCtrl.currentFilter$ = this.query;
+    this.filterCtrl.activeFilters$ = this.filters;
     this.doDataQuery(this.query);
     this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
   }
@@ -324,5 +299,44 @@ export class DataFilterComponent implements OnInit, OnDestroy {
   private doDataQuery(filterObj: any, isVirtualOfficesIncluded: boolean = false) {
     if (!isVirtualOfficesIncluded) filterObj.city = Object.assign({ $nin: ['Non Nokia Site', 'Virtual Office'] }, filterObj.city);
     this.filterCtrl.currentFilter$ = filterObj;
+  }
+
+  private subscribe() {
+    this.dataSubscr = this.dataProvider.data$.subscribe((data) => {
+      this.data = data.filter((d: BusinessDataUnit) => ((d.city !== 'Non Nokia Site') && (d.city !== 'Virtual Office')));
+      this.options = this.getOptions(this.category);
+    });
+
+    this.filterCtrl.onChangeCategory.subscribe((category: string) => {
+      if (this.category !== category) {
+        this.category = category;
+        this.changeCategory();
+      }
+    });
+
+    this.filterCtrl.onSelectCountry.subscribe((name: string) => {
+      if (this.query.country) {
+        const countries: string[] = this.query.country.$in;
+        if (countries.indexOf(name) === -1) countries.push(name);
+      } else {
+        this.query.country = { $in: [name] };
+      }
+      this.selectedCountry = name;
+      this.doDataQuery(this.query);
+    });
+
+    this.filterCtrl.onInitFilters.subscribe(() => {
+      this.initFilters();
+    });
+
+    this.filterCtrl.onResetFilters.subscribe(() => {
+      this.resetFilter();
+    });
+  }
+
+  private unsubscribe() {
+    this.filterCtrl.onChangeCategory.unsubscribe();
+    this.filterCtrl.onSelectCountry.unsubscribe();
+    if (this.dataSubscr) this.dataSubscr.unsubscribe();
   }
 }

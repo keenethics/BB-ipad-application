@@ -335,7 +335,7 @@ export class WorldMap implements OnChanges {
     try {
       const scaleFunc = this.isLogScale ? d3.scaleLog : d3.scaleLinear;
       const radiusScale = scaleFunc()
-        .domain([d3.min(ranges), d3.max(ranges)])
+        .domain([d3.min(ranges) - 1, d3.max(ranges)])
         .range([5, 25])
         .clamp(true);
       const mapContext = this;
@@ -444,6 +444,8 @@ export class WorldMap implements OnChanges {
       text = dataUnit.country;
     } else if (dataUnit.market && dataUnit.market !== 'Total') {
       text = dataUnit.market;
+    } else if ( dataUnit.city === 'Total' && dataUnit.country === 'Total' && dataUnit.market === 'Total') {
+      text = 'TOTAL';
     }
 
     if (this.values && this.labels) return `${text} ${text ? '•' : ''} ${this.sepPipe.transform(dataUnit.periods.actual.toString())}`;
@@ -572,7 +574,7 @@ export class WorldMap implements OnChanges {
       case 'City': className = 'selected-city'; break;
       case 'Country': className = 'selected-country'; break;
       case 'Market': className = 'selected-market'; break;
-      default: className = '';
+      default: className = 'selected-market';
     }
 
     this.selectedMarkerElement.classList.add(className);

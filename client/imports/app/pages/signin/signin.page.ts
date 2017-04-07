@@ -79,7 +79,7 @@ export class SigninPage implements OnInit {
   login() {
     const { email, password } = this.loginCredentials;
 
-    this.loadingManager.loading('Joining...');
+    this.loadingManager.loading('login');
     this.auth.login(email, password)
       .then(() => {
         this.navCtrl.setRoot(HomePage);

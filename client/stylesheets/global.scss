@@ -206,7 +206,18 @@ ion-backdrop {
   background-color: map-get($colors, 'light-blue');
 }
 
-@import '../imports/app/filters/data-filter/filter.component.scss';
+.splash-screen {
+  width: 100%;
+  height: 100%;
+  background-image: url(/img/ipad_landscape_2x.png);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@import '../imports/app/filters/bu-filter/bu-filter.component.scss';
+@import '../imports/app/filters/category-filter/category-filter.component.scss';
+@import '../imports/app/filters/main-filter/main-filter.component.scss';
 @import '../imports/app/sheets/overview-sheet.component.scss';
 @import '../imports/app/sheets/sheets.styles.scss';
 @import '../imports/app/sheets/fact-sheet.component.scss';
@@ -216,6 +227,5 @@ ion-backdrop {
 @import '../imports/app/pages/create-user/create-user.page.scss';
 @import '../imports/app/pages/edit-user/edit-user.page.scss';
 @import '../imports/app/pages/components/header/header.component.scss';
-@import '../imports/app/filters/bu-filter/bu-filter.component.scss';
-@import '../imports/app/filters/view-switcher/view-switcher.component.scss';
-@import '../imports/app/pages/swichers/swichers.page.scss';
+@import '../imports/app/pages/switchers/switchers.page.scss';
+@import '../imports/app/pages/splashscreen/splashscreen.page.scss';

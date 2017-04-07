@@ -1,4 +1,7 @@
 import { Meteor } from 'meteor/meteor';
+import { exec, fork } from 'child_process';
+import * as Fiber from 'fibers';
+import * as fs from 'fs';
 import * as Baby from 'babyparse';
 import { toCamelCase } from '../../../both/helpers/to-camel-case';
 import { MarketCountries } from '../../../both/countries/market-countries.collection';
@@ -11,285 +14,127 @@ import {
   BusinessDataUnit,
   ColumnNamesCollection,
   UnitsTitles,
-  GeoCoordinates
+  GeoCoordinates,
+  BusinessDataSources
 } from '../../../both/data-management';
 
-const HIGHT_LEVEL_CATEGORIES = new Map([
-  ['Opening', 'Opening'],
-  ['IN Employee Ramp Up Replacements', 'Ramp up'],
-  ['IN Employee From PNA/LOA', 'Others'],
-  ['IN Employee Transfer Position from other BG/Function', 'Others'],
-  ['IN Employee Acquisition Insourcing', 'Ramp up'],
-  ['IN Employee Transfer from own BG/Function', 'Others'],
-  ['OUT Employee Voluntary Leave', 'Ramp down'],
-  ['OUT Employee Restructuring', 'Ramp down'],
-  ['OUT Employee Employee moving to other BG/Function', 'Others'],
-  ['OUT Employee To PNA/LOA', 'Others'],
-  ['OUT Employee Transfer to other BG/Function', 'Others'],
-  ['OUT Employee Divestment Outsourcing', 'Ramp down'],
-  ['OUT Employee Transfer to own BG/Function', 'Others'],
-  ['IN Contractor New Contract', 'Ramp up'],
-  ['IN Contractor Acquisition Insourcing', 'Ramp up'],
-  ['IN Contractor Transfer from own BG/Function', 'Others'],
-  ['OUT Contractor End of Contract', 'Ramp down'],
-  ['OUT Contractor Divestment Outsourcing', 'Ramp down'],
-  ['OUT Contractor Transfer to own BG/Function', 'Others'],
-  ['Landing point', 'Landing point'],
-  ['IN Employee New External Hire', 'Ramp up'],
-  ['IN Employee Attrition Replacement by ext hire', 'Ramp up'],
-  ['IN Employee Internal Move IN', 'Others'],
-  ['OUT Employee Internal Move OUT', 'Others'],
-  ['IN Contractor Internal Move IN', 'Others'],
-  ['OUT Contractor Internal Move OUT', 'Others']
-]);
-
-const RESOURCE_TYPES = new Map([
-  ['Internals', 'TotalInternals'],
-  ['ServCo Internals', 'TotalInternals'],
-  ['Externals', 'TotalExternals'],
-  ['ServCo Externals', 'TotalExternals'],
-  ['Trainees', 'Trainees']
-]);
+declare const process: any;
+declare const __dirname: string;
 
 export const uploadFile = new ValidatedMethod({
   name: 'data.upload',
   validate: new SimpleSchema({
-    fileData: { type: String },
+    current: { type: String },
+    hist: { type: String }
   }).validator(),
-  run({ fileData }) {
+  run({ current, hist }) {
+    if (!current || !hist) {
+      throw new Meteor.Error('wrong_upload_params', 'wrong_upload_params');
+    }
+
     if (!this.userId) {
-      throw new Meteor.Error('premission denied', 'Please login first.');
+      throw new Meteor.Error('permission_denied', 'permission_denied');
     }
 
     if (!Roles.userIsInRole(this.userId, ['DataUpload', 'Administrator'])) {
-      throw new Meteor.Error('premission denied', 'You are not a data manager.');
+      throw new Meteor.Error('permission_denied', 'permission_denied');
     }
 
     if (!GeoCoordinates.find({}).count()) {
-      throw new Meteor.Error('no coordinates', 'Please upload geo coordinates first.');
+      throw new Meteor.Error('no coordinates', 'no_coordinates');
     }
 
-    console.time();
-    console.log('Calculating data...');
+    const rootPath = (Meteor as any).rootPath;
+    const absoluteFilePath = Assets.absoluteFilePath('save-data.js');
+    const assetsPath = absoluteFilePath.substring(0, absoluteFilePath.indexOf('save-data.js'));
+    const babyparseLinkCommand = `${rootPath}/npm/node_modules/babyparse ${assetsPath}node_modules/babyparse`;
+    const mongodbLinkCommand = `${rootPath}/npm/node_modules/mongodb ${assetsPath}node_modules/mongodb`;
+    const currentDataFileURI = `${absoluteFilePath.substring(0, absoluteFilePath.indexOf('save-data.js'))}temp1`;
+    const histDataFileURI = `${absoluteFilePath.substring(0, absoluteFilePath.indexOf('save-data.js'))}temp2`;
+    const mongoUrl = process.env.MONGO_URL;
 
-    const parsedData = Baby.parse(fileData, { skipEmptyLines: true, delimiter: ';' }).data;
-    const keys: string[] = parsedData[0];
+    const backupBDS = BusinessDataSources.find({}).fetch().filter(item => delete item._id);
+    const backupBD = BusinessData.find({}).fetch().filter(item => delete item._id);
+    const updateDateItem = DataUpdates.findOne({});
 
-    const columnNames = {};
-    keys.forEach((key) => {
-      if (key) columnNames[toCamelCase(key.toLowerCase())] = key;
-    });
-    ColumnNamesCollection.update({}, columnNames, { upsert: true });
+    const restoreNeeded = { flag: false };
 
-    BusinessData.remove({});
+    if (fs.existsSync(currentDataFileURI)) throw new Meteor.Error('data uploading in process', 'data_calculation_in_process');
 
-    const businessData = parsedData.map((item: string[], index: number) => {
-      if (index !== 0) {
-        let doc = keys.reduce((acc: any, key, i) => {
-          if (key) acc[toCamelCase(key.toLowerCase())] = item[i];
-          return acc;
-        }, {});
+    exec(`ln -s -f ${babyparseLinkCommand} && ln -s -f ${mongodbLinkCommand}`, () => {
+      fs.writeFile(currentDataFileURI, current, function (err: any) {
+        if (err) throw new Meteor.Error(err.message, err.message);
 
-        doc = Object.keys(doc).reduce((acc: any, key) => {
-          if (key.toLowerCase() === 'actual' || !isNaN(Number(key))) {
-            acc.periods[key] = doc[key];
-          } else {
-            acc[key] = doc[key];
-          }
-          return acc;
-        }, { periods: {} });
+        fs.writeFile(histDataFileURI, hist, function (err: any) {
+          console.time();
 
-        doc['highLevelCategory'] = HIGHT_LEVEL_CATEGORIES.get(doc.category);
-        doc['resourceTypeKey'] = RESOURCE_TYPES.get(doc.resourceType);
-        doc['cityKey'] = doc.country + doc.city;
-        doc['identifier'] = 'City';
+          const childProcess = fork(`${absoluteFilePath}`, [mongoUrl]);
 
-        return doc;
-      }
-    }).filter((item) => item);
+          setTimeout(() => {
+            childProcess.kill();
+            restoreNeeded.flag = true;
+          }, 1800000);
 
-    function sumData(data: any[], highLevelCategory: string, n2: string, cityKey: string) {
-      const filtered = data
-        .filter((item) => item['resourceTypeKey'] === 'TotalInternals')
-        .filter((item) => item['n2'] === n2)
-        .filter((item) => item['highLevelCategory'] === highLevelCategory)
-        .filter((item) => item['cityKey'] === cityKey);
+          childProcess.on('close', () => {
+            Fiber(() => {
+              if (restoreNeeded.flag) {
+                BusinessData.remove({});
+                BusinessDataSources.remove({});
 
-      if (filtered.length) {
-        return filtered.reduce((acc, item) => {
-          acc.periods['actual'] = +acc.periods['actual'] + +item.periods['actual'];
-          acc.periods['2017'] = +acc.periods['2017'] + +item.periods['2017'];
-          acc.periods['2018'] = +acc.periods['2018'] + +item.periods['2018'];
-          return acc;
-        });
-      }
+                console.log('Restoring data...');
+                DataUpdates.update({}, { status: 'up_data_err', lastDataUpdateDate: updateDateItem.lastDataUpdateDate }, { upsert: true });
 
-      return null;
-    }
+                backupBDS.forEach((d: any) => {
+                  BusinessDataSources.insert(d);
+                });
 
-    function sumGroup(group: any[]) {
-      return group.reduce((acc, item) => {
-        acc.periods['actual'] = +acc.periods['actual'] + +item.periods['actual'];
-        acc.periods['2017'] = +acc.periods['2017'] + +item.periods['2017'];
-        acc.periods['2018'] = +acc.periods['2018'] + +item.periods['2018'];
-        return acc;
-      }, Object.assign({}, group[0], {
-        periods: {
-          'actual': 0,
-          '2017': 0,
-          '2018': 0
-        }
-      }));
-    }
+                backupBD.forEach((d: any) => {
+                  BusinessData.insert(d);
+                });
 
-    const highLevelCategories = Array.from(new Set(HIGHT_LEVEL_CATEGORIES.values()));
-    const BUs = Array.from(new Set(businessData.map(i => i.n2)));
-    const cities = Array.from(new Set(businessData.map(i => i.city)));
-    const countries = Array.from(new Set(businessData.map(i => i.country)));
-    const markets = Array.from(new Set(businessData.map(i => i.market)));
-    const cityKeys = Array.from(new Set(businessData.map(i => i.cityKey)));
-    const resourceTypes = Array.from(new Set(businessData.map(i => i.resourceType)));
-    const totalN3: any = [];
-    const totalMNs: any = [];
+                DataUpdates.update({}, { status: 'up_data_done', lastDataUpdateDate: updateDateItem.lastDataUpdateDate }, { upsert: true });
+              }
 
-    cityKeys.forEach((cityKey) => {
-      highLevelCategories.forEach((category) => {
-        let totalMN: any = null;
-        BUs.forEach((n2) => {
-          const bu = sumData(businessData, category, n2, cityKey);
-          if (bu) {
-            bu.n3 = 'Total';
+              fs.unlinkSync(currentDataFileURI);
+              fs.unlinkSync(histDataFileURI);
 
-            if (!totalMN) {
-              totalMN = Object.assign({}, bu, { periods: {} });
-              totalMN.n2 = 'Total';
-              totalMN.periods['actual'] = +bu.periods['actual'];
-              totalMN.periods['2017'] = +bu.periods['2017'];
-              totalMN.periods['2018'] = +bu.periods['2018'];
-            } else {
-              totalMN.periods['actual'] = +totalMN.periods['actual'] + +bu.periods['actual'];
-              totalMN.periods['2017'] = +totalMN.periods['2017'] + +bu.periods['2017'];
-              totalMN.periods['2018'] = +totalMN.periods['2018'] + +bu.periods['2018'];
+              const titles = (BusinessData as any)
+                .aggregate([{ $group: { _id: null, titles: { $addToSet: '$n2' } } }])[0]
+                .titles as string[];
+              UnitsTitles.remove({});
+              titles.forEach(t => UnitsTitles.insert({ title: t }));
+
+              MarketCountries.remove({});
+              AvailableCountries.remove({});
+
+              setMarketCountries();
+              setAvailableCountries();
+
+              console.log('Updated');
+              console.timeEnd();
+              DataUpdates.update({}, { status: 'up_data_done', lastDataUpdateDate: new Date() }, { upsert: true });
+            }).run();
+          });
+
+          childProcess.on('error', (err: any) => {
+            if (err) {
+              console.log('ERROR IN CALCULATION PROCESS:');
+              console.log(err);
+              restoreNeeded.flag = true;
             }
+          });
 
-            totalN3.push(bu);
-          }
-        });
-        totalMNs.push(totalMN);
-      });
-    });
-
-    const cityTotals = [...totalN3, ...totalMNs];
-    BUs.push('Total');
-    highLevelCategories.push('Total');
-
-    const countryTotals: any[] = [];
-    countries.forEach((country) => {
-      highLevelCategories.forEach((category) => {
-        BUs.forEach((n2) => {
-          const group = cityTotals
-            .filter((item) => item)
-            .filter((item) => item['resourceTypeKey'] === 'TotalInternals')
-            .filter((item) => item['n2'] === n2)
-            .filter((item) => item['highLevelCategory'] === category)
-            .filter((item) => item['country'] === country);
-
-          if (group.length) {
-            const countryTotal = sumGroup(group);
-            countryTotal['city'] = 'Total';
-            countryTotal['metropolis'] = 'Total';
-            countryTotal['identifier'] = 'Country';
-            countryTotals.push(countryTotal);
-          }
+          childProcess.on('message', (m: any) => {
+            const { status } = m;
+            Fiber(() => {
+              DataUpdates.update({}, { status }, { upsert: true });
+            }).run();
+          });
         });
       });
     });
 
-    const marketTotals: any[] = [];
-    markets.forEach((market) => {
-      highLevelCategories.forEach((category) => {
-        BUs.forEach((n2) => {
-          const group = countryTotals
-            .filter((item) => item)
-            .filter((item) => item['resourceTypeKey'] === 'TotalInternals')
-            .filter((item) => item['n2'] === n2)
-            .filter((item) => item['highLevelCategory'] === category)
-            .filter((item) => item['market'] === market);
-
-          if (group.length) {
-            const marketTotal = sumGroup(group);
-            marketTotal['country'] = 'Total';
-            marketTotal['identifier'] = 'Market';
-            marketTotals.push(marketTotal);
-          }
-        });
-      });
-    });
-
-    const globalTotals: any[] = [];
-    highLevelCategories.forEach((category) => {
-      BUs.forEach((n2) => {
-        const group = marketTotals
-          .filter((item) => item)
-          .filter((item) => item['resourceTypeKey'] === 'TotalInternals')
-          .filter((item) => item['n2'] === n2)
-          .filter((item) => item['highLevelCategory'] === category);
-
-        if (group.length) {
-          const globalTotal = sumGroup(group);
-          globalTotal['market'] = 'Total';
-          globalTotal['identifier'] = 'Global';
-          globalTotals.push(globalTotal);
-        }
-      });
-    });
-
-    const allData = [...businessData, ...cityTotals, ...countryTotals, ...marketTotals, ...globalTotals];
-
-    const dataWithCords = allData.map((item) => {
-      if (!item) return;
-      const { city, market, country } = item;
-
-      const cords = GeoCoordinates.findOne({
-        country: new RegExp(`^${country}$`, 'i'),
-        market: new RegExp(`^${market}$`, 'i'),
-        city: new RegExp(`^${city}$`, 'i')
-      });
-
-      if (cords) {
-        const { longitude, latitude } = cords;
-        item = Object.assign({ longitude, latitude }, item);
-      } else {
-        item = Object.assign({ longitude: 'NO CORDS', latitude: 'NO CORDS' }, item);
-      }
-
-      return item;
-    }).filter(item => item);
-
-    console.log('Inserting data...');
-
-    dataWithCords.forEach((d: any) => {
-      BusinessData.insert(d);
-    });
-
-    const titles = (BusinessData as any)
-      .aggregate([{ $group: { _id: null, titles: { $addToSet: '$n2' } } }])[0]
-      .titles as string[];
-    UnitsTitles.remove({});
-    titles.forEach(t => UnitsTitles.insert({ title: t }));
-
-    MarketCountries.remove({});
-    AvailableCountries.remove({});
-
-    setMarketCountries();
-    setAvailableCountries();
-
-    console.log('Data uploaded');
-    console.timeEnd();
-
-    DataUpdates.update({}, { lastDataUpdateDate: new Date() }, { upsert: true });
-
-    return 'Data will be available in few minutes';
+    return 'data_calculation_start';
   }
 });
 
@@ -300,11 +145,11 @@ export const uploadCoordinates = new ValidatedMethod({
   }).validator(),
   run({ fileData }) {
     if (!this.userId) {
-      throw new Meteor.Error('premission denied', 'Please login first.');
+      throw new Meteor.Error('permission_denied', 'permission_denied');
     }
 
     if (!Roles.userIsInRole(this.userId, ['DataUpload', 'Administrator'])) {
-      throw new Meteor.Error('premission denied', 'You are not a data manager.');
+      throw new Meteor.Error('permission_denied', 'permission_denied');
     }
 
     const parsedData = Baby.parse(fileData, { skipEmptyLines: true, delimiter: ';' }).data;
@@ -322,6 +167,6 @@ export const uploadCoordinates = new ValidatedMethod({
       }
     });
 
-    return 'Coordinates uploaded!';
+    return 'coordinates_uploaded';
   }
 });

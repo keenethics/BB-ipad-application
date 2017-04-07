@@ -3,8 +3,9 @@
     <button *ngIf="isLoggedIn()" (click)="openPage('home')" ion-button icon-only>
       <ion-icon class="icon-home" name="icon-home"></ion-icon>
     </button>
-    <button *ngIf="isButtonEnabled" (click)="emitButtonClick('filter-menu')" ion-button icon-only>
+    <button filter-counter *ngIf="isButtonEnabled" (click)="emitButtonClick('filter-menu')" ion-button icon-only>
       <ion-icon class="icon-filter" name="icon-filter"></ion-icon>
+      <filter-counter></filter-counter>
     </button>
   </ion-buttons>
   <ion-buttons *ngIf="isLoggedIn()" end>
@@ -17,6 +18,6 @@
   </ion-buttons>
   <ion-title>
     <ion-icon class="icon-logo" name="icon-logo"></ion-icon>
-    MN BLACK BOOK APPLICATION
+    NOKIA MN BLACK BOOK APP <small>Oxygen 30.03.2017, P02 2017 ACT</small>
   </ion-title>
 </ion-toolbar>

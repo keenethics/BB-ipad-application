@@ -11,7 +11,7 @@ import template from './footer.component.html';
 
 import {
   HomePage,
-  SwichersPage,
+  SwitchersPage,
   ProfileSettingsPage,
   UserManagementPage
 } from '../../index';
@@ -34,7 +34,7 @@ export class FooterComponent {
     if (this.preventNavArr.indexOf(event.value) === -1) {
       switch (event.value) {
         case 'home': this.navCtrl.setRoot(HomePage); break;
-        case 'swichers': this.navCtrl.setRoot(SwichersPage); break;
+        case 'switchers': this.navCtrl.setRoot(SwitchersPage); break;
         case 'profile-settings': this.navCtrl.setRoot(ProfileSettingsPage); break;
         case 'user-management': this.navCtrl.setRoot(UserManagementPage); break;
       }

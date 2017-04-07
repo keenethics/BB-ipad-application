@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Loading, LoadingController } from 'ionic-angular';
+import { TextProvider } from '../notifications';
 
 @Injectable()
 export class LoadingManager {
   public loadingInst: Loading;
 
-  constructor(private loadingCtrl: LoadingController) { }
+  constructor(private loadingCtrl: LoadingController, private _textProvider: TextProvider) { }
 
   loading(message: string): Promise<any> {
     if (this.loadingInst) {
@@ -13,7 +14,7 @@ export class LoadingManager {
     }
 
     this.loadingInst = this.loadingCtrl.create({
-      content: message,
+      content: this._textProvider.text(message),
       dismissOnPageChange: true
     });
 

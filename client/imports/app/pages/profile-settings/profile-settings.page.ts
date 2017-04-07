@@ -9,7 +9,7 @@ import { ProfileSettings } from '../../settings';
 import template from './profile-settings.page.html';
 import styles from './profile-settings.page.scss';
 
-import { SwichersPage } from '../swichers/swichers.page';
+import { SwitchersPage } from '../switchers/switchers.page';
 import { HomePage } from '../home/home.page';
 import { UserManagementPage } from '../user-management/user-management.page';
 import { SigninPage } from '../signin/signin.page';
@@ -71,12 +71,12 @@ export class ProfileSettingsPage implements OnInit {
   changePassword() {
     const { oldPassword, password } = this.passwords;
 
-    this.loadingManager.loading('Changing password...');
+    this.loadingManager.loading('changing_password');
     this.profileSettings.changePassword(oldPassword, password)
       .then(() => {
         this.passwordsForm.reset();
         this.loadingManager.loadingInst.dismiss();
-        this.toastManager.okToast('Password changed successfully');
+        this.toastManager.okToast('password_changed');
       })
       .catch((err) => {
         this.loadingManager.loadingInst.dismiss();

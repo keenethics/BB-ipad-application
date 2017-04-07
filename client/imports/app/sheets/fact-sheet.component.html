@@ -2,7 +2,7 @@
 <ion-card>
   <ion-card-header>
     <div class="card-header">
-      <p>BU-SPECIFIC LOCATION INFO: <span class="title">{{selectedItem[entityKey]}}</span></p>
+      <p>BU-SPECIFIC LOCATION INFO: <span class="title">{{entityKey === 'global' ? 'Total' : selectedItem[entityKey]}}</span></p>
       <ion-buttons end>
         <button (click)="openOverviewSheet()" ion-button>OVERVIEW</button>
         <button class="active" ion-button>FACT SHEET</button>
@@ -12,66 +12,36 @@
   <ion-card-content>
     <table>
       <thead>
-        <tr class="row-color-4">
-          <th></th>
-          <th class="l-border r-border">
-            2017
+        <tr>
+          <th [attr.rowspan]="p.rowspan" [attr.colspan]="p.colspan" [class]="p.class" *ngFor="let p of periods">
+            {{p.title}}
           </th>
-          <th colspan="4" class="l-border r-border" *ngFor="let p of periods">
-            {{p}}
-          </th>
-          <th colspan="2" rowspan="2">LP 2018 vs P01'17</th>
         </tr>
         <tr>
-          <th></th>
-          <th *ngFor="let col of columnsDescs" [ngClass]="col.class">
-            {{col.title}}
-          </th>
-          <!--<th></th>-->
+          <template ngFor let-col [ngForOf]="columnsDescs">
+            <th *ngIf="col.title" [ngClass]="col.class">
+              {{col.title}}
+            </th>
+          </template>
+        </tr>
       </thead>
       <tbody>
         <tr *ngFor="let row of rowsDescs">
-          <td *ngIf="row.title">{{row.title}}</td>
-          <!--<td *ngFor="let col of columnsDescs|exclude:[lastColumnsDesc]" [ngClass]="[col.class || '', row.class || '']">-->
+          <td *ngIf="row.title" class="bu" [ngClass]="{'tb-bold': row.title === 'Total'}">{{row.title}}</td>
           <td *ngFor="let col of columnsDescs" [ngClass]="[col.class || '', row.class || '']">
             {{getCellValue(row, col) | sep}}
           </td>
-          <td>{{getCellValue(row, lastColumnsDesc)|percentage}}</td>
-          <td [colored]="getCellValue(row, lastColumnsDesc)"></td>
-        </tr>
-        <tr>
-          <td class="color-lable" colspan="12">
-            <h3 class="yellow">More than 25% net down of P01'17 HC</h3>
-          </td>
-        </tr>
-        <tr>
-          <td class="color-lable" colspan="12">
-            <h3 class="red">More than 50% net down of P01'17 HC</h3>
-          </td>
+          <td [ngClass]="[lastColumnsDesc.class || '', row.class || '']">{{getCellValue(row, lastColumnsDesc)|percentage}}</td>
+          <td [ngClass]="[lastColumnsDesc.class || '', row.class || '', 'initial-width']" [colored]="getCellValue(row, lastColumnsDesc)"></td>
         </tr>
       </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="20">
+            <div class="legend">delta > -25% (<i class="colored yellow"></i>); > -50% (<i class="colored red"></i>)</p>
+          </td>
+        </tr>
+      </tfoot>
     </table>
-    <!--<table>
-      <thead>
-        <tr class="row-color-4">
-          <th>In HC</th>
-          <th *ngFor="let col of columnsDescs" class="t-right">
-            {{col.title}}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="{{row.color}}" *ngFor="let row of rowsDescs | exclude:excludedRowsDescs">
-          <td>{{row.title}}</td>
-          <td *ngFor="let col of columnsDescs">
-            {{getCellValue(row, col)}}
-          </td>
-        </tr>
-        <tr class="{{row.color}}" *ngFor="let row of excludedRowsDescs">
-          <td>{{row.title}}</td>
-          <td [colored]="getCellValue(row, col)" *ngFor="let col of columnsDescs;">{{getCellValue(row, col)|percentage}}</td>
-        </tr>
-      </tbody>
-    </table>-->    
   </ion-card-content>
 </ion-card>

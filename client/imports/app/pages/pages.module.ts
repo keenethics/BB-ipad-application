@@ -14,11 +14,13 @@ import { SigninPage } from './signin/signin.page';
 import { CreateUserPage } from './create-user/create-user.page';
 import { UploadDataPage } from './upload-data/upload-data.page';
 import { TestDataPage } from './test-data/test-data.page';
-import { SwichersPage } from './swichers/swichers.page';
+import { SwitchersPage } from './switchers/switchers.page';
 import { ProfileSettingsPage } from './profile-settings/profile-settings.page';
 import { EditUserPage } from './edit-user/edit-user.page';
 import { UserManagementPage } from './user-management/user-management.page';
 import { PreferencesPage } from './preferences/preferences.page';
+import { SplashscreenPage } from './splashscreen/splashscreen.page';
+import { InfoPage } from './info/info.page';
 
 import {
   FooterComponent,
@@ -32,11 +34,13 @@ const PAGES = [
   CreateUserPage,
   UploadDataPage,
   TestDataPage,
-  SwichersPage,
+  SwitchersPage,
   ProfileSettingsPage,
   UserManagementPage,
   EditUserPage,
-  PreferencesPage
+  PreferencesPage,
+  SplashscreenPage,
+  InfoPage
 ];
 
 const COMPONENTS = [
