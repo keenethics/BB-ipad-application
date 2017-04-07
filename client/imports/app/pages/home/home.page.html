@@ -2,7 +2,6 @@
   <header [isButtonEnabled]="true" (onButtonClick)="menuToggle($event)"></header>
 </ion-header>
 <ion-content class="no-scroll">
-  <!--<map [mapWidth]="mapWidth" [mapHeight]="mapHeight"></map>-->
   <div class="swipe-menu-overlay"></div>
   <world-map [deselect-marker-emiter]="onDeselectMarkerEmiter" [is-log-scale]="mapSettings.scaling" [show-values]="!mapSettings.values" [show-labels]="!mapSettings.labels" [chart-type]="mapSettings.charts ? 'bar' : 'circles'"
     [map-width]="mapWidth" [map-height]="mapHeight" [zoom-on-update]="autoZoom" [data-to-draw]="dataProvider.data$ | async"
