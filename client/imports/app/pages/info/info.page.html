@@ -2,7 +2,7 @@
   <div class="info-container">
     <div class="info">
       <p>Last version: <span>{{version}}</span></p>
-      <p *ngIf="info.lastDataUpdateText">Last data update: <span>{{info.lastDataUpdateText + ', ' + info.period}}</span></p>
+      <p *ngIf="info?.lastDataUpdateText">Last data update: <span>{{info.lastDataUpdateText + ', ' + info.period}}</span></p>
     </div>
   </div>
 </ion-content>
