@@ -27,5 +27,6 @@
   "up_data_calc_markets_totals": "Calculating markets totals ",
   "up_data_calc_globals_totals": "Calculating global totals ",
   "up_data_insert_db": "Almost done! Insert data in DB ",
+  "up_data_err": "Something went wrong, restoring old data ",
   "up_data_done": ""
 }
