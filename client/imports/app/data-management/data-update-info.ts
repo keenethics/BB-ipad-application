@@ -12,19 +12,11 @@ export class DataUpdateInfo {
   }
 
   constructor() {
-    const { status, lastDataUpdateDate } = DataUpdates.findOne() || {status: '', lastDataUpdateDate: null};
-    this._info = new BehaviorSubject({
-      status,
-      updateDate: lastDataUpdateDate
-    });
+    this._info = new BehaviorSubject(DataUpdates.findOne());
 
     MeteorObservable.subscribe('dataUpdates').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
-        const { status, lastDataUpdateDate } = DataUpdates.findOne() || {status: '', lastDataUpdateDate: null};
-        this._info.next({
-          status,
-          updateDate: lastDataUpdateDate
-        });
+        this._info.next(DataUpdates.findOne());
       });
     });
   }
@@ -32,5 +24,11 @@ export class DataUpdateInfo {
 
 interface Info {
   status: string;
-  updateDate: Date;
+  lastDataUpdateDate?: Date;
+  lastDataUpdateText?: string;
+  period?: string;
+  fileNames?: {
+    current: string;
+    hist: string;
+  };
 };

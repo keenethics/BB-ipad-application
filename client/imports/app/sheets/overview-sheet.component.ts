@@ -11,6 +11,7 @@ import { DataProvider, SumBusinessUnitsPipe } from '../data-management';
 import { BusinessDataUnit } from '../../../../both/data-management';
 import { FactSheetComponent } from './fact-sheet.component';
 import { FilterController } from '../filters';
+import { DataUpdateInfo } from '../data-management/data-update-info';
 
 import template from './overview-sheet.component.html';
 import styles from './sheets.styles.scss';
@@ -35,20 +36,26 @@ export class OverviewSheetComponent {
   public entityKey: string;
   private businessData: BusinessDataUnit[];
 
-  constructor(private dataProvider: DataProvider, private filterCtrl: FilterController) {
-    this.periods = [
-      { title: 'P12 2016', colspan: '1', rowspan: '2', class: 'dark-grey' },
-      { title: 'YTD 2017', colspan: '3', rowspan: '1', class: 'blue' },
-      { title: '2017 act P02', colspan: '1', rowspan: '2', class: 'blue' },
-      { title: 'Delta to go', colspan: '1', rowspan: '2', class: 'head-grey' },
-      { title: 'LP 2017', colspan: '1', rowspan: '2', class: 'head-grey' },
-      { title: 'LP 2018', colspan: '1', rowspan: '2', class: 'head-grey' },
-    ];
+  private _subs: any[];
+
+  constructor(private dataProvider: DataProvider, private filterCtrl: FilterController, private info: DataUpdateInfo) {
+
     this.dataProvider.data$.subscribe((data) => {
       if (data.length) {
         this.businessData = data;
         this.initTableDescriptions();
       }
+    });
+
+    this.info.info$.subscribe(i => {
+      this.periods = [
+        { title: 'P12 2016', colspan: '1', rowspan: '2', class: 'dark-grey' },
+        { title: 'YTD 2017', colspan: '3', rowspan: '1', class: 'blue' },
+        { title: i.period, colspan: '1', rowspan: '2', class: 'blue' },
+        { title: 'Delta to go', colspan: '1', rowspan: '2', class: 'head-grey' },
+        { title: 'LP 2017', colspan: '1', rowspan: '2', class: 'head-grey' },
+        { title: 'LP 2018', colspan: '1', rowspan: '2', class: 'head-grey' },
+      ];
     });
   }
 

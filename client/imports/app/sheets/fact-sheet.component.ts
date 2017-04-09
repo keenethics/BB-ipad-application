@@ -10,6 +10,7 @@ import {
 import { DataProvider, SumBusinessUnitsPipe } from '../data-management';
 import { BusinessDataUnit } from '../../../../both/data-management';
 import { OverviewSheetComponent } from './overview-sheet.component';
+import { DataUpdateInfo } from '../data-management/data-update-info';
 
 import template from './fact-sheet.component.html';
 import styles from './sheets.styles.scss';
@@ -34,30 +35,42 @@ export class FactSheetComponent {
   public businessData: BusinessDataUnit[];
   public lastColumnsDesc: any;
   public periods: any[];
+  public actualPeriodTitle: string;
 
-  constructor(private dataProvider: DataProvider, private zone: NgZone) {
-    this.dataProvider.data$.subscribe((data) => {
-      if (data.length) {
-        this.periods = [
-          { title: 'BU', colspan: '1', rowspan: '2', class: 'bu' },
-          { title: '2015 P12', colspan: '1', rowspan: '2', class: 'dark-grey' },
-          { title: '2016', colspan: '4', rowspan: '1', class: 'dark-grey' },
-          { title: 'YTD 2017', colspan: '3', rowspan: '1', class: 'blue' },
-          { title: '2017 act P02', colspan: '1', rowspan: '2', class: 'blue' },
-          { title: 'FC 2017', colspan: '3', rowspan: '1', class: 'head-grey' },
-          { title: 'LP 2017', colspan: '1', rowspan: '2', class: 'head-grey' },
-          { title: 'FC 2018', colspan: '3', rowspan: '1', class: 'head-grey' },
-          { title: 'LP 2018', colspan: '1', rowspan: '2', class: 'head-grey' },
-          { title: 'LP 2018 vs P12\'15', colspan: '2', rowspan: '2', class: 'dark-grey' }
-        ];
-        this.businessData = data;
-        this.initTableDescriptions();
-      }
-    });
+  private _subs: any[];
+
+  constructor(private dataProvider: DataProvider, private info: DataUpdateInfo) {
+    this._subs = [
+      this.info.info$.subscribe(i => {
+        this.actualPeriodTitle = i.period;
+      }),
+      this.dataProvider.data$.subscribe((data) => {
+        if (data.length) {
+          this.periods = [
+            { title: 'BU', colspan: '1', rowspan: '2', class: 'bu' },
+            { title: '2015 P12', colspan: '1', rowspan: '2', class: 'dark-grey' },
+            { title: '2016', colspan: '4', rowspan: '1', class: 'dark-grey' },
+            { title: 'YTD 2017', colspan: '3', rowspan: '1', class: 'blue' },
+            { title: this.actualPeriodTitle, colspan: '1', rowspan: '2', class: 'blue' },
+            { title: 'FC 2017', colspan: '3', rowspan: '1', class: 'head-grey' },
+            { title: 'LP 2017', colspan: '1', rowspan: '2', class: 'head-grey' },
+            { title: 'FC 2018', colspan: '3', rowspan: '1', class: 'head-grey' },
+            { title: 'LP 2018', colspan: '1', rowspan: '2', class: 'head-grey' },
+            { title: 'LP 2018 vs P12\'15', colspan: '2', rowspan: '2', class: 'dark-grey' }
+          ];
+          this.businessData = data;
+          this.initTableDescriptions();
+        }
+      })
+    ];
   }
 
   ngOnInit() {
     this.getTableData();
+  }
+
+  ngOnDestroy() {
+    this._unsubscribe();
   }
 
   initTableDescriptions() {
@@ -247,4 +260,8 @@ export class FactSheetComponent {
   public close() {
     this.onCloseEmitter.emit();
   }
+
+  private _unsubscribe() {
+    this._subs.forEach(s => s.unsubscribe());
+  };
 }

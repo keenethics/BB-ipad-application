@@ -25,9 +25,13 @@ export const uploadFile = new ValidatedMethod({
   name: 'data.upload',
   validate: new SimpleSchema({
     current: { type: String },
-    hist: { type: String }
+    hist: { type: String },
+    'info.period': { type: String },
+    'info.lastDataUpdate': { type: String },
+    'info.fileNames.current': { type: String },
+    'info.fileNames.hist': { type: String }
   }).validator(),
-  run({ current, hist }) {
+  run({ current, hist, info, fileNames }) {
     if (!current || !hist) {
       throw new Meteor.Error('wrong_upload_params', 'wrong_upload_params');
     }
@@ -112,7 +116,15 @@ export const uploadFile = new ValidatedMethod({
 
               console.log('Updated');
               console.timeEnd();
-              DataUpdates.update({}, { status: 'up_data_done', lastDataUpdateDate: new Date() }, { upsert: true });
+
+              const { period, fileNames } = info;
+              DataUpdates.update({}, {
+                status: 'up_data_done',
+                lastDataUpdateDate: new Date(),
+                lastDataUpdateText: info.lastDataUpdate,
+                period,
+                fileNames
+              }, { upsert: true });
             }).run();
           });
 
