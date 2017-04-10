@@ -1,0 +1,21 @@
+// TODO: add separate icon for reset filter button
+.reset-btn {
+  &:after {
+    content: '\2716';
+    background-color: #fff;
+    width: 14px;
+    height: 14px;
+    border-radius: 9px;
+    color: #0B409C;
+    position: absolute;
+    top: 14px;
+    left: 28px;
+    padding-left: 1px;
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  &:hover:after {
+    background-color: #E2E8F0;
+  }
+}
