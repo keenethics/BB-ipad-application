@@ -105,6 +105,7 @@ export class MainFilterComponent implements OnInit, OnDestroy {
     this.searchValue = '';
 
     this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
+    this.filterCtrl.activeFilters$ = this.filters;
   }
 
   resetFilter() {
@@ -112,8 +113,7 @@ export class MainFilterComponent implements OnInit, OnDestroy {
 
     this.changeCategory();
 
-    this.ngOnDestroy();
-
+    if (this.dataSubscr) this.dataSubscr.unsubscribe();
     this.dataSubscr = this.dataProvider.data$.subscribe((data) => {
       this.data = data;
       this.options = this.getOptions(this.category);
