@@ -1,0 +1,5 @@
+<ion-content>
+  <form [formGroup]="filterForm" (onChange)="log()">
+    <ion-range dualKnobs="true" formControlName="valueRange" min="0" max="1000" snaps="true"></ion-range>
+  </form>
+</ion-content>
