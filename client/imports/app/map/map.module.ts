@@ -5,8 +5,6 @@ import { MapSwitchers } from './switchers/switchers.component';
 import { MarketCountriesProvider } from './countries/market-countries';
 import { CommonAppModule } from '../common';
 
-import { MapComponent } from './map.component';
-
 @NgModule({
   imports: [
     IonicModule,
@@ -14,13 +12,11 @@ import { MapComponent } from './map.component';
   ],
   declarations: [
     WorldMap,
-    MapSwitchers,
-    MapComponent
+    MapSwitchers
   ],
   exports: [
     WorldMap,
-    MapSwitchers,
-    MapComponent
+    MapSwitchers
   ],
   providers: [
     MarketCountriesProvider
