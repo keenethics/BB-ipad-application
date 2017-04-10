@@ -1,8 +1,10 @@
 <ion-content>
   <div class="info-container">
     <div class="info">
-       <p>App version:  <span><!--{{version}}--> 1.3.1 (Build 1.0.0)</span> </p>
-      <p>Data update: <span><!--{{ info.lastDataUpdateText + ', ' + info.period }}--> Oxygen 30.03.2017, P02 2017 actuals </span></p>
+      <!--1.3.1 (Build 1.0.0)-->
+      <p>App version: <span>{{version}}</span> </p>
+      <!--Oxygen 30.03.2017, P02 2017 actuals-->
+      <p>Data update: <span *ngIf="info?.lastDataUpdateText">{{ info.lastDataUpdateText + ', ' + info.period }}</span></p>
     </div>
   </div>
 </ion-content>
