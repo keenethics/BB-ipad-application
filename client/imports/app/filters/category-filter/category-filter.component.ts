@@ -27,7 +27,7 @@ export class CategoryFilterComponent {
     try {
       this.category = filterCtrl.getFromStorage().category;
     } catch (e) {
-      this.category = '';
+      this.category = 'global';
     }
 
     this.filterCtrl.onChangeCategory.subscribe((category: string) => {

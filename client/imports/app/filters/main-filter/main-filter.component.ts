@@ -99,7 +99,7 @@ export class MainFilterComponent implements OnInit, OnDestroy {
     this.filterQuery = Object.assign({}, this.query);
     this.filterQuery.n2 = 'Total';
     this.filters = [];
-    this.category = '';
+    this.category = 'global';
 
     this.options = [];
     this.searchValue = '';
@@ -147,7 +147,7 @@ export class MainFilterComponent implements OnInit, OnDestroy {
       }
       default: {
         this.query.identifier = 'Global';
-        this.category = '';
+        this.category = 'global';
         this.filterQuery.identifier = 'Market';
         break;
       }
