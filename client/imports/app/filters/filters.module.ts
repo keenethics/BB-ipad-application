@@ -13,8 +13,6 @@ import { CategoryFilterComponent } from './category-filter/category-filter.compo
 import { FilterCounterComponent } from './filter-counter/filter-counter.component';
 import { ResetFiltersButtonComponent } from './reset-filters-button/reset-filters-button.component';
 
-console.log(FilterCounterComponent, ResetFiltersButtonComponent);
-
 @NgModule({
   imports: [
     IonicModule,

@@ -78,4 +78,8 @@ export class HeaderComponent {
       case 'preferences': this.navCtrl.setRoot(PreferencesPage); break;
     }
   }
+
+  resetFilters() {
+    this.filterCtrl.resetFilter();
+  }
 }

@@ -3,9 +3,12 @@
     <button *ngIf="isLoggedIn()" (click)="openPage('home')" ion-button icon-only>
       <ion-icon class="icon-home" name="icon-home"></ion-icon>
     </button>
-    <button filter-counter *ngIf="isButtonEnabled" (click)="emitButtonClick('filter-menu')" ion-button icon-only>
+    <button *ngIf="isButtonEnabled" (click)="emitButtonClick('filter-menu')" ion-button icon-only>
       <ion-icon class="icon-filter" name="icon-filter"></ion-icon>
       <filter-counter></filter-counter>
+    </button>
+    <button class="reset-btn" *ngIf="isButtonEnabled" (click)="resetFilters()" ion-button icon-only>
+      <ion-icon class="icon-filter" name="icon-filter"></ion-icon>
     </button>
   </ion-buttons>
   <ion-buttons *ngIf="isLoggedIn()" end>
