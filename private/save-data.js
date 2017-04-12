@@ -98,7 +98,7 @@ mongoClient.connect(mongoUrl, (err, db) => {
 
             doc = Object.keys(doc).reduce((acc, key) => {
               if (key.toLowerCase() === 'actual' || !isNaN(Number(key))) {
-                acc.periods[key] = doc[key];
+                acc.periods[key] = parseInt(doc[key], 10) || 0;
               } else {
                 acc[key] = doc[key];
               }
