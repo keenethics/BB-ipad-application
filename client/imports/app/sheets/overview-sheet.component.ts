@@ -6,7 +6,7 @@ import {
   HostListener,
   ViewEncapsulation
 } from '@angular/core';
-
+import { Observable } from 'rxjs';
 import { DataProvider, SumBusinessUnitsPipe } from '../data-management';
 import { BusinessDataUnit } from '../../../../both/data-management';
 import { FactSheetComponent } from './fact-sheet.component';
@@ -35,31 +35,46 @@ export class OverviewSheetComponent {
   public periods: any[];
   public entityKey: string;
   private businessData: BusinessDataUnit[];
+  private chartData: any[];
 
   private _subs: any[];
 
   constructor(private dataProvider: DataProvider, private filterCtrl: FilterController, private info: DataUpdateInfo) {
+    Observable
+      .forkJoin(dataProvider.data$.take(2), info.info$.take(1))
+      .subscribe(all => {
+        this.businessData = all[0];
+        this.setPeriods(all[1]);
+        this.chartData = this.getRawData();
+      }).unsubscribe();
 
     this.dataProvider.data$.subscribe((data) => {
       if (data.length) {
         this.businessData = data;
         this.initTableDescriptions();
+        if (this.periods) {
+          this.chartData = this.getRawData();
+        }
       }
     });
 
     this.info.info$.subscribe(i => {
-      this.periods = [
-        { title: 'P12 2016', colspan: '1', rowspan: '2', class: 'dark-grey' },
-        { title: 'YTD 2017', colspan: '3', rowspan: '1', class: 'blue' },
-        { title: i.period, colspan: '1', rowspan: '2', class: 'blue' },
-        { title: 'Delta to go', colspan: '1', rowspan: '2', class: 'head-grey' },
-        { title: 'LP 2017', colspan: '1', rowspan: '2', class: 'head-grey' },
-        { title: 'LP 2018', colspan: '1', rowspan: '2', class: 'head-grey' },
-      ];
+      this.setPeriods(i);
     });
   }
 
-  getCellValue(rowDesc: any, colDesc: any, p: any) {
+  setPeriods(i: any) {
+    this.periods = [
+      { title: 'P12 2016', colspan: '1', rowspan: '2', class: 'dark-grey' },
+      { title: 'YTD 2017', colspan: '3', rowspan: '1', class: 'blue' },
+      { title: i.period, colspan: '1', rowspan: '2', class: 'blue' },
+      { title: 'Delta to go', colspan: '1', rowspan: '2', class: 'head-grey' },
+      { title: 'LP 2017', colspan: '1', rowspan: '2', class: 'head-grey' },
+      { title: 'LP 2018', colspan: '1', rowspan: '2', class: 'head-grey' },
+    ];
+  }
+
+  getCellValue(rowDesc: any, colDesc: any) {
     const asKeys = Object.assign(rowDesc.dataSources, colDesc.dataSources);
     const calc = rowDesc.calc || colDesc.calc;
 
@@ -142,5 +157,25 @@ export class OverviewSheetComponent {
 
   close() {
     this.onCloseEmitter.emit();
+  }
+
+  getRawData() {
+    const data: any[] = [];
+
+    this.rowsDescs.forEach((row => {
+      this.columnsDescs.forEach((col) => {
+        data.push({ name: col.title, value: this.getCellValue(row, col) });
+      });
+    }));
+
+    let pIndex = 0;
+    for (let i = 0; i < data.length; i++) {
+      if (!data[i].name) {
+        data[i].name = this.periods[pIndex].colspan !== '3' ? this.periods[pIndex].title : this.periods[++pIndex].title;
+        pIndex++;
+      }
+    }
+
+    return data;
   }
 }

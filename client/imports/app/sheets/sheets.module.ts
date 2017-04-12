@@ -9,11 +9,13 @@ import { SheetsPortalComponent } from './sheets-portal.component';
 import { SheetsController } from './sheets-controller';
 import { PercentagePipe } from './percentage.pipe';
 import { ColoredDirective } from './colored.directive';
+import { WaterfallChartComponent } from './waterfall-chart/waterfall-chart.component';
 
 const COMPONENTS = [
   OverviewSheetComponent,
   FactSheetComponent,
-  SheetsPortalComponent
+  SheetsPortalComponent,
+  WaterfallChartComponent
 ];
 
 const PIPES = [
