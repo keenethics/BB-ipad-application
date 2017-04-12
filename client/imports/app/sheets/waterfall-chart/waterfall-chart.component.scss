@@ -1,0 +1,46 @@
+waterfall-chart {
+  .bar.result rect {
+    fill: #97a2af;
+  }
+
+  .bar.middle rect {
+    fill: #193793;
+  }
+
+  .bar.initial rect {
+    fill: #4c5667;
+  }
+
+  .bar line.connector {
+    stroke: #193793;
+    stroke-dasharray: 3;
+  }
+
+  .bar text {
+    fill: black;
+    font: 15px sans-serif;
+    text-anchor: middle;
+  }
+
+  .tick text {
+    font: 15px sans-serif;
+    fill: #193793;
+  }
+
+  .tick path,
+  .tick line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .waterfall-container {
+    display: flex;
+    justify-content: center;
+
+    svg {
+      background-color: #fff;
+      border-radius: 6px;
+    }
+  }
+}
