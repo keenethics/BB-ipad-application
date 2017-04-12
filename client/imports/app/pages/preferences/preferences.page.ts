@@ -42,5 +42,7 @@ export class PreferencesPage {
 
       // { icon: 'icon-types-and-units', title: 'TYPES AND UNITS', selector: 'types-and-units', component: null }
     ];
+
+    window.pages = this.pages;
   }
 };
