@@ -104,8 +104,7 @@ export class WorldMap implements OnChanges {
 
     if (changes.dataToDraw) {
       this.renderMarkers();
-      this.selectCountries(this.dataToDraw);
-
+      setTimeout(() => this.selectCountries(this.dataToDraw), 0);
       if (this.zoomOnUpdate) {
         this.zoomToMarkers();
       }

@@ -182,3 +182,19 @@ export const uploadCoordinates = new ValidatedMethod({
     return 'coordinates_uploaded';
   }
 });
+
+export const maxRange = new ValidatedMethod({
+  name: 'data.getMaxPeriodRange',
+  validate: new SimpleSchema({
+    period: { type: String },
+  }).validator(),
+  run({ period }) {
+    return BusinessData.aggregate({
+      $group: {
+        _id: null,
+        max: { $max: `$periods.${period}` },
+        min: { $min: `$periods.${period}` }
+      }
+    });
+  }
+});

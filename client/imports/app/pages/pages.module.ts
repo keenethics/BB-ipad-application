@@ -21,6 +21,7 @@ import { UserManagementPage } from './user-management/user-management.page';
 import { PreferencesPage } from './preferences/preferences.page';
 import { SplashscreenPage } from './splashscreen/splashscreen.page';
 import { InfoPage } from './info/info.page';
+import { FilterPage } from './filter/filter.page';
 
 import {
   FooterComponent,
@@ -40,7 +41,8 @@ const PAGES = [
   EditUserPage,
   PreferencesPage,
   SplashscreenPage,
-  InfoPage
+  InfoPage,
+  FilterPage
 ];
 
 const COMPONENTS = [

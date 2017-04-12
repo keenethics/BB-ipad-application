@@ -8,6 +8,7 @@ export { UploadDataPage } from './upload-data/upload-data.page';
 export { UserManagementPage } from './user-management/user-management.page';
 export { PreferencesPage } from './preferences/preferences.page';
 export { InfoPage } from './info/info.page';
+export { FilterPage } from './filter/filter.page';
 
 export {
   FooterComponent,

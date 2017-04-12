@@ -1,0 +1,57 @@
+filter-page {
+  ion-content.content {
+    background-color: #F8F9FA;
+
+    .container {
+      width: 60%;
+      margin: auto;
+      text-align: center;
+    }
+  }
+
+  ion-range {
+    .range-slider {
+      .range-bar {
+        height: 3px;
+      }
+      .range-knob-handle {
+        .range-pin {
+          position: relative;
+          top: -20px;
+          display: inline-block;
+          padding: 0;
+          min-width: 28px;
+          border-radius: 50px;
+          font-size: 12px;
+          text-align: center;
+          color: #0b409c;
+          background: transparent;
+          transform: translate3d(0, 28px, 0) scale(0.01);
+          transition: transform 120ms ease;
+        }
+
+        .range-knob {
+          width: 22px;
+          left: 11px;
+          top: 11px;
+          height: 22px;
+          border-radius: 14px;
+          background-color: #ffffff;
+          box-shadow: 0px 0px 15px 0px rgba(137, 137, 138, 0.5);
+          transition: 300ms ease;
+        }
+
+        &.range-knob-pressed {
+          .range-knob {
+            background-color: #3B65AD;
+            box-shadow: 0px 0px 15px 0px rgba(11, 64, 156, 0.5);
+          }
+
+          .range-pin {
+            transform: translate3d(0, 0, 0) scale(1);
+          }
+        }
+      }
+    }
+  }
+}

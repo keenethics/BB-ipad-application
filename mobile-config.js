@@ -27,7 +27,7 @@ App.launchScreens({
   iphone6p_landscape: 'resources/splash/iphone6p_landscape.png',
   ipad_portrait: 'resources/splash/ipad_portrait.png',
   ipad_portrait_2x: 'resources/splash/ipad_portrait_2x.png',
-  ipad_landscape: 'resources/splash/ipad_landscape.png',
+  ipad_landscape: 'resources/splash/ipad_landscape_new.png',
   ipad_landscape_2x: 'resources/splash/ipad_landscape_2x.png'
 });
 
