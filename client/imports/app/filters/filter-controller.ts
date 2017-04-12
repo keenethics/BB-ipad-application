@@ -55,7 +55,7 @@ export class FilterController {
       const { category, mapQueryObject, filterQueryObject } = this.getFromStorage();
       this.saveToStorage(category, f, filterQueryObject, mapQueryObject);
     } catch (err) {
-      this.onInitFilters.emit();
+      console.log(err);
     }
     this.selectedOptions.next(f);
   }

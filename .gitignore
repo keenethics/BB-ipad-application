@@ -1,7 +1,5 @@
 node_modules
 .DS_Store
 .vscode
-settings.json
 settings_development.json
-
 settings_production.json

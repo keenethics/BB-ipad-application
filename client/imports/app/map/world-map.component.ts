@@ -368,7 +368,7 @@ export class WorldMap implements OnChanges {
       text = dataUnit.country;
     } else if (dataUnit.market && dataUnit.market !== 'Total') {
       text = dataUnit.market;
-    } else if ( dataUnit.city === 'Total' && dataUnit.country === 'Total' && dataUnit.market === 'Total') {
+    } else if (dataUnit.city === 'Total' && dataUnit.country === 'Total' && dataUnit.market === 'Total') {
       text = 'TOTAL';
     }
 
@@ -510,6 +510,8 @@ export class WorldMap implements OnChanges {
   }
 
   private removeSelectedMarkerClass() {
-    this.selectedMarkerElement.classList.remove('selected-city', 'selected-country', 'selected-market');
+    if (this.selectedMarkerElement) {
+      this.selectedMarkerElement.classList.remove('selected-city', 'selected-country', 'selected-market');
+    }
   }
 }
