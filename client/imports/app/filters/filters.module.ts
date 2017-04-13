@@ -4,6 +4,7 @@ import { IonicModule } from 'ionic-angular';
 import { CommonAppModule } from '../common/common-app.module';
 
 import { BuFilterComponnet } from './bu-filter/bu-filter.component';
+import { BuFilterPipe } from './bu-filter/bu-filter.pipe';
 import { BuTitlesProvider } from './bu-filter/bu-titles-provider';
 import { CutPipe } from './bu-filter/cut.pipe';
 import { FilterController } from './filter-controller';
@@ -30,7 +31,8 @@ import { RangeFilterController } from './range-filter/range-filter-controller';
     FilterCounterComponent,
     ResetFiltersButtonComponent,
     RangeFilterComponent,
-    RangeFilterPipe
+    RangeFilterPipe,
+    BuFilterPipe
   ],
   exports: [
     BuFilterComponnet,
@@ -39,7 +41,8 @@ import { RangeFilterController } from './range-filter/range-filter-controller';
     FilterCounterComponent,
     ResetFiltersButtonComponent,
     RangeFilterComponent,
-    RangeFilterPipe
+    RangeFilterPipe,
+    BuFilterPipe
   ],
   providers: [
     BuTitlesProvider,

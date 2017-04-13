@@ -33,6 +33,7 @@ import { UserManagementPage } from '../user-management/user-management.page';
 })
 export class HomePage implements AfterViewInit {
   private rangeSubscr: Subscription;
+  private filterSubscr: Subscription;
   public isZoomActive: boolean;
   public mapWidth: number = 0;
   public mapHeight: number = 0;
@@ -42,6 +43,7 @@ export class HomePage implements AfterViewInit {
   public autoZoom = false;
   public onDeselectMarkerEmiter = new EventEmitter();
   public dataRange: any;
+  public filterIdentifier: string = 'Global';
 
   @ViewChild(Content) content: Content;
   @ViewChild(SheetsPortalComponent, { read: ViewContainerRef }) sheetsPortal: ViewContainerRef;
@@ -63,10 +65,13 @@ export class HomePage implements AfterViewInit {
     this.rangeSubscr = this.rangeCtrl.value$.subscribe((v) => {
       this.dataRange = v;
     });
+
+    this.filterSubscr = this.filterCtrl.currentFilter$.subscribe(f => this.filterIdentifier = f.identifier);
   }
 
   ngOnDestroy() {
     this.rangeSubscr.unsubscribe();
+    this.filterSubscr.unsubscribe();
   }
 
   ngAfterViewInit() {
