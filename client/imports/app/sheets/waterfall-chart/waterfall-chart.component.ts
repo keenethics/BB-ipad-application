@@ -1,6 +1,5 @@
 import {
   Component,
-  AfterViewInit,
   ViewEncapsulation,
   ViewChild,
   ElementRef,
@@ -25,29 +24,7 @@ export class WaterfallChartComponent {
   @Input() data: any;
   @ViewChild('waterfallContainer') waterfallContainer: ElementRef;
 
-  ngAfterViewInit() {
-    // const data = [
-    //   {"name":"P12 2016","value":"51513"},
-    //   {"name":'RD','value':'-1810'},
-    //   {'name':'RU','value':'504'},
-    //   {'name':'Others(net)','value':'41'},
-    //   {'name':'Delta to go','value':'1343'},
-    //   {'name':'LP 2018','value':'50037'}
-    //   ];
-    // drawWaterflowChart(this.svg, data);
-  }
-
   ngOnChanges(changes: any) {
-    // [
-    //   { "name": "P12 2016", "value": 51513, "start": 0, "end": 51513, "class": "initial" },
-    //   { "name": "RD", "value": -1810, "start": 51513, "end": 49703, "class": "middle negative" },
-    //   { "name": "RU", "value": 504, "start": 49703, "end": 50207, "class": "middle positive" },
-    //   { "name": "Others(net)", "value": 41, "start": 50207, "end": 50248, "class": "middle positive" },
-    //   { "name": "act P1 2017", "end": 50248, "start": 0, "class": "middle", "value": 50248 },
-    //   { "name": "Delta to go", "value": 1343, "start": 50248, "end": 51591, "class": "result" },
-    //   { "name": "LP 2017", "end": 51591, "start": 0, "class": "result final", "value": 51591 },
-    //   { "name": "LP 2018", "value": 50037, "start": 0, "end": 50037, "class": "result final" }
-    // ]
     if (changes.data.currentValue) {
       drawWaterflowChart(this.waterfallContainer.nativeElement, changes.data.currentValue);
     }
