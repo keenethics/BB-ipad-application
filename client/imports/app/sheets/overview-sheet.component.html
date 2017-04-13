@@ -27,30 +27,32 @@
         </tr>
       </tbody>
     </table>-->
-    <waterfall-chart [data]="chartData"></waterfall-chart>
-    <table>
-      <thead>
-        <tr>
-          <th [attr.rowspan]="p.rowspan" [attr.colspan]="p.colspan" [class]="p.class" *ngFor="let p of periods">
-            {{p.title}}
-          </th>
-        </tr>
-        <tr>
-          <template ngFor let-col [ngForOf]="columnsDescs">
-            <th *ngIf="col.title" [ngClass]="col.class">
-              {{col.title}}
+    <div class="overview-container">
+      <waterfall-chart [data]="chartData"></waterfall-chart>
+      <table>
+        <thead>
+          <tr>
+            <th [attr.rowspan]="p.rowspan" [attr.colspan]="p.colspan" [class]="p.class" *ngFor="let p of periods">
+              {{p.title}}
             </th>
-          </template>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of rowsDescs">
-          <td *ngIf="row.title" class="bu">{{row.title}}</td>
-          <td *ngFor="let col of columnsDescs" [ngClass]="[col.class || '', row.class || '']">
-            {{getCellValue(row, col) | sep}}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </tr>
+          <tr>
+            <template ngFor let-col [ngForOf]="columnsDescs">
+              <th *ngIf="col.title" [ngClass]="col.class">
+                {{col.title}}
+              </th>
+            </template>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rowsDescs">
+            <td *ngIf="row.title" class="bu">{{row.title}}</td>
+            <td *ngFor="let col of columnsDescs" [ngClass]="[col.class || '', row.class || '']">
+              {{getCellValue(row, col) | sep}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </ion-card-content>
 </ion-card>
