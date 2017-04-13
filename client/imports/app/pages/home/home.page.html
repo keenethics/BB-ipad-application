@@ -4,7 +4,7 @@
 <ion-content class="no-scroll">
   <div class="swipe-menu-overlay"></div>
   <world-map [deselect-marker-emiter]="onDeselectMarkerEmiter" [is-log-scale]="mapSettings.scaling" [show-values]="!mapSettings.values" [show-labels]="!mapSettings.labels" [chart-type]="mapSettings.charts ? 'bar' : 'circles'"
-    [map-width]="mapWidth" [map-height]="mapHeight" [zoom-on-update]="autoZoom" [data-to-draw]="dataProvider.data$ | async"
+    [map-width]="mapWidth" [map-height]="mapHeight" [zoom-on-update]="autoZoom" [data-to-draw]="dataProvider.data$ | async | rangeFilter"
     (data-click)="showOverview($event)" (select-country)="selectCountry($event)"></world-map>
     <category-filter></category-filter>
     <sheets-portal></sheets-portal>

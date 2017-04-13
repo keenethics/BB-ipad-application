@@ -12,6 +12,8 @@ import { MainFilterComponent } from './main-filter/main-filter.component';
 import { CategoryFilterComponent } from './category-filter/category-filter.component';
 import { FilterCounterComponent } from './filter-counter/filter-counter.component';
 import { ResetFiltersButtonComponent } from './reset-filters-button/reset-filters-button.component';
+import { RangeFilterComponent } from './range-filter/range-filter.component';
+import { RangeFilterPipe } from './range-filter/range-filter.pipe';
 
 @NgModule({
   imports: [
@@ -25,14 +27,18 @@ import { ResetFiltersButtonComponent } from './reset-filters-button/reset-filter
     CategoryFilterComponent,
     CutPipe,
     FilterCounterComponent,
-    ResetFiltersButtonComponent
+    ResetFiltersButtonComponent,
+    RangeFilterComponent,
+    RangeFilterPipe
   ],
   exports: [
     BuFilterComponnet,
     MainFilterComponent,
     CategoryFilterComponent,
     FilterCounterComponent,
-    ResetFiltersButtonComponent
+    ResetFiltersButtonComponent,
+    RangeFilterComponent,
+    RangeFilterPipe
   ],
   providers: [
     BuTitlesProvider,

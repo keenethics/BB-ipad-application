@@ -29,52 +29,56 @@ export class FilterPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscribe();
+    //this.subscribe();
   }
 
-  ngOnDestroy(){
-    this.unsubscribe();
+  ngOnDestroy() {
+    // this.unsubscribe();
   }
 
-  buildFilterForm() {
-    this.filterForm = this.fb.group({
-      valueRange: new FormControl({
-        lower: this.filter['periods.actual'] ? this.filter['periods.actual']['$gt'] : this.range.min,
-        upper: this.filter['periods.actual'] ? this.filter['periods.actual']['$lt'] : this.range.max
-      })
-    });
+  handleRangeChange(rangeValue: any) {
+    console.log(rangeValue);
   }
 
-  subscribe() {
-    this._sbscrs.push(this.filterCtrl.currentFilter$.subscribe((f) => {
-      this.filter = Object.assign({}, f);
+  // buildFilterForm() {
+  //   this.filterForm = this.fb.group({
+  //     valueRange: new FormControl({
+  //       lower: this.filter['periods.actual'] ? this.filter['periods.actual']['$gt'] : this.range.min,
+  //       upper: this.filter['periods.actual'] ? this.filter['periods.actual']['$lt'] : this.range.max
+  //     })
+  //   });
+  // }
 
-      const filter = Object.assign({}, f);
-      delete filter['periods.actual'];
+  // subscribe() {
+  //   this._sbscrs.push(this.filterCtrl.currentFilter$.subscribe((f) => {
+  //     this.filter = Object.assign({}, f);
 
-      this.dataProvider.getDataImmediately(filter).then((data: any[]) => {
-        const actuals = data.map(d => d.periods.actual);
-        this.range = {
-          min: Math.min(...actuals) - 1,
-          max: Math.max(...actuals) + 1
-        }
-        if(!this.filterForm){
-          this.buildFilterForm();
-        }
-      });
-    }));
-  }
+  //     const filter = Object.assign({}, f);
+  //     delete filter['periods.actual'];
 
-  unsubscribe() {
-    this._sbscrs.forEach((s: any) => s.unsubscribe());
-  }
+  //     this.dataProvider.getDataImmediately(filter).then((data: any[]) => {
+  //       const actuals = data.map(d => d.periods.actual);
+  //       this.range = {
+  //         min: Math.min(...actuals) - 1,
+  //         max: Math.max(...actuals) + 1
+  //       }
+  //       if(!this.filterForm){
+  //         this.buildFilterForm();
+  //       }
+  //     });
+  //   }));
+  // }
 
-  saveFilters() {
-    const formData = this.filterForm.getRawValue();
-    const { lower, upper } = formData.valueRange;
+  // unsubscribe() {
+  //   this._sbscrs.forEach((s: any) => s.unsubscribe());
+  // }
 
-    const filter = { ...this.filter, ...{'periods.actual': { $gt: lower, $lt: upper }} };
+  // saveFilters() {
+  //   const formData = this.filterForm.getRawValue();
+  //   const { lower, upper } = formData.valueRange;
 
-    this.filterCtrl.currentFilter$ = filter;
-  }
+  //   const filter = { ...this.filter, ...{'periods.actual': { $gt: lower, $lt: upper }} };
+
+  //   this.filterCtrl.currentFilter$ = filter;
+  // }
 };
