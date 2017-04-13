@@ -6,6 +6,7 @@ import {
   ViewEncapsulation,
   ChangeDetectionStrategy
 } from '@angular/core';
+import { IRangeValue } from './range-value.model';
 
 import template from './range-filter.component.html';
 import style from './range-filter.component.scss';
@@ -32,8 +33,3 @@ export class RangeFilterComponent {
     this.onChange.emit(Object.assign(this._currentValue));
   }
 }
-
-interface IRangeValue {
-  lower: number;
-  upper: number;
-} 

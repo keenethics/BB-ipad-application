@@ -18,7 +18,7 @@ import styles from './home.page.scss';
 import { Authorization } from '../../authorization/authorization';
 import { DataProvider } from '../../data-management';
 import { SheetsController, OverviewSheetComponent, SheetsPortalComponent } from '../../sheets';
-import { FilterController } from '../../filters';
+import { FilterController, RangeFilterController } from '../../filters';
 
 import { SigninPage } from '../signin/signin.page';
 import { SwitchersPage } from '../switchers/switchers.page';
@@ -32,7 +32,7 @@ import { UserManagementPage } from '../user-management/user-management.page';
   encapsulation: ViewEncapsulation.None
 })
 export class HomePage implements AfterViewInit {
-  private dataSubscr: Subscription;
+  private rangeSubscr: Subscription;
   public isZoomActive: boolean;
   public mapWidth: number = 0;
   public mapHeight: number = 0;
@@ -41,6 +41,7 @@ export class HomePage implements AfterViewInit {
   public mapSettings: any = {};
   public autoZoom = false;
   public onDeselectMarkerEmiter = new EventEmitter();
+  public dataRange: any;
 
   @ViewChild(Content) content: Content;
   @ViewChild(SheetsPortalComponent, { read: ViewContainerRef }) sheetsPortal: ViewContainerRef;
@@ -51,10 +52,21 @@ export class HomePage implements AfterViewInit {
     private auth: Authorization,
     private dataProvider: DataProvider,
     private sheetsCtrl: SheetsController,
-    private filterCtrl: FilterController
+    private filterCtrl: FilterController,
+    private rangeCtrl: RangeFilterController
   ) {
     this.mapSettings = JSON.parse(localStorage.getItem('mapSettings')) ||
       { charts: false, scaling: false, labels: false, values: false };
+  }
+
+  ngOnInit() {
+    this.rangeSubscr = this.rangeCtrl.value$.subscribe((v) => {
+      this.dataRange = v;
+    });
+  }
+
+  ngOnDestroy() {
+    this.rangeSubscr.unsubscribe();
   }
 
   ngAfterViewInit() {

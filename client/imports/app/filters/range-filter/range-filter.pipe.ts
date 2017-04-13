@@ -5,17 +5,9 @@ import { BusinessDataUnit } from '../../../../../both/data-management';
   name: 'rangeFilter'
 })
 export class RangeFilterPipe implements PipeTransform {
-  constructor() { }
+  transform(data: BusinessDataUnit[], lower: number, upper: number, period: string = 'actual') {
+    if (typeof (lower) === 'undefined' || typeof (upper) === 'undefined') return data;
 
-  transform(data: BusinessDataUnit[], period?: string) {
-    period = period || 'actual';
-
-    const values = data.map(d => d.periods[period]);
-    // const min = Math.min(...values);
-    // const max = Math.max(...values);
-    const min = 100;
-    const max = 7000;
-
-    return data.filter(d => (d.periods[period] >= min) && (d.periods[period] <= max));
+    return data.filter(d => (d.periods[period] >= lower) && (d.periods[period] <= upper));
   }
 }

@@ -1,5 +1,5 @@
 <ion-content>
   <div class="container">
-    <range-filter [min]="1" [max]="10" [currentValue]="{upper: 6, lower: 2}" (onChange)="handleRangeChange($event)"></range-filter>
+    <range-filter *ngIf="range" [min]="range.min" [max]="range.max" [currentValue]="range.value" (onChange)="handleRangeChange($event)"></range-filter>
   </div>
 </ion-content>

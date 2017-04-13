@@ -14,6 +14,7 @@ import { FilterCounterComponent } from './filter-counter/filter-counter.componen
 import { ResetFiltersButtonComponent } from './reset-filters-button/reset-filters-button.component';
 import { RangeFilterComponent } from './range-filter/range-filter.component';
 import { RangeFilterPipe } from './range-filter/range-filter.pipe';
+import { RangeFilterController } from './range-filter/range-filter-controller';
 
 @NgModule({
   imports: [
@@ -42,7 +43,8 @@ import { RangeFilterPipe } from './range-filter/range-filter.pipe';
   ],
   providers: [
     BuTitlesProvider,
-    FilterController
+    FilterController,
+    RangeFilterController
   ]
 })
 export class FiltersModule { }
