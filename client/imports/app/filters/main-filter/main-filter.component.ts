@@ -18,6 +18,7 @@ import styles from './main-filter.component.scss';
 import { DataProvider } from '../../data-management';
 import { BusinessDataUnit } from '../../../../../both/data-management';
 import { FilterController } from '../filter-controller';
+import { RangeFilterController } from '../range-filter/range-filter-controller';
 
 @Component({
   selector: 'main-filter',
@@ -32,16 +33,22 @@ export class MainFilterComponent implements OnInit, OnDestroy {
   private filterQuery: any;
   private dataSubscr: Subscription;
   private selectedCountry: string;
+  private rangeSubscr: Subscription;
 
   public options: string[];
   public searchValue: string;
   public category: string;
   public isFilterVisible = false;
+  public range: any;
 
   @Input() data: BusinessDataUnit[];
   @Input() currentQuery: any;
 
-  constructor(private dataProvider: DataProvider, private filterCtrl: FilterController) { }
+  constructor(
+    private dataProvider: DataProvider,
+    private filterCtrl: FilterController,
+    private rangeFilterCtrl: RangeFilterController
+  ) { }
 
   ngOnInit() {
     const filtersState = this.filterCtrl.getFromStorage();
@@ -296,6 +303,10 @@ export class MainFilterComponent implements OnInit, OnDestroy {
     this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
   }
 
+  setRange(rangeValue: any) {
+    this.rangeFilterCtrl.updateValue(rangeValue);
+  }
+
   private doDataQuery(filterObj: any, isVirtualOfficesIncluded: boolean = false) {
     if (!isVirtualOfficesIncluded) filterObj.city = Object.assign({ $nin: ['Non Nokia Site', 'Virtual Office'] }, filterObj.city);
     this.filterCtrl.currentFilter$ = filterObj;
@@ -332,11 +343,14 @@ export class MainFilterComponent implements OnInit, OnDestroy {
     this.filterCtrl.onResetFilters.subscribe(() => {
       this.resetFilter();
     });
+
+    this.rangeSubscr = this.rangeFilterCtrl.rangeState$.subscribe(r => this.range = r);
   }
 
   private unsubscribe() {
     this.filterCtrl.onChangeCategory.unsubscribe();
     this.filterCtrl.onSelectCountry.unsubscribe();
+    this.rangeSubscr.unsubscribe();
     if (this.dataSubscr) this.dataSubscr.unsubscribe();
   }
 }

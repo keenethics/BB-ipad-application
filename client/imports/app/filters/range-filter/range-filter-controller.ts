@@ -11,8 +11,8 @@ export class RangeFilterController {
   private _filterCategory: string;
   private _value: BehaviorSubject<IRangeValue>;
   private _rangeState: BehaviorSubject<any>;
-  private _min: number = 0;
-  private _max: number = 100;
+  private _min: number;
+  private _max: number;
   private _lower: number;
   private _upper: number;
   private _hadMaxRange: boolean = false;
@@ -92,8 +92,8 @@ export class RangeFilterController {
 
   reset() {
     this._hadMaxRange = false;
-    this._min = 0;
-    this._max = 100;
+    this._min = undefined;
+    this._max = undefined;
     this._lower = undefined;
     this._upper = undefined;
     this._nextRangeState();

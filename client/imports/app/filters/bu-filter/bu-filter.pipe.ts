@@ -7,12 +7,13 @@ import { SumBusinessUnitsPipe } from '../../data-management';
 export class BuFilterPipe implements PipeTransform {
   transform(data: any[], identifier: string) {
     const uniqueData = data.reduce((acc, item) => {
-      const result = acc
-        .filter((accItem: any) => accItem.n2 === item.n2)
-        .filter((accItem: any) => accItem.market === item.market)
-        .filter((accItem: any) => accItem.country === item.country)
-        .filter((accItem: any) => accItem.city === item.city)
-        .filter((accItem: any) => accItem.n3 === item.n3) as any[];
+      const result = acc.filter((i: any) => (
+        i.n2 === item.n2 &&
+        i.market === item.market &&
+        i.country === item.coountry &&
+        i.city === item.city &&
+        i.n3 === item.n3
+      ));
 
       if (!result.length) acc.push(item);
 
