@@ -14,7 +14,6 @@ import style from './range-filter.component.scss';
 @Component({
   selector: 'range-filter',
   encapsulation: ViewEncapsulation.None,
-  // changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [style],
   template
 })

@@ -29,8 +29,8 @@ export class RangeFilterController {
     this._value = new BehaviorSubject({ ...initVal });
 
     this._rangeState = new BehaviorSubject({
-      min: 0,
-      max: 100,
+      min: undefined,
+      max: undefined,
       value: { ...initVal }
     });
 
@@ -56,6 +56,7 @@ export class RangeFilterController {
       this._nextRangeState();
     } else {
       this._filterCtrl.currentFilter$.subscribe((filter) => {
+        if (this._hadMaxRange) return;
         this._dataProvider.getDataImmediately(filter)
           .then((data: any[]) => {
             const values = data.map(d => d.periods['actual']);
