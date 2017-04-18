@@ -1,0 +1,4 @@
+<div class="range-filter-container">
+  <ion-range debounce="200" dualKnobs="true" pin="true" [(ngModel)]="_currentValue" [min]="min" [max]="max" (ionChange)="handleChange($event)"></ion-range>
+  <span class="min-lable">{{min}}</span><span class="max-lable">{{max}}</span>
+</div>

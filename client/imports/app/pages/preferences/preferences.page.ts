@@ -27,7 +27,7 @@ export class PreferencesPage {
   constructor(private roles: RolesController, private platform: Platform) {
     this.pages = [
       { icon: 'icon-switchers', title: 'PREFERENCES', selector: 'switchers-page', component: SwitchersPage, guard: () => true },
-      { icon: 'icon-filter', title: 'FILTER', selector: 'filter-page', component: FilterPage, guard: () => true },
+      // { icon: 'icon-filter', title: 'FILTER', selector: 'filter-page', component: FilterPage, guard: () => true },
       { icon: 'icon-preferences', title: 'PROFILE SETTINGS', selector: 'profile-settings-page', component: ProfileSettingsPage, guard: () => true },
       {
         icon: 'icon-user', title: 'USER LIST', selector: 'user-management-page', component: UserManagementPage, guard: () => {

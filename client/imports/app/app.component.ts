@@ -59,22 +59,7 @@ export class AppComponent {
   ngAfterViewInit() {
     this.initializeApp();
     this.filterCtrl.currentFilter$.subscribe((f: any) => {
-      this.dataProvider.query(f, (arr: any[]) => {
-        const uniqueData = arr.reduce((acc, item) => {
-          const result = acc
-            .filter((accItem: any) => accItem.n2 === item.n2)
-            .filter((accItem: any) => accItem.market === item.market)
-            .filter((accItem: any) => accItem.country === item.country)
-            .filter((accItem: any) => accItem.city === item.city)
-            .filter((accItem: any) => accItem.n3 === item.n3) as any[];
-
-          if (!result.length) acc.push(item);
-
-          return acc;
-        }, []);
-
-        return new SumBusinessUnitsPipe().transform(uniqueData, (f.identifier as string).toLowerCase());
-      });
+      this.dataProvider.query(f);
     });
   }
 
