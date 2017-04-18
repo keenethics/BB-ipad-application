@@ -56,7 +56,7 @@ export class WaterfallChartComponent {
 
 
 function drawWaterflowChart(container: HTMLDivElement, data: any[]) {
-  const chartw = 920;
+  const chartw = 700;
   const charth = 400;
   const margin = { top: 50, right: 30, bottom: 30, left: 40 };
   const width = chartw - margin.left - margin.right;
@@ -168,7 +168,7 @@ function drawWaterflowChart(container: HTMLDivElement, data: any[]) {
   bar.filter(function (d) { return (d.value > scaleStartVal); }).append('svg:image')
     .attr('xlink:href', function (d) { return ('/img/break2.svg'); })
     .attr('height', '33')
-    .attr('width', '95')
+    .attr('width', '75')
     .attr('x', '-10')
     .attr('y', charth - 150);
 
