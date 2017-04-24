@@ -5,7 +5,13 @@ import { SumBusinessUnitsPipe } from '../../data-management';
   name: 'buFilter'
 })
 export class BuFilterPipe implements PipeTransform {
+  private _currentData: any[];
+  private _currentIdentifier: string;
+
   transform(data: any[], identifier: string) {
+    if (data === this._currentData && this._currentIdentifier !== identifier) return [];
+
+    this._currentData = data;
     const uniqueData = data.reduce((acc, item) => {
       const result = acc.filter((i: any) => (
         i.n2 === item.n2 &&
