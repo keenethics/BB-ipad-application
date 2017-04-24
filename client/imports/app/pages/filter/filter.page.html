@@ -1,6 +1,5 @@
 <ion-content>
-  <form class="container" *ngIf="range" [formGroup]="filterForm" (submit)="saveFilters()">
-    <ion-range dualKnobs="true" formControlName="valueRange" [min]="range.min" [max]="range.max" pin="true"></ion-range>
-    <button ion-button>Save changes</button>
-  </form>
+  <div class="container">
+    <range-filter *ngIf="range" [min]="range.min" [max]="range.max" [currentValue]="range.value" (onChange)="handleRangeChange($event)"></range-filter>
+  </div>
 </ion-content>
