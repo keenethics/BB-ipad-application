@@ -35,8 +35,9 @@ export class RangeFilterController {
     });
 
     this._filterCtrl.currentFilter$.subscribe((filter) => {
+      this.reset();
+      this._getMaxRangeState();
       if (this._filterCategory !== filter.identifier) {
-        this.reset();
         this._filterCategory = filter.identifier;
       }
     });
