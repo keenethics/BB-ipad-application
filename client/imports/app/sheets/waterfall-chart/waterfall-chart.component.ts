@@ -1,6 +1,5 @@
 import {
   Component,
-  AfterViewInit,
   ViewEncapsulation,
   ViewChild,
   ElementRef,
@@ -25,29 +24,7 @@ export class WaterfallChartComponent {
   @Input() data: any;
   @ViewChild('waterfallContainer') waterfallContainer: ElementRef;
 
-  ngAfterViewInit() {
-    // const data = [
-    //   {"name":"P12 2016","value":"51513"},
-    //   {"name":'RD','value':'-1810'},
-    //   {'name':'RU','value':'504'},
-    //   {'name':'Others(net)','value':'41'},
-    //   {'name':'Delta to go','value':'1343'},
-    //   {'name':'LP 2018','value':'50037'}
-    //   ];
-    // drawWaterflowChart(this.svg, data);
-  }
-
   ngOnChanges(changes: any) {
-    // [
-    //   { "name": "P12 2016", "value": 51513, "start": 0, "end": 51513, "class": "initial" },
-    //   { "name": "RD", "value": -1810, "start": 51513, "end": 49703, "class": "middle negative" },
-    //   { "name": "RU", "value": 504, "start": 49703, "end": 50207, "class": "middle positive" },
-    //   { "name": "Others(net)", "value": 41, "start": 50207, "end": 50248, "class": "middle positive" },
-    //   { "name": "act P1 2017", "end": 50248, "start": 0, "class": "middle", "value": 50248 },
-    //   { "name": "Delta to go", "value": 1343, "start": 50248, "end": 51591, "class": "result" },
-    //   { "name": "LP 2017", "end": 51591, "start": 0, "class": "result final", "value": 51591 },
-    //   { "name": "LP 2018", "value": 50037, "start": 0, "end": 50037, "class": "result final" }
-    // ]
     if (changes.data.currentValue) {
       drawWaterflowChart(this.waterfallContainer.nativeElement, changes.data.currentValue);
     }
@@ -123,13 +100,15 @@ function drawWaterflowChart(container: HTMLDivElement, data: any[]) {
   const minVal = Math.min(data[0].value - Math.abs(data[1].value), data[6].value, data[7].value);
   const maxVal = Math.max(Math.abs(data[1].value), data[2].value, data[3].value, data[5].value);
   let scaleStartVal = 0;
-  if (minVal > maxVal) {
+  if (minVal > maxVal && minVal > maxVal * 5) {
     scaleStartVal = minVal - maxVal;
     for (let i = 0; i < data.length; i++) {
       if (data[i].value > scaleStartVal) {
         data[i].start = scaleStartVal + 1;
       }
     }
+  } else if (data[0].value + data[1].value < 0) {
+    scaleStartVal = data[0].value + data[1].value; // - y(10);
   }
 
   // Scale the range of the data in the domains
@@ -152,9 +131,9 @@ function drawWaterflowChart(container: HTMLDivElement, data: any[]) {
   // draw value
   bar.append('text')
     .attr('x', x.bandwidth() / 2)
-    .attr('y', function (d) { return y(d.end) + 5; })
-    .attr('dy', function (d) { return ((d.class.includes('negative')) ? '+' : '-') + '.75em'; })
-    .text(function (d) { return commaFormatter(d.value/*d.end - d.start*/); });
+    .attr('y', function (d) { return ((d.value < 0) ? y(d.start) + 5 : y(d.end) + 5); })// { return y(d.end) + 5; })
+    .attr('dy', function (d) { return '-.75em'; })
+    .text(function (d) { return commaFormatter(d.value); });
 
   // draw connector
   bar.filter(function (d) { return d.class !== 'result final'; }).append('line')
@@ -165,12 +144,44 @@ function drawWaterflowChart(container: HTMLDivElement, data: any[]) {
     .attr('y2', function (d) { return y(d.end); });
 
   // draw break
-  bar.filter(function (d) { return (d.value > scaleStartVal); }).append('svg:image')
+  bar.filter(function (d) { return (scaleStartVal > 0 && d.value >= scaleStartVal); }).append('svg:image')
     .attr('xlink:href', function (d) { return ('/img/break2.svg'); })
-    .attr('height', '33')
-    .attr('width', '75')
+    .attr('height', '25')
+    .attr('width', '73')
     .attr('x', '-10')
-    .attr('y', charth - 150);
+    .attr('y', charth - 120);
+
+
+  // animation transition
+  const t = d3.transition('animation-transition')
+    .duration(1000)
+    .ease(d3.easeLinear)
+    .on('end', function (d) {
+      svg.selectAll('line.connector').attr('style', 'display:block');
+      svg.selectAll('.bar text').attr('style', 'display:block');
+    });
+
+  // draw animation veil
+  bar.append('rect')
+    .attr('class', 'bar veil')
+    .attr('y', function (d) { return y(Math.max(d.start, d.end)) - 1; })
+    .attr('x', -10)
+    .attr('width', x.bandwidth() + 20)
+    .attr('height', function (d) { return Math.abs(y(d.start) - y(d.end)); });
+
+  // set animation
+  svg.selectAll('.bar .veil').transition(t)
+    .attr('height', function (d) { return 0; });
+
+  // y 0 axe
+  svg.append('g').append('line')
+    .attr('x1', 0)
+    .attr('x2', width)
+    .attr('y1', y(0))
+    .attr('y2', y(0))
+    .style('opacity', 0.5)
+    .style('stroke-dasharray', 3)
+    .style('stroke', '#000');
 
   // add the x Axis
   svg.append('g')
