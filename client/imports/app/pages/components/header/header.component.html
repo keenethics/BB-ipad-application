@@ -10,17 +10,20 @@
     <button class="reset-btn" *ngIf="isButtonEnabled" (click)="resetFilters()" ion-button icon-only>
       <ion-icon class="icon-filter" name="icon-filter"></ion-icon>
     </button>
-  </ion-buttons>
-  <ion-buttons *ngIf="isLoggedIn()" end>
     <button (click)="openPage('preferences')" ion-button icon-only>
       <ion-icon class="icon-preferences" name="icon-preferences"></ion-icon>
     </button>
+  </ion-buttons>
+  <ion-buttons *ngIf="isLoggedIn()" end>
     <button (click)="logout()" ion-button icon-only>
       <ion-icon class="icon-logout" name="icon-logout"></ion-icon>
     </button>
   </ion-buttons>
   <ion-title>
-    <ion-icon class="icon-logo" name="icon-logo"></ion-icon>
-    NOKIA MN BLACK BOOK APP <small>Oxygen 30.03.2017, P02 2017 ACT</small>
+    <h1>
+      <ion-icon class="icon-logo" name="icon-logo"></ion-icon>
+      NOKIA MN BLACK BOOK
+    </h1>
+    <h2 *ngIf="info?.lastDataUpdateText">Data source: {{info.lastDataUpdateText}} based on {{info.period}} actuals</h2>
   </ion-title>
 </ion-toolbar>
