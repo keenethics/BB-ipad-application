@@ -9,7 +9,7 @@
     "meteor:update": "meteor update --all-packages",
     "test": "meteor test --driver-package practicalmeteor:mocha",
     "test:ci": "meteor test --once --driver-package dispatch:mocha-phantomjs",
-    "tslint-check": "sh ./bin/tslint-check"
+    "tslint-check": "bash ./bin/tslint-check"
   },
   "pre-commit": {
     "run": "tslint-check",

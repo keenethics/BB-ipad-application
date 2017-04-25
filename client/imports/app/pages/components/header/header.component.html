@@ -20,7 +20,10 @@
     </button>
   </ion-buttons>
   <ion-title>
-    <ion-icon class="icon-logo" name="icon-logo"></ion-icon>
-    NOKIA MN BLACK BOOK APP <br><small> Data source: Oxygen 30.03.2017 based on P02 2017 actuals</small>
+    <h1>
+      <ion-icon class="icon-logo" name="icon-logo"></ion-icon>
+      NOKIA MN BLACK BOOK
+    </h1>
+    <h2 *ngIf="info?.lastDataUpdateText">Data source: {{info.lastDataUpdateText}} based on {{info.period}} actuals</h2>
   </ion-title>
 </ion-toolbar>

@@ -7,6 +7,15 @@ overview-sheet {
   $table-blue: rgb(25,55,147);
   $table-border-color: rgb(219,235,248);
 
+  .overview-container {
+    width: 700px;
+    margin: auto;
+    background: #fff;
+    padding-bottom: 14px;
+    border-radius: 6px;
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.1);
+  }
+
   .bold {
     font-weight: bold;
   }
@@ -72,10 +81,10 @@ overview-sheet {
     background: $table-color;
     line-height: 30px;
     margin: auto;
-    border: 10px solid $table-border-color;
+    margin-left: 51px;
 
     th, td {
-      font-size: 11px;
+      font-size: 10px;
       border: 1px solid #fff;
       text-align: right;
       line-height: 19px;
@@ -107,9 +116,9 @@ overview-sheet {
       //   }
       // }
 
-      width: 60px;
+      width: 76px;
       min-width: 30px;
-      max-width: 70px;
+      max-width: 77px;
     }
 
     th {

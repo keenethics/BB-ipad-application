@@ -48,6 +48,51 @@ const RESOURCE_TYPES = new Map([
   ['Trainees', 'Trainees']
 ]);
 
+const groupBy = (sourceArr, keys, maches) => {
+  maches = maches || {};
+  return Array.from(sourceArr.reduce((acc, item) => {
+
+    for (const machKey of Object.keys(maches)) {
+      if (maches[machKey] !== item[machKey]) return acc;
+    }
+
+    const key = keys.reduce((acc, keysItem) => {
+      return acc + item[keysItem];
+    }, '');
+
+    if (!acc.get(key)) {
+      acc.set(key, [item]);
+    } else {
+      acc.get(key).push(item);
+    }
+
+    return acc;
+  }, new Map()).values());
+};
+
+const sumGroup = (group) => {
+  return group.reduce((acc, item) => {
+    acc.periods['actual'] = (+acc.periods['actual'] || 0) + (+item.periods['actual'] || 0);
+    acc.periods['2017'] = (+acc.periods['2017'] || 0) + (+item.periods['2017'] || 0);
+    acc.periods['2018'] = (+acc.periods['2018'] || 0) + (+item.periods['2018'] || 0);
+
+    acc.periods['2017Ytd'] = (+acc.periods['2017Ytd'] || 0) + (+item.periods['2017Ytd'] || 0);
+    acc.periods['201512'] = (+acc.periods['201512'] || 0) + (+item.periods['201512'] || 0);
+    acc.periods['2016'] = (+acc.periods['2016'] || 0) + (+item.periods['2016'] || 0);
+
+    return acc;
+  }, Object.assign({}, group[0], {
+    periods: {
+      'actual': 0,
+      '2017': 0,
+      '2018': 0,
+      '2017Ytd': 0,
+      '201512': 0,
+      '2016': 0
+    }
+  }));
+}
+
 const mongoUrl = process.argv[2];
 const currentData = fs.readFileSync(__dirname + '/temp1', 'utf8');
 const histData = fs.readFileSync(__dirname + '/temp2', 'utf8');
@@ -142,54 +187,74 @@ mongoClient.connect(mongoUrl, (err, db) => {
 
         const businessDataSources = currentDataSources.concat(histDataSources);
 
-        function sumData(data, highLevelCategory, n2, cityKey) {
-          const filtered = data
-            .filter((item) => item['resourceTypeKey'] === 'TotalInternals')
-            .filter((item) => item['n2'] === n2)
-            .filter((item) => item['highLevelCategory'] === highLevelCategory)
-            .filter((item) => item['cityKey'] === cityKey);
+        console.log('Sum sources...');
+        process.send({ status: 'up_data_sum_sources' });
 
-          if (filtered.length) {
-            return filtered.reduce((acc, item) => {
-              acc.periods['actual'] = (+acc.periods['actual'] || 0) + (+item.periods['actual'] || 0);
-              acc.periods['2017'] = (+acc.periods['2017'] || 0) + (+item.periods['2017'] || 0);
-              acc.periods['2018'] = (+acc.periods['2018'] || 0) + (+item.periods['2018'] || 0);
+        const totalN3 = groupBy(
+          businessDataSources,
+          ['n2', 'highLevelCategory', 'cityKey'],
+          { resourceTypeKey: "TotalInternals" }
+        ).map((group) => {
+          const sumItem = sumGroup(group);
+          sumItem.n3 = 'Total';
+          return sumItem;
+        });
 
-              acc.periods['2017Ytd'] = (+acc.periods['2017Ytd'] || 0) + (+item.periods['2017Ytd'] || 0);
-              acc.periods['201512'] = (+acc.periods['201512'] || 0) + (+item.periods['201512'] || 0);
-              acc.periods['2016'] = (+acc.periods['2016'] || 0) + (+item.periods['2016'] || 0);
+        const totalMNs = groupBy(
+          totalN3,
+          ['highLevelCategory', 'cityKey']
+        ).map((group) => {
+          const sumItem = sumGroup(group);
+          sumItem.n2 = 'Total';
+          return sumItem;
+        });
 
-              return Object.assign({}, acc);
-            });
-          }
+        console.log('Calculating cities totals...');
+        process.send({ status: 'up_data_calc_cities_totals' });
 
-          return null;
-        }
+        const cityTotals = totalN3.concat(totalMNs);
+        const countryTotals = groupBy(
+          cityTotals,
+          ['n2', 'highLevelCategory', 'country']
+        ).map(group => {
+          const sumItem = sumGroup(group);
+          sumItem['city'] = 'Total';
+          sumItem['metropolis'] = 'Total';
+          sumItem['identifier'] = 'Country';
+          return sumItem;
+        });
 
-        function sumGroup(group) {
-          return group.reduce((acc, item) => {
-            acc.periods['actual'] = (+acc.periods['actual'] || 0) + (+item.periods['actual'] || 0);
-            acc.periods['2017'] = (+acc.periods['2017'] || 0) + (+item.periods['2017'] || 0);
-            acc.periods['2018'] = (+acc.periods['2018'] || 0) + (+item.periods['2018'] || 0);
+        console.log('Calculating markets totals...');
+        process.send({ status: 'up_data_calc_markets_totals' });
 
-            acc.periods['2017Ytd'] = (+acc.periods['2017Ytd'] || 0) + (+item.periods['2017Ytd'] || 0);
-            acc.periods['201512'] = (+acc.periods['201512'] || 0) + (+item.periods['201512'] || 0);
-            acc.periods['2016'] = (+acc.periods['2016'] || 0) + (+item.periods['2016'] || 0);
+        const marketTotals = groupBy(
+          countryTotals,
+          ['n2', 'highLevelCategory', 'market']
+        ).map(group => {
+          const sumItem = sumGroup(group);
+          sumItem['country'] = 'Total';
+          sumItem['identifier'] = 'Market';
+          return sumItem;
+        });
 
-            return acc;
-          }, Object.assign({}, group[0], {
-            periods: {
-              'actual': 0,
-              '2017': 0,
-              '2018': 0,
-              '2017Ytd': 0,
-              '201512': 0,
-              '2016': 0
-            }
-          }));
-        }
+        console.log('Calculating global totals...');
+        process.send({ status: 'up_data_calc_globals_totals' });
 
-        function setCords(data) {
+        const globalTotals = groupBy(
+          marketTotals,
+          ['n2', 'highLevelCategory']
+        ).map(group => {
+          const sumItem = sumGroup(group);
+          sumItem['market'] = 'Total';
+          sumItem['identifier'] = 'Global';
+          return sumItem;
+        });
+
+        console.log('Add coorinates...');
+
+        const allData = cityTotals.concat(countryTotals, marketTotals, globalTotals);
+
+        const setCords = (data) => {
           return data.map((item) => {
             if (!item) return;
             const city = item.city;
@@ -197,9 +262,11 @@ mongoClient.connect(mongoUrl, (err, db) => {
             const country = item.country;
 
             const cords = geoCoordinates
-              .filter((i) => i.country === country)
-              .filter((i) => i.market === market)
-              .filter((i) => i.city === city)[0];
+              .filter((i) => (
+                i.country === country &&
+                i.market === market &&
+                i.city === city
+              ))[0];
 
             if (cords) {
               const longitude = cords.longitude;
@@ -213,146 +280,8 @@ mongoClient.connect(mongoUrl, (err, db) => {
           }).filter(item => item);
         }
 
-        const highLevelCategories = Array.from(new Set(HIGHT_LEVEL_CATEGORIES.values()));
-        const BUs = Array.from(new Set(businessDataSources.map((i) => i.n2)));
-        const cities = Array.from(new Set(businessDataSources.map((i) => i.city)));
-        const countries = Array.from(new Set(businessDataSources.map((i) => i.country)));
-        const markets = Array.from(new Set(businessDataSources.map((i) => i.market)));
-        const cityKeys = Array.from(new Set(businessDataSources.map((i) => i.cityKey)));
-        const resourceTypes = Array.from(new Set(businessDataSources.map((i) => i.resourceType)));
-        const totalN3 = [];
-        const totalMNs = [];
-
-        console.log('Maped object: ');
-        console.log(businessDataSources[businessDataSources.length - 1]);
-
-        console.log('Sum sources...');
-        process.send({ status: 'up_data_sum_sources' });
-
-        cityKeys.forEach((cityKey) => {
-          highLevelCategories.forEach((category) => {
-            let totalMN = null;
-            BUs.forEach((n2) => {
-              const bu = sumData(businessDataSources, category, n2, cityKey);
-              if (bu) {
-                bu.n3 = 'Total';
-
-                if (!totalMN) {
-                  totalMN = Object.assign({}, bu, { periods: {} });
-                  totalMN.n2 = 'Total';
-                  totalMN.periods['actual'] = +bu.periods['actual'] || 0;
-                  totalMN.periods['2017'] = +bu.periods['2017'] || 0;
-                  totalMN.periods['2018'] = +bu.periods['2018'] || 0;
-
-                  totalMN.periods['2017Ytd'] = +bu.periods['2017Ytd'] || 0;
-                  totalMN.periods['201512'] = +bu.periods['201512'] || 0;
-                  totalMN.periods['2016'] = +bu.periods['2016'] || 0;
-
-                } else {
-                  totalMN.periods['actual'] = (+totalMN.periods['actual'] || 0) + (+bu.periods['actual'] || 0);
-                  totalMN.periods['2017'] = (+totalMN.periods['2017'] || 0) + (+bu.periods['2017'] || 0);
-                  totalMN.periods['2018'] = (+totalMN.periods['2018'] || 0) + (+bu.periods['2018'] || 0);
-
-                  totalMN.periods['2017Ytd'] = (+totalMN.periods['2017Ytd'] || 0) + (+bu.periods['2017Ytd'] || 0);
-                  totalMN.periods['201512'] = (+totalMN.periods['201512'] || 0) + (+bu.periods['201512'] || 0);
-                  totalMN.periods['2016'] = (+totalMN.periods['2016'] || 0) + (+bu.periods['2016'] || 0);
-                }
-
-                totalN3.push(bu);
-              }
-            });
-            totalMNs.push(totalMN);
-          });
-        });
-
-        console.log('Calculating cities totals...');
-        process.send({ status: 'up_data_calc_cities_totals' });
-
-        const cityTotals = totalN3.concat(totalMNs);
-        BUs.push('Total');
-        highLevelCategories.push('Total');
-
-        const countryTotals = [];
-        countries.forEach((country) => {
-          highLevelCategories.forEach((category) => {
-            BUs.forEach((n2) => {
-              const group = cityTotals
-                .filter((item) => item)
-                .filter((item) => item['resourceTypeKey'] === 'TotalInternals')
-                .filter((item) => item['n2'] === n2)
-                .filter((item) => item['highLevelCategory'] === category)
-                .filter((item) => item['country'] === country);
-
-              if (group.length) {
-                const countryTotal = sumGroup(group);
-                countryTotal['city'] = 'Total';
-                countryTotal['metropolis'] = 'Total';
-                countryTotal['identifier'] = 'Country';
-                countryTotals.push(countryTotal);
-              }
-            });
-          });
-        });
-
-        console.log(countryTotals[countryTotals.length - 1]);
-
-        console.log('Calculating markets totals...');
-        process.send({ status: 'up_data_calc_markets_totals' });
-
-        const marketTotals = [];
-        markets.forEach((market) => {
-          highLevelCategories.forEach((category) => {
-            BUs.forEach((n2) => {
-              const group = countryTotals
-                .filter((item) => item)
-                .filter((item) => item['resourceTypeKey'] === 'TotalInternals')
-                .filter((item) => item['n2'] === n2)
-                .filter((item) => item['highLevelCategory'] === category)
-                .filter((item) => item['market'] === market);
-
-              if (group.length) {
-                const marketTotal = sumGroup(group);
-                marketTotal['country'] = 'Total';
-                marketTotal['identifier'] = 'Market';
-                marketTotals.push(marketTotal);
-              }
-            });
-          });
-        });
-
-        console.log(marketTotals[marketTotals.length - 1]);
-
-        console.log('Calculating global totals...');
-        process.send({ status: 'up_data_calc_globals_totals' });
-
-        const globalTotals = [];
-        highLevelCategories.forEach((category) => {
-          BUs.forEach((n2) => {
-            const group = marketTotals
-              .filter((item) => item)
-              .filter((item) => item['resourceTypeKey'] === 'TotalInternals')
-              .filter((item) => item['n2'] === n2)
-              .filter((item) => item['highLevelCategory'] === category);
-
-            if (group.length) {
-              const globalTotal = sumGroup(group);
-              globalTotal['market'] = 'Total';
-              globalTotal['identifier'] = 'Global';
-              globalTotals.push(globalTotal);
-            }
-          });
-        });
-
-        console.log(globalTotals[globalTotals.length - 1]);
-        console.log('Add coorinates...');
-
-
-        const allData = cityTotals.concat(countryTotals, marketTotals, globalTotals);
-
         const dataWithCords = setCords(allData);
         const sourcesDataWithCords = setCords(businessDataSources);
-
-        console.log(dataWithCords[dataWithCords.length - 1]);
 
         console.log('Insert data to DB...');
         process.send({ status: 'up_data_insert_db' });

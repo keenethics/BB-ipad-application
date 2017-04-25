@@ -3,15 +3,18 @@ import {
   EventEmitter,
   Input,
   Output,
-  ViewEncapsulation
+  ViewEncapsulation,
+  OnInit,
+  OnDestroy
 } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { Subscription } from 'rxjs/Subscription';
 
 import template from './header.component.html';
 import styles from './header.component.scss';
 
 import { Authorization, RolesController } from '../../../authorization';
-import { DataUploader } from '../../../data-management';
+import { DataUploader, DataUpdateInfo } from '../../../data-management';
 import { LoadingManager, ToastsManager } from '../../../common';
 
 import { SigninPage, HomePage, PreferencesPage } from '../../index';
@@ -25,6 +28,9 @@ import { FilterController } from '../../../filters';
   encapsulation: ViewEncapsulation.None
 })
 export class HeaderComponent {
+  private _subscr: Subscription;
+  private info: any;
+
   @Input('isButtonEnabled') isButtonEnabled: boolean;
   @Output('onButtonClick') onButtonClick = new EventEmitter();
 
@@ -35,8 +41,19 @@ export class HeaderComponent {
     private dataUploader: DataUploader,
     private loadingCtrl: LoadingManager,
     private toastCtrl: ToastsManager,
-    private filterCtrl: FilterController
+    private filterCtrl: FilterController,
+    private updateInfo: DataUpdateInfo
   ) {
+  }
+
+  ngOnInit() {
+    this._subscr = this.updateInfo.info$.subscribe(info => {
+      this.info = info;
+    });
+  }
+
+  ngOnDestroy() {
+    if (this._subscr) this._subscr.unsubscribe();
   }
 
   emitButtonClick(menuTitle: string) {

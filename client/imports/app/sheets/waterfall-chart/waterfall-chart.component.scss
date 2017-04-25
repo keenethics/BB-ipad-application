@@ -11,15 +11,22 @@ waterfall-chart {
     fill: #4c5667;
   }
 
+  rect.bar.veil {
+    fill: white;
+    opacity: 1;
+  }
+
   .bar line.connector {
     stroke: #193793;
     stroke-dasharray: 3;
+    display: none;
   }
 
   .bar text {
     fill: black;
     font: 11px sans-serif;
     text-anchor: middle;
+    display: none;
   }
 
   .tick text {
@@ -37,10 +44,5 @@ waterfall-chart {
   .waterfall-container {
     display: flex;
     justify-content: center;
-
-    svg {
-      background-color: #fff;
-      border-radius: 6px;
-    }
   }
 }
