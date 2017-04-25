@@ -34,7 +34,7 @@ export class WaterfallChartComponent {
 
 function drawWaterflowChart(container: HTMLDivElement, data: any[]) {
   const chartw = 700;
-  const charth = 400;
+  const charth = 300;
   const margin = { top: 50, right: 30, bottom: 30, left: 40 };
   const width = chartw - margin.left - margin.right;
   const height = charth - margin.top - margin.bottom;
@@ -100,15 +100,18 @@ function drawWaterflowChart(container: HTMLDivElement, data: any[]) {
   const minVal = Math.min(data[0].value - Math.abs(data[1].value), data[6].value, data[7].value);
   const maxVal = Math.max(Math.abs(data[1].value), data[2].value, data[3].value, data[5].value);
   let scaleStartVal = 0;
-  if (minVal > maxVal && minVal > maxVal * 5) {
-    scaleStartVal = minVal - maxVal;
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].value > scaleStartVal) {
-        data[i].start = scaleStartVal + 1;
+
+  if (minVal > 500 || maxVal > 500) {
+    if (minVal > maxVal && minVal > maxVal * 5) {
+      scaleStartVal = minVal - maxVal;
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].value > scaleStartVal) {
+          data[i].start = scaleStartVal + 1;
+        }
       }
+    } else if (data[0].value + data[1].value < 0) {
+      scaleStartVal = data[0].value + data[1].value; // - y(10);
     }
-  } else if (data[0].value + data[1].value < 0) {
-    scaleStartVal = data[0].value + data[1].value; // - y(10);
   }
 
   // Scale the range of the data in the domains
