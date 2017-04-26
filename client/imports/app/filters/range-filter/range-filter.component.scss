@@ -1,5 +1,8 @@
 range-filter {
-    ion-range {
+    ion-range.range {
+    padding: 0px 10px;
+    padding-top: 20px;
+
     .range-slider {
       .range-bar {
         height: 3px;
@@ -47,16 +50,17 @@ range-filter {
 
   .range-filter-container {
     position: relative;
+    padding: 0 40px;
+    height: 81px
   }
 
   .range-filter-container>span {
-    margin: 13px;
     color: #fff;
     font-weight: bold;
 
     &.max-lable {
       position: absolute;
-      right: 0;
+      right: 40px;
       bottom: 0;
       margin-bottom: 0;
     }
