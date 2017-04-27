@@ -17,6 +17,7 @@ export class RangeFilterController {
   private _upper: number;
   private _hadMaxRange: boolean = false;
   private _dataProvider: DataProvider = new DataProvider();
+  private _isUsed = new BehaviorSubject<boolean>(false);
 
   constructor(
     private _filterCtrl: FilterController
@@ -52,6 +53,10 @@ export class RangeFilterController {
     return this._rangeState.asObservable();
   }
 
+  get isUsed$() {
+    return this._isUsed.asObservable();
+  }
+
   private _getMaxRangeState() {
     if (this._hadMaxRange) {
       this._nextRangeState();
@@ -61,6 +66,7 @@ export class RangeFilterController {
         this._dataProvider.getDataImmediately(filter)
           .then((data: any[]) => {
             const values = data.map(d => d.periods['actual']);
+            if (values.length === 0) values[0] = 0;
             this._min = Math.min(...values);
             this._max = Math.max(...values);
             this._lower = this._min;
@@ -81,6 +87,7 @@ export class RangeFilterController {
         upper: this._upper
       }
     });
+    this._isUsed.next(false);
   }
 
   updateValue(val: IRangeValue) {
@@ -89,6 +96,12 @@ export class RangeFilterController {
       this._lower = lower;
       this._upper = upper;
       this._value.next({ ...val });
+
+      if ((this._lower !== this._min) || (this._upper !== this._max)) {
+        this._isUsed.next(true);
+      } else {
+        this._isUsed.next(false);
+      }
     }
   }
 
