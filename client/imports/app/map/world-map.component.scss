@@ -33,6 +33,10 @@ svg {
         font-weight: bold;
       }
 
+      &.red {
+        fill: rgb(192, 0, 0);
+      }
+
       &.selected-city {
         fill: #429437;
       }

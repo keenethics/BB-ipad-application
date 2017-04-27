@@ -60,6 +60,7 @@ export class WorldMap implements OnChanges {
   @Input('chart-type') chartType: string; // circle || bar
   @Input('show-labels') labels: boolean;
   @Input('show-values') values: boolean;
+  @Input('color') color: boolean;
   @Input('is-log-scale') isLogScale: boolean;
   @Input('zoom-scale-extend') zoomScaleExtend: [number, number];
 
@@ -215,7 +216,7 @@ export class WorldMap implements OnChanges {
 
       const groupEnter = placeholders.enter()
         .append('g')
-        .attr('class', 'marker')
+        .attr('class', `marker${this.color ? ' red' : ''}`)
         .attr('style', 'cursor: pointer')
         .attr('transform', (d: any) => {
           const position = this.projection([parseFloat(d.longitude) || 0, parseFloat(d.latitude) || 0]);
@@ -294,7 +295,7 @@ export class WorldMap implements OnChanges {
 
       const groupEnter = placeholders.enter()
         .append('g')
-        .attr('class', 'marker')
+        .attr('class', `marker${this.color ? ' red' : ''}`)
         .attr('style', 'cursor: pointer')
         .attr('transform', (d: any) => {
           const position = this.projection([parseFloat(d.longitude) || 0, parseFloat(d.latitude) || 0]);
