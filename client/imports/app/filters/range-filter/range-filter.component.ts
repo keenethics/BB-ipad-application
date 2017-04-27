@@ -26,9 +26,18 @@ export class RangeFilterComponent {
 
   @Input() min: number;
   @Input() max: number;
+  @Input() title: string;
+  @Input() segments: number;
+
   @Output() onChange = new EventEmitter();
 
   handleChange(val: IRangeValue) {
     this.onChange.emit(Object.assign(this._currentValue));
+  }
+
+  getStep() {
+    const step = (this.max - this.min) / this.segments;
+    console.log(step);
+    return Math.floor(step) || 1;
   }
 }

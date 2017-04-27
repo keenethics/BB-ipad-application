@@ -1,7 +1,7 @@
 range-filter {
-    ion-range.range {
+    ion-range.range.range-has-pin {
     padding: 0px 10px;
-    padding-top: 20px;
+    padding-top: 35px;
 
     .range-slider {
       .range-bar {
@@ -51,7 +51,8 @@ range-filter {
   .range-filter-container {
     position: relative;
     padding: 0 40px;
-    height: 81px
+    height: 96px;
+    margin-top: 10px;
   }
 
   .range-filter-container>span {
@@ -63,6 +64,10 @@ range-filter {
       right: 40px;
       bottom: 0;
       margin-bottom: 0;
+    }
+
+    &.title {
+      position: absolute;
     }
   }
 }
