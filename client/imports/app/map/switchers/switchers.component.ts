@@ -41,7 +41,8 @@ export class MapSwitchers implements OnInit, OnChanges {
         { labels: ['HC size as circle', 'HC size as bar pins'], value: false, key: 'charts' },
         { labels: ['Linear HC scaling', 'Log HC scaling'], value: false, key: 'scaling' },
         { labels: ['Show region name', 'Hide region name'], value: false, key: 'labels' },
-        { labels: ['Show HC value', 'Hide HC value'], value: false, key: 'values' }
+        { labels: ['Show HC value', 'Hide HC value'], value: false, key: 'values' },
+        { labels: ['Blue location color', 'Red location color'], value: false, key: 'color' }
       ];
     }
 

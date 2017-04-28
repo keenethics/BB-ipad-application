@@ -29,8 +29,12 @@ svg {
       }
 
       .label-text {
-        color: rgb(18, 65, 145);
+        fill: rgb(18, 65, 145);
         font-weight: bold;
+      }
+
+      &.red {
+        fill: rgb(192, 0, 0);
       }
 
       &.selected-city {
