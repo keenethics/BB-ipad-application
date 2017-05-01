@@ -20,15 +20,15 @@ App.icons({
 });
 
 App.launchScreens({
-  iphone_2x: 'resources/splash/iphone_2x.png',
-  iphone5: 'resources/splash/iphone5.png',
-  iphone6: 'resources/splash/iphone6.png',
-  iphone6p_portrait: 'resources/splash/iphone6p_portrait.png',
-  iphone6p_landscape: 'resources/splash/iphone6p_landscape.png',
-  ipad_portrait: 'resources/splash/ipad_portrait.png',
-  ipad_portrait_2x: 'resources/splash/ipad_portrait_2x.png',
-  ipad_landscape: 'resources/splash/ipad_landscape_new.png',
-  ipad_landscape_2x: 'resources/splash/ipad_landscape_2x.png'
+  iphone_2x: 'resources/splash/iphone_2x.jpeg',
+  iphone5: 'resources/splash/iphone5.jpeg',
+  iphone6: 'resources/splash/iphone6.jpeg',
+  // iphone6p_portrait: 'resources/splash/iphone6p_portrait.jpeg',
+  iphone6p_landscape: 'resources/splash/iphone6p_landscape.jpeg',
+  // ipad_portrait: 'resources/splash/ipad_portrait.jpeg',
+  // ipad_portrait_2x: 'resources/splash/ipad_portrait_2x.jpeg',
+  ipad_landscape: 'resources/splash/ipad_landscape.jpeg',
+  ipad_landscape_2x: 'resources/splash/ipad_landscape_2x.jpeg'
 });
 
 App.configurePlugin('cordova-plugin-file', {

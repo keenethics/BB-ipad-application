@@ -209,10 +209,26 @@ ion-backdrop {
 .splash-screen {
   width: 100%;
   height: 100%;
-  background-image: url(/img/ipad_landscape_new.png);
+  background-image: url(/img/iphone6p_landscape.jpeg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+
+  &.ipad-pro {
+    background-image: url(/img/ipad_landscape_2x.jpeg);
+  }
+
+  &.ipad {
+    background-image: url(/img/ipad_landscape.jpeg);
+  }
+
+  &.iphone5{
+    background-image: url(/img/iphone5.jpeg);
+  }
+
+  &.iphone6{
+    background-image: url(/img/iphone6.jpeg);
+  }
 }
 
 @import '../imports/app/filters/bu-filter/bu-filter.component.scss';
