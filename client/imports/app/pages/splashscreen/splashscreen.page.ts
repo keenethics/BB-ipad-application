@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, Platform } from 'ionic-angular';
 
 import { Authorization } from '../../authorization/authorization';
 import { HomePage } from '../home/home.page';
@@ -18,8 +18,11 @@ export class SplashscreenPage {
 
   constructor(
     private _navCtrl: NavController,
-    private _auth: Authorization
-  ) { }
+    private _auth: Authorization,
+    private _plt: Platform
+  ) {
+    console.log(this._plt.is('ios'));
+  }
 
   login() {
     this._navCtrl.setRoot(this._auth.isLoggedIn() ? HomePage : SigninPage, {}, {
