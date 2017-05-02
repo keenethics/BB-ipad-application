@@ -198,6 +198,10 @@ ion-footer {
 }
 
 .button[ion-button]:not([class*="button-clear"]) {
+<<<<<<< Updated upstream
+=======
+  //background-color: map-get($colors, "light-blue");
+>>>>>>> Stashed changes
   background-color: rgb(18, 65, 145);
   box-shadow: 0px 5px 15px 0px rgba(11, 64, 156, 0.5);
 }
