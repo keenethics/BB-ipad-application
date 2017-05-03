@@ -4,8 +4,13 @@ splashscreen-page {
   button.button.top-right {
     position: absolute;
     right: 5%;
-    font-weight: 900;
-    top: 10%;
     padding: 25px 45px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    font-size: 2.4vh;
+    margin: auto 0;
+    top: 0;
+    bottom: 56%;
+    font-family: LatoWebMedium;
   }
 }

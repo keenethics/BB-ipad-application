@@ -1,6 +1,6 @@
 <ion-toolbar color="primary">
-  <ion-buttons>
-    <button *ngIf="isLoggedIn()" (click)="openPage('home')" ion-button icon-only>
+  <ion-buttons *ngIf="isLoggedIn()">
+    <button (click)="openPage('home')" ion-button icon-only>
       <ion-icon class="icon-home" name="icon-home"></ion-icon>
     </button>
     <button *ngIf="isButtonEnabled" (click)="emitButtonClick('filter-menu')" ion-button icon-only>
