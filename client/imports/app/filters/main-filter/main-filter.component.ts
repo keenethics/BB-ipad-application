@@ -212,33 +212,35 @@ export class MainFilterComponent implements OnInit, OnDestroy {
       $in: this.filters.map((f) => f.unit.identifier.toLowerCase() === this.category ? f.label : null).filter(f => f)
     };
 
-    switch (this.category) {
-      case 'market': {
-        this.query.identifier = 'Country';
-        this.filterQuery = Object.assign({}, this.query);
-        break;
-      };
-      case 'country': {
-        this.query.identifier = 'City';
-        this.filterQuery = Object.assign({}, this.query);
-        delete this.filterQuery.city;
-        break;
-      };
-      case 'city': {
-        this.query.identifier = 'City';
-        this.filterQuery = Object.assign({}, this.query);
-        delete this.filterQuery.city;
-        break;
-      };
-    }
+    // debugger
+
+    // switch (this.category) {
+    //   case 'market': {
+    //     this.query.identifier = 'Country';
+    //     this.filterQuery = Object.assign({}, this.query);
+    //     break;
+    //   };
+    //   case 'country': {
+    //     this.query.identifier = 'City';
+    //     this.filterQuery = Object.assign({}, this.query);
+    //     delete this.filterQuery.city;
+    //     break;
+    //   };
+    //   case 'city': {
+    //     this.query.identifier = 'City';
+    //     this.filterQuery = Object.assign({}, this.query);
+    //     delete this.filterQuery.city;
+    //     break;
+    //   };
+    // }
     this.filterQuery.n2 = 'Total';
 
     this.doDataQuery(this.query);
 
-    switch (this.category) {
-      case 'market': this.category = 'country'; break;
-      case 'country': this.category = 'city'; break;
-    }
+    // switch (this.category) {
+    //   case 'market': this.category = 'country'; break;
+    //   case 'country': this.category = 'city'; break;
+    // }
 
     this.filterCtrl.activeFilters$ = this.filters;
     this.dataProvider.query(this.filterQuery);
