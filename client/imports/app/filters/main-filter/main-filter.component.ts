@@ -95,18 +95,21 @@ export class MainFilterComponent implements OnInit, OnDestroy {
     return res;
   }
 
-  initFilters() {
+  initFilters(isSetCategory: boolean = true) {
     this.query = {
-      identifier: 'Global',
       highLevelCategory: 'Landing point',
       resourceTypeKey: 'TotalInternals',
       n2: 'Total'
     };
 
+    if (isSetCategory) {
+      this.query.identifier = 'Global';
+      this.category = 'global';
+    }
+
     this.filterQuery = Object.assign({}, this.query);
     this.filterQuery.n2 = 'Total';
     this.filters = [];
-    this.category = 'global';
 
     this.options = [];
     this.searchValue = '';
@@ -116,7 +119,7 @@ export class MainFilterComponent implements OnInit, OnDestroy {
   }
 
   resetFilter() {
-    this.initFilters();
+    this.initFilters(false);
 
     this.changeCategory();
 
@@ -209,33 +212,35 @@ export class MainFilterComponent implements OnInit, OnDestroy {
       $in: this.filters.map((f) => f.unit.identifier.toLowerCase() === this.category ? f.label : null).filter(f => f)
     };
 
-    switch (this.category) {
-      case 'market': {
-        this.query.identifier = 'Country';
-        this.filterQuery = Object.assign({}, this.query);
-        break;
-      };
-      case 'country': {
-        this.query.identifier = 'City';
-        this.filterQuery = Object.assign({}, this.query);
-        delete this.filterQuery.city;
-        break;
-      };
-      case 'city': {
-        this.query.identifier = 'City';
-        this.filterQuery = Object.assign({}, this.query);
-        delete this.filterQuery.city;
-        break;
-      };
-    }
+    // debugger
+
+    // switch (this.category) {
+    //   case 'market': {
+    //     this.query.identifier = 'Country';
+    //     this.filterQuery = Object.assign({}, this.query);
+    //     break;
+    //   };
+    //   case 'country': {
+    //     this.query.identifier = 'City';
+    //     this.filterQuery = Object.assign({}, this.query);
+    //     delete this.filterQuery.city;
+    //     break;
+    //   };
+    //   case 'city': {
+    //     this.query.identifier = 'City';
+    //     this.filterQuery = Object.assign({}, this.query);
+    //     delete this.filterQuery.city;
+    //     break;
+    //   };
+    // }
     this.filterQuery.n2 = 'Total';
 
     this.doDataQuery(this.query);
 
-    switch (this.category) {
-      case 'market': this.category = 'country'; break;
-      case 'country': this.category = 'city'; break;
-    }
+    // switch (this.category) {
+    //   case 'market': this.category = 'country'; break;
+    //   case 'country': this.category = 'city'; break;
+    // }
 
     this.filterCtrl.activeFilters$ = this.filters;
     this.dataProvider.query(this.filterQuery);
