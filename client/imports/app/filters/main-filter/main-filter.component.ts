@@ -95,18 +95,21 @@ export class MainFilterComponent implements OnInit, OnDestroy {
     return res;
   }
 
-  initFilters() {
+  initFilters(isSetCategory: boolean = true) {
     this.query = {
-      identifier: 'Global',
       highLevelCategory: 'Landing point',
       resourceTypeKey: 'TotalInternals',
       n2: 'Total'
     };
 
+    if (isSetCategory) {
+      this.query.identifier = 'Global';
+      this.category = 'global';
+    }
+
     this.filterQuery = Object.assign({}, this.query);
     this.filterQuery.n2 = 'Total';
     this.filters = [];
-    this.category = 'global';
 
     this.options = [];
     this.searchValue = '';
@@ -116,7 +119,7 @@ export class MainFilterComponent implements OnInit, OnDestroy {
   }
 
   resetFilter() {
-    this.initFilters();
+    this.initFilters(false);
 
     this.changeCategory();
 
