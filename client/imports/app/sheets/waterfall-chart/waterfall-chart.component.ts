@@ -157,7 +157,7 @@ function drawWaterflowChart(container: HTMLDivElement, data: any[]) {
 
   // animation transition
   const t = d3.transition('animation-transition')
-    .duration(1000)
+    .duration(0)
     .ease(d3.easeLinear)
     .on('end', function (d) {
       svg.selectAll('line.connector').attr('style', 'display:block');
