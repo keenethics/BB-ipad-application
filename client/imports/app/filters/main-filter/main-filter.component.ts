@@ -324,9 +324,10 @@ export class MainFilterComponent implements OnInit, OnDestroy {
   }
 
   private subscribe() {
-    this.dataSubscr = this.dataProvider.data$.subscribe((data) => {
-      this.data = data.filter((d: BusinessDataUnit) => ((d.city !== 'Non Nokia Site') && (d.city !== 'Virtual Office')));
-      this.options = this.getOptions(this.category);
+    this.dataSubscr = this.dataProvider.data$.subscribe((d) => {
+      this.data = d.filter((d: BusinessDataUnit) => ((d.city !== 'Non Nokia Site') && (d.city !== 'Virtual Office')));
+      // const data = this.range ? this.rangePipe.transform(this.data, this.range.value.lower, this.range.value.upper) : this.data;
+      // this.options = this.getOptions(this.category, data);
     });
 
     this.filterCtrl.onChangeCategory.subscribe((category: string) => {
