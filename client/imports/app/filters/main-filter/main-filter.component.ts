@@ -19,6 +19,8 @@ import { DataProvider } from '../../data-management';
 import { BusinessDataUnit } from '../../../../../both/data-management';
 import { FilterController } from '../filter-controller';
 import { RangeFilterController } from '../range-filter/range-filter-controller';
+import { RangeFilterPipe } from '../range-filter/range-filter.pipe';
+import { IRangeValue } from '../range-filter/range-value.model';
 
 @Component({
   selector: 'main-filter',
@@ -34,6 +36,7 @@ export class MainFilterComponent implements OnInit, OnDestroy {
   private dataSubscr: Subscription;
   private selectedCountry: string;
   private rangeSubscr: Subscription;
+  private rangePipe: RangeFilterPipe = new RangeFilterPipe();
 
   public options: string[];
   public searchValue: string;
@@ -82,8 +85,8 @@ export class MainFilterComponent implements OnInit, OnDestroy {
     }
   }
 
-  getOptions(key: string) {
-    const res = this.data
+  getOptions(key: string, data = this.data) {
+    const res = data
       .reduce((acc, item) => {
         if (item[key] && acc.indexOf(item[key]) === -1) {
           acc.push(item[key]);
@@ -308,7 +311,10 @@ export class MainFilterComponent implements OnInit, OnDestroy {
     this.filterCtrl.saveToStorage(this.category, this.filters, this.filterQuery, this.query);
   }
 
-  setRange(rangeValue: any) {
+  setRange(rangeValue: IRangeValue) {
+    const { lower, upper } = rangeValue;
+    const data = this.rangePipe.transform(this.data, lower, upper);
+    this.options = this.getOptions(this.category, data);
     this.rangeFilterCtrl.updateValue(rangeValue);
   }
 
@@ -318,9 +324,10 @@ export class MainFilterComponent implements OnInit, OnDestroy {
   }
 
   private subscribe() {
-    this.dataSubscr = this.dataProvider.data$.subscribe((data) => {
-      this.data = data.filter((d: BusinessDataUnit) => ((d.city !== 'Non Nokia Site') && (d.city !== 'Virtual Office')));
-      this.options = this.getOptions(this.category);
+    this.dataSubscr = this.dataProvider.data$.subscribe((d) => {
+      this.data = d.filter((d: BusinessDataUnit) => ((d.city !== 'Non Nokia Site') && (d.city !== 'Virtual Office')));
+      // const data = this.range ? this.rangePipe.transform(this.data, this.range.value.lower, this.range.value.upper) : this.data;
+      // this.options = this.getOptions(this.category, data);
     });
 
     this.filterCtrl.onChangeCategory.subscribe((category: string) => {
@@ -349,7 +356,9 @@ export class MainFilterComponent implements OnInit, OnDestroy {
       this.resetFilter();
     });
 
-    this.rangeSubscr = this.rangeFilterCtrl.rangeState$.subscribe(r => this.range = r);
+    this.rangeSubscr = this.rangeFilterCtrl.rangeState$.subscribe(r => {
+      this.range = r;
+    });
   }
 
   private unsubscribe() {
