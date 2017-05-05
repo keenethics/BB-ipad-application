@@ -24,7 +24,7 @@
       </ion-segment-button>
     </ion-segment>
   </ion-item>
-  <range-filter *ngIf="range" [title]="'Size filter on selected dimension'" [min]="range.min" [max]="range.max" [segments]="5" [currentValue]="range.value" (onChange)="setRange($event)"></range-filter>
+  <range-filter *ngIf="range" [title]="'Size filter on selected dimension'" [min]="range.min" [max]="range.max" [currentValue]="range.value" (onChange)="setRange($event)"></range-filter>
   <ion-item class="search-input">
     <ion-label><ion-icon class="icon-search" name="icon-search"></ion-icon></ion-label>
     <ion-input [(ngModel)]="searchValue" type="text" placeholder="Start typing a country here" value=""></ion-input>
