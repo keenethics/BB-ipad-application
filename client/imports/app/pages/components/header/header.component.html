@@ -24,6 +24,6 @@
       <ion-icon class="icon-logo" name="icon-logo"></ion-icon>
       NOKIA MN BLACK BOOK
     </h1>
-    <h2 *ngIf="info?.lastDataUpdateText">Data source: {{info.lastDataUpdateText}} based on {{info.period}} actuals</h2>
+    <h2 *ngIf="info?.lastDataUpdateText && isLoggedIn()">Data source: {{info.lastDataUpdateText}} based on {{info.period}} actuals</h2>
   </ion-title>
 </ion-toolbar>
