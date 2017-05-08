@@ -11,7 +11,7 @@ range-filter {
         .range-pin {
           position: relative;
           top: -20px;
-          display: inline-block;
+          display: none;
           padding: 0;
           min-width: 28px;
           border-radius: 50px;
@@ -68,6 +68,15 @@ range-filter {
 
     &.title {
       position: absolute;
+    }
+
+    &.range-pin {
+      position: absolute;
+      top: 22px;
+
+      &.right {
+        right: 40px;
+      }
     }
   }
 }
