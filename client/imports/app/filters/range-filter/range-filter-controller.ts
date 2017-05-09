@@ -66,8 +66,7 @@ export class RangeFilterController {
         this._dataProvider.getDataImmediately(filter)
           .then((data: any[]) => {
             const values = data
-              .map(d => d.periods['actual'])
-              .filter(d => d);
+              .map(d => d.periods['actual']);
 
             if (values.length === 0) values[0] = 0;
 
