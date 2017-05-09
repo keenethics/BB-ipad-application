@@ -23,10 +23,10 @@
   "wrong_upload_params": "Wrong files.",
   "up_data_map_sources": "Mapping source objects ",
   "up_data_sum_sources": "Sum sources ",
-  "up_data_calc_cities_totals": "Calculating cities totals ",
-  "up_data_calc_markets_totals": "Calculating markets totals ",
-  "up_data_calc_globals_totals": "Calculating global totals ",
-  "up_data_insert_db": "Almost done! Insert data in DB ",
-  "up_data_err": "Something went wrong, restoring old data ",
+  "up_data_calc_cities_totals": "Calculating cities totals...",
+  "up_data_calc_markets_totals": "Calculating markets totals...",
+  "up_data_calc_globals_totals": "Calculating global totals...",
+  "up_data_insert_db": "Almost done! Inserting data in DB...",
+  "up_data_err": "Something went wrong, restoring old data!",
   "up_data_done": ""
 }
