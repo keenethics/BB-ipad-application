@@ -65,8 +65,12 @@ export class RangeFilterController {
         if (this._hadMaxRange) return;
         this._dataProvider.getDataImmediately(filter)
           .then((data: any[]) => {
-            const values = data.map(d => d.periods['actual']);
+            const values = data
+              .map(d => d.periods['actual'])
+              .filter(d => d);
+
             if (values.length === 0) values[0] = 0;
+
             this._min = Math.min(...values);
             this._max = Math.max(...values);
             this._lower = this._min;
