@@ -1,5 +1,7 @@
 <div class="range-filter-container">
   <span class="title" *ngIf="title">{{title}}</span>
-  <ion-range debounce="200" dualKnobs="true" pin="true" [(ngModel)]="_currentValue" [min]="min" [max]="max" (ionChange)="handleChange($event)"></ion-range>
+  <span class="range-pin" *ngIf="_range">{{lowerVal}}</span>
+  <span class="range-pin right" *ngIf="_range">{{upperVal}}</span>
+  <ion-range debounce="200" dualKnobs="true" pin="true" snaps="true" [(ngModel)]="_currentValue" [min]="0" [max]="_values.length - 1" (ionChange)="_handleChange($event)"></ion-range>
   <span class="min-lable">{{min}}</span><span class="max-lable">{{max}}</span>
 </div>
