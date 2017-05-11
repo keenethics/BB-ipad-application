@@ -107,7 +107,8 @@ export class WorldMap implements OnChanges {
       this.renderMarkers();
       setTimeout(() => this.selectCountries(this.dataToDraw), 0);
       if (this.zoomOnUpdate) {
-        this.zoomToMarkers();
+        this.zoomToPoint(changes.dataToDraw);
+        // this.zoomToMarkers();
       }
     }
   }
@@ -124,9 +125,6 @@ export class WorldMap implements OnChanges {
       this.zoom = d3.zoom()
         .scaleExtent(this.zoomScaleExtend)
         .translateExtent([[0, 0], [this.svgWidth(), this.svgHeight()]])
-        // .filter(() => {
-        //   return true;
-        // })
         .on('zoom', () => {
           const { x, y, k } = d3.event.transform;
           this.mapTransform = d3.event.transform;
@@ -439,14 +437,92 @@ export class WorldMap implements OnChanges {
           correctZoomIdentity();
           return t;
         })
-        .attr('transform', `translate(${this.width / 2}, ${this.height / 2})` +
-        `scale(${k})translate(${[-x, -y]})`)
+        .attr('transform', `translate(${this.width / 2}, ${this.height / 2})
+        scale(${k})
+        translate(${[-x, -y]})`)
         .on('end', () => {
           correctZoomIdentity();
           this.isZoomingNow = false;
         });
 
       this.renderMarkers(k, true);
+    }
+  }
+
+  zoomToPoint(changes: any) {
+    if (!this.isZoomingNow && this.isMapReady) {
+      const { currentValue, previousValue } = changes;
+      const map = this.svg.select('g.map');
+      if (currentValue.length > previousValue.length) {
+        const newMarker = currentValue.find(m => {
+          return !previousValue.find((pm) => pm.longitude + m.latitude === m.longitude + m.latitude);
+        });
+
+        if (!newMarker) return;
+
+        const { longitude, latitude } = newMarker;
+
+        this.isZoomingNow = true;
+        const point = this.projection([longitude, latitude]);
+        const path = document.querySelector(`path[data-country="${newMarker.country}"]`);
+
+        const pathRect = path.getBBox();
+        k = Math.max(.5 / Math.max(pathRect.width / this.width, pathRect.height / this.height), 1);
+
+        const correctZoomIdentity = () => {
+          try {
+            const regExp = /\((.+?), (.+?)\).+\((.+?),/g;
+            const transform = map.attr('transform');
+            if (transform) {
+              const maches = regExp.exec(transform);
+              this.mapTransform = { x: +maches[1], y: +maches[2], k: +maches[3] };
+              const zoomIdentity = d3.zoomIdentity
+                .translate(+maches[1], +maches[2])
+                .scale(+maches[3]);
+              this.svg.call(this.zoom.transform, zoomIdentity);
+            }
+          } catch (err) {
+            if (err instanceof TypeError) return;
+            throw err;
+          }
+        };
+
+        if (longitude && latitude) {
+          map.transition()
+            .duration(750)
+            .ease((t) => {
+              correctZoomIdentity();
+              return t;
+            })
+            .attr('transform', `
+            translate(${this.width / 2}, ${this.height / 2})
+            scale(${k})
+            translate(${-point[0]}, ${-point[1]})
+            `)
+            .on('end', () => {
+              correctZoomIdentity();
+              this.isZoomingNow = false;
+            });
+        }
+
+        this.renderMarkers(k, true);
+      } else {
+        map.transition()
+            .duration(750)
+            .ease((t) => {
+              correctZoomIdentity();
+              return t;
+            })
+            .attr('transform', `
+            translate(${this.width / 2}, ${this.height / 2})
+            scale(${1})
+            translate(${-this.width / 2}, ${-this.height / 2})
+            `)
+            .on('end', () => {
+              correctZoomIdentity();
+              this.isZoomingNow = false;
+            });
+      }
     }
   }
 
