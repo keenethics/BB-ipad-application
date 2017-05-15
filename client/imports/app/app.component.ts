@@ -23,6 +23,8 @@ import template from './app.component.html';
 import styles from './app.component.scss';
 import theme from './theme.scss';
 
+import { FilterControllerT } from './filter/filter-controller';
+
 declare const FilePicker: any;
 
 @Component({
@@ -45,8 +47,11 @@ export class AppComponent {
     private menuCtrl: MenuController,
     private toastCtrl: ToastsManager,
     public dataProvider: DataProvider,
-    private filterCtrl: FilterController
+    private filterCtrl: FilterController,
+    private fCtrl: FilterControllerT
   ) {
+    window.FCTRL = fCtrl;
+
     this.pages = [
       { title: 'Home page', component: HomePage },
       { title: 'Create user', component: CreateUserPage },
