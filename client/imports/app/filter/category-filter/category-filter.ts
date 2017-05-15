@@ -1,13 +1,22 @@
 import { Injectable } from '@angular/core';
-import { SelectionFilter, ISelectionFilter } from '../abstarct';
+import { Selection, ISelection } from '../abstarct';
+
 @Injectable()
-export class CategoryFilter extends SelectionFilter implements ISelectionFilter<string> {
+export class CategoryFilter extends Selection implements ISelection<string, { identifier: string }> {
+  private _state = 'Global';
+
   constructor() {
     super();
   }
-  // ?????
-  use(a: string) {
-    console.log(a);
+
+  setState(v: string) {
+    this._state = v;
+  }
+
+  getState() {
+    return {
+      identifier: this._state
+    };
   }
 
   getQuery() {

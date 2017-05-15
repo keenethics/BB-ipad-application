@@ -1,22 +1,38 @@
 import { Injectable } from '@angular/core';
-import { CalculationFilter, ICalculationFilter } from '../abstarct';
-
-interface IRangeValue {
-  lower: number;
-  upper: number;
-};
+import { Calculation, ICalculation } from '../abstarct';
+import { IRangeValue, IRange } from './range.interface';
 
 @Injectable()
-export class RangeFilter extends CalculationFilter implements ICalculationFilter<IRangeValue> {
+export class RangeFilter extends Calculation implements ICalculation<IRange, { range: IRange }> {
+  private _state: IRange = {
+    min: undefined,
+    max: undefined,
+    value: {
+      lower: undefined,
+      upper: undefined
+    }
+  };
+
   constructor() {
     super();
   }
-  // ?????
-  use(p: IRangeValue) {
-    return [] as any;
+
+  setState(v: IRange) {
+    this._state = { ...this._state, ...v };
+  }
+
+  getState() {
+    return {
+      range: this._state
+    };
   }
 
   calc(data: any[]) {
-    return data.filter(d => (d.periods.actual <= 1000) && (d.periods.actual >= 100));
-  }
+    return calc(data, this._state.value);
+  };
+}
+
+function calc(data: any[], value: IRangeValue) {
+  const { lower, upper } = value;
+  return data.filter(d => (d.periods.actual >= lower) && (d.periods.actual <= upper));
 }
