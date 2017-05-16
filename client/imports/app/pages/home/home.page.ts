@@ -25,6 +25,8 @@ import { SwitchersPage } from '../switchers/switchers.page';
 import { ProfileSettingsPage } from '../profile-settings/profile-settings.page';
 import { UserManagementPage } from '../user-management/user-management.page';
 
+import { FilterControllerT } from '../../filter/filter-controller';
+
 @Component({
   selector: 'home-page',
   template,
@@ -45,6 +47,8 @@ export class HomePage implements AfterViewInit {
   public dataRange: any;
   public filterIdentifier: string = 'Global';
 
+  private _state: any;
+
   @ViewChild(Content) content: Content;
   @ViewChild(SheetsPortalComponent, { read: ViewContainerRef }) sheetsPortal: ViewContainerRef;
 
@@ -54,7 +58,7 @@ export class HomePage implements AfterViewInit {
     private auth: Authorization,
     private dataProvider: DataProvider,
     private sheetsCtrl: SheetsController,
-    private filterCtrl: FilterController,
+    private filterCtrl: FilterControllerT,
     private rangeCtrl: RangeFilterController
   ) {
     this.mapSettings = JSON.parse(localStorage.getItem('mapSettings')) ||
@@ -62,16 +66,12 @@ export class HomePage implements AfterViewInit {
   }
 
   ngOnInit() {
-    this.rangeSubscr = this.rangeCtrl.value$.subscribe((v) => {
-      this.dataRange = v;
-    });
-
-    this.filterSubscr = this.filterCtrl.currentFilter$.subscribe(f => this.filterIdentifier = f.identifier);
+    this.filterCtrl.state$.subscribe(s => this._state = s);
   }
 
   ngOnDestroy() {
-    this.rangeSubscr.unsubscribe();
-    this.filterSubscr.unsubscribe();
+    // this.rangeSubscr.unsubscribe();
+    // this.filterSubscr.unsubscribe();
   }
 
   ngAfterViewInit() {
@@ -97,14 +97,7 @@ export class HomePage implements AfterViewInit {
     this.sheetsCtrl.create(OverviewSheetComponent, this.sheetsPortal, data);
   }
 
-  resetFilters(page: string) {
-    if (page === 'home') {
-      this.autoZoom = false;
-      this.filterCtrl.resetFilter(); return;
-    }
-  }
-
-  selectCountry(countryNames: any) {
-    this.filterCtrl.selectCountry(countryNames);
+  changeCategory(category: string) {
+    this.filterCtrl.emit('CategoryFilter', category);
   }
 }

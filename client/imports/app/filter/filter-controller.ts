@@ -86,7 +86,11 @@ export class FilterControllerT {
 
   private _makeQueryObject() {
     const filters = Array.from(this._selectionFilters.values());
-    return makeQueryObject(filters);
+    return makeQueryObject(filters, {
+      highLevelCategory: 'Landing point',
+      resourceTypeKey: 'TotalInternals',
+      n2: 'Total'
+    });
   }
 
   private _getState() {

@@ -7,9 +7,14 @@ import { DataManagementModule, DataProvider } from '../data-management';
 import { FilterControllerT } from './filter-controller';
 import { CategoryFilter } from './category-filter/category-filter';
 import { RangeFilter } from './range-filter/ragne-filter';
+import { PlacesFilter } from './places-filter/places-filter';
 
-const filterControllerFactory = (catF: CategoryFilter, rangF: RangeFilter, dP: DataProvider) =>
-  new FilterControllerT([catF, rangF], dP);
+const filterControllerFactory = (
+  catF: CategoryFilter,
+  plF: PlacesFilter,
+  rangF: RangeFilter,
+  dP: DataProvider
+) => new FilterControllerT([catF, plF, rangF], dP);
 
 @NgModule({
   imports: [
@@ -23,10 +28,16 @@ const filterControllerFactory = (catF: CategoryFilter, rangF: RangeFilter, dP: D
     {
       provide: FilterControllerT,
       useFactory: filterControllerFactory,
-      deps: [CategoryFilter, RangeFilter, DataProvider]
+      deps: [
+        CategoryFilter,
+        PlacesFilter,
+        RangeFilter,
+        DataProvider
+      ]
     },
     CategoryFilter,
-    RangeFilter
+    RangeFilter,
+    PlacesFilter
   ],
 })
 export class FilterModule { }

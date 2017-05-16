@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
+import { BusinessDataUnit } from '../../../../../both/data-management';
 import { Calculation, ICalculation } from '../abstarct';
 import { IRangeValue, IRange } from './range.interface';
 
 @Injectable()
-export class RangeFilter extends Calculation implements ICalculation<IRange, { range: IRange }> {
+export class RangeFilter extends Calculation implements ICalculation<{ range: IRange, data?: BusinessDataUnit[] }, { range: IRange }> {
   private _state: IRange = {
-    min: undefined,
-    max: undefined,
+    min: 1,
+    max: 20000,
     value: {
-      lower: undefined,
-      upper: undefined
+      lower: 1,
+      upper: 20000
     }
   };
 
@@ -17,8 +18,15 @@ export class RangeFilter extends Calculation implements ICalculation<IRange, { r
     super();
   }
 
-  setState(v: IRange) {
-    this._state = { ...this._state, ...v };
+  setState(payload: { range: IRange, data?: BusinessDataUnit[] }) {
+    let range = payload.range;
+
+    if (payload.data) {
+      const { min, max } = getMinAndMaxValues(payload.data);
+      range = { ...payload.range, min, max };
+    }
+
+    this._state = { ...this._state, ...range };
   }
 
   getState() {
@@ -35,4 +43,18 @@ export class RangeFilter extends Calculation implements ICalculation<IRange, { r
 function calc(data: any[], value: IRangeValue) {
   const { lower, upper } = value;
   return data.filter(d => (d.periods.actual >= lower) && (d.periods.actual <= upper));
+}
+
+function getMinAndMaxValues(data: BusinessDataUnit[]) {
+  const values = data
+    .map(d => d.periods.actual)
+    .filter(d => d) as number[];
+
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+
+  return {
+    min,
+    max
+  };
 }

@@ -48,14 +48,7 @@ export class AppComponent {
     private toastCtrl: ToastsManager,
     public dataProvider: DataProvider,
     private filterCtrl: FilterController,
-    private fCtrl: FilterControllerT
   ) {
-    fCtrl.state$.subscribe(d => console.log(d));
-
-    setTimeout(() => {
-      fCtrl.emit('RangeFilter', { value: { upper: 50, lower: 1 } });
-    }, 1000);
-
     this.pages = [
       { title: 'Home page', component: HomePage },
       { title: 'Create user', component: CreateUserPage },

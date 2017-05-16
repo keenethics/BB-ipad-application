@@ -20,6 +20,6 @@ export class CategoryFilter extends Selection implements ISelection<string, { id
   }
 
   getQuery() {
-    return { identifier: 'Country' };
+    return { identifier: this._state };
   }
 }
