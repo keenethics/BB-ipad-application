@@ -29,8 +29,7 @@ export class PlacesFilter extends Selection implements ISelection<any, {}> {
   getQuery() {
     return this._state.reduce((query: any, item) => {
       const queryField = query[item.category.toLowerCase()];
-
-      if (queryField.$in) {
+      if (queryField && queryField.$in) {
         query[queryField].$in.push(item.label);
       }
       query[item.category.toLowerCase()] = { $in: [item.label], $nin: ['Non Nokia Site', 'Virtual Office'] };

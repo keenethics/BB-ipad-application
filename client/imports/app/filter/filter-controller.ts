@@ -107,7 +107,8 @@ export class FilterControllerT {
 
   private _calculateData(data: BusinessDataUnit[]) {
     const filters = Array.from(this._calculationFilters.values());
-    return calculateData(data, filters, this._calcOrder);
+    const state = this._getState();
+    return calculateData(data, filters, this._calcOrder, state);
   }
 
   private _selectData() {
@@ -122,10 +123,10 @@ function makeQueryObject(filters: ISelection<any, any>[], query: any = {}) {
   }, query);
 }
 
-function calculateData(data: BusinessDataUnit[], filters: ICalculation<any, any>[], order: Function[]) {
+function calculateData(data: BusinessDataUnit[], filters: ICalculation<any, any>[], order: Function[], state: any) {
   const sortedFilters = filters.sort((a, b) => order.indexOf(a.constructor) > order.indexOf(b.constructor) ? 1 : -1);
   return filters.reduce((data, f) => {
-    return f.calc(data);
+    return f.calc(data, state);
   }, data);
 }
 

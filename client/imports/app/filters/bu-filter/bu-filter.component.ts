@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 
 import { BuTitlesProvider } from './bu-titles-provider';
-import { FilterController } from '../filter-controller';
+import { FilterControllerT } from '../../filter/filter-controller';
 
 import template from './bu-filter.component.html';
 import styles from './bu-filter.component.scss';
@@ -20,70 +20,53 @@ import styles from './bu-filter.component.scss';
   encapsulation: ViewEncapsulation.None
 })
 export class BuFilterComponnet {
-  private queryObject: any;
-  private buTitles: string[];
+  selectedBuTitles: string[] = [];
 
   constructor(
     public buTitlesProvider: BuTitlesProvider,
-    private filterCtrl: FilterController
+    private filterCtrl: FilterControllerT
   ) {
-  }
-
-  ngOnInit() {
-    this.filterCtrl.currentFilter$.subscribe((qObj) => {
-      this.queryObject = qObj;
-      this.queryObject.n3 = 'Total';
-    });
-
-    this.buTitlesProvider.buTitles$.subscribe((titles: string[]) => {
-      this.buTitles = titles;
+    filterCtrl.state$.subscribe(s => {
+      this.selectedBuTitles = s.filters.businessUnits;
+      console.log('BUTITLES', s.filters.businessUnits);
     });
   }
 
-  checkToggle(title: string) {
-    const state = this.isInQueryObject(title);
-    if (state) {
-      this.select({ title });
-    } else {
-      this.select({ title });
-    }
+  ngOnInit() { }
+
+  isInSelected(v: string) {
+    if (this.selectedBuTitles.indexOf('Total') !== -1) return true;
+
+    return isInSelected(v, this.selectedBuTitles);
   }
 
-  select(item: { title: any }) {
-    if (this.isInQueryObject(item.title)) {
-      if (item.title === 'Total') this.queryObject.n2 = { $in: [] };
 
-      if (this.queryObject.n2 === 'Total') {
-        this.queryObject.n2 = { $in: this.buTitles.map((t: any) => t.value).filter((t) => t !== item.title && t !== 'Total') };
+  select(v: string) {
+    if (v === 'Total') {
+      if (this.selectedBuTitles.indexOf('Total') !== -1) {
+        this.filterCtrl.emit('BuFilterSelect', {
+          unitsTitles: []
+        });
       } else {
-        this.queryObject.n2 = { $in: this.queryObject.n2.$in.filter((t: any) => t !== item.title) };
+        this.filterCtrl.emit('BuFilterSelect', {
+          unitsTitles: ['Total']
+        });
       }
+      return;
+    }
+
+    if (isInSelected(v, this.selectedBuTitles)) {
+      this.filterCtrl.emit('BuFilterSelect', {
+        unitsTitles: this.selectedBuTitles.filter(t => t !== v)
+      });
     } else {
-      if (item.title === 'Total') {
-        this.queryObject.n2 = 'Total';
-      } else {
-        this.queryObject.n2.$in.push(item.title);
-
-        if (this.queryObject.n2.$in.length === 10) {
-          this.queryObject.n2 = 'Total';
-        }
-      }
+      this.filterCtrl.emit('BuFilterSelect', {
+        unitsTitles: [...this.selectedBuTitles, v]
+      });
     }
-
-    this.filterCtrl.currentFilter$ = this.queryObject;
-  }
-
-  isInQueryObject(title: string | string[]) {
-    if (this.queryObject.n2 === 'Total') return true;
-
-    const titlesArr = Array.isArray(title) ? title : [title];
-    for (let i = 0; i < titlesArr.length; i++) {
-      if (this.queryObject.n2.$in) {
-        return (this.queryObject.n2.$in.indexOf(titlesArr[i]) !== -1);
-      } else {
-        return this.queryObject.n2 === titlesArr[i];
-      }
-    }
-    return false;
   }
 }
+
+function isInSelected(v: string, selected: string[]) {
+  return selected.indexOf(v) !== -1;
+};
