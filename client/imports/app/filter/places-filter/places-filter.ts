@@ -12,7 +12,11 @@ export class PlacesFilter extends Selection implements ISelection<any, {}> {
     super();
   }
 
-  setState(payload: { label: string, category: string, data: BusinessDataUnit[] }) {
+  setState(payload: {
+    label: string,
+    category: string,
+    data: BusinessDataUnit[]
+  }) {
     if (!isInState(payload.label, this._state)) {
       this._state = addPlace(payload, this._state);
     } else {
@@ -29,11 +33,13 @@ export class PlacesFilter extends Selection implements ISelection<any, {}> {
   getQuery() {
     return this._state.reduce((query: any, item) => {
       const queryField = query[item.category.toLowerCase()];
-      if (queryField && queryField.$in) {
-        query[queryField].$in.push(item.label);
-      }
-      query[item.category.toLowerCase()] = { $in: [item.label], $nin: ['Non Nokia Site', 'Virtual Office'] };
 
+      if (queryField && queryField.$in) {
+        queryField.$in.push(item.label);
+        return query;
+      }
+
+      query[item.category.toLowerCase()] = { $in: [item.label], $nin: ['Non Nokia Site', 'Virtual Office'] };
       return query;
     }, { city: { $nin: ['Non Nokia Site', 'Virtual Office'] } });
   }
@@ -46,7 +52,7 @@ function addPlace({ label, category, data }: IPlaceFilterPayload, state: ISelect
 }
 
 function removePlace(label: string, state: ISelectedPlace[]) {
-  return state.filter(p => p.label !== label);
+  return state.filter(p => (p.label !== label) && (p.unit.market !== label) && (p.unit.country !== label));
 }
 
 function isInState(label: string, state: ISelectedPlace[]) {

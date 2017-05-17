@@ -26,6 +26,7 @@ import { ProfileSettingsPage } from '../profile-settings/profile-settings.page';
 import { UserManagementPage } from '../user-management/user-management.page';
 
 import { FilterControllerT } from '../../filter/filter-controller';
+import { CountrySelector } from '../../filter/places-filter/country-selector';
 
 @Component({
   selector: 'home-page',
@@ -59,7 +60,8 @@ export class HomePage implements AfterViewInit {
     private dataProvider: DataProvider,
     private sheetsCtrl: SheetsController,
     private filterCtrl: FilterControllerT,
-    private rangeCtrl: RangeFilterController
+    private rangeCtrl: RangeFilterController,
+    private countrySelector: CountrySelector
   ) {
     this.mapSettings = JSON.parse(localStorage.getItem('mapSettings')) ||
       { charts: false, scaling: false, labels: false, values: false };
@@ -99,5 +101,12 @@ export class HomePage implements AfterViewInit {
 
   changeCategory(category: string) {
     this.filterCtrl.emit('CategoryFilter', category);
+  }
+
+  selectCountry(country: string[]) {
+    this.countrySelector.getPayloadObject(country)
+      .then((payload) => {
+        this.filterCtrl.emit('PlacesFilter', payload);
+      });
   }
 }
