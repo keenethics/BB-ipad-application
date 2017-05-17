@@ -26,6 +26,10 @@ export class BuFilterSelect extends Selection implements ISelection<{ unitsTitle
       n2: { $in: this._state }
     };
   }
+
+  reset() {
+    this._state = ['Total'];
+  }
 }
 
 function makeState(selections: string[]) {

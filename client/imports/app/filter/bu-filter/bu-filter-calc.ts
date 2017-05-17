@@ -14,6 +14,8 @@ export class BuFilterCalc extends Calculation implements ICalculation<void, void
 
   getState() { }
 
+  reset() { }
+
   calc(data: any[], state: any) {
     return calc(data, state.filters.identifier);
   };
@@ -39,4 +41,3 @@ function calc(data: any[], groupBy: string = 'Global') {
 
   return Array.from(result.values());
 }
-

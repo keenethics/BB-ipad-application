@@ -3,6 +3,7 @@ import { BusinessDataUnit } from '../../../../both/data-management';
 export interface IState<P, S> {
   setState(state: P): void;
   getState(): S;
+  reset(): void;
 }
 
 export interface ICalculation<P, S> extends IState<P, S> {

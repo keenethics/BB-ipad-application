@@ -19,7 +19,7 @@ import { LoadingManager, ToastsManager } from '../../../common';
 
 import { SigninPage, HomePage, PreferencesPage } from '../../index';
 
-import { FilterController } from '../../../filters';
+import { FilterControllerT } from '../../../filter/filter-controller';
 
 @Component({
   selector: 'header',
@@ -41,7 +41,7 @@ export class HeaderComponent {
     private dataUploader: DataUploader,
     private loadingCtrl: LoadingManager,
     private toastCtrl: ToastsManager,
-    private filterCtrl: FilterController,
+    private filterCtrl: FilterControllerT,
     private updateInfo: DataUpdateInfo
   ) {
   }
@@ -86,7 +86,6 @@ export class HeaderComponent {
     switch (name) {
       case 'home': {
         if (this.navCtrl.getActive().component === HomePage) {
-          // this.filterCtrl.resetFilter(); break;
           break;
         } else {
           this.navCtrl.setRoot(HomePage); break;
@@ -97,6 +96,7 @@ export class HeaderComponent {
   }
 
   resetFilters() {
-    this.filterCtrl.resetFilter();
+    this.filterCtrl.reset(['CategoryFilter']);
+    this.filterCtrl.filter();
   }
 }

@@ -43,6 +43,10 @@ export class PlacesFilter extends Selection implements ISelection<any, {}> {
       return query;
     }, { city: { $nin: ['Non Nokia Site', 'Virtual Office'] } });
   }
+
+  reset() {
+    this._state = [];
+  }
 }
 
 function addPlace({ label, category, data }: IPlaceFilterPayload, state: ISelectedPlace[]) {

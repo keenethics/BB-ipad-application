@@ -7,10 +7,10 @@ import { IRangeValue, IRange } from './range.interface';
 export class RangeFilter extends Calculation implements ICalculation<{ range: IRange, data?: BusinessDataUnit[] }, { range: IRange }> {
   private _state: IRange = {
     min: 1,
-    max: 20000,
+    max: 100000,
     value: {
       lower: 1,
-      upper: 20000
+      upper: 100000
     }
   };
 
@@ -19,12 +19,7 @@ export class RangeFilter extends Calculation implements ICalculation<{ range: IR
   }
 
   setState(payload: { range: IRange, data?: BusinessDataUnit[] }) {
-    let range = payload.range;
-
-    if (payload.data) {
-      const { min, max } = getMinAndMaxValues(payload.data);
-      range = { ...payload.range, min, max };
-    }
+    const range = payload.range;
 
     this._state = { ...this._state, ...range };
   }
@@ -36,8 +31,21 @@ export class RangeFilter extends Calculation implements ICalculation<{ range: IR
   }
 
   calc(data: any[]) {
-    return calc(data, this._state.value);
+    const filteredData = calc(data, this._state.value);
+    // this.setState({ range: getMinAndMaxValues(filteredData) as IRange });
+    return filteredData;
   };
+
+  reset() {
+    this._state = {
+      min: 1,
+      max: 100000,
+      value: {
+        lower: 1,
+        upper: 100000
+      }
+    };
+  }
 }
 
 function calc(data: any[], value: IRangeValue) {

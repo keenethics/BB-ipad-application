@@ -7,8 +7,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { FilterController } from '../filter-controller';
-import { RangeFilterController } from '../range-filter/range-filter-controller';
+import { FilterControllerT } from '../../filter/filter-controller';
 
 import template from './filter-counter.component.html';
 import style from './filter-counter.component.scss';
@@ -19,50 +18,22 @@ import style from './filter-counter.component.scss';
   styles: [style],
   encapsulation: ViewEncapsulation.None
 })
-export class FilterCounterComponent implements OnDestroy {
-  public filtersCount: number;
-  private _placesCount: number;
-  private _isRangeUsed: boolean;
-  private _placesSubscr: Subscription;
-  private _rangeSubscr: Subscription;
+export class FilterCounterComponent implements OnInit {
+  public filterCount = 0;
 
   constructor(
-    private _filter: FilterController,
-    private _rangeFilterCtrl: RangeFilterController
-  ) {
-
-  }
+    private _filterCtrl: FilterControllerT
+  ) { }
 
   ngOnInit() {
-    this._subscribe();
-  }
-
-  ngOnDestroy() {
-    this._unsubscribe();
-  }
-
-  private setFilterCount() {
-    if (this._isRangeUsed) {
-      this.filtersCount = this._placesCount + 1;
-    } else {
-      this.filtersCount = this._placesCount;
-    }
-  };
-
-  private _subscribe() {
-    this._placesSubscr = this._filter.activeFilters$.subscribe((f: any[]) => {
-      this._placesCount = f.length;
-      this.setFilterCount();
-    });
-
-    this._rangeSubscr = this._rangeFilterCtrl.isUsed$.subscribe((val) => {
-      this._isRangeUsed = val;
-      this.setFilterCount();
+    this._filterCtrl.state$.map(s => s.filters).subscribe((s) => {
+      this.filterCount = getFilterCount(s.places, s.range.value);
     });
   }
+}
 
-  private _unsubscribe() {
-    this._placesSubscr.unsubscribe();
-    this._rangeSubscr.unsubscribe();
-  }
+function getFilterCount(places: any[] = [], rangeValue: { upper: number, lower: number }) {
+  const { upper, lower } = rangeValue;
+  const rangeConunt = (upper !== 100000) || (lower !== 1) ? 1 : 0;
+  return places.length + rangeConunt;
 }

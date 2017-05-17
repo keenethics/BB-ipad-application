@@ -69,6 +69,7 @@ export class HomePage implements AfterViewInit {
 
   ngOnInit() {
     this.filterCtrl.state$.subscribe(s => this._state = s);
+    this.filterCtrl.filter();
   }
 
   ngOnDestroy() {

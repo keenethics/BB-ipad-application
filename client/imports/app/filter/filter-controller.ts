@@ -19,9 +19,14 @@ export class FilterControllerT {
   private _calcOrder: Function[];
   private _filteredData: BusinessDataUnit[];
   private _state: BehaviorSubject<{ filters: any, data: BusinessDataUnit[] }>;
+  private _initialState: { filters: any, data: BusinessDataUnit[] };
 
   public get state$() {
     return this._state.asObservable();
+  }
+
+  public get initialState() {
+    return this._initialState;
   }
 
   constructor(
@@ -30,15 +35,18 @@ export class FilterControllerT {
     calcOrder: Function[] = makeCalcOrder(filters)
   ) {
     this.registerFilters(filters);
+    setFiltersStateFromStorrage(filters);
     this._calcOrder = calcOrder;
-    this._state = new BehaviorSubject(this._getState());
+    const initState = this._getState();
+    this._state = new BehaviorSubject(initState);
+    this._initialState = initState;
   }
 
-  emit(filterType: Function | string, params: any) {
+  emit(filterType: Function | string, payload: any) {
     const filterName = getFilterName(filterType);
     const filter = this._calculationFilters.get(filterName) || this._selectionFilters.get(filterName);
-    filter.setState(params);
-    this._filter();
+    filter.setState(payload);
+    this.filter();
   }
 
   registerFilters(f: TFilter | TFilter[]) {
@@ -75,13 +83,41 @@ export class FilterControllerT {
     }
   }
 
-  private _filter() {
+  filter() {
     this._selectData()
       .then(selectedData => {
         this._filteredData = this._calculateData(selectedData as any);
         const state = this._getState();
         this._state.next(state);
+        this.saveToStorrage();
       });
+  }
+
+  saveToStorrage() {
+    const filters = this._getAllFilters();
+    saveToStorrage(filters);
+  }
+
+  clearStorrage() {
+    const filters = this._getAllFilters();
+    clearStorrage(filters);
+  }
+
+  reset(exclude: any[] = []) {
+    const filters = this._getAllFilters();
+
+    filters.forEach((f) => {
+      const filterType = f.constructor;
+      const isToExclude = !!exclude.find((item) => (item === filterType) || (item === filterType.name));
+      if (!isToExclude) f.reset();
+    });
+  }
+
+  private _getAllFilters() {
+    return [
+      ...Array.from(this._calculationFilters.values()),
+      ...Array.from(this._selectionFilters.values())
+    ];
   }
 
   private _makeQueryObject() {
@@ -94,11 +130,7 @@ export class FilterControllerT {
   }
 
   private _getState() {
-    const filters = [
-      ...Array.from(this._calculationFilters.values()),
-      ...Array.from(this._selectionFilters.values())
-    ];
-
+    const filters = this._getAllFilters();
     return {
       filters: getFiltersState(filters),
       data: this._filteredData || [] as BusinessDataUnit[]
@@ -145,4 +177,26 @@ function makeCalcOrder(filters: TFilter[]) {
 
 function getFilterName(f: Function | string) {
   return typeof (f) !== 'string' ? (f as Function).name : f;
+}
+
+function setFiltersStateFromStorrage(filters: TFilter[]) {
+  filters.forEach(f => {
+    const stateString = localStorage.getItem(`FilterController.${f.constructor.name}`);
+    const s = JSON.parse(stateString === 'undefined' ? '{}' : stateString);
+    const key = Object.keys(s)[0];
+    // TODO: Edit this
+    f._state = s[key];
+  });
+}
+
+function saveToStorrage(filters: TFilter[]) {
+  filters.forEach((f) => {
+    localStorage.setItem(`FilterController.${f.constructor.name}`, JSON.stringify(f.getState()));
+  });
+}
+
+function clearStorrage(filters: TFilter[]) {
+  filters.forEach((f) => {
+    localStorage.removeItem(`FilterController.${f.constructor.name}`);
+  });
 }
