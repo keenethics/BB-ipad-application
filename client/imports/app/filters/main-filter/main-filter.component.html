@@ -34,8 +34,8 @@
   </ion-item>
   <ion-item class="options">
       <ion-list>
-        <button (debounceClick)="addPlace(unit)" [delay]="200" ion-item *ngFor="let unit of availableUnits | search:searchValue">
-          {{unit}}
+        <button (debounceClick)="addPlace(place)" [delay]="200" ion-item *ngFor="let place of placesList | search:searchValue">
+          {{place}}
         </button>
       </ion-list>
   </ion-item>

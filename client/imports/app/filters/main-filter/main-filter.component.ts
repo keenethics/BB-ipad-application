@@ -36,6 +36,16 @@ export class MainFilterComponent implements OnInit, OnDestroy {
   @Input() currentQuery: any;
 
   private _state: any;
+
+  placesListState: IPlacesListState = {
+    category: '',
+    rangeValue: {
+      lower: 0,
+      upper: 0
+    },
+    places: []
+  };
+
   range: IRange;
   searchValue = '';
   appliedPlaces: { label: string, categotry: string, unit: BusinessDataUnit[] }[] = [];
@@ -44,8 +54,9 @@ export class MainFilterComponent implements OnInit, OnDestroy {
     return (this._state && this._state.filters.identifier) || '';
   }
 
-  get availableUnits() {
-    return (this._state && this._state.data.map((u: any) => u[this._state.filters.identifier.toLowerCase()])) || [];
+  get placesList() {
+    const { places, category } = this.placesListState;
+    return mapToList(places, category);
   }
 
   constructor(
@@ -59,6 +70,7 @@ export class MainFilterComponent implements OnInit, OnDestroy {
       this.appliedPlaces = s.filters.places;
       console.log(s);
       window.FC = filterCtrl;
+      this._updatePlacesListState(s);
     });
   }
 
@@ -92,7 +104,43 @@ export class MainFilterComponent implements OnInit, OnDestroy {
     this.filterCtrl.emit('PlacesFilter', {
       label: place,
       category: this.category,
-      data: this._state.data
+      data: this.placesListState.places
     });
   }
+
+  private _updatePlacesListState(s: any) {
+    const { identifier, range, places } = s.filters;
+
+    if (identifier !== this.placesListState.category) {
+      this.placesListState.category = identifier;
+      this.placesListState.places = s.data;
+    }
+
+    if (!isRangeValuesEqual(range.value, this.placesListState.rangeValue)) {
+      this.placesListState.rangeValue = range.value;
+      this.placesListState.places = s.data;
+    }
+
+    if (places.length === 0) {
+      this.placesListState.places = s.data;
+    }
+  }
+}
+
+function isRangeValuesEqual(a: any, b: any) {
+  return (a.lower === b.lower) && (a.upper === b.upper);
+}
+
+function mapToList(data: BusinessDataUnit[], identifier: string) {
+  if (!data) return [];
+  return data.map((u: any) => u[identifier.toLowerCase()]);
+}
+
+interface IPlacesListState {
+  category: string;
+  rangeValue: {
+    upper: number;
+    lower: number;
+  };
+  places: BusinessDataUnit[];
 }

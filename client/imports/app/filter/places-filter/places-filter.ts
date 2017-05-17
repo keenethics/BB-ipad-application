@@ -52,7 +52,9 @@ function addPlace({ label, category, data }: IPlaceFilterPayload, state: ISelect
 }
 
 function removePlace(label: string, state: ISelectedPlace[]) {
-  return state.filter(p => (p.label !== label) && (p.unit.market !== label) && (p.unit.country !== label));
+  return state.filter(p => {
+    return (p.label !== label) && (p.unit.market !== label) && (p.unit.country !== label);
+  });
 }
 
 function isInState(label: string, state: ISelectedPlace[]) {
