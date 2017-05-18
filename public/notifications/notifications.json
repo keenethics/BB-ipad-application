@@ -15,7 +15,7 @@
   "user_created": "User created successfully.",
   "no_user": "User doesn't exist.",
   "email_invalid": "Email is not valid.",
-  "password_invalid_min_length": "Password must contain minimum 6 symbols.",
+  "password_invalid": "Password must contain 8 digits: capital and small letters, numbers and special character required.",
   "no_role": "Role doesn't exist.",
   "user_updated": "User updated successfully.",
   "user_removed": "User removed successfully.",

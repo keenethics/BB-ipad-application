@@ -3,6 +3,8 @@ import { NavController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { getEmailRegExp } from '../../../../../both/helpers/email-regexp';
+import { getPasswordRegExp } from '../../../../../both/helpers/password-regexp';
+
 import { ToastsManager } from '../../common/toasts-manager';
 import { LoadingManager } from '../../common/loading-manager';
 
@@ -46,6 +48,7 @@ export class SigninPage implements OnInit {
   }
 
   buildLoginForm() {
+    console.dir(Validators);
     this.loginForm = this.formBuilder.group({
       email: [
         this.loginCredentials.email,
@@ -59,7 +62,7 @@ export class SigninPage implements OnInit {
         [
           Validators.required,
           Validators.maxLength(40),
-          Validators.minLength(6)
+          Validators.pattern(getPasswordRegExp())
         ]
       ]
     });

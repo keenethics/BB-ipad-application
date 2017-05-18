@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { getEmailRegExp } from '../../../../both/helpers';
+import { getPasswordRegExp } from '../../../../both/helpers/password-regexp';
 
 export const createUser = new ValidatedMethod({
   name: 'users.create',
@@ -17,6 +18,9 @@ export const createUser = new ValidatedMethod({
     if (!Roles.userIsInRole(this.userId, 'Administrator')) {
       throw new Meteor.Error('permission_denied', 'permission_denied');
     }
+
+    if (!getPasswordRegExp().test(password)) throw new Meteor.Error('password_invalid', 'password_invalid');
+
 
     const userId = Accounts.createUser({ email, password });
 
@@ -60,7 +64,9 @@ export const updateUser = new ValidatedMethod({
 
     if (!getEmailRegExp().test(email)) throw new Meteor.Error('email_invalid', 'email_invalid');
 
-    if (password.length < 6) throw new Meteor.Error('password_invalid_min_length', 'password_invalid_min_length');
+    if (!getPasswordRegExp().test(password)) throw new Meteor.Error('password_invalid', 'password_invalid');
+
+    // if (password.length < 6) throw new Meteor.Error('password_invalid_min_length', 'password_invalid_min_length');
 
     const role = Meteor.roles.findOne(roleId);
     if (!role) throw new Meteor.Error('no_role', 'no_role');

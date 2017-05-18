@@ -1,9 +1,11 @@
-import { Component, OnInit, ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { NavController, MenuController, ViewController, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 
 import { getEmailRegExp } from '../../../../../both/helpers/email-regexp';
+import { getPasswordRegExp } from '../../../../../both/helpers/password-regexp';
+
 import { ToastsManager } from '../../common/toasts-manager';
 import { LoadingManager } from '../../common/loading-manager';
 import { EqualValidator } from '../../common/validators/equal-validator';
@@ -61,7 +63,7 @@ export class EditUserPage implements OnInit {
 
   ionViewCanEnter() {
     try {
-      return this.auth.user().roles.includes('Administrator');
+      return (this.auth.user() as any).roles.includes('Administrator');
     } catch (err) {
       return false;
     }
@@ -81,7 +83,7 @@ export class EditUserPage implements OnInit {
         [
           Validators.required,
           Validators.maxLength(40),
-          Validators.minLength(6),
+          Validators.pattern(getPasswordRegExp()),
           new EqualValidator('confPass', 'true')
         ]
       ],
@@ -89,6 +91,7 @@ export class EditUserPage implements OnInit {
         this.userCredentials.confPass,
         [
           Validators.required,
+          Validators.pattern(getPasswordRegExp()),
           new EqualValidator('password', 'false')
         ]
       ],
@@ -109,7 +112,7 @@ export class EditUserPage implements OnInit {
   }
 
   editUser() {
-    const {id, email, password, roleId} = this.userCredentials;
+    const { id, email, password, roleId } = this.userCredentials;
     this.usersCtrl.updateUser(id, email, password, roleId)
       .then(() => {
         this.viewCtrl.dismiss();
