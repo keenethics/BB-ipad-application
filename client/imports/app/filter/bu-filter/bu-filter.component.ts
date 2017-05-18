@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 
 import { BuTitlesProvider } from './bu-titles-provider';
-import { FilterControllerT } from '../../filter/filter-controller';
+import { FilterController } from '../filter-controller';
 
 import template from './bu-filter.component.html';
 import styles from './bu-filter.component.scss';
@@ -24,11 +24,10 @@ export class BuFilterComponnet {
 
   constructor(
     public buTitlesProvider: BuTitlesProvider,
-    private filterCtrl: FilterControllerT
+    private filterCtrl: FilterController
   ) {
     filterCtrl.state$.subscribe(s => {
       this.selectedBuTitles = s.filters.businessUnits;
-      console.log('BUTITLES', s.filters.businessUnits);
     });
   }
 

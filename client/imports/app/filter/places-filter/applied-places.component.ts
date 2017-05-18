@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'applied-filters',
+  selector: 'applied-places',
   template: `
     <ion-chip *ngFor="let f of filters" [ngStyle]="{'background-color': getColor(f)}">
       <ion-label>{{f.label}}</ion-label>
@@ -22,7 +22,7 @@ import {
     }
   `]
 })
-export class AppliedFiltersComponent {
+export class AppliedPlacesComponent {
   @Input() filters: string[];
   @Output() onFilterRemoved = new EventEmitter();
 

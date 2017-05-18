@@ -12,7 +12,7 @@ import {
 import template from './category-filter.component.html';
 import styles from './category-filter.component.scss';
 
-import { FilterControllerT } from '../../filter/filter-controller';
+import { FilterController } from '../filter-controller';
 
 @Component({
   selector: 'category-filter',

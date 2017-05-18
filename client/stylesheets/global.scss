@@ -245,9 +245,9 @@ ion-backdrop {
   }
 }
 
-@import '../imports/app/filters/bu-filter/bu-filter.component.scss';
-@import '../imports/app/filters/category-filter/category-filter.component.scss';
-@import '../imports/app/filters/main-filter/main-filter.component.scss';
+@import '../imports/app/filter/bu-filter/bu-filter.component.scss';
+@import '../imports/app/filter/category-filter/category-filter.component.scss';
+@import '../imports/app/filter/main-filter/main-filter.component.scss';
 @import '../imports/app/sheets/overview-sheet.component.scss';
 @import '../imports/app/sheets/sheets.styles.scss';
 @import '../imports/app/sheets/fact-sheet.component.scss';

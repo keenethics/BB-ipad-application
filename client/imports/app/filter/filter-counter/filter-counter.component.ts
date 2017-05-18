@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { FilterControllerT } from '../../filter/filter-controller';
+import { FilterController } from '../filter-controller';
 
 import template from './filter-counter.component.html';
 import style from './filter-counter.component.scss';
@@ -22,7 +22,7 @@ export class FilterCounterComponent implements OnInit {
   public filterCount = 0;
 
   constructor(
-    private _filterCtrl: FilterControllerT
+    private _filterCtrl: FilterController
   ) { }
 
   ngOnInit() {

@@ -10,7 +10,7 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { Range } from 'ionic-angular';
-import { IRangeValue } from './range-value.model';
+import { IRangeValue } from './range.interface';
 
 import template from './range-filter.component.html';
 import style from './range-filter.component.scss';

@@ -19,7 +19,7 @@ import { LoadingManager, ToastsManager } from '../../../common';
 
 import { SigninPage, HomePage, PreferencesPage } from '../../index';
 
-import { FilterControllerT } from '../../../filter/filter-controller';
+import { FilterController } from '../../../filter/filter-controller';
 
 @Component({
   selector: 'header',
@@ -41,7 +41,7 @@ export class HeaderComponent {
     private dataUploader: DataUploader,
     private loadingCtrl: LoadingManager,
     private toastCtrl: ToastsManager,
-    private filterCtrl: FilterControllerT,
+    private filterCtrl: FilterController,
     private updateInfo: DataUpdateInfo
   ) {
   }

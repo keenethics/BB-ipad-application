@@ -13,16 +13,21 @@ import {
 
 
 @Injectable()
-export class FilterControllerT {
+export class FilterController {
   private _calculationFilters = new Map<string, ICalculation<any, any>>();
   private _selectionFilters = new Map<string, ISelection<any, any>>();
   private _calcOrder: Function[];
   private _filteredData: BusinessDataUnit[];
   private _state: BehaviorSubject<{ filters: any, data: BusinessDataUnit[] }>;
+  private _query: BehaviorSubject<any>;
   private _initialState: { filters: any, data: BusinessDataUnit[] };
 
   public get state$() {
     return this._state.asObservable();
+  }
+
+  public get query$() {
+    return this._query.asObservable();
   }
 
   public get initialState() {
@@ -37,6 +42,7 @@ export class FilterControllerT {
     this.registerFilters(filters);
     setFiltersStateFromStorrage(filters);
     this._calcOrder = calcOrder;
+    this._query = new BehaviorSubject(this._makeQueryObject());
     const initState = this._getState();
     this._state = new BehaviorSubject(initState);
     this._initialState = initState;
@@ -89,6 +95,7 @@ export class FilterControllerT {
         this._filteredData = this._calculateData(selectedData as any);
         const state = this._getState();
         this._state.next(state);
+        this._query.next(this._makeQueryObject());
         this.saveToStorrage();
       });
   }
@@ -182,10 +189,12 @@ function getFilterName(f: Function | string) {
 function setFiltersStateFromStorrage(filters: TFilter[]) {
   filters.forEach(f => {
     const stateString = localStorage.getItem(`FilterController.${f.constructor.name}`);
-    const s = JSON.parse(stateString === 'undefined' ? '{}' : stateString);
-    const key = Object.keys(s)[0];
-    // TODO: Edit this
-    f._state = s[key];
+    const s = (stateString === 'undefined') || !stateString ? null : JSON.parse(stateString);
+    if (s) {
+      const key = Object.keys(s)[0];
+      // TODO: Edit this
+      f._state = s[key];
+    }
   });
 }
 

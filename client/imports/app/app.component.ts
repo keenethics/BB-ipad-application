@@ -7,7 +7,6 @@ import { DataUpdates } from '../../../both/data-management/data-updates.collecti
 
 import { Authorization } from './authorization/authorization';
 import { DataProvider, SumBusinessUnitsPipe } from './data-management';
-import { FilterController } from './filters';
 import { ToastsManager } from '../app/common/toasts-manager';
 // import { TextProvider } from './notifications';
 
@@ -23,7 +22,7 @@ import template from './app.component.html';
 import styles from './app.component.scss';
 import theme from './theme.scss';
 
-import { FilterControllerT } from './filter/filter-controller';
+import { FilterController } from './filter/filter-controller';
 
 declare const FilePicker: any;
 
@@ -46,8 +45,7 @@ export class AppComponent {
     private auth: Authorization,
     private menuCtrl: MenuController,
     private toastCtrl: ToastsManager,
-    public dataProvider: DataProvider,
-    private filterCtrl: FilterController,
+    public dataProvider: DataProvider
   ) {
     this.pages = [
       { title: 'Home page', component: HomePage },
@@ -60,9 +58,6 @@ export class AppComponent {
 
   ngAfterViewInit() {
     this.initializeApp();
-    this.filterCtrl.currentFilter$.subscribe((f: any) => {
-      this.dataProvider.query(f);
-    });
   }
 
   ngOnDestroy() {

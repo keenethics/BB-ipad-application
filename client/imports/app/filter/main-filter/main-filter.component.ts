@@ -17,13 +17,9 @@ import styles from './main-filter.component.scss';
 
 import { DataProvider } from '../../data-management';
 import { BusinessDataUnit } from '../../../../../both/data-management';
-import { FilterController } from '../filter-controller';
-import { RangeFilterController } from '../range-filter/range-filter-controller';
-import { RangeFilterPipe } from '../range-filter/range-filter.pipe';
-// import { IRangeValue } from '../range-filter/range-value.model';
 
-import { FilterControllerT } from '../../filter/filter-controller';
-import { IRangeValue, IRange } from '../../filter/range-filter/range.interface';
+import { FilterController } from '../filter-controller';
+import { IRangeValue, IRange } from '../range-filter/range.interface';
 
 @Component({
   selector: 'main-filter',
@@ -32,9 +28,6 @@ import { IRangeValue, IRange } from '../../filter/range-filter/range.interface';
   providers: [DataProvider]
 })
 export class MainFilterComponent implements OnInit, OnDestroy {
-  @Input() data: BusinessDataUnit[];
-  @Input() currentQuery: any;
-
   private _state: any;
 
   placesListState: IPlacesListState = {
@@ -61,15 +54,12 @@ export class MainFilterComponent implements OnInit, OnDestroy {
 
   constructor(
     private dataProvider: DataProvider,
-    private filterCtrl: FilterControllerT,
-    private rangeFilterCtrl: RangeFilterController
+    private filterCtrl: FilterController,
   ) {
-    filterCtrl.state$.subscribe(s => {
+    filterCtrl.state$.subscribe((s: any) => {
       this._state = s;
       this.range = s.filters.range;
       this.appliedPlaces = s.filters.places;
-      console.log(s);
-      window.FC = filterCtrl;
       this._updatePlacesListState(s);
     });
   }

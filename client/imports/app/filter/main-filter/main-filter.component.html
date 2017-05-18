@@ -29,8 +29,8 @@
     <ion-label><ion-icon class="icon-search" name="icon-search"></ion-icon></ion-label>
     <ion-input [(ngModel)]="searchValue" type="text" placeholder="Start typing a country here" value=""></ion-input>
   </ion-item>
-  <ion-item class="applied-filters">
-    <applied-filters [filters]="appliedPlaces" (onFilterRemoved)="removePlace($event)"></applied-filters>
+  <ion-item class="applied-places">
+    <applied-places [filters]="appliedPlaces" (onFilterRemoved)="removePlace($event)"></applied-places>
   </ion-item>
   <ion-item class="options">
       <ion-list>

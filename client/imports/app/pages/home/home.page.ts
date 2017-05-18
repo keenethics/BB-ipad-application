@@ -18,14 +18,13 @@ import styles from './home.page.scss';
 import { Authorization } from '../../authorization/authorization';
 import { DataProvider } from '../../data-management';
 import { SheetsController, OverviewSheetComponent, SheetsPortalComponent } from '../../sheets';
-import { FilterController, RangeFilterController } from '../../filters';
 
 import { SigninPage } from '../signin/signin.page';
 import { SwitchersPage } from '../switchers/switchers.page';
 import { ProfileSettingsPage } from '../profile-settings/profile-settings.page';
 import { UserManagementPage } from '../user-management/user-management.page';
 
-import { FilterControllerT } from '../../filter/filter-controller';
+import { FilterController } from '../../filter/filter-controller';
 import { CountrySelector } from '../../filter/places-filter/country-selector';
 
 @Component({
@@ -59,8 +58,7 @@ export class HomePage implements AfterViewInit {
     private auth: Authorization,
     private dataProvider: DataProvider,
     private sheetsCtrl: SheetsController,
-    private filterCtrl: FilterControllerT,
-    private rangeCtrl: RangeFilterController,
+    private filterCtrl: FilterController,
     private countrySelector: CountrySelector
   ) {
     this.mapSettings = JSON.parse(localStorage.getItem('mapSettings')) ||

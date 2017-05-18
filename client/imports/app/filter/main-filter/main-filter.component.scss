@@ -105,12 +105,12 @@ main-filter {
         }
       }
 
-      &.applied-filters {
+      &.applied-places {
         min-height: initial;
         ion-label {
           margin: 0;
           padding: 0 35px;
-          applied-filters {
+          applied-places {
             white-space: initial;
           }
           ion-chip {
