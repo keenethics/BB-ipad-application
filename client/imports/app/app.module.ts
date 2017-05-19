@@ -8,6 +8,7 @@ import { DataManagementModule } from './data-management/data-management.module';
 import { SharedModule } from './shared/shared.module';
 import { FiltersModule } from './filters';
 import { NotificationsModule } from './notifications/notifications.module';
+import { OfflineModule } from './offline/offline.module';
 
 import { AppComponent } from './app.component';
 
@@ -23,7 +24,8 @@ import '../../stylesheets/global.scss';
     DataManagementModule,
     SharedModule,
     FiltersModule,
-    NotificationsModule
+    NotificationsModule,
+    OfflineModule
   ],
   declarations: [
     AppComponent,

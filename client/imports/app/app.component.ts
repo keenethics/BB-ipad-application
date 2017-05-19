@@ -19,6 +19,8 @@ import { ProfileSettingsPage } from './pages/profile-settings/profile-settings.p
 import { UserManagementPage } from './pages/user-management/user-management.page';
 import { SplashscreenPage } from './pages/splashscreen/splashscreen.page';
 
+import { CollectionsManager } from './offline/collections-manager';
+
 import template from './app.component.html';
 import styles from './app.component.scss';
 import theme from './theme.scss';
@@ -45,7 +47,8 @@ export class AppComponent {
     private menuCtrl: MenuController,
     private toastCtrl: ToastsManager,
     public dataProvider: DataProvider,
-    private filterCtrl: FilterController
+    private filterCtrl: FilterController,
+    private cCtr: CollectionsManager
   ) {
     this.pages = [
       { title: 'Home page', component: HomePage },
