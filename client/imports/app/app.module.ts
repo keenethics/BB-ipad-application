@@ -43,7 +43,8 @@ import '../../stylesheets/global.scss';
   exports: [
     SharedModule,
     FiltersModule,
-    NotificationsModule
+    NotificationsModule,
+    OfflineModule
   ]
 })
 export class AppModule { }

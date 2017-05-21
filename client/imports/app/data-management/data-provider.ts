@@ -3,6 +3,8 @@ import { MeteorObservable } from 'meteor-rxjs';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+import { LocalCollectionsManager } from '../offline/local-collections-manager';
+
 import {
   BusinessData,
   BusinessDataUnit,
@@ -17,7 +19,7 @@ export class DataProvider {
   private _subscription: any;
   private _columnNames: BehaviorSubject<any> = new BehaviorSubject(null);
 
-  constructor() {
+  constructor(private _lcManager: LocalCollectionsManager) {
     this.subscribeToPublications();
   }
 
@@ -41,30 +43,42 @@ export class DataProvider {
   }
 
   query(queryObject: any = {}, calc?: any) {
-    const result = BusinessData.find(queryObject).fetch();
-
-    if (this._subscription) {
-      this._subscription.unsubscribe();
+    if (isConnected()) {
+      if (this._subscription) {
+        this._subscription.unsubscribe();
+      }
+      this._subscription = MeteorObservable.subscribe('businessData', queryObject)
+        .subscribe(() => {
+          let data = BusinessData.find(queryObject).fetch();
+          if (calc) data = calc(data);
+          this._data.next(data);
+        });
+    } else {
+      const lData = this._lcManager.getCollection(BusinessData);
+      let data = lData ? lData.find(queryObject).fetch() : [];
+      if (calc) data = calc(data);
+      this._data.next(data);
     }
-
-    this._subscription = MeteorObservable.subscribe('businessData', queryObject)
-      .subscribe(() => {
-        let data = BusinessData.find(queryObject).fetch();
-        if (calc) data = calc(data);
-        this._data.next(data);
-      });
   }
 
   getDataImmediately(queryObject: any = {}, projection?: any) {
     return new Promise((resolve) => {
-      if (this._subscription) {
-        this._subscription.unsubscribe();
+      if (isConnected()) {
+        if (this._subscription) {
+          this._subscription.unsubscribe();
+        }
+        this._subscription = MeteorObservable.subscribe('businessData', queryObject, projection)
+          .subscribe(() => {
+            resolve(BusinessData.find(queryObject).fetch());
+          });
+      } else {
+        const lData = this._lcManager.getCollection(BusinessData);
+        resolve(lData ? lData.find(queryObject).fetch() : []);
       }
-
-      this._subscription = MeteorObservable.subscribe('businessData', queryObject, projection)
-        .subscribe(() => {
-          resolve(BusinessData.find(queryObject).fetch());
-        });
     });
   }
+}
+
+function isConnected() {
+  return Meteor.status().connected;
 }

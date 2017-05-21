@@ -32,6 +32,11 @@
       </div>
     </form>
     <div class="upload-button-wrap" style="margin-top: 0px">
+      <button (click)="syncLocalStorrage()" ion-button round>
+        SYNC DATA
+      </button>
+    </div>
+    <div class="upload-button-wrap" style="margin-top: 0px">
       <button #geoCordsButton ion-button round>
         <pick-file fileType="text/csv" [emitterElement]="geoCordsButton" (onFileSelected)="uploadCoords($event)" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
         COORDINATES

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CollectionsManager } from './collections-manager';
+import { LocalCollectionsManager } from './local-collections-manager';
 
 @NgModule({
-  providers: [CollectionsManager],
+  providers: [LocalCollectionsManager],
 })
 export class OfflineModule { }

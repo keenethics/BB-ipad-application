@@ -8,6 +8,7 @@ import { DataManagementModule } from '../data-management';
 import { SheetsModule } from '../sheets';
 import { FiltersModule } from '../filters';
 import { SettingsModule } from '../settings';
+import { OfflineModule } from '../offline/offline.module';
 
 import { HomePage } from './home/home.page';
 import { SigninPage } from './signin/signin.page';
@@ -61,7 +62,8 @@ const COMPONENTS = [
     DataManagementModule,
     SheetsModule,
     SettingsModule,
-    FiltersModule
+    FiltersModule,
+    OfflineModule
   ],
   declarations: [...PAGES, ...COMPONENTS],
   exports: [...PAGES, ...COMPONENTS],

@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { IRangeValue } from './range-value.model';
 import { DataProvider } from '../../data-management';
 import { FilterController } from '../filter-controller';
+import { LocalCollectionsManager } from '../../offline/local-collections-manager';
 
 @Injectable()
 export class RangeFilterController {
@@ -16,11 +17,12 @@ export class RangeFilterController {
   private _lower: number;
   private _upper: number;
   private _hadMaxRange: boolean = false;
-  private _dataProvider: DataProvider = new DataProvider();
+  private _dataProvider: DataProvider = new DataProvider(this._localCollectionsManager);
   private _isUsed = new BehaviorSubject<boolean>(false);
 
   constructor(
-    private _filterCtrl: FilterController
+    private _filterCtrl: FilterController,
+    private _localCollectionsManager: LocalCollectionsManager
   ) {
     const initVal = {
       lower: this._lower,

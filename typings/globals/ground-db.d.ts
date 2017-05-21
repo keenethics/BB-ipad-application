@@ -1,5 +1,5 @@
 interface IGround {
-  Collection(params: any): Mongo.Collection<any>;
+  Collection(params: any, options?: any): Mongo.Collection<any>;
 }
 
-declare const Ground: IGround;
+declare const Ground: any;
