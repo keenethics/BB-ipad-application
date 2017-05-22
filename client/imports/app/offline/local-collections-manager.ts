@@ -1,40 +1,37 @@
 import { Injectable } from '@angular/core';
 import { MeteorObservable } from 'meteor-rxjs';
-import { BusinessData } from '../../../../both/data-management/business-data.collection';
+import { BusinessData, UnitsTitles, DataUpdates } from '../../../../both/data-management';
+import { AvailableCountries, MarketCountries } from '../../../../both/countries';
+
 
 @Injectable()
 export class LocalCollectionsManager {
   private _localCollections: Map<string, any> = new Map();
 
   constructor() {
-    window.BusinessData = BusinessData;
-    window.groundData = this.fetchToStorrage.bind(this);
-
     MeteorObservable.autorun().subscribe(() => {
       console.log({ ...Meteor.status() });
     });
   }
 
   fetchToStorrage() {
-    return new Promise((res, rej) => {
-      const sbscr = MeteorObservable.subscribe('businessData', {})
-        .subscribe(() => {
-          const data = BusinessData.find({}).fetch();
-          const localCollections = createLocalCollections([BusinessData], this._localCollections);
-          const lbd = localCollections[0];
+    const fetchPromises: Promise<any>[] = [];
 
-          lbd.clear();
+    const collections = [
+      [BusinessData, 'businessData', {}],
+      [UnitsTitles, 'unitsTitles', {}],
+      [DataUpdates, 'dataUpdates', {}],
+      [AvailableCountries, 'available-countries', {}],
+      [MarketCountries, 'market-countries', ['GCHN', 'NAM', 'LAT', 'INDIA', 'APJ', 'MEA', 'EUROPE']]
+    ];
 
-          data.forEach((bu) => {
-            lbd.insert(bu);
-          });
+    const localCollections = createLocalCollections(collections, this._localCollections);
 
-          window.LocalData = lbd;
-          console.log(data, ' -> GROUNDED');
-          sbscr.unsubscribe();
-          res();
-        });
+    localCollections.forEach((lc) => {
+      fetchPromises.push((fetchCollection as any)(...lc));
     });
+
+    return Promise.all(fetchPromises);
   }
 
   getCollection(mongoCollection: any) {
@@ -48,15 +45,16 @@ export class LocalCollectionsManager {
   }
 }
 
-
-function createLocalCollections(mongoCollections: any[], localCollectionsMap: Map<string, any>) {
+function createLocalCollections(mongoCollections: (string | Mongo.Collection<any> | any)[][], localCollectionsMap: Map<string, any>): (string | Mongo.Collection<any> | any)[][] {
   return mongoCollections.map(c => {
-    const lc = createLocalCollection(c);
+    const mCol = c[0] as any;
+
+    const lc = createLocalCollection(mCol);
     if (lc) {
       localCollectionsMap.set(lc._name, lc);
-      return lc;
+      return [...c, lc];
     } else {
-      return localCollectionsMap.get(`local-${c._name}`);
+      return [...c, localCollectionsMap.get(`local-${mCol._name}`)];
     }
   });
 };
@@ -67,4 +65,21 @@ function createLocalCollection(mongoCollection: any) {
   } catch (err) {
     return null;
   }
+}
+
+function fetchCollection(collection: Mongo.Collection<any>, subscrName: string, query: any, localCollection: any) {
+  return new Promise((res, rej) => {
+    const sbscr = MeteorObservable.subscribe(subscrName, query)
+      .subscribe(() => {
+        const collectionData = collection.find({}).fetch();
+        localCollection.clear();
+
+        collectionData.forEach((item) => {
+          localCollection.insert(item);
+        });
+
+        sbscr.unsubscribe();
+        res();
+      });
+  });
 }

@@ -17,30 +17,29 @@ import { SumBusinessUnitsPipe } from './sum-bu.pipe';
 export class DataProvider {
   private _data: BehaviorSubject<BusinessDataUnit[]> = new BehaviorSubject([]);
   private _subscription: any;
-  private _columnNames: BehaviorSubject<any> = new BehaviorSubject(null);
 
   constructor(private _lcManager: LocalCollectionsManager) {
-    this.subscribeToPublications();
+    // this.subscribeToPublications();
   }
 
-  private subscribeToPublications() {
-    MeteorObservable.subscribe('columnNames')
-      .subscribe(() => {
-        const columnNames = ColumnNamesCollection.findOne({});
-        if (columnNames) {
-          delete columnNames._id;
-          this._columnNames.next(columnNames);
-        }
-      });
-  }
+  // private subscribeToPublications() {
+  //   MeteorObservable.subscribe('columnNames')
+  //     .subscribe(() => {
+  //       const columnNames = ColumnNamesCollection.findOne({});
+  //       if (columnNames) {
+  //         delete columnNames._id;
+  //         this._columnNames.next(columnNames);
+  //       }
+  //     });
+  // }
 
   get data$() {
     return this._data.asObservable();
   }
 
-  get columnNames$() {
-    return this._columnNames.asObservable();
-  }
+  // get columnNames$() {
+  //   return this._columnNames.asObservable();
+  // }
 
   query(queryObject: any = {}, calc?: any) {
     if (isConnected()) {

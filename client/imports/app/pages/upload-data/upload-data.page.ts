@@ -134,7 +134,7 @@ export class UploadDataPage implements OnDestroy, OnInit {
 
   syncLocalStorrage() {
     this.loadingCtrl.loading('Sync data...');
-    this.lcManager.fetchToStorrage(this.dataProvider)
+    this.lcManager.fetchToStorrage()
       .then(() => {
         this.loadingCtrl.loadingInst.dismiss();
         this.toastCtrl.okToast('Data saved to local storrage.');
