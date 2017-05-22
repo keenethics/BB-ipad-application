@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { IRangeValue } from './range-value.model';
 import { DataProvider } from '../../data-management';
 import { FilterController } from '../filter-controller';
-import { LocalCollectionsManager } from '../../offline/local-collections-manager';
+import { OfflineDataProvider } from '../../offline/offline-data-provider';
 
 @Injectable()
 export class RangeFilterController {
@@ -17,12 +17,12 @@ export class RangeFilterController {
   private _lower: number;
   private _upper: number;
   private _hadMaxRange: boolean = false;
-  private _dataProvider: DataProvider = new DataProvider(this._localCollectionsManager);
+  private _dataProvider: DataProvider = new DataProvider(this._odp);
   private _isUsed = new BehaviorSubject<boolean>(false);
 
   constructor(
     private _filterCtrl: FilterController,
-    private _localCollectionsManager: LocalCollectionsManager
+    private _odp: OfflineDataProvider
   ) {
     const initVal = {
       lower: this._lower,
@@ -65,21 +65,21 @@ export class RangeFilterController {
     } else {
       this._filterCtrl.currentFilter$.subscribe((filter) => {
         if (this._hadMaxRange) return;
-        this._dataProvider.getDataImmediately(filter)
-          .then((data: any[]) => {
-            const values = data
-              .map(d => d.periods['actual'])
-              .filter(d => d);
+        // this._dataProvider.getDataImmediately(filter)
+        //   .then((data: any[]) => {
+        //     const values = data
+        //       .map(d => d.periods['actual'])
+        //       .filter(d => d);
 
-            if (values.length === 0) values[0] = 0;
+        //     if (values.length === 0) values[0] = 0;
 
-            this._min = Math.min(...values);
-            this._max = Math.max(...values);
-            this._lower = this._min;
-            this._upper = this._max;
-            this._hadMaxRange = true;
-            this._nextRangeState();
-          });
+        //     this._min = Math.min(...values);
+        //     this._max = Math.max(...values);
+        //     this._lower = this._min;
+        //     this._upper = this._max;
+        //     this._hadMaxRange = true;
+        //     this._nextRangeState();
+        //   });
       });
     }
   }

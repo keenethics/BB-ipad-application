@@ -21,7 +21,7 @@ import { FilterController } from '../filter-controller';
 import { RangeFilterController } from '../range-filter/range-filter-controller';
 import { RangeFilterPipe } from '../range-filter/range-filter.pipe';
 import { IRangeValue } from '../range-filter/range-value.model';
-import { LocalCollectionsManager } from '../../offline/local-collections-manager';
+import { OfflineDataProvider } from '../../offline/offline-data-provider';
 
 @Component({
   selector: 'main-filter',
@@ -52,7 +52,7 @@ export class MainFilterComponent implements OnInit, OnDestroy {
     private dataProvider: DataProvider,
     private filterCtrl: FilterController,
     private rangeFilterCtrl: RangeFilterController,
-    private localCollectionsManager: LocalCollectionsManager
+    private odp: OfflineDataProvider
   ) { }
 
   ngOnInit() {
@@ -180,7 +180,7 @@ export class MainFilterComponent implements OnInit, OnDestroy {
 
   selectCountry() {
     if (this.selectedCountry) {
-      new DataProvider(this.localCollectionsManager).getDataImmediately({ country: this.selectedCountry, identifier: 'Country' }, { limit: 1 })
+      new DataProvider(this.odp).getDataImmediately({ country: this.selectedCountry, identifier: 'Country' }, { limit: 1 })
         .then((data: any[]) => {
           const unit = data.filter((item: any) => item.country === this.selectedCountry)[0];
           if (!this.filters.filter((item: any) => item.label === this.selectedCountry).length) {

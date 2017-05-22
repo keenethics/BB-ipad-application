@@ -5,8 +5,8 @@ import { AvailableCountries } from '../../../both/countries/available-countries.
 
 
 Meteor.publish('market-countries', function (markets: string[]) {
-  check(markets, [String]);
-  return MarketCountries.find({ _id: { $in: markets } });
+  check(markets, { _id: { $in: [String] }});
+  return MarketCountries.find(markets);
 });
 
 Meteor.publish('available-countries', function () {

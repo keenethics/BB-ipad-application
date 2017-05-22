@@ -8,12 +8,6 @@ import { AvailableCountries, MarketCountries } from '../../../../both/countries'
 export class LocalCollectionsManager {
   private _localCollections: Map<string, any> = new Map();
 
-  constructor() {
-    MeteorObservable.autorun().subscribe(() => {
-      console.log({ ...Meteor.status() });
-    });
-  }
-
   fetchToStorrage() {
     const fetchPromises: Promise<any>[] = [];
 
