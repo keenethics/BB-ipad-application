@@ -7,11 +7,11 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'applied-filters',
+  selector: 'applied-places',
   template: `
     <ion-chip *ngFor="let f of filters" [ngStyle]="{'background-color': getColor(f)}">
       <ion-label>{{f.label}}</ion-label>
-      <button ion-button (click)="removeFilter(f)">
+      <button ion-button (click)="removeFilter(f.label)">
         <ion-icon name="close"></ion-icon>
       </button>
     </ion-chip>
@@ -22,7 +22,7 @@ import {
     }
   `]
 })
-export class AppliedFiltersComponent {
+export class AppliedPlacesComponent {
   @Input() filters: string[];
   @Output() onFilterRemoved = new EventEmitter();
 
@@ -32,9 +32,9 @@ export class AppliedFiltersComponent {
 
   getColor({ category }: { category: string }) {
     switch (category) {
-      case 'city': return '#395FFF';
-      case 'country': return '#5A77F7';
-      case 'market': return '#1540FF';
+      case 'City': return '#395FFF';
+      case 'Country': return '#5A77F7';
+      case 'Market': return '#1540FF';
     }
     return 'transparent';
   }

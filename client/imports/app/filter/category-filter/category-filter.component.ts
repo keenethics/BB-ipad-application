@@ -21,24 +21,12 @@ import { FilterController } from '../filter-controller';
   template
 })
 export class CategoryFilterComponent {
-  private category: string;
+  @Input() private category: string;
+  @Output() private onChange = new EventEmitter();
 
-  constructor(private filterCtrl: FilterController) {
-    try {
-      this.category = filterCtrl.getFromStorage().category;
-    } catch (e) {
-      this.category = 'global';
-    }
-
-    this.filterCtrl.onChangeCategory.subscribe((category: string) => {
-      if (this.category !== category) {
-        this.category = category;
-      }
-    });
-  }
+  constructor() { }
 
   select(event: any) {
-    this.category = event.value;
-    this.filterCtrl.emitChangeCategory(this.category);
+    this.onChange.emit(event.value);
   }
 }

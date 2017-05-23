@@ -18,12 +18,14 @@ import styles from './home.page.scss';
 import { Authorization } from '../../authorization/authorization';
 import { DataProvider } from '../../data-management';
 import { SheetsController, OverviewSheetComponent, SheetsPortalComponent } from '../../sheets';
-import { FilterController, RangeFilterController } from '../../filters';
 
 import { SigninPage } from '../signin/signin.page';
 import { SwitchersPage } from '../switchers/switchers.page';
 import { ProfileSettingsPage } from '../profile-settings/profile-settings.page';
 import { UserManagementPage } from '../user-management/user-management.page';
+
+import { FilterController } from '../../filter/filter-controller';
+import { CountrySelector } from '../../filter/places-filter/country-selector';
 
 @Component({
   selector: 'home-page',
@@ -45,6 +47,8 @@ export class HomePage implements AfterViewInit {
   public dataRange: any;
   public filterIdentifier: string = 'Global';
 
+  private _state: any;
+
   @ViewChild(Content) content: Content;
   @ViewChild(SheetsPortalComponent, { read: ViewContainerRef }) sheetsPortal: ViewContainerRef;
 
@@ -55,23 +59,20 @@ export class HomePage implements AfterViewInit {
     private dataProvider: DataProvider,
     private sheetsCtrl: SheetsController,
     private filterCtrl: FilterController,
-    private rangeCtrl: RangeFilterController
+    private countrySelector: CountrySelector
   ) {
     this.mapSettings = JSON.parse(localStorage.getItem('mapSettings')) ||
       { charts: false, scaling: false, labels: false, values: false };
   }
 
   ngOnInit() {
-    this.rangeSubscr = this.rangeCtrl.value$.subscribe((v) => {
-      this.dataRange = v;
-    });
-
-    this.filterSubscr = this.filterCtrl.currentFilter$.subscribe(f => this.filterIdentifier = f.identifier);
+    this.filterCtrl.state$.subscribe(s => this._state = s);
+    this.filterCtrl.filter();
   }
 
   ngOnDestroy() {
-    this.rangeSubscr.unsubscribe();
-    this.filterSubscr.unsubscribe();
+    // this.rangeSubscr.unsubscribe();
+    // this.filterSubscr.unsubscribe();
   }
 
   ngAfterViewInit() {
@@ -97,14 +98,14 @@ export class HomePage implements AfterViewInit {
     this.sheetsCtrl.create(OverviewSheetComponent, this.sheetsPortal, data);
   }
 
-  resetFilters(page: string) {
-    if (page === 'home') {
-      this.autoZoom = false;
-      this.filterCtrl.resetFilter(); return;
-    }
+  changeCategory(category: string) {
+    this.filterCtrl.emit('CategoryFilter', category);
   }
 
-  selectCountry(countryNames: any) {
-    this.filterCtrl.selectCountry(countryNames);
+  selectCountry(country: string[]) {
+    this.countrySelector.getPayloadObject(country)
+      .then((payload) => {
+        this.filterCtrl.emit('PlacesFilter', payload);
+      });
   }
 }

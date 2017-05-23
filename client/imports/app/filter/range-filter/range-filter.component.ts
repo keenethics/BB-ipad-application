@@ -10,7 +10,7 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { Range } from 'ionic-angular';
-import { IRangeValue } from './range-value.model';
+import { IRangeValue } from './range.interface';
 
 import template from './range-filter.component.html';
 import style from './range-filter.component.scss';
@@ -25,7 +25,7 @@ export class RangeFilterComponent {
   private _currentValue: IRangeValue;
 
   // TODO: Generate from real data
-  private _values: number[] = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 6000, 7000, 8000, 9000, 10000, 15000, 20000];
+  private _values: number[] = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 6000, 7000, 8000, 9000, 10000, 15000, 20000, 50000, 100000];
 
   @ViewChild(Range) private _range: Range;
 
