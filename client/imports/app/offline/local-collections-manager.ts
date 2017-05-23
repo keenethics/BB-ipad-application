@@ -16,7 +16,7 @@ export class LocalCollectionsManager {
       [UnitsTitles, 'unitsTitles', {}],
       [DataUpdates, 'dataUpdates', {}],
       [AvailableCountries, 'available-countries', {}],
-      [MarketCountries, 'market-countries', ['GCHN', 'NAM', 'LAT', 'INDIA', 'APJ', 'MEA', 'EUROPE']]
+      [MarketCountries, 'market-countries', { _id: { $in: ['GCHN', 'NAM', 'LAT', 'INDIA', 'APJ', 'MEA', 'EUROPE'] } }]
     ];
 
     const localCollections = createLocalCollections(collections, this._localCollections);
@@ -64,7 +64,7 @@ function createLocalCollection(mongoCollection: any) {
 function fetchCollection(collection: Mongo.Collection<any>, subscrName: string, query: any, localCollection: any) {
   return new Promise((res, rej) => {
     const sbscr = MeteorObservable.subscribe(subscrName, query)
-      .subscribe(() => {
+      .subscribe((err) => {
         const collectionData = collection.find({}).fetch();
         localCollection.clear();
 
@@ -74,6 +74,8 @@ function fetchCollection(collection: Mongo.Collection<any>, subscrName: string, 
 
         sbscr.unsubscribe();
         res();
+      }, (err) => {
+        rej(err);
       });
   });
 }

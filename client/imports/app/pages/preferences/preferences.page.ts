@@ -49,10 +49,10 @@ export class PreferencesPage {
       },
       {
         icon: 'icon-upload',
-        title: 'UPLOAD DATA',
+        title: 'DATA',
         selector: 'upload-data-page',
         component: UploadDataPage,
-        guard: () => (this._isInRole(['Administrator', 'DataUpload']) && this.platform.is('core') && this._isOnline())
+        guard: () => (this._isInRole(['Administrator', 'DataUpload']) && this._isOnline())
       },
       {
         icon: 'information-circle',

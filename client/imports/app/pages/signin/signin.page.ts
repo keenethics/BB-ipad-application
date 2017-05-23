@@ -62,7 +62,7 @@ export class SigninPage implements OnInit {
         [
           Validators.required,
           Validators.maxLength(40),
-          Validators.pattern(getPasswordRegExp())
+          // Validators.pattern(getPasswordRegExp())
         ]
       ]
     });

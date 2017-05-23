@@ -41,7 +41,8 @@ export class UploadDataPage implements OnDestroy, OnInit {
     private roles: RolesController,
     private dateInfo: DataUpdateInfo,
     private lcManager: LocalCollectionsManager,
-    private dataProvider: DataProvider
+    private dataProvider: DataProvider,
+    private platform: Platform
   ) { }
 
   ngOnInit() {
@@ -133,11 +134,19 @@ export class UploadDataPage implements OnDestroy, OnInit {
   }
 
   syncLocalStorrage() {
-    this.loadingCtrl.loading('Sync data...');
+    this.loadingCtrl.loading('sync_data');
     this.lcManager.fetchToStorrage()
       .then(() => {
         this.loadingCtrl.loadingInst.dismiss();
-        this.toastCtrl.okToast('Data saved to local storrage.');
+        this.toastCtrl.okToast('all_data_saved');
+      })
+      .catch((err) => {
+        this.loadingCtrl.loadingInst.dismiss();
+        this.toastCtrl.okToast(err.message);
       });
+  }
+
+  isCore() {
+    return this.platform.is('core');
   }
 };
