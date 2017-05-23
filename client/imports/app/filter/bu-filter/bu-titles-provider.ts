@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { OfflineDataProvider } from '../../offline/offline-data-provider';
 import { UnitsTitles } from '../../../../../both/data-management';
 
 @Injectable()
@@ -9,8 +10,8 @@ export class BuTitlesProvider {
   private subscr: Subscription;
   public titlesMap: Map<string, string>;
 
-  constructor() {
-    this.subscribe();
+  constructor(private _odp: OfflineDataProvider) {
+    this.getBuTitles();
     this.titlesMap = new Map([
       ['Total', 'MN'],
       ['Global Services', 'GS'],
@@ -26,11 +27,9 @@ export class BuTitlesProvider {
     ]);
   }
 
-  private subscribe() {
-    this.subscr = MeteorObservable
-      .subscribe('unitsTitles')
-      .subscribe(() => {
-        const titles = UnitsTitles.find().fetch();
+  getBuTitles() {
+    this._odp.findIn(UnitsTitles, {}, 'unitsTitles')
+      .then((titles: any[]) => {
         const mapedTitles = Array.from(this.titlesMap)
           .reduce((acc: any[], item: any) => {
             if (!~titles.indexOf(item[0])) {
@@ -40,10 +39,6 @@ export class BuTitlesProvider {
           }, []);
         this.buTitles.next(mapedTitles);
       });
-  }
-
-  public unsubscribe() {
-    this.subscr.unsubscribe();
   }
 
   public get buTitles$() {

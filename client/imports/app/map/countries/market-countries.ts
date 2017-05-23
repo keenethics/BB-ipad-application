@@ -10,14 +10,6 @@ export class MarketCountriesProvider {
 
   }
   getMarketsCoutries(markets: string[]) {
-    // return new Promise((resolve, reject) => {
-
-    //   this.subscr = MeteorObservable.subscribe('market-countries', markets).subscribe((err) => {
-    //     if (err) reject();
-    //     const result = MarketCountries.find({}).fetch();
-    //     resolve(result);
-    //   });
-    // });
     return this._odp.findIn(MarketCountries, { _id: { $in: markets } }, 'market-countries');
   }
 }

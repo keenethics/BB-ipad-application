@@ -26,21 +26,49 @@ export class PreferencesPage {
 
   constructor(private roles: RolesController, private platform: Platform) {
     this.pages = [
-      { icon: 'icon-switchers', title: 'PREFERENCES', selector: 'switchers-page', component: SwitchersPage, guard: () => true },
-      // { icon: 'icon-filter', title: 'FILTER', selector: 'filter-page', component: FilterPage, guard: () => true },
-      { icon: 'icon-preferences', title: 'PROFILE SETTINGS', selector: 'profile-settings-page', component: ProfileSettingsPage, guard: () => true },
       {
-        icon: 'icon-user', title: 'USER LIST', selector: 'user-management-page', component: UserManagementPage, guard: () => {
-          return this.roles.userIsInRole(Meteor.userId(), 'Administrator');
-        }
+        icon: 'icon-switchers',
+        title: 'PREFERENCES',
+        selector: 'switchers-page',
+        component: SwitchersPage,
+        guard: () => true
       },
       {
-        icon: 'icon-upload', title: 'UPLOAD DATA', selector: 'upload-data-page', component: UploadDataPage,
-        guard: () => (this.roles.userIsInRole(Meteor.userId(), ['Administrator', 'DataUpload']) && this.platform.is('core'))
+        icon: 'icon-preferences',
+        title: 'PROFILE SETTINGS',
+        selector: 'profile-settings-page',
+        component: ProfileSettingsPage,
+        guard: () => this._isOnline()
       },
-      { icon: 'information-circle', title: 'INFO', selector: 'info-page', component: InfoPage, guard: () => true },
-
-      // { icon: 'icon-types-and-units', title: 'TYPES AND UNITS', selector: 'types-and-units', component: null }
+      {
+        icon: 'icon-user',
+        title: 'USER LIST',
+        selector: 'user-management-page',
+        component: UserManagementPage,
+        guard: () => (this._isInRole(['Administrator']) && this._isOnline())
+      },
+      {
+        icon: 'icon-upload',
+        title: 'UPLOAD DATA',
+        selector: 'upload-data-page',
+        component: UploadDataPage,
+        guard: () => (this._isInRole(['Administrator', 'DataUpload']) && this.platform.is('core') && this._isOnline())
+      },
+      {
+        icon: 'information-circle',
+        title: 'INFO',
+        selector: 'info-page',
+        component: InfoPage,
+        guard: () => true
+      }
     ];
+  }
+
+  _isInRole(roles: string[]) {
+    return this.roles.userIsInRole(Meteor.userId(), roles);
+  }
+
+  _isOnline() {
+    return Meteor.status().connected;
   }
 };
