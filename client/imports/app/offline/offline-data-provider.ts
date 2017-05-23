@@ -22,7 +22,10 @@ export class OfflineDataProvider {
           res(mongoCollection.find(selector, options).fetch());
         }
       } else {
-        res(this._lcManager.getCollection(mongoCollection).find(selector, options).fetch());
+        this._lcManager.getCollection(mongoCollection)
+          .then((col: Mongo.Collection<any>) => {
+            res(col.find(selector, options).fetch());
+          });
       }
     });
   }

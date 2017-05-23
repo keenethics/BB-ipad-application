@@ -29,13 +29,24 @@ export class LocalCollectionsManager {
   }
 
   getCollection(mongoCollection: any) {
-    const create = () => {
-      const col = createLocalCollection(mongoCollection);
-      this._localCollections.set(col._name, col);
-      return col;
-    };
+    return new Promise((res) => {
+      const create = () => {
+        const col = createLocalCollection(mongoCollection);
+        this._localCollections.set(col._name, col);
+        return col;
+      };
 
-    return this._localCollections.get(`local-${mongoCollection._name}`) || create();
+      let collection = this._localCollections.get(`local-${mongoCollection._name}`);
+
+      if (collection) {
+        res(collection);
+      } else {
+        collection = create();
+        collection.addListener('loaded', () => {
+          res(collection);
+        });
+      }
+    });
   }
 }
 
