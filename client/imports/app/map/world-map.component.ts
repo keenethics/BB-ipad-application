@@ -453,23 +453,8 @@ export class WorldMap implements OnChanges {
     if (!this.isZoomingNow && this.isMapReady) {
       const { currentValue, previousValue } = changes;
       const map = this.svg.select('g.map');
-      if (currentValue.length > previousValue.length) {
-        const newMarker = currentValue.find(m => {
-          return !previousValue.find((pm) => pm.longitude + m.latitude === m.longitude + m.latitude);
-        });
 
-        if (!newMarker) return;
-
-        const { longitude, latitude } = newMarker;
-
-        this.isZoomingNow = true;
-        const point = this.projection([longitude, latitude]);
-        const path = document.querySelector(`path[data-country="${newMarker.country}"]`);
-
-        const pathRect = path.getBBox();
-        k = Math.max(.5 / Math.max(pathRect.width / this.width, pathRect.height / this.height), 1);
-
-        const correctZoomIdentity = () => {
+      const correctZoomIdentity = () => {
           try {
             const regExp = /\((.+?), (.+?)\).+\((.+?),/g;
             const transform = map.attr('transform');
@@ -486,6 +471,24 @@ export class WorldMap implements OnChanges {
             throw err;
           }
         };
+
+      if (currentValue.length > previousValue.length) {
+        const newMarker = currentValue.find(m => {
+          return !previousValue.find((pm) => pm.longitude + m.latitude === m.longitude + m.latitude);
+        });
+
+        if (!newMarker) return;
+
+        if (newMarker.country === 'Total') return;
+
+        const { longitude, latitude } = newMarker;
+
+        this.isZoomingNow = true;
+        const point = this.projection([longitude, latitude]);
+        const path = document.querySelector(`path[data-country="${newMarker.country}"]`);
+
+        const pathRect = path.getBBox();
+        k = Math.max(.5 / Math.max(pathRect.width / this.width, pathRect.height / this.height), 1);
 
         if (longitude && latitude) {
           map.transition()
