@@ -1,24 +1,30 @@
 <form [formGroup]="userForm" (ngSubmit)="editUser()" novalidate>
-    <h1>{{email}}</h1>
-    <ion-list>
-      <ion-item>
-        <ion-input [(ngModel)]="userCredentials.email" formControlName='email' placeholder="E-mail" type="text"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-input [(ngModel)]="userCredentials.password" formControlName='password' placeholder="Password" type="password"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-input [(ngModel)]="userCredentials.confPass" formControlName='confPass' placeholder="Confirm password" type="password"></ion-input>
-      </ion-item>
-      <ion-item class="select">
-        <ion-label>Role</ion-label>
-        <ion-select [(ngModel)]="userCredentials.roleId" formControlName='roleId' placeholder="Role">
-          <ion-option *ngFor="let role of roles" [value]="role.id">{{role.name}}</ion-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <button type="submit" ion-button [disabled]="isFormValid(userForm)">SAVE</button>
-        <button class="secondary button-clear" (click)="close()" ion-button type="button">CANCEL</button>
-      </ion-item>
-    </ion-list>
-  </form>
+  <h1>{{email}}</h1>
+  <ion-list class="form-content">
+    <ion-item>
+      <ion-label *ngIf="isError('email', 'required')" class="error" stacked>{{'error_email_required' | text}}</ion-label>
+      <ion-label *ngIf="isError('email', 'pattern')" class="error" stacked>{{'email_invalid' | text}}</ion-label>
+      <ion-input [(ngModel)]="userCredentials.email" formControlName='email' placeholder="E-mail" type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label *ngIf="isError('password', 'required')" class="error" stacked>{{'error_password_required' | text}}</ion-label>
+      <ion-label *ngIf="isError('password', 'pattern')" class="error" stacked>{{'password_invalid' | text}}</ion-label>
+      <ion-input [(ngModel)]="userCredentials.password" formControlName='password' placeholder="Password" type="password"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label *ngIf="isError('confPass', 'required')" class="error" stacked>{{'error_confirm_password_required' | text}}</ion-label>
+      <ion-label *ngIf="isError('confPass', 'validateEqual')" class="error" stacked>{{'error_confirm_password' | text}}</ion-label>
+      <ion-input [(ngModel)]="userCredentials.confPass" formControlName='confPass' placeholder="Confirm password" type="password"></ion-input>
+    </ion-item>
+    <ion-item class="select">
+      <ion-label *ngIf="isError('roleId', 'required')" class="error" stacked>{{'error_role_required' | text}}</ion-label>
+      <ion-select [(ngModel)]="userCredentials.roleId" formControlName='roleId' placeholder="Role">
+        <ion-option *ngFor="let role of roles" [value]="role.id">{{role.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <button type="submit" ion-button [disabled]="isFormValid(userForm)">SAVE</button>
+      <button class="secondary button-clear" (click)="close()" ion-button type="button">CANCEL</button>
+    </ion-item>
+  </ion-list>
+</form>

@@ -60,7 +60,7 @@ export class SigninPage implements OnInit {
         this.loginCredentials.password,
         [
           Validators.required,
-          Validators.pattern(getPasswordRegExp())
+          // Validators.pattern(getPasswordRegExp())
         ]
       ]
     });

@@ -128,6 +128,11 @@ export class CreateUserPage implements OnInit {
   close() {
     this.viewCtrl.dismiss();
   }
+
+  isError(controlName: string, errorName: string) {
+    const control = this.newUserForm.controls[controlName];
+    return control.errors && control.errors[errorName] && control.dirty && control.invalid;
+  }
 }
 
 interface NewUserCredentials {

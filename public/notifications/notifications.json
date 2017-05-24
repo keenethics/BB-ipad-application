@@ -30,5 +30,8 @@
   "up_data_err": "Something went wrong, restoring old data ",
   "up_data_done": "",
   "error_email_required": "Email is required!",
-  "error_password_required": "Password is required!"
+  "error_password_required": "Password is required!",
+  "error_confirm_password": "Password doesn't match!",
+  "error_confirm_password_required": "Confirm password is required!",
+  "error_role_required": "Role is required!"
 }

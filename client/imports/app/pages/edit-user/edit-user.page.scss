@@ -11,75 +11,86 @@ $colors: (
 
 edit-user-page, create-user-page {
   &>form {
-    background: map-get($colors, 'page-background');
-    padding: 50px;
-    h1 {
-      margin: 0 0 10px 10px;
+    width: 500px;
+    padding: 40px 50px !important;
+    border-radius: 4px;
+    background-color: map-get($colors, 'page-background');
+
+    &>div:first-child {
+      margin-left: 5px;
+    }
+
+    h1, h2 {
       font-weight: 400;
-      font-size: 22px;
       color: map-get($colors, 'primary');
     }
-  }
-  
-  ion-list.list {
-    margin: auto;
-    &>ion-item.item.item-block:first-child {
-      div.item-inner {
-        border: none;
-      }
-    } 
-    &>ion-item.item.item-block {
-      border-bottom: none;
-      border: none;
-      padding: 0;
-      background: transparent;
-      margin: initial;
-      color: map-get($colors, 'light-blue');
-      border-radius: 5px;
-      div.item-inner {
-        border: none;
+
+    h1 {
+      font-size: 22px;
+    }
+
+    h2 {
+      font-size: 15px;
+      width: 295px;
+      line-height: 23px;
+    }
+
+    ion-list.list.form-content {
+      margin: 0;
+      ion-item.item {
+        background-color: transparent;
+        border-top: none;
+        border-bottom: none;
         padding: 0;
-        &>div.input-wrapper {
-          ion-label {
-            margin: 0;
-          }
+
+        div.item-inner {
+          border-bottom: none;
+        }
+
+        & input.text-input {
+          margin: inherit;
         }
       }
 
-      &.select {
-        div.input-wrapper {
-          font-size: 15px;
-          background-color: white;
-          padding: 0 32px;
-          border-radius: 5px;
-          line-height: 28px;
-          color: #9b9b9b;
-          margin: 10px;
-          box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.05);
-
-          ion-select {
-            color: map-get($colors, 'light-blue');
-            div.select-icon {
-              position: relative;
-              width: 12px;
-              height: 18px;
-              left: 5px;
-              top: 5px;
-            }
-          }
-        }
+      ion-label.error {
+        color: red;
+        white-space: normal;
       }
 
-      ion-input {
-        width: 100%;
+      ion-input, ion-select {
+        width: 98%;
         font-size: 15px;
         line-height: 28px;
-        margin: 10px 10px;
+        margin: 10px 5px;
         float: left;
         background: white;
         border-radius: 4px;
         padding: 0 30px;
         box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.05);
+        border: none;
+        max-width: inherit;
+
+        &.ng-dirty {
+          border-left: 4px solid;
+        }
+
+        &.ng-dirty.ng-invalid {
+          border-left-color: red;
+        }
+
+        &.ng-dirty.ng-valid {
+          border-left-color: green;
+        }
+      }
+
+      ion-select {
+        padding-top: 10px;
+        padding-bottom: 10px;
+
+        &>div.select-icon {
+          width: 15px;
+          height: 28px;
+        }
       }
 
       button {
@@ -91,8 +102,7 @@ edit-user-page, create-user-page {
         border-radius: 28px;
         margin-top: 20px;
         float: left;
-        margin-left: 10px;
-        margin-bottom: 10px;
+        margin: 10px;
 
         &.secondary {
           background: none;
