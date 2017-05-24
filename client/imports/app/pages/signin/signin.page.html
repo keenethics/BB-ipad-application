@@ -8,9 +8,21 @@
       <h2>Log into your account to start exploring and comparing markets across the globe</h2>
     </div>
     <div class="inputs">
-      <ion-input [(ngModel)]="loginCredentials.email" formControlName='email' type="text" placeholder="E-mail"></ion-input>
-      <ion-input [(ngModel)]="loginCredentials.password" formControlName='password' type="password" placeholder="Password"></ion-input>
-      <button type="submit" ion-button block [disabled]="isFormValid(loginForm)">SIGN IN</button>
+      <ion-list>
+        <ion-item>
+          <ion-label *ngIf="isError('email', 'required')" class="error" stacked>{{'error_email_required' | text}}</ion-label>
+          <ion-label *ngIf="isError('email', 'pattern')" class="error" stacked>{{'email_invalid' | text}}</ion-label>
+          <ion-input [(ngModel)]="loginCredentials.email" formControlName='email' type="text" placeholder="E-mail"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label *ngIf="isError('password', 'required')" class="error" stacked>{{'error_password_required' | text}}</ion-label>
+          <ion-label *ngIf="isError('password', 'pattern')" class="error" stacked>{{'password_invalid' | text}}</ion-label>
+          <ion-input [(ngModel)]="loginCredentials.password" formControlName='password' type="password" placeholder="Password"></ion-input>
+        </ion-item>
+        <ion-item>
+          <button type="submit" ion-button block [disabled]="isFormValid(loginForm)">SIGN IN</button>
+        </ion-item>
+      </ion-list>
     </div>
   </form>
 </ion-content>

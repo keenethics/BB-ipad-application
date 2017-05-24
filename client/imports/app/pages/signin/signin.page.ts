@@ -48,7 +48,6 @@ export class SigninPage implements OnInit {
   }
 
   buildLoginForm() {
-    console.dir(Validators);
     this.loginForm = this.formBuilder.group({
       email: [
         this.loginCredentials.email,
@@ -61,7 +60,6 @@ export class SigninPage implements OnInit {
         this.loginCredentials.password,
         [
           Validators.required,
-          Validators.maxLength(40),
           Validators.pattern(getPasswordRegExp())
         ]
       ]
@@ -77,6 +75,11 @@ export class SigninPage implements OnInit {
 
   isFormValid(form: FormGroup): boolean {
     return !(form.valid && form.dirty && form.touched);
+  }
+
+  isError(controlName: string, errorName: string) {
+    const control = this.loginForm.controls[controlName];
+    return control.errors && control.errors[errorName] && control.dirty && control.invalid;
   }
 
   login() {
