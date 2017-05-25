@@ -147,13 +147,14 @@ function drawWaterflowChart(container: HTMLDivElement, data: any[]) {
     .attr('y2', function (d) { return y(d.end); });
 
   // draw break
-  bar.filter(function (d) { return (scaleStartVal > 0 && d.value >= scaleStartVal); }).append('svg:image')
+  bar.filter(function (d) {
+    return (scaleStartVal > 0 && d.value >= scaleStartVal && (y(d.end) < charth - 120));
+  }).append('svg:image')
     .attr('xlink:href', function (d) { return ('/img/break2.svg'); })
     .attr('height', '25')
     .attr('width', '73')
     .attr('x', '-10')
     .attr('y', charth - 120);
-
 
   // animation transition
   const t = d3.transition('animation-transition')
