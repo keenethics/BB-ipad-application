@@ -40,11 +40,13 @@ preferences-page {
             align-self: flex-start;
             margin: 16px 0;
           }
+
+          .ms & {
+            .tab-button-text, .tab-button-icon {
+              -ms-flex-item-align: start;
+            }
+          }
         }
-      }
-
-      ion-tab {
-
       }
     }
   }

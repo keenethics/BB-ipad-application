@@ -45,6 +45,14 @@ edit-user-page, create-user-page {
 
         div.item-inner {
           border-bottom: none;
+
+          .ms & div.input-wrapper {
+            display: block;
+
+            input {
+              height: 28px;
+            }
+          }
         }
 
         & input.text-input {

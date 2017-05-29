@@ -26,13 +26,19 @@ import theme from './theme.scss';
 
 declare const FilePicker: any;
 
+// @Component({
+//   selector: 'body',
+//   template: '<child></child>',
+//   host: {
+//     class: bowser.msie || bowser.msedge ? 'ms' : ''
+//   }
+// })
+// class BodyComponent {}
+
 @Component({
   selector: 'app',
   template,
-  styles: [styles],
-  host: {
-    class: bowser.msie || bowser.msedge ? 'ms' : ''
-  }
+  styles: [styles]
 })
 export class AppComponent {
   @ViewChild(Nav) navCtrl: Nav;
@@ -61,6 +67,7 @@ export class AppComponent {
   }
 
   ngAfterViewInit() {
+    this._setBrowserClass();
     this.initializeApp();
     this.filterCtrl.currentFilter$.subscribe((f: any) => {
       this.dataProvider.query(f);
@@ -103,5 +110,11 @@ export class AppComponent {
     this.auth.logout().then(() => {
       this.navCtrl.setRoot(SigninPage);
     });
+  }
+
+  private _setBrowserClass() {
+    if (bowser.msie) {
+      document.body.classList.add('ms');
+    }
   }
 }
