@@ -2,6 +2,7 @@ import { Component, ViewChild, OnInit, OnDestroy, AfterViewInit } from '@angular
 import { Platform, Nav, MenuController } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 import { MeteorObservable } from 'meteor-rxjs';
+import * as bowser from 'bowser';
 
 import { DataUpdates } from '../../../both/data-management/data-updates.collections';
 
@@ -28,7 +29,10 @@ declare const FilePicker: any;
 @Component({
   selector: 'app',
   template,
-  styles: [styles]
+  styles: [styles],
+  host: {
+    class: bowser.msie || bowser.msedge ? 'ms' : ''
+  }
 })
 export class AppComponent {
   @ViewChild(Nav) navCtrl: Nav;

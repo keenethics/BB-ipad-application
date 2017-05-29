@@ -26,5 +26,12 @@ bu-filter {
         color: #fff;
       }
     }
+    
+    .ms & {
+      height: 44px;
+      div.toolbar-content {
+        margin-top: 2px;
+      }
+    }
   }
 }

@@ -124,6 +124,10 @@ ion-menu#filter-menu {
       }
     }
   }
+
+  .ms & .menu-inner {
+    z-index: 10;
+  }
 }
 
 ion-header {

@@ -34,4 +34,12 @@ header {
       margin-top: 6px;
     }
   }
+
+  .ms & ion-toolbar ion-buttons {
+    margin-top: 15px;
+    overflow: visible;
+    button[ion-button] {
+      overflow: visible;
+    }
+  }
 }

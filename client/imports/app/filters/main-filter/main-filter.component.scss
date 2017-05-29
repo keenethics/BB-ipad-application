@@ -92,6 +92,10 @@ main-filter {
             font-size: 27px;
             line-height: 27px;
           }
+
+          .ms & {
+            max-width: 27px;
+          }
         }
         ion-input.input {
           background: map-get($colors,'light');
@@ -101,6 +105,10 @@ main-filter {
             font-size: 14px;
             width: 98%;
             line-height: 25px;
+
+            .ms & {
+              height: 25px;
+            }
           }
         }
       }
@@ -146,7 +154,18 @@ main-filter {
                 }
               }
             }
+
+            .ms & {
+              display: inline-block;
+              ion-label {
+                float: left;
+              }
+            }
           }
+        }
+
+        .ms & {
+          min-height: 0px;
         }
       }
 
@@ -172,6 +191,10 @@ main-filter {
             ion-label {
               padding: 0;
               margin: 0;
+
+              .ms & {
+                text-align: left;
+              }
             }
 
             .item-inner {
