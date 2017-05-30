@@ -69,6 +69,7 @@ overview-sheet, fact-sheet {
             background-color: map-get($colors,'light');
             color: map-get($colors,'light-blue');
             box-shadow: none;
+            height: auto;
 
             &.active {
               background-color: map-get($colors,'light-blue');

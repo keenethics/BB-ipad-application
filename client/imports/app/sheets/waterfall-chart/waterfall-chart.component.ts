@@ -150,7 +150,7 @@ function drawWaterflowChart(container: HTMLDivElement, data: any[]) {
   bar.filter(function (d) {
     return (scaleStartVal > 0 && d.value >= scaleStartVal && (y(d.end) < charth - 120));
   }).append('svg:image')
-    .attr('xlink:href', function (d) { return ('/img/break2.svg'); })
+    .attr('xlink:href', function (d) { return ('/img/break.svg'); })
     .attr('height', '25')
     .attr('width', '73')
     .attr('x', '-10')

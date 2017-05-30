@@ -16,6 +16,7 @@ import {
 } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { Subscription } from 'rxjs';
+import 'classlist-polyfill';
 
 import * as d3 from 'd3';
 import * as d3proj from 'd3-geo-projection';
