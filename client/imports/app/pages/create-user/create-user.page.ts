@@ -131,7 +131,7 @@ export class CreateUserPage implements OnInit {
 
   isError(controlName: string, errorName: string) {
     const control = this.newUserForm.controls[controlName];
-    return control.errors && control.errors[errorName] && control.dirty && control.invalid;
+    return control.errors && control.errors[errorName] && control.touched && control.invalid;
   }
 }
 

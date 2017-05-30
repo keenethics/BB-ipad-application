@@ -125,7 +125,7 @@ export class EditUserPage implements OnInit {
 
   isError(controlName: string, errorName: string) {
     const control = this.userForm.controls[controlName];
-    return control.errors && control.errors[errorName] && control.dirty && control.invalid;
+    return control.errors && control.errors[errorName] && control.touched && control.invalid;
   }
 
   close() {

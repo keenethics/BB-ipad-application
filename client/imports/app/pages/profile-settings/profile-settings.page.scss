@@ -35,16 +35,61 @@ profile-settings-page {
         div.inputs {
           overflow: visible;
 
+          ion-list.list {
+            margin: 0;
+          }
+
+          ion-item.item {
+            background-color: transparent;
+            border-top: none;
+            border-bottom: none;
+            padding: 0;
+
+            div.item-inner {
+              border-bottom: none;
+
+              .ms & div.input-wrapper {
+                display: block;
+
+                input {
+                  height: 28px;
+                }
+
+                button {
+                  width: inherit;
+                }
+              }
+            }
+          }
+
+          ion-label.error {
+            color: red;
+            white-space: normal;
+          }
+
           ion-input {
-            width: 100%;
+            width: 98%;
             font-size: 15px;
             line-height: 28px;
-            margin: 10px 0;
+            margin: 10px 5px;
             float: left;
             background: white;
             border-radius: 4px;
             padding: 0 30px;
-            box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.05);
+            box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.05);
+            border: none;
+
+            &.ng-touched {
+              border-left: 4px solid;
+            }
+
+            &.ng-touched.ng-invalid {
+              border-left-color: red;
+            }
+
+            &.ng-touched.ng-valid {
+              border-left-color: green;
+            }
           }
 
           button {
@@ -56,17 +101,7 @@ profile-settings-page {
             border-radius: 28px;
             margin-top: 20px;
             float: left;
-            box-shadow: 0px 5px 15px 0px rgba(11,64,156,0.5);
-          }
-
-          .ms & {
-            ion-input input {
-              height: 28px;
-            }
-
-            button {
-              width: inherit;
-            }
+            margin: 10px;
           }
         }
 

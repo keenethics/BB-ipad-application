@@ -78,15 +78,15 @@ edit-user-page, create-user-page {
         border: none;
         max-width: inherit;
 
-        &.ng-dirty {
+        &.ng-touched {
           border-left: 4px solid;
         }
 
-        &.ng-dirty.ng-invalid {
+        &.ng-touched.ng-invalid {
           border-left-color: red;
         }
 
-        &.ng-dirty.ng-valid {
+        &.ng-touched.ng-valid {
           border-left-color: green;
         }
       }

@@ -249,6 +249,13 @@ ion-backdrop {
   }
 }
 
+.item-ios.item-label-stacked .text-input, .item-ios.item-label-floating .text-input {
+  margin-top: 11px;
+  margin-bottom: 11px;
+  margin-left: 0;
+  width: calc(100% - 11px);
+}
+
 @import '../imports/app/filters/bu-filter/bu-filter.component.scss';
 @import '../imports/app/filters/category-filter/category-filter.component.scss';
 @import '../imports/app/filters/main-filter/main-filter.component.scss';

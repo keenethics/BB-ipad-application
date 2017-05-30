@@ -33,5 +33,6 @@
   "error_password_required": "Password is required!",
   "error_confirm_password": "Password doesn't match!",
   "error_confirm_password_required": "Confirm password is required!",
-  "error_role_required": "Role is required!"
+  "error_role_required": "Role is required!",
+  "error_old_password_required": "Old password is required!"
 }
