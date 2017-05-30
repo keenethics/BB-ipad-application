@@ -24,6 +24,8 @@ import template from './app.component.html';
 import styles from './app.component.scss';
 import theme from './theme.scss';
 
+import 'intl';
+
 declare const FilePicker: any;
 
 // @Component({

@@ -256,6 +256,10 @@ ion-backdrop {
   width: calc(100% - 11px);
 }
 
+.ms .toast-wrapper.toast-bottom {
+  width: 100%;
+}
+
 @import '../imports/app/filters/bu-filter/bu-filter.component.scss';
 @import '../imports/app/filters/category-filter/category-filter.component.scss';
 @import '../imports/app/filters/main-filter/main-filter.component.scss';

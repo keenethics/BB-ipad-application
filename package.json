@@ -56,6 +56,7 @@
     "d3-geo-projection": "^1.2.1",
     "fabric": "^1.7.9",
     "fibers": "^1.0.15",
+    "intl": "^1.2.5",
     "ionic-angular": "2.0.0-rc.4",
     "ionic-native": "2.2.13",
     "ionicons": "3.0.0",
