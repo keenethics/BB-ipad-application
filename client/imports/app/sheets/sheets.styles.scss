@@ -106,5 +106,9 @@ overview-sheet, fact-sheet {
     height: 100vh;
     top: 0;
     left: 0;
+
+    .ms & {
+      background: rgba(0,0,0,0.0001);
+    }
   }
 }
