@@ -6,6 +6,15 @@ info-page {
     align-items: center;
     justify-content: center;
     color: #3B65AD;
-    background: #F8F9FA;
+    background: #F8F9FA;   
+  }
+
+  .ms & .scroll-content {
+    overflow: hidden;
+    .info-container {
+      display: -ms-flexbox;
+      -ms-flex-pack: center;
+      -ms-flex-align: center;
+    }
   }
 }

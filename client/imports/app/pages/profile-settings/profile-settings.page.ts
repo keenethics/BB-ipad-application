@@ -5,7 +5,7 @@ import { ToastsManager } from '../../common/toasts-manager';
 import { LoadingManager } from '../../common/loading-manager';
 import { EqualValidator } from '../../common/validators/equal-validator';
 import { ProfileSettings } from '../../settings';
-
+import { getPasswordRegExp } from '../../../../../both/helpers/password-regexp';
 import template from './profile-settings.page.html';
 import styles from './profile-settings.page.scss';
 
@@ -36,21 +36,20 @@ export class ProfileSettingsPage implements OnInit {
   }
 
   buildPassworsForm() {
+    const passRegex = getPasswordRegExp();
     this.passwordsForm = this.formBuilder.group({
       oldPassword: [
         this.passwords.oldPassword,
         [
           Validators.required,
-          Validators.maxLength(40),
-          Validators.minLength(6)
+          Validators.pattern(passRegex)
         ]
       ],
       password: [
         this.passwords.password,
         [
           Validators.required,
-          Validators.maxLength(40),
-          Validators.minLength(6),
+          Validators.pattern(passRegex),
           new EqualValidator('confPass', 'true')
         ]
       ],
@@ -58,6 +57,7 @@ export class ProfileSettingsPage implements OnInit {
         this.passwords.confPass,
         [
           Validators.required,
+          Validators.pattern(passRegex),
           new EqualValidator('password', 'false')
         ]
       ]
@@ -82,5 +82,10 @@ export class ProfileSettingsPage implements OnInit {
         this.loadingManager.loadingInst.dismiss();
         this.toastManager.okToast(err);
       });
+  }
+
+  isError(controlName: string, errorName: string) {
+    const control = this.passwordsForm.controls[controlName];
+    return control.errors && control.errors[errorName] && control.touched && control.invalid;
   }
 }

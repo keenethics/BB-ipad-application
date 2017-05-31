@@ -2,6 +2,7 @@ import { Component, ViewChild, OnInit, OnDestroy, AfterViewInit } from '@angular
 import { Platform, Nav, MenuController } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 import { MeteorObservable } from 'meteor-rxjs';
+import * as bowser from 'bowser';
 
 import { DataUpdates } from '../../../both/data-management/data-updates.collections';
 
@@ -22,9 +23,19 @@ import template from './app.component.html';
 import styles from './app.component.scss';
 import theme from './theme.scss';
 
-import { FilterController } from './filter/filter-controller';
+
+import 'intl';
 
 declare const FilePicker: any;
+
+// @Component({
+//   selector: 'body',
+//   template: '<child></child>',
+//   host: {
+//     class: bowser.msie || bowser.msedge ? 'ms' : ''
+//   }
+// })
+// class BodyComponent {}
 
 @Component({
   selector: 'app',
@@ -57,6 +68,7 @@ export class AppComponent {
   }
 
   ngAfterViewInit() {
+    this._setBrowserClass();
     this.initializeApp();
   }
 
@@ -96,5 +108,11 @@ export class AppComponent {
     this.auth.logout().then(() => {
       this.navCtrl.setRoot(SigninPage);
     });
+  }
+
+  private _setBrowserClass() {
+    if (bowser.msie) {
+      document.body.classList.add('ms');
+    }
   }
 }

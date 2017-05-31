@@ -12,5 +12,10 @@ splashscreen-page {
     top: 0;
     bottom: 56%;
     font-family: LatoWebMedium;
+
+    .ms & span.button-inner {
+      position: relative;
+      top: 0.2vh;
+    }
   }
 }

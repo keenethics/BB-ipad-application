@@ -124,6 +124,10 @@ ion-menu#filter-menu {
       }
     }
   }
+
+  .ms & .menu-inner {
+    z-index: 10;
+  }
 }
 
 ion-header {
@@ -243,6 +247,17 @@ ion-backdrop {
     margin: auto;
     opacity: 0.4;
   }
+}
+
+.item-ios.item-label-stacked .text-input, .item-ios.item-label-floating .text-input {
+  margin-top: 11px;
+  margin-bottom: 11px;
+  margin-left: 0;
+  width: calc(100% - 11px);
+}
+
+.ms .toast-wrapper.toast-bottom {
+  width: 100%;
 }
 
 @import '../imports/app/filter/bu-filter/bu-filter.component.scss';

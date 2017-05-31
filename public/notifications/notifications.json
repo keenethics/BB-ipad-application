@@ -35,5 +35,6 @@
   "error_confirm_password_required": "Confirm password is required!",
   "error_role_required": "Role is required!",
   "sync_data": "Sync data...",
-  "all_data_saved": "All data saved to local storrage."
+  "all_data_saved": "All data saved to local storrage.",
+  "error_old_password_required": "Old password is required!"
 }

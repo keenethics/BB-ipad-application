@@ -102,5 +102,15 @@ map-switchers {
         }
       }
     }
+
+    .ms & {
+      display: -ms-flexbox;
+      -ms-flex-pack: justify;
+      -ms-flex-align: center;
+
+      ion-toggle {
+        top: 20%;
+      }
+    }
   }
 }

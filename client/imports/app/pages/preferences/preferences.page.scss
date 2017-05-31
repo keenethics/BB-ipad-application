@@ -26,6 +26,10 @@ preferences-page {
           justify-content: flex-start;
           background-color: #fff;
           box-shadow: 10px 0px 20px 0px rgba(0,0,0,0.1);
+          
+          .ms & {
+            flex-basis: 100%;
+          }
 
           &[aria-selected=true]{
             background-color: map-get($colors, 'light-blue');
@@ -40,11 +44,13 @@ preferences-page {
             align-self: flex-start;
             margin: 16px 0;
           }
+
+          .ms & {
+            .tab-button-text, .tab-button-icon {
+              -ms-flex-item-align: start;
+            }
+          }
         }
-      }
-
-      ion-tab {
-
       }
     }
   }
