@@ -7,7 +7,8 @@ import { MenuController, Platform } from 'ionic-angular';
 import { RolesController } from '../../authorization';
 
 import { ToastsManager, LoadingManager } from '../../common';
-import { DataUploader, DataUpdateInfo } from '../../data-management';
+import { DataUploader, DataUpdateInfo, DataProvider } from '../../data-management';
+import { LocalCollectionsManager } from '../../offline/local-collections-manager';
 import { PickFileComponent } from '../../common/components/pick-file/pick-file.component';
 
 import styles from './upload-data.page.scss';
@@ -38,7 +39,10 @@ export class UploadDataPage implements OnDestroy, OnInit {
     private toastCtrl: ToastsManager,
     private formBuilder: FormBuilder,
     private roles: RolesController,
-    private dateInfo: DataUpdateInfo
+    private dateInfo: DataUpdateInfo,
+    private lcManager: LocalCollectionsManager,
+    private dataProvider: DataProvider,
+    private platform: Platform
   ) { }
 
   ngOnInit() {
@@ -127,5 +131,22 @@ export class UploadDataPage implements OnDestroy, OnInit {
       .catch((err: any) => {
         this.toastCtrl.okToast(err.reason || err.message || err);
       });
+  }
+
+  syncLocalStorrage() {
+    this.loadingCtrl.loading('sync_data');
+    this.lcManager.fetchToStorrage()
+      .then(() => {
+        this.loadingCtrl.loadingInst.dismiss();
+        this.toastCtrl.okToast('all_data_saved');
+      })
+      .catch((err) => {
+        this.loadingCtrl.loadingInst.dismiss();
+        this.toastCtrl.okToast(err.message);
+      });
+  }
+
+  isCore() {
+    return this.platform.is('core');
   }
 };

@@ -4,9 +4,9 @@ import { MarketCountries } from '../../../both/countries/market-countries.collec
 import { AvailableCountries } from '../../../both/countries/available-countries.collection';
 
 
-Meteor.publish('market-countries', function (markets: string[]) {
-  check(markets, [String]);
-  return MarketCountries.find({ _id: { $in: markets } });
+Meteor.publish('market-countries', function (markets: any) {
+  check(markets, { _id: { $in: [String] }});
+  return MarketCountries.find(markets);
 });
 
 Meteor.publish('available-countries', function () {

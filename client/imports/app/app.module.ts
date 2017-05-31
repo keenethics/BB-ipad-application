@@ -7,6 +7,7 @@ import { AuthorizationModule } from './authorization/authorization.module';
 import { DataManagementModule } from './data-management/data-management.module';
 import { SharedModule } from './shared/shared.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { OfflineModule } from './offline/offline.module';
 
 // EXPERIMENTAL
 import { FilterModule } from './filter/fitler.module';
@@ -24,6 +25,7 @@ import '../../stylesheets/global.scss';
     AuthorizationModule,
     DataManagementModule,
     SharedModule,
+    OfflineModule,
     NotificationsModule,
     FilterModule
   ],
@@ -42,7 +44,8 @@ import '../../stylesheets/global.scss';
   ],
   exports: [
     SharedModule,
-    NotificationsModule
+    NotificationsModule,
+    OfflineModule
   ]
 })
 export class AppModule { }

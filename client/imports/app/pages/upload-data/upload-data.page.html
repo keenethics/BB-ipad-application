@@ -1,6 +1,6 @@
 <ion-content>
   <div class="buttons-container">
-    <form [formGroup]="_dataForm" (ngSubmit)="uploadData()" class="data-form" novalidate>
+    <form *ngIf="isCore()" [formGroup]="_dataForm" (ngSubmit)="uploadData()" class="data-form" novalidate>
       <p class="last-update" *ngIf="_updateDate">Last update date: {{_updateDate | date:'mediumDate'}}</p>
       <p class="update-status" *ngIf="_status">{{_status | text}}
         <ion-spinner style="margin-left: 10px" name="dots"></ion-spinner>
@@ -32,6 +32,11 @@
       </div>
     </form>
     <div class="upload-button-wrap" style="margin-top: 0px">
+      <button (click)="syncLocalStorrage()" ion-button round>
+        SYNC DATA
+      </button>
+    </div>
+    <div *ngIf="isCore()" class="upload-button-wrap" style="margin-top: 0px">
       <button #geoCordsButton ion-button round>
         <pick-file fileType="text/csv" [emitterElement]="geoCordsButton" (onFileSelected)="uploadCoords($event)" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
         COORDINATES
