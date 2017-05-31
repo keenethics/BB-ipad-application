@@ -418,7 +418,7 @@ export class WorldMap implements OnChanges {
 
       const correctZoomIdentity = () => {
         try {
-          const regExp = /\((.+?), (.+?)\).+\((.+?),/g;
+          const regExp = /\((.+?),? (.+?)\).+\((.+?)[,\)]/g;
           const transform = map.attr('transform');
           if (transform) {
             const maches = regExp.exec(transform);
