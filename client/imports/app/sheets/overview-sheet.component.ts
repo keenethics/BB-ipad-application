@@ -10,8 +10,8 @@ import { Observable } from 'rxjs';
 import { DataProvider, SumBusinessUnitsPipe } from '../data-management';
 import { BusinessDataUnit } from '../../../../both/data-management';
 import { FactSheetComponent } from './fact-sheet.component';
-import { FilterController } from '../filters';
 import { DataUpdateInfo } from '../data-management/data-update-info';
+import { FilterController } from '../filter/filter-controller';
 
 import template from './overview-sheet.component.html';
 import styles from './sheets.styles.scss';
@@ -136,10 +136,9 @@ export class OverviewSheetComponent {
   }
 
   ngOnInit() {
-    this.filterCtrl.currentFilter$
-      .subscribe((queryObj) => {
-        this.getTableData(queryObj);
-      });
+    this.filterCtrl.query$.subscribe((q: any) => {
+      this.getTableData(q);
+    });
   }
 
   getTableData(currentQuery: any) {

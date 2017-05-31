@@ -9,16 +9,16 @@
     </ion-toolbar>
   </ion-item>
   <ion-item class="categories">
-    <ion-segment [(ngModel)]="category" (ionChange)="changeCategory()">
-      <ion-segment-button value="market">
+    <ion-segment [ngModel]="category" (ionChange)="changeCategory($event)">
+      <ion-segment-button value="Market">
         <ion-icon class="icon-markets" name="icon-markets"></ion-icon>
         MARKETS
       </ion-segment-button>
-      <ion-segment-button value="country">
+      <ion-segment-button value="Country">
         <ion-icon class="icon-countries" name="icon-countries"></ion-icon>
         COUNTRIES
       </ion-segment-button>
-      <ion-segment-button value="city">
+      <ion-segment-button value="City">
         <ion-icon class="icon-cities" name="icon-cities"></ion-icon>
         CITIES
       </ion-segment-button>
@@ -29,13 +29,13 @@
     <ion-label><ion-icon class="icon-search" name="icon-search"></ion-icon></ion-label>
     <ion-input [(ngModel)]="searchValue" type="text" placeholder="Start typing a country here" value=""></ion-input>
   </ion-item>
-  <ion-item class="applied-filters">
-    <applied-filters [filters]="filters" (onFilterRemoved)="removeOption($event)"></applied-filters>
+  <ion-item class="applied-places">
+    <applied-places [filters]="appliedPlaces" (onFilterRemoved)="removePlace($event)"></applied-places>
   </ion-item>
   <ion-item class="options">
       <ion-list>
-        <button (debounceClick)="selectOption(option)" [delay]="200" ion-item *ngFor="let option of options | search:searchValue">
-          {{option}}
+        <button (debounceClick)="addPlace(place)" [delay]="200" ion-item *ngFor="let place of placesList | search:searchValue">
+          {{place}}
         </button>
       </ion-list>
   </ion-item>

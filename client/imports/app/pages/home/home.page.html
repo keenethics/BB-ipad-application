@@ -13,11 +13,11 @@
     [map-width]="mapWidth"
     [map-height]="mapHeight"
     [zoom-on-update]="autoZoom"
-    [data-to-draw]="dataProvider.data$ | async | buFilter:filterIdentifier | rangeFilter:dataRange?.lower:dataRange?.upper"
+    [data-to-draw]="_state?.data"
     (data-click)="showOverview($event)"
     (select-country)="selectCountry($event)">
   </world-map>
-  <category-filter></category-filter>
+  <category-filter [category]="_state?.filters?.identifier" (onChange)="changeCategory($event)"></category-filter>
   <sheets-portal></sheets-portal>
 </ion-content>
 <ion-footer>

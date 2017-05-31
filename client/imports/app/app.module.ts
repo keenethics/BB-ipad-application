@@ -6,8 +6,10 @@ import { File } from 'ionic-native';
 import { AuthorizationModule } from './authorization/authorization.module';
 import { DataManagementModule } from './data-management/data-management.module';
 import { SharedModule } from './shared/shared.module';
-import { FiltersModule } from './filters';
 import { NotificationsModule } from './notifications/notifications.module';
+
+// EXPERIMENTAL
+import { FilterModule } from './filter/fitler.module';
 
 import { AppComponent } from './app.component';
 
@@ -22,8 +24,8 @@ import '../../stylesheets/global.scss';
     AuthorizationModule,
     DataManagementModule,
     SharedModule,
-    FiltersModule,
-    NotificationsModule
+    NotificationsModule,
+    FilterModule
   ],
   declarations: [
     AppComponent,
@@ -40,7 +42,6 @@ import '../../stylesheets/global.scss';
   ],
   exports: [
     SharedModule,
-    FiltersModule,
     NotificationsModule
   ]
 })
