@@ -100,13 +100,13 @@ export class UploadDataPage implements OnDestroy, OnInit {
   }
 
   uploadData() {
-    const current = this._dataFiles.get('oxygen');
-    const hist = this._dataFiles.get('evolution');
+    const oxygenSubmission = this._dataFiles.get('oxygen');
+    const evolutionReport = this._dataFiles.get('evolution');
 
     this.dataUploader.uploadData(
-      current,
-      hist,
-      { ...this._dataForm.getRawValue(), fileNames: { current: current.name, hist: hist.name } })
+      oxygenSubmission,
+      evolutionReport,
+      { ...this._dataForm.getRawValue(), fileNames: { oxygenSubmission: oxygenSubmission.name, evolutionReport: evolutionReport.name } })
       .then((res: string) => {
         this.toastCtrl.okToast(res);
         this._dataFiles = new Map();

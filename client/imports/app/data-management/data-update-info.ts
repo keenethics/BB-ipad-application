@@ -16,11 +16,13 @@ export class DataUpdateInfo {
     this._info = new BehaviorSubject(null);
 
     MeteorObservable.autorun().subscribe(() => {
+      // We need this find in collection for meteor reactivity
+      DataUpdates.find().fetch();
       this._odp.findIn(DataUpdates, {}, 'dataUpdates')
         .then((data) => {
           this._info.next(data[0]);
         });
-      });
+    });
   }
 }
 
@@ -30,7 +32,8 @@ interface Info {
   lastDataUpdateText?: string;
   period?: string;
   fileNames?: {
-    current: string;
-    hist: string;
+    oxygenSubmission: string;
+    evolutionReport: string;
+    geocordinates: string;
   };
 };
