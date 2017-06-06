@@ -10,7 +10,7 @@ import {
   EventEmitter
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { NavController, MenuController, Content, DeepLinker } from 'ionic-angular';
+import { NavController, MenuController, Content } from 'ionic-angular';
 
 import template from './home.page.html';
 import styles from './home.page.scss';
@@ -35,8 +35,6 @@ import { CountrySelector } from '../../filter/places-filter/country-selector';
   encapsulation: ViewEncapsulation.None
 })
 export class HomePage implements AfterViewInit {
-  private rangeSubscr: Subscription;
-  private filterSubscr: Subscription;
   public isZoomActive: boolean;
   public mapWidth: number = 0;
   public mapHeight: number = 0;
@@ -60,8 +58,7 @@ export class HomePage implements AfterViewInit {
     private dataProvider: DataProvider,
     private sheetsCtrl: SheetsController,
     private filterCtrl: FilterController,
-    private countrySelector: CountrySelector,
-    private deepLinker: DeepLinker
+    private countrySelector: CountrySelector
   ) {
     this.mapSettings = JSON.parse(localStorage.getItem('mapSettings')) ||
       { charts: false, scaling: false, labels: false, values: false };
@@ -70,11 +67,6 @@ export class HomePage implements AfterViewInit {
   ngOnInit() {
     this.filterCtrl.state$.subscribe(s => this._state = s);
     this.filterCtrl.filter();
-  }
-
-  ngOnDestroy() {
-    // this.rangeSubscr.unsubscribe();
-    // this.filterSubscr.unsubscribe();
   }
 
   ngAfterViewInit() {
