@@ -21,7 +21,6 @@ export class InfoPage implements OnDestroy {
     this.version = (Meteor.settings.public as any).version;
     this._subscr = dataInfo.info$.subscribe(info => {
       this.info = info;
-      console.log(this.info);
     });
   }
 
