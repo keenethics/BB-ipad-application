@@ -8,9 +8,9 @@ import { DataManagementModule } from './data-management/data-management.module';
 import { SharedModule } from './shared/shared.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { OfflineModule } from './offline/offline.module';
-
-// EXPERIMENTAL
 import { FilterModule } from './filter/fitler.module';
+
+import Routes from './app.routes';
 
 import { AppComponent } from './app.component';
 
@@ -21,6 +21,8 @@ import '../../stylesheets/global.scss';
     BrowserModule,
     IonicModule.forRoot(AppComponent, {
       mode: 'ios'
+    }, {
+      links: Routes
     }),
     AuthorizationModule,
     DataManagementModule,

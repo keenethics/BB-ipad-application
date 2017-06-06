@@ -4,7 +4,8 @@ import { NavController, Platform } from 'ionic-angular';
 import styles from './preferences.page.scss';
 import template from './preferences.page.html';
 
-import { RolesController } from '../../authorization';
+import { RolesController, Authorization } from '../../authorization';
+import { runAsync } from '../../../../../both/helpers';
 
 import {
   ProfileSettingsPage,
@@ -12,7 +13,8 @@ import {
   SwitchersPage,
   UploadDataPage,
   InfoPage,
-  FilterPage
+  FilterPage,
+  SigninPage
 } from '../index';
 
 @Component({
@@ -22,13 +24,19 @@ import {
   encapsulation: ViewEncapsulation.None
 })
 export class PreferencesPage {
-  public pages: { icon: string, title: string, selector: string, component: any, guard: Function }[] = [];
+  public pages: { icon: string, title: string, segment: string, selector: string, component: any, guard: Function }[] = [];
 
-  constructor(private roles: RolesController, private platform: Platform) {
+  constructor(
+    private roles: RolesController,
+    private platform: Platform,
+    private auth: Authorization,
+    private navCtrl: NavController
+  ) {
     this.pages = [
       {
         icon: 'icon-switchers',
         title: 'PREFERENCES',
+        segment: 'preferences',
         selector: 'switchers-page',
         component: SwitchersPage,
         guard: () => true
@@ -36,6 +44,7 @@ export class PreferencesPage {
       {
         icon: 'icon-preferences',
         title: 'PROFILE SETTINGS',
+        segment: 'profile',
         selector: 'profile-settings-page',
         component: ProfileSettingsPage,
         guard: () => this._isOnline()
@@ -43,6 +52,7 @@ export class PreferencesPage {
       {
         icon: 'icon-user',
         title: 'USER LIST',
+        segment: 'users',
         selector: 'user-management-page',
         component: UserManagementPage,
         guard: () => (this._isInRole(['Administrator']) && this._isOnline())
@@ -50,6 +60,7 @@ export class PreferencesPage {
       {
         icon: 'icon-upload',
         title: 'DATA',
+        segment: 'data',
         selector: 'upload-data-page',
         component: UploadDataPage,
         guard: () => (this._isInRole(['Administrator', 'DataUpload']) && this._isOnline())
@@ -57,11 +68,16 @@ export class PreferencesPage {
       {
         icon: 'information-circle',
         title: 'INFO',
+        segment: 'info',
         selector: 'info-page',
         component: InfoPage,
         guard: () => true
       }
     ];
+  }
+
+  ionViewCanEnter() {
+    return this.auth.isLoggedIn() || !!runAsync(() => this.navCtrl.setRoot('Signin'));
   }
 
   _isInRole(roles: string[]) {

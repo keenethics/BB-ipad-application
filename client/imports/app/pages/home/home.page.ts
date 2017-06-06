@@ -10,7 +10,7 @@ import {
   EventEmitter
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { NavController, MenuController, Content } from 'ionic-angular';
+import { NavController, MenuController, Content, DeepLinker } from 'ionic-angular';
 
 import template from './home.page.html';
 import styles from './home.page.scss';
@@ -18,6 +18,7 @@ import styles from './home.page.scss';
 import { Authorization } from '../../authorization/authorization';
 import { DataProvider } from '../../data-management';
 import { SheetsController, OverviewSheetComponent, SheetsPortalComponent } from '../../sheets';
+import { runAsync } from '../../../../../both/helpers';
 
 import { SigninPage } from '../signin/signin.page';
 import { SwitchersPage } from '../switchers/switchers.page';
@@ -59,7 +60,8 @@ export class HomePage implements AfterViewInit {
     private dataProvider: DataProvider,
     private sheetsCtrl: SheetsController,
     private filterCtrl: FilterController,
-    private countrySelector: CountrySelector
+    private countrySelector: CountrySelector,
+    private deepLinker: DeepLinker
   ) {
     this.mapSettings = JSON.parse(localStorage.getItem('mapSettings')) ||
       { charts: false, scaling: false, labels: false, values: false };
@@ -85,7 +87,7 @@ export class HomePage implements AfterViewInit {
   }
 
   ionViewCanEnter() {
-    return this.auth.isLoggedIn();
+    return this.auth.isLoggedIn() || !!runAsync(() => this.navCtrl.setRoot('Signin'));
   }
 
   menuToggle(id: string) {
