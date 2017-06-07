@@ -100,7 +100,9 @@ main-filter {
         ion-input.input {
           background: map-get($colors,'light');
           border-radius: 4px;
+
           input.text-input {
+            font-family: 'LatoWeb';
             margin-left: 0px;
             font-size: 14px;
             width: 98%;

@@ -48,9 +48,11 @@ overview-sheet, fact-sheet {
           font-size: 16px;
           margin: 0 20px;
           line-height: 66px;
+          font-family: 'Nirmala UI';
           span {
             color: map-get($colors,'light-blue');
             font-weight: bold;
+            font-family: inherit;
           }
         }
 

@@ -261,7 +261,7 @@ export class WorldMap implements OnChanges {
           });
 
         groupEnter.select('rect.label-bg')
-          .attr('height', (d: any) => (d.textSize.height + 8))
+          .attr('height', (d: any) => (d.textSize.height + 6))
           .attr('width', (d: any) => (d.textSize.width + 12))
           .attr('transform', function (d: any) {
             const { width, height } = this.getBoundingClientRect();
@@ -337,7 +337,7 @@ export class WorldMap implements OnChanges {
 
         groupEnter.select('rect')
           .attr('class', 'label-bg')
-          .attr('height', (d: any) => (d.textSize.height + 8))
+          .attr('height', (d: any) => (d.textSize.height + 6))
           .attr('width', (d: any) => (d.textSize.width + 12))
           .attr('transform', function (d: any) {
             const { width, height } = this.getBoundingClientRect();

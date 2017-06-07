@@ -66,11 +66,21 @@ $colors: (
 @import "{}/node_modules/ionicons/dist/scss/ionicons.scss";
 @import "./icons.scss";
 
-// Fonts
-// —------------------------------------------------
+* {
+  font-family: 'LatoWeb';
+}
 
-// @import "roboto";
-// @import "noto-sans";
+ion-segment-button.segment-button,
+button.bar-button .button-inner label,
+.button[ion-button],
+div.add-button-wrap span,
+ion-title h1,
+.marker text,
+ion-input input,
+ion-select .select-text
+ {
+  font-family: 'Nirmala UI';
+}
 
 ion-menu#filter-menu {
   &>div.menu-inner {

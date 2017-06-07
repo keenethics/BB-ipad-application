@@ -23,15 +23,20 @@
 header {
   ion-title {
     h1 {
-      font-size: 17px;
+      font-size: 14px;
       margin: 0;
       font-weight: 600;
+      letter-spacing: 2px;
     }
 
     h2 {
       font-size: 12px;
       margin: 0;
       margin-top: 6px;
+    }
+
+    ion-icon {
+      font-size: 19px;
     }
   }
 

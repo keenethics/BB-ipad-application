@@ -81,36 +81,10 @@ fact-sheet {
       text-align: right;
       line-height: 19px;
       padding: 0 4px;
-    }
-
-    th, td {
-      // &.color-lable > h3 {
-      //   text-align: right;
-      //   &:before {
-      //     content: '';
-      //     width: 10px;
-      //     height: 10px;
-      //     border-radius: 10px;
-      //     background-color: transparent;
-      //     display: inline-block;
-      //     position: relative;
-      //     bottom: 0px;
-      //     right: 1%;
-      //     margin: auto;
-      //   }
-
-      //   &.yellow:before {
-      //     background-color: rgb(255,196,1);
-      //   }
-
-      //   &.red:before {
-      //     background-color: rgb(189,61,62);
-      //   }
-      // }
-
       width: 60px;
       min-width: 30px;
       max-width: 70px;
+      font-family: 'Nirmala UI';
     }
 
     th {
