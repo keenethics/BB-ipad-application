@@ -131,12 +131,19 @@ ion-header {
     min-height: 70px;
     color: map-get($colors,'light');
     ion-buttons {
+      margin-top: 9px;
       button.bar-button {
         font-size: 7px;
         padding: 7px 15px 0;
+
         ion-icon {
           font-size: 22px;
         }
+
+        &.smaller ion-icon {
+          font-size: 16px;
+        }
+
         &:hover {
           color: map-get($colors,'light');
         }
