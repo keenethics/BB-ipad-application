@@ -146,6 +146,26 @@ export class UploadDataPage implements OnDestroy, OnInit {
       });
   }
 
+  editPeriod() {
+    this.dataUploader.editField('period', this.infoData.period)
+      .then((res: string) => {
+        this.toastCtrl.okToast('Period changed');
+        this.infoData.period = '';
+      }).catch((err) => {
+        this.toastCtrl.okToast(err.message);
+      });
+  }
+
+  editLastDataUpdate() {
+    this.dataUploader.editField('lastDataUpdateText', this.infoData.lastDataUpdate)
+      .then((res: string) => {
+        this.toastCtrl.okToast('Last data update changed');
+        this.infoData.lastDataUpdate = '';
+      }).catch((err) => {
+        this.toastCtrl.okToast(err.message);
+      });
+  }
+
   isCore() {
     return this.platform.is('core');
   }

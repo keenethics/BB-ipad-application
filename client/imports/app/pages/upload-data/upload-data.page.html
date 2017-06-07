@@ -7,9 +7,15 @@
       </p>
       <div>
         <ion-input [(ngModel)]="infoData.period" formControlName='period' placeholder="Period" type="text"></ion-input>
+        <button type="button" (click)="editPeriod()" clear ion-button icon-only class="change-field-btn">
+          <ion-icon ios="md-create" md="md-create"></ion-icon>
+        </button>
       </div>
       <div>
         <ion-input [(ngModel)]="infoData.lastDataUpdate" formControlName='lastDataUpdate' placeholder="Last data update" type="text"></ion-input>
+        <button type="button" (click)="editLastDataUpdate()" clear ion-button icon-only class="change-field-btn">
+          <ion-icon ios="md-create" md="md-create"></ion-icon>
+        </button>
       </div>
       <div *ngIf="!_dataFiles[0]" class="upload-button-wrap">
         <button type="button" #dataButton ion-button round>

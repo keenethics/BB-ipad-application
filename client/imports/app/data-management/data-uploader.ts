@@ -56,4 +56,13 @@ export class DataUploader {
       reader.readAsText(file);
     });
   }
+
+  editField(name: string, value: string) {
+    return new Promise((res, rej) => {
+      Meteor.call(
+        'data.editUpdateInfoField',
+        { fieldName: name, fieldValue: value },
+        (err: Meteor.Error, result: string) => err ? rej(err) : res(result));
+    });
+  }
 }

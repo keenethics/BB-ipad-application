@@ -190,6 +190,28 @@ export const uploadCoordinates = new ValidatedMethod({
   }
 });
 
+export const editUpdateInfoField = new ValidatedMethod({
+  name: 'data.editUpdateInfoField',
+  validate: new SimpleSchema({
+    fieldName: {
+      type: String,
+      allowedValues: ['lastDataUpdateText', 'period']
+    },
+    fieldValue: {
+      type: String
+    }
+  }).validator(),
+  run({ fieldName, fieldValue }) {
+    if (!Roles.userIsInRole(this.userId, ['DataUpload', 'Administrator'])) {
+      throw new Meteor.Error('permission_denied', 'permission_denied');
+    }
+
+    DataUpdates.update({}, { $set: { [fieldName]: fieldValue } });
+
+    return `${fieldName} changed.`;
+  }
+});
+
 export const maxRange = new ValidatedMethod({
   name: 'data.getMaxPeriodRange',
   validate: new SimpleSchema({

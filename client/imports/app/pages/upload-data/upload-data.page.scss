@@ -31,7 +31,7 @@ upload-data-page {
     margin-bottom: 40px;
 
     ion-input {
-      width: 250px;
+      width: 200px;
       font-size: 15px;
       line-height: 28px;
       margin: 10px 0;
@@ -63,6 +63,11 @@ upload-data-page {
         text-overflow: ellipsis;
         line-height: 24px;
         overflow-x: hidden;
+      }
+
+      &.change-field-btn {
+        width: auto;
+        height: 50px;
       }
     }
   }
