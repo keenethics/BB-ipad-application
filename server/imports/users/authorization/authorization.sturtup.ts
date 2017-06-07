@@ -21,19 +21,24 @@ function registerLoginHooks() {
   });
 
   Accounts.onLoginFailure((err: any) => {
-    incUserFailedLogins(err.user._id);
+    incUserFailedLogins(err.user && err.user._id);
   });
 }
 
 
 function incUserLogins(userId: string) {
+  if (!userId) return;
+
   Meteor.users.update(userId, {
     $inc: { 'profile.logins': 1 },
-    $currentDate: { 'profile.lastLoginDate': true }
+    $currentDate: { 'profile.lastLoginDate': true },
+    $set: { 'profile.failedLogins': 0 }
   });
 }
 
 function incUserFailedLogins(userId: string) {
+  if (!userId) return;
+
   Meteor.users.update(userId, {
     $inc: { 'profile.failedLogins': 1 },
     $currentDate: { 'profile.lastFailedLoginDate': true }
