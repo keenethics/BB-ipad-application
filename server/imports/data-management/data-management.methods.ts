@@ -24,15 +24,15 @@ declare const __dirname: string;
 export const uploadFile = new ValidatedMethod({
   name: 'data.upload',
   validate: new SimpleSchema({
-    current: { type: String },
-    hist: { type: String },
+    oxygenSubmission: { type: String },
+    evolutionReport: { type: String },
     'info.period': { type: String },
     'info.lastDataUpdate': { type: String },
-    'info.fileNames.current': { type: String },
-    'info.fileNames.hist': { type: String }
+    'info.fileNames.oxygenSubmission': { type: String },
+    'info.fileNames.evolutionReport': { type: String }
   }).validator(),
-  run({ current, hist, info, fileNames }) {
-    if (!current || !hist) {
+  run({ oxygenSubmission, evolutionReport, info, fileNames }) {
+    if (!oxygenSubmission || !evolutionReport) {
       throw new Meteor.Error('wrong_upload_params', 'wrong_upload_params');
     }
 
@@ -66,10 +66,10 @@ export const uploadFile = new ValidatedMethod({
     if (fs.existsSync(currentDataFileURI)) throw new Meteor.Error('data uploading in process', 'data_calculation_in_process');
 
     exec(`ln -s -f ${babyparseLinkCommand} && ln -s -f ${mongodbLinkCommand}`, () => {
-      fs.writeFile(currentDataFileURI, current, function (err: any) {
+      fs.writeFile(currentDataFileURI, oxygenSubmission, function (err: any) {
         if (err) throw new Meteor.Error(err.message, err.message);
 
-        fs.writeFile(histDataFileURI, hist, function (err: any) {
+        fs.writeFile(histDataFileURI, evolutionReport, function (err: any) {
           console.time();
 
           const childProcess = fork(`${absoluteFilePath}`, [mongoUrl]);
@@ -118,12 +118,14 @@ export const uploadFile = new ValidatedMethod({
               console.timeEnd();
 
               const { period, fileNames } = info;
+              const coordinatesFileName = updateDateItem && updateDateItem.fileNames && updateDateItem.fileNames.geocordinates;
+
               DataUpdates.update({}, {
                 status: 'up_data_done',
                 lastDataUpdateDate: new Date(),
                 lastDataUpdateText: info.lastDataUpdate,
                 period,
-                fileNames
+                fileNames: { ...fileNames, geocordinates: coordinatesFileName }
               }, { upsert: true });
             }).run();
           });
@@ -154,8 +156,9 @@ export const uploadCoordinates = new ValidatedMethod({
   name: 'data.uploadCoordinates',
   validate: new SimpleSchema({
     fileData: { type: String },
+    fileName: { type: String }
   }).validator(),
-  run({ fileData }) {
+  run({ fileData, fileName }) {
     if (!this.userId) {
       throw new Meteor.Error('permission_denied', 'permission_denied');
     }
@@ -176,6 +179,10 @@ export const uploadCoordinates = new ValidatedMethod({
           doc[toCamelCase(key.toLowerCase())] = item[i];
         });
         GeoCoordinates.insert(doc);
+
+        const dataUpdateInfo = DataUpdates.findOne({}) || {};
+        dataUpdateInfo.fileNames = { ...dataUpdateInfo.fileNames, geocordinates: fileName };
+        DataUpdates.update({}, dataUpdateInfo, { upsert: true });
       }
     });
 
