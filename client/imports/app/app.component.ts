@@ -28,15 +28,6 @@ import 'intl';
 
 declare const FilePicker: any;
 
-// @Component({
-//   selector: 'body',
-//   template: '<child></child>',
-//   host: {
-//     class: bowser.msie || bowser.msedge ? 'ms' : ''
-//   }
-// })
-// class BodyComponent {}
-
 @Component({
   selector: 'app',
   template,
@@ -70,6 +61,10 @@ export class AppComponent {
   ngAfterViewInit() {
     this._setBrowserClass();
     this.initializeApp();
+
+    this.auth.user$.subscribe((u) => {
+      this.navCtrl.setRoot('Signin');
+    });
   }
 
   ngOnDestroy() {
