@@ -5,7 +5,8 @@ import {
   Output,
   ViewEncapsulation,
   OnInit,
-  OnDestroy
+  OnDestroy,
+  HostListener
 } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
@@ -29,6 +30,7 @@ import { FilterController } from '../../../filter/filter-controller';
 })
 export class HeaderComponent {
   private _subscr: Subscription;
+  private _isSmallDisplay: boolean;
   private info: any;
 
   @Input('isButtonEnabled') isButtonEnabled: boolean;
@@ -50,6 +52,8 @@ export class HeaderComponent {
     this._subscr = this.updateInfo.info$.subscribe(info => {
       this.info = info;
     });
+
+    this.setWindowSizeFlag(window.innerWidth);
   }
 
   ngOnDestroy() {
@@ -98,5 +102,14 @@ export class HeaderComponent {
   resetFilters() {
     this.filterCtrl.reset(['CategoryFilter']);
     this.filterCtrl.filter();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  private onResize(event: any) {
+    this.setWindowSizeFlag(event.target.innerWidth);
+  }
+
+  private setWindowSizeFlag(width: number) {
+    this._isSmallDisplay = width <= 830;
   }
 }

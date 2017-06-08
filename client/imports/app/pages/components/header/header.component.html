@@ -10,11 +10,14 @@
     <button class="smaller reset-btn" *ngIf="isButtonEnabled" (click)="resetFilters()" ion-button icon-only>
       <ion-icon class="icon-filter" name="icon-filter"></ion-icon>
     </button>
-    <button (click)="openPage('preferences')" ion-button icon-only>
+    <button *ngIf="!_isSmallDisplay" (click)="openPage('preferences')" ion-button icon-only>
       <ion-icon class="icon-preferences" name="icon-preferences"></ion-icon>
     </button>
   </ion-buttons>
   <ion-buttons *ngIf="isLoggedIn()" end>
+    <button *ngIf="_isSmallDisplay" (click)="openPage('preferences')" ion-button icon-only>
+      <ion-icon class="icon-preferences" name="icon-preferences"></ion-icon>
+    </button>
     <button (click)="logout()" ion-button icon-only>
       <ion-icon class="icon-logout" name="icon-logout"></ion-icon>
     </button>

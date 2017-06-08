@@ -121,4 +121,24 @@ signin-page {
       }
     }
   }
+
+  @media (max-width: 830px) {
+    ion-content {
+      div.scroll-content {
+        form {
+          width: 450px;
+          padding: 10px 10px !important;
+          h1 {
+            display: none;
+          }
+          div.inputs {
+            margin-top: 0;
+          }
+          ion-label.label {
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
 }

@@ -33,4 +33,31 @@ category-filter {
       border-bottom-left-radius: 26px;
     }
   }
+
+  @media (max-width: 830px) {
+    & {
+      top: 0;
+      right: 0;
+      width: 360px;
+
+      ion-segment.segment {
+        border-radius: 18px;
+      }
+
+      & > ion-segment.segment > ion-segment-button.segment-button {
+        padding: 12px;
+
+        &:last-of-type {
+          border-top-right-radius: 0px;
+          border-bottom-right-radius: 0px;
+        }
+
+        &:first-of-type {
+          max-width: 105px;
+          border-top-left-radius: 0px;
+          border-bottom-left-radius: 18px;
+        }
+      }
+    }
+  }
 }

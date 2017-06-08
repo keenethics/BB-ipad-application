@@ -37,4 +37,27 @@ bu-filter {
       }
     }
   }
+
+  @media (max-width: 830px) {
+    & ion-toolbar {
+      height: 40px;
+      padding-top: 0;
+      padding-bottom: 0;
+
+      &.toolbar-ios {
+        min-height: 40px;
+      }
+
+      ion-buttons {
+        justify-content: space-around;
+
+        button.bar-button {
+          font-size: 12px;
+          min-width: 47px;
+          min-height: 0;
+          margin: 2px;
+        }
+      }
+    }
+  }
 }
