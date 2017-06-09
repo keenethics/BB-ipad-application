@@ -216,4 +216,23 @@ main-filter {
       }
     }
   }
+
+  @media (max-width: 830px) {
+    &>ion-list.list {
+      ion-item.item.item-block {
+        &.categories {
+          .input-wrapper {
+            height: 85px;
+          }
+          ion-label {
+            ion-segment.segment {
+              ion-segment-button.segment-button {
+                line-height: 20px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
