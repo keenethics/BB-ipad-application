@@ -113,4 +113,16 @@ profile-settings-page {
       }
     }
   }
+
+  @media (max-width: 830px) {
+    & {
+      ion-content {
+        div.scroll-content {
+          div.content-container {
+            padding: 0 50px !important;
+          }
+        }
+      }
+    }
+  }
 }

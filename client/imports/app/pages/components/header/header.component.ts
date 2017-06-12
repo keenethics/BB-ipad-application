@@ -16,7 +16,7 @@ import styles from './header.component.scss';
 
 import { Authorization, RolesController } from '../../../authorization';
 import { DataUploader, DataUpdateInfo } from '../../../data-management';
-import { LoadingManager, ToastsManager } from '../../../common';
+import { LoadingManager, ToastsManager, WindowSize } from '../../../common';
 
 import { SigninPage, HomePage, PreferencesPage } from '../../index';
 
@@ -30,7 +30,6 @@ import { FilterController } from '../../../filter/filter-controller';
 })
 export class HeaderComponent {
   private _subscr: Subscription;
-  private _isSmallDisplay: boolean;
   private info: any;
 
   @Input('isButtonEnabled') isButtonEnabled: boolean;
@@ -44,7 +43,8 @@ export class HeaderComponent {
     private loadingCtrl: LoadingManager,
     private toastCtrl: ToastsManager,
     private filterCtrl: FilterController,
-    private updateInfo: DataUpdateInfo
+    private updateInfo: DataUpdateInfo,
+    private windowSize: WindowSize
   ) {
   }
 
@@ -53,7 +53,7 @@ export class HeaderComponent {
       this.info = info;
     });
 
-    this.setWindowSizeFlag(window.innerWidth);
+    this.windowSize.checkSize();
   }
 
   ngOnDestroy() {
@@ -102,14 +102,5 @@ export class HeaderComponent {
   resetFilters() {
     this.filterCtrl.reset(['CategoryFilter']);
     this.filterCtrl.filter();
-  }
-
-  @HostListener('window:resize', ['$event'])
-  private onResize(event: any) {
-    this.setWindowSizeFlag(event.target.innerWidth);
-  }
-
-  private setWindowSizeFlag(width: number) {
-    this._isSmallDisplay = width <= 830;
   }
 }

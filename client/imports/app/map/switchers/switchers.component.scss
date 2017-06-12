@@ -114,4 +114,12 @@ map-switchers {
       }
     }
   }
+
+  @media (max-width: 830px) {
+    & {
+      form {
+        margin: 20px auto;
+      }
+    }
+  }
 }

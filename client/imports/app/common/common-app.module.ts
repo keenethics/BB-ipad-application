@@ -4,6 +4,7 @@ import { NotificationsModule } from '../notifications';
 
 import { ToastsManager } from './toasts-manager';
 import { LoadingManager } from './loading-manager';
+import { WindowSize } from './window-size';
 
 import { ObjectAsArray } from './pipes/objectAsArray.pipe';
 import { SearchPipe } from './pipes/search.pipe';
@@ -22,7 +23,8 @@ import { SepPipe } from './pipes/comma-separator.pipe';
   ],
   providers: [
     ToastsManager,
-    LoadingManager
+    LoadingManager,
+    WindowSize
   ],
   declarations: [
     ObjectAsArray,
