@@ -162,6 +162,12 @@ overview-sheet {
 
       .overview-container {
         border-radius: 0;
+        width: auto;
+        padding-bottom: 0;
+      }
+
+      table {
+        margin-left: auto;
       }
     }
   }
