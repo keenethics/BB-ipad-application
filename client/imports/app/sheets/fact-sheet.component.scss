@@ -156,4 +156,24 @@ fact-sheet {
       bottom: -2px;
     }
   }
+
+    @media (max-width: 830px) {
+      & {
+        top: 0;
+        position: fixed;
+        width: 100%;
+
+        table {
+          border: none;
+
+          th, td {
+            line-height: 15px
+          }
+
+          tfoot {
+            display: none;
+          }
+        }
+      }
+    }
 }
