@@ -36,16 +36,16 @@
           UPLOAD
         </button>
       </div>
+      <div *ngIf="isCore()" class="upload-button-wrap">
+        <button type="button" #geoCordsButton ion-button round>
+          <pick-file fileType="text/csv" [emitterElement]="geoCordsButton" (onFileSelected)="uploadCoords($event)" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
+          COORDINATES
+        </button>
+      </div>
     </form>
-    <div class="upload-button-wrap" style="margin-top: 0px">
-      <button (click)="syncLocalStorrage()" ion-button round>
-        SYNC DATA
-      </button>
-    </div>
-    <div *ngIf="isCore()" class="upload-button-wrap" style="margin-top: 0px">
-      <button #geoCordsButton ion-button round>
-        <pick-file fileType="text/csv" [emitterElement]="geoCordsButton" (onFileSelected)="uploadCoords($event)" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
-        COORDINATES
+    <div class="upload-button-wrap">
+      <button class="sync-button" type="button" (click)="syncLocalStorrage()" ion-button round>
+          SYNC DATA
       </button>
     </div>
   </div>
