@@ -34,9 +34,9 @@ export class BuFilterComponnet {
   ngOnInit() { }
 
   isInSelected(v: string) {
-    if (this.selectedBuTitles.indexOf('Total') !== -1) return true;
+    if (this.selectedBuTitles && (this.selectedBuTitles.indexOf('Total') !== -1)) return true;
 
-    return isInSelected(v, this.selectedBuTitles);
+    return isInSelected(v, this.selectedBuTitles || []);
   }
 
 
