@@ -1,5 +1,5 @@
 upload-data-page {
-  .update-status, .last-update, .buttons-container {
+  .update-status, .last-update, .buttons-container, .scroll-content {
     background-color: #F8F9FA;
   }
 
@@ -28,8 +28,6 @@ upload-data-page {
   }
 
   .data-form {
-    margin-bottom: 40px;
-
     ion-input {
       width: 200px;
       font-size: 15px;
@@ -53,11 +51,14 @@ upload-data-page {
 
   .buttons-container {
     width: 100%;
-    height: 100%;
 
     button.button {
       width: 250px;
       margin: 10px 0;
+
+      &.sync-button {
+        margin-top: 40px;
+      }
 
       span {
         text-overflow: ellipsis;

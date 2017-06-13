@@ -109,19 +109,6 @@ overview-sheet {
         background-color: #dbebf8;
       }
     }
-
-    // tr {
-    //   &:first-child {
-    //     th:first-child, th:last-child {
-    //       border-bottom: none;
-    //     }
-    //   }
-    //   &+tr{
-    //     th:first-child, th:last-child {
-    //       border-top: none;
-    //     }
-    //   }
-    // }
   }
 
   .colored:after {
@@ -162,6 +149,26 @@ overview-sheet {
       height: 8px;
       border-radius: 8px;
       bottom: -2px;
+    }
+  }
+
+  @media (max-width: 830px) {
+    & {
+      top: 0px;
+      position: fixed;
+      margin: 0px;
+      width: 100%;
+      height: calc(100% - 40px);
+
+      .overview-container {
+        border-radius: 0;
+        width: auto;
+        padding-bottom: 0;
+      }
+
+      table {
+        margin-left: auto;
+      }
     }
   }
 }

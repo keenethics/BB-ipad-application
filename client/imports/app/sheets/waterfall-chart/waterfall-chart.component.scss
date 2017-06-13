@@ -45,4 +45,10 @@ waterfall-chart {
     display: flex;
     justify-content: center;
   }
+
+  @media (max-width: 830px) {
+    & {
+      
+    }
+  }
 }
