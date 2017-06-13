@@ -57,6 +57,8 @@ export class MainFilterComponent implements OnInit, OnDestroy {
     private filterCtrl: FilterController,
   ) {
     filterCtrl.state$.subscribe((s: any) => {
+      if (!s) return;
+
       this._state = s;
       this.range = s.filters.range;
       this.appliedPlaces = s.filters.places;
