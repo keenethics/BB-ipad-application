@@ -34,9 +34,9 @@ const fixConstructorsNames = (filters: any[], names: string[]) => {
 const filterControllerFactory = (
   catF: CategoryFilter,
   plF: PlacesFilter,
-  rangF: RangeFilter,
-  buFCalc: BuFilterCalc,
   buFSel: BuFilterSelect,
+  buFCalc: BuFilterCalc,
+  rangF: RangeFilter,
   dP: DataProvider
 ) => {
   return new FilterController(fixConstructorsNames(
