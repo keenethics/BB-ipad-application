@@ -21,6 +21,13 @@ import { CategoryFilterComponent } from './category-filter/category-filter.compo
 import { FilterCounterComponent } from './filter-counter/filter-counter.component';
 import { RangeFilterComponent } from './range-filter/range-filter.component';
 
+const fixConstructorsNames = (filters: any[], names: string[]) => {
+  return filters.map((f, i) => {
+    f.constructor.name = names[i];
+    return f;
+  });
+};
+
 const filterControllerFactory = (
   catF: CategoryFilter,
   plF: PlacesFilter,
@@ -28,7 +35,13 @@ const filterControllerFactory = (
   buFCalc: BuFilterCalc,
   buFSel: BuFilterSelect,
   dP: DataProvider
-) => new FilterController([catF, plF, buFSel, buFCalc, rangF], dP);
+) => new FilterController(fixConstructorsNames([
+  catF,
+  plF,
+  buFSel,
+  buFCalc,
+  rangF
+], ['CategoryFilter', 'PlacesFilter', 'BuFilterSelect', 'BuFilterCalc', 'RangeFilter']), dP);
 
 @NgModule({
   imports: [
