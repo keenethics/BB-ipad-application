@@ -23,7 +23,10 @@ import { RangeFilterComponent } from './range-filter/range-filter.component';
 
 const fixConstructorsNames = (filters: any[], names: string[]) => {
   return filters.map((f, i) => {
-    f.constructor.name = names[i];
+    delete f.constructor.name;
+    Object.defineProperty(f.constructor, 'name', {
+      value: names[i]
+    });
     return f;
   });
 };
@@ -35,13 +38,12 @@ const filterControllerFactory = (
   buFCalc: BuFilterCalc,
   buFSel: BuFilterSelect,
   dP: DataProvider
-) => new FilterController(fixConstructorsNames([
-  catF,
-  plF,
-  buFSel,
-  buFCalc,
-  rangF
-], ['CategoryFilter', 'PlacesFilter', 'BuFilterSelect', 'BuFilterCalc', 'RangeFilter']), dP);
+) => {
+  return new FilterController(fixConstructorsNames(
+    [catF, plF, buFSel, buFCalc, rangF],
+    ['CategoryFilter', 'PlacesFilter', 'BuFilterSelect', 'BuFilterCalc', 'RangeFilter']),
+    dP);
+};
 
 @NgModule({
   imports: [
@@ -70,11 +72,11 @@ const filterControllerFactory = (
       provide: FilterController,
       useFactory: filterControllerFactory,
       deps: [
-        BuFilterSelect,
         CategoryFilter,
         PlacesFilter,
-        RangeFilter,
+        BuFilterSelect,
         BuFilterCalc,
+        RangeFilter,
         DataProvider
       ]
     },
