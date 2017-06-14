@@ -17,11 +17,11 @@ signin-page {
       background-color: #E4E8ED;
       display: block;
 
-      .ms & {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+      // .ms & {
+      //   display: flex;
+      //   align-items: center;
+      //   justify-content: center;
+      // }
 
       form {
         width: 500px;
@@ -29,10 +29,10 @@ signin-page {
         border-radius: 4px;
         background-color: map-get($colors, 'page-background');
 
-        position: relative;
-        top: 50vh;
+        // position: relative;
+        // top: 50vh;
         margin: auto;
-        margin-top: -25%;
+        // margin-top: -25%;
 
         .ms & {
           position: static;

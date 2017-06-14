@@ -24,6 +24,8 @@ import { SplashscreenPage } from './splashscreen/splashscreen.page';
 import { InfoPage } from './info/info.page';
 import { FilterPage } from './filter/filter.page';
 
+import { PreferencesTabbarController } from './preferences/preferences-tab-bar-controller';
+
 import {
   FooterComponent,
   HeaderComponent,
@@ -52,6 +54,10 @@ const COMPONENTS = [
   PaginationComponent
 ];
 
+const SERVICES = [
+  PreferencesTabbarController
+];
+
 @NgModule({
   imports: [
     IonicModule,
@@ -65,6 +71,7 @@ const COMPONENTS = [
     OfflineModule,
     FilterModule
   ],
+  providers: SERVICES,
   declarations: [...PAGES, ...COMPONENTS],
   exports: [...PAGES, ...COMPONENTS],
   entryComponents: PAGES

@@ -1,10 +1,11 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, AfterViewInit } from '@angular/core';
 import { NavController, Platform } from 'ionic-angular';
 
 import styles from './preferences.page.scss';
 import template from './preferences.page.html';
 
 import { RolesController, Authorization } from '../../authorization';
+import { PreferencesTabbarController } from './preferences-tab-bar-controller';
 import { runAsync } from '../../../../../both/helpers';
 
 import {
@@ -23,14 +24,15 @@ import {
   styles: [styles],
   encapsulation: ViewEncapsulation.None
 })
-export class PreferencesPage {
+export class PreferencesPage implements AfterViewInit {
   public pages: { icon: string, title: string, segment: string, selector: string, component: any, guard: Function }[] = [];
 
   constructor(
     private roles: RolesController,
     private platform: Platform,
     private auth: Authorization,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private tabbarCtrl: PreferencesTabbarController
   ) {
     this.pages = [
       {
@@ -78,6 +80,13 @@ export class PreferencesPage {
 
   ionViewCanEnter() {
     return this.auth.isLoggedIn() || !!runAsync(() => this.navCtrl.setRoot('Signin'));
+  }
+
+  ngAfterViewInit() {
+    const tabbar = document.querySelector('preferences-page .tabbar') as HTMLDivElement;
+    this.tabbarCtrl.isTabbarVisible$.subscribe((val: boolean) => {
+      tabbar.style.display = val ? 'flex' : 'none';
+    });
   }
 
   _isInRole(roles: string[]) {

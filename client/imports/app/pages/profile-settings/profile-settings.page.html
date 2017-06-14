@@ -12,17 +12,17 @@
           <ion-item>
             <ion-label *ngIf="isError('oldPassword', 'required')" class="error" stacked>{{'error_old_password_required' | text}}</ion-label>
             <ion-label *ngIf="isError('oldPassword', 'pattern')" class="error" stacked>{{'password_invalid' | text}}</ion-label>
-            <ion-input [(ngModel)]="passwords.oldPassword" formControlName='oldPassword' type="password" placeholder="Old Password"></ion-input>
+            <ion-input (blur)="onInputBlur()" (focus)="onInputFocus()" [(ngModel)]="passwords.oldPassword" formControlName='oldPassword' type="password" placeholder="Old Password"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label *ngIf="isError('password', 'required')" class="error" stacked>{{'error_password_required' | text}}</ion-label>
             <ion-label *ngIf="isError('password', 'pattern')" class="error" stacked>{{'password_invalid' | text}}</ion-label>
-            <ion-input [(ngModel)]="passwords.password" formControlName='password' type="password" placeholder="New Password"></ion-input>
+            <ion-input (blur)="onInputBlur()" (focus)="onInputFocus()" [(ngModel)]="passwords.password" formControlName='password' type="password" placeholder="New Password"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label *ngIf="isError('confPass', 'required')" class="error" stacked>{{'error_confirm_password_required' | text}}</ion-label>
             <ion-label *ngIf="isError('confPass', 'validateEqual')" class="error" stacked>{{'error_confirm_password' | text}}</ion-label>
-            <ion-input [(ngModel)]="passwords.confPass" formControlName='confPass' type="password" placeholder="Confirm Password"></ion-input>
+            <ion-input (blur)="onInputBlur()" (focus)="onInputFocus()" [(ngModel)]="passwords.confPass" formControlName='confPass' type="password" placeholder="Confirm Password"></ion-input>
           </ion-item>
           <ion-item>
             <button [disabled]="isFormValid(passwordsForm)" type="submit" ion-button block>SAVE SETTINGS</button>

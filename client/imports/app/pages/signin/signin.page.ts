@@ -5,8 +5,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { getEmailRegExp } from '../../../../../both/helpers/email-regexp';
 import { getPasswordRegExp } from '../../../../../both/helpers/password-regexp';
 
-import { ToastsManager } from '../../common/toasts-manager';
-import { LoadingManager } from '../../common/loading-manager';
+import {
+  ToastsManager,
+  WindowSize,
+  LoadingManager
+} from '../../common';
 
 import template from './signin.page.html';
 import styles from './signin.page.scss';
@@ -31,7 +34,8 @@ export class SigninPage implements OnInit {
     private formBuilder: FormBuilder,
     private auth: Authorization,
     private toasts: ToastsManager,
-    private loadingManager: LoadingManager
+    private loadingManager: LoadingManager,
+    private windowSize: WindowSize
   ) {
     this.loginCredentials = {
       email: '',
@@ -95,6 +99,14 @@ export class SigninPage implements OnInit {
         this.toasts.okToast(err.reason);
       });
   }
+
+  // getFormMarginTop(form: HTMLFontElement) {
+  //   if (!form) return '0';
+
+  //   const formHeight = form.clientHeight;
+  //   const parrentHeight = form.parentElement.clientHeight;
+  //   return parrentHeight / 2 - formHeight / 2 + 'px';
+  // }
 }
 
 interface LoginCredentials {

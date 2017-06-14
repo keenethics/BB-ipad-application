@@ -12,6 +12,7 @@ import { ExcludePipe } from './pipes/exclude.pipe';
 
 import { Draggable } from './directives/draggable';
 import { DebounceClick } from './directives/debounceClick';
+import { VerticalCenter } from './directives/vertical-center';
 
 import { PickFileComponent } from './components/pick-file/pick-file.component';
 import { SepPipe } from './pipes/comma-separator.pipe';
@@ -33,7 +34,8 @@ import { SepPipe } from './pipes/comma-separator.pipe';
     ExcludePipe,
     DebounceClick,
     PickFileComponent,
-    SepPipe
+    SepPipe,
+    VerticalCenter
   ],
   exports: [
     ObjectAsArray,
@@ -43,6 +45,7 @@ import { SepPipe } from './pipes/comma-separator.pipe';
     DebounceClick,
     PickFileComponent,
     SepPipe,
+    VerticalCenter,
     NotificationsModule
   ]
 })
