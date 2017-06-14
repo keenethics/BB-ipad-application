@@ -14,16 +14,30 @@ signin-page {
   ion-content {
 
     div.scroll-content {
-      display: flex;
-      align-items: center;
-      justify-content: center;
       background-color: #E4E8ED;
+      display: block;
+
+      .ms & {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
       form {
         width: 500px;
         padding: 40px 50px !important;
         border-radius: 4px;
         background-color: map-get($colors, 'page-background');
+
+        position: relative;
+        top: 50vh;
+        margin: auto;
+        margin-top: -25%;
+
+        .ms & {
+          position: static;
+          margin: auto;
+        }
 
         &>div:first-child {
           margin-left: 5px;
