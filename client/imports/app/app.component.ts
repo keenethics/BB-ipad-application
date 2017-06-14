@@ -9,6 +9,7 @@ import { DataUpdates } from '../../../both/data-management/data-updates.collecti
 import { Authorization } from './authorization/authorization';
 import { DataProvider, SumBusinessUnitsPipe } from './data-management';
 import { ToastsManager } from '../app/common/toasts-manager';
+import { WindowSize } from '../app/common/window-size';
 // import { TextProvider } from './notifications';
 
 import { HomePage } from './pages/home/home.page';
@@ -47,6 +48,7 @@ export class AppComponent {
     private auth: Authorization,
     private menuCtrl: MenuController,
     private toastCtrl: ToastsManager,
+    private windowSize: WindowSize,
     public dataProvider: DataProvider
   ) {
     this.pages = [
@@ -78,6 +80,14 @@ export class AppComponent {
       StatusBar.overlaysWebView(true);
       StatusBar.styleLightContent();
       Splashscreen.hide();
+
+      this.windowSize.onChangeSize$.subscribe((size) => {
+        if (this.windowSize.isSmallDisplay) {
+          StatusBar.hide();
+        } else {
+          StatusBar.show();
+        }
+      });
     });
 
     MeteorObservable.subscribe('dataUpdates').subscribe(() => {

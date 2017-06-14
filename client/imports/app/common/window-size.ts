@@ -1,8 +1,10 @@
 import { Injectable, HostListener } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class WindowSize {
   private _isSmallDisplay: boolean;
+  private _onChangeSizeSubject = new BehaviorSubject(window.innerWidth);
 
   constructor() {
     this.registerEvents();
@@ -11,6 +13,10 @@ export class WindowSize {
 
   get isSmallDisplay() {
     return this._isSmallDisplay;
+  }
+
+  get onChangeSize$() {
+    return this._onChangeSizeSubject.asObservable();
   }
 
   checkSize() {
@@ -24,6 +30,7 @@ export class WindowSize {
   }
 
   private onResize(event: any) {
+    this._onChangeSizeSubject.next(event.target.innerWidth);
     this.setWindowSizeFlag(event.target.innerWidth);
   }
 
