@@ -1,18 +1,17 @@
 import { Meteor } from 'meteor/meteor';
 
 Meteor.publish('allUsers', function (userId: string) {
-  if (Roles.userIsInRole(userId, 'Administrator')) {
-    return Meteor.users.find({});
-  }
+  if (!this.userId) return this.ready();
 
-  return this.ready();
+  if (!Roles.userIsInRole(userId, 'Administrator')) return this.ready();
+
+  return Meteor.users.find({});
 });
 
 Meteor.publish('users', function (userId: string, skip: number, limit: number) {
-  if (Roles.userIsInRole(userId, 'Administrator')) {
-    const users = Meteor.users.find({}, { skip, limit });
-    return users;
-  }
+  if (!this.userId) return this.ready();
 
-  return this.ready();
+  if (!Roles.userIsInRole(userId, 'Administrator')) return this.ready();
+
+  return Meteor.users.find({}, { skip, limit });
 });
