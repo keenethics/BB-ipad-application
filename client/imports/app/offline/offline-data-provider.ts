@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { LocalCollectionsManager } from './local-collections-manager';
+import { StorageManager } from './storage-manager';
+import * as localForage from 'localforage';
 
 @Injectable()
 export class OfflineDataProvider {
-  constructor(private _lcManager: LocalCollectionsManager) { }
+  constructor(private _storageManager: StorageManager) { }
 
   public findIn(mongoCollection: Mongo.Collection<any>, selector: any, subscrName?: string, options?: any) {
     return new Promise((res, rej) => {
@@ -22,7 +24,7 @@ export class OfflineDataProvider {
           res(mongoCollection.find(selector, options).fetch());
         }
       } else {
-        this._lcManager.getCollection(mongoCollection)
+        this._storageManager.localCollectionData(mongoCollection)
           .then((col: Mongo.Collection<any>) => {
             res(col.find(selector, options).fetch());
           });

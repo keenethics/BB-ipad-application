@@ -8,7 +8,7 @@ import { RolesController } from '../../authorization';
 
 import { ToastsManager, LoadingManager } from '../../common';
 import { DataUploader, DataUpdateInfo, DataProvider } from '../../data-management';
-import { LocalCollectionsManager } from '../../offline/local-collections-manager';
+import { StorageManager } from '../../offline/storage-manager';
 import { PickFileComponent } from '../../common/components/pick-file/pick-file.component';
 
 import styles from './upload-data.page.scss';
@@ -40,7 +40,7 @@ export class UploadDataPage implements OnDestroy, OnInit {
     private formBuilder: FormBuilder,
     private roles: RolesController,
     private dateInfo: DataUpdateInfo,
-    private lcManager: LocalCollectionsManager,
+    private storage: StorageManager,
     private dataProvider: DataProvider,
     private platform: Platform
   ) { }
@@ -135,8 +135,8 @@ export class UploadDataPage implements OnDestroy, OnInit {
 
   syncLocalStorrage() {
     this.loadingCtrl.loading('sync_data');
-    this.lcManager.fetchToStorrage()
-      .then(() => {
+    this.storage.fetchToStorage()
+      .then((result) => {
         this.loadingCtrl.loadingInst.dismiss();
         this.toastCtrl.okToast('all_data_saved');
       })
@@ -144,6 +144,7 @@ export class UploadDataPage implements OnDestroy, OnInit {
         this.loadingCtrl.loadingInst.dismiss();
         this.toastCtrl.okToast(err.message);
       });
+
   }
 
   editPeriod() {

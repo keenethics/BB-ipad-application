@@ -3,6 +3,9 @@ import { exec, fork } from 'child_process';
 import * as Fiber from 'fibers';
 import * as fs from 'fs';
 import * as Baby from 'babyparse';
+import * as aes from 'crypto-js/aes';
+import * as Guid from 'guid';
+import * as utf8 from 'crypto-js/enc-utf8';
 import { toCamelCase } from '../../../both/helpers/to-camel-case';
 import { MarketCountries } from '../../../both/countries/market-countries.collection';
 import { AvailableCountries } from '../../../both/countries/available-countries.collection';
@@ -212,18 +215,34 @@ export const editUpdateInfoField = new ValidatedMethod({
   }
 });
 
-// export const maxRange = new ValidatedMethod({
-//   name: 'data.getMaxPeriodRange',
-//   validate: new SimpleSchema({
-//     period: { type: String },
-//   }).validator(),
-//   run({ period }) {
-//     return BusinessData.aggregate({
-//       $group: {
-//         _id: null,
-//         max: { $max: `$periods.${period}` },
-//         min: { $min: `$periods.${period}` }
-//       }
-//     });
-//   }
-// });
+export const fetchData = new ValidatedMethod({
+  name: 'data.fetch',
+  validate: new SimpleSchema({}).validator(),
+  run() {
+    if (!this.userId) {
+      throw new Meteor.Error('permission_denied', 'permission_denied');
+    }
+
+    const guid = Guid.raw();
+
+    Meteor.users.update(this.userId, {
+      $set: { 'profile.token': guid }
+    });
+
+    const encryptData = (data: any[], key: string) => data.map((item) => aes.encrypt(JSON.stringify(item), key).toString());
+
+    const bussinessData = BusinessData.find().fetch();
+    const unitsTitles = UnitsTitles.find().fetch();
+    const dataUpdates = DataUpdates.find().fetch();
+    const availableCountries = AvailableCountries.find().fetch();
+    const marketCountries = MarketCountries.find({ _id: { $in: ['GCHN', 'NAM', 'LAT', 'INDIA', 'APJ', 'MEA', 'EUROPE'] } }).fetch();
+
+    return [
+      { name: (BusinessData as any)._name, data: encryptData(bussinessData, guid) },
+      { name: (UnitsTitles as any)._name, data: encryptData(unitsTitles, guid) },
+      { name: (DataUpdates as any)._name, data: encryptData(dataUpdates, guid) },
+      { name: (AvailableCountries as any)._name, data: encryptData(availableCountries, guid) },
+      { name: (MarketCountries as any)._name, data: encryptData(marketCountries, guid) }
+    ];
+  }
+});

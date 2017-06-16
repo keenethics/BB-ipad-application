@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { LocalCollectionsManager } from './local-collections-manager';
 import { OfflineDataProvider } from './offline-data-provider';
+import { StorageManager } from './storage-manager';
 
 @NgModule({
-  providers: [LocalCollectionsManager, OfflineDataProvider],
+  providers: [OfflineDataProvider, StorageManager],
 })
 export class OfflineModule { }
