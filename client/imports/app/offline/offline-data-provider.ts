@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { MeteorObservable } from 'meteor-rxjs';
-import { LocalCollectionsManager } from './local-collections-manager';
 import { StorageManager } from './storage-manager';
 import * as localForage from 'localforage';
 
@@ -15,20 +14,28 @@ export class OfflineDataProvider {
           const sbscr = MeteorObservable.subscribe(subscrName, selector, options).subscribe(
             () => {
               sbscr.unsubscribe();
-              res(mongoCollection.find(selector, options).fetch());
+              const data = unique(mongoCollection.find(selector, options).fetch());
+              res(data);
             }, (err) => {
               sbscr.unsubscribe();
               rej(err);
             });
         } else {
-          res(mongoCollection.find(selector, options).fetch());
+          const data = unique(mongoCollection.find(selector, options).fetch());
+          res(data);
         }
       } else {
         this._storageManager.localCollectionData(mongoCollection)
           .then((col: Mongo.Collection<any>) => {
-            res(col.find(selector, options).fetch());
+            res(unique(col.find(selector, options).fetch()));
           });
       }
     });
   }
+}
+
+function unique(arr: ({ _id: string })[]) {
+  return arr.filter((item, index, self) => {
+    return self.findIndex(i => i._id === item._id) === index;
+  });
 }
