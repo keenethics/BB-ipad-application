@@ -1,5 +1,11 @@
 .no-scroll .scroll-content {
   overflow: hidden;
+  @media (max-width: 830px) {
+    & {
+      z-index: 10;
+      overflow: visible;
+    }
+  }
 }
 
 .swipe-menu-overlay {

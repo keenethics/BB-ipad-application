@@ -14,17 +14,30 @@ signin-page {
   ion-content {
 
     div.scroll-content {
-      display: flex;
-      align-items: center;
-      justify-content: center;
       background-color: #E4E8ED;
+      display: block;
+
+      // .ms & {
+      //   display: flex;
+      //   align-items: center;
+      //   justify-content: center;
+      // }
 
       form {
         width: 500px;
-        // height: 420px;
         padding: 40px 50px !important;
         border-radius: 4px;
         background-color: map-get($colors, 'page-background');
+
+        // position: relative;
+        // top: 50vh;
+        margin: auto;
+        // margin-top: -25%;
+
+        .ms & {
+          position: static;
+          margin: auto;
+        }
 
         &>div:first-child {
           margin-left: 5px;
@@ -61,6 +74,18 @@ signin-page {
 
             div.item-inner {
               border-bottom: none;
+
+              .ms & div.input-wrapper {
+                display: block;
+
+                input {
+                  height: 28px;
+                }
+
+                button {
+                  width: inherit;
+                }
+              }
             }
           }
 
@@ -80,16 +105,17 @@ signin-page {
             padding: 0 30px;
             box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.05);
             border: none;
+            font-family: 'Nirmala UI';
 
-            &.ng-dirty {
+            &.ng-touched {
               border-left: 4px solid;
             }
 
-            &.ng-dirty.ng-invalid {
+            &.ng-touched.ng-invalid {
               border-left-color: red;
             }
 
-            &.ng-dirty.ng-valid {
+            &.ng-touched.ng-valid {
               border-left-color: green;
             }
           }
@@ -104,6 +130,26 @@ signin-page {
             margin-top: 20px;
             float: left;
             margin: 10px;
+          }
+        }     
+      }
+    }
+  }
+
+  @media (max-width: 830px) {
+    ion-content {
+      div.scroll-content {
+        form {
+          width: 450px;
+          padding: 10px 10px !important;
+          h1, h2 {
+            display: none;
+          }
+          div.inputs {
+            margin-top: 0;
+          }
+          ion-label.label {
+            margin: 0;
           }
         }
       }

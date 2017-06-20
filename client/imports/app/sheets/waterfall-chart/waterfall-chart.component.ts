@@ -8,6 +8,8 @@ import {
   ChangeDetectionStrategy
 } from '@angular/core';
 
+import { WindowSize } from '../../common';
+
 import * as d3 from 'd3';
 
 import template from './waterfall-chart.component.html';
@@ -24,21 +26,59 @@ export class WaterfallChartComponent {
   @Input() data: any;
   @ViewChild('waterfallContainer') waterfallContainer: ElementRef;
 
+  constructor(private _windowSize: WindowSize) {
+
+  }
+
   ngOnChanges(changes: any) {
     if (changes.data.currentValue) {
-      drawWaterflowChart(this.waterfallContainer.nativeElement, changes.data.currentValue);
+      if (this._windowSize.isSmallDisplay) {
+        const footerHeight = 40;
+        const sheetHeadHeight = 32;
+        const overwiewTableHeight = 61;
+
+        const options = {
+          chartw: window.innerWidth,
+          charth: window.innerHeight - footerHeight - sheetHeadHeight - overwiewTableHeight,
+          margin: { top: 20, right: 0, bottom: 0, left: 0 },
+          padding: 0.3
+        };
+        drawWaterflowChart(
+          this.waterfallContainer.nativeElement,
+          changes.data.currentValue,
+          options);
+      } else {
+        drawWaterflowChart(this.waterfallContainer.nativeElement, changes.data.currentValue);
+      }
     }
   }
 }
 
 
-function drawWaterflowChart(container: HTMLDivElement, data: any[]) {
-  const chartw = 700;
-  const charth = 300;
-  const margin = { top: 50, right: 30, bottom: 30, left: 40 };
+function drawWaterflowChart(container: HTMLDivElement, data: any[], options?: any) {
+  let chartw: number;
+  let charth: number;
+  let margin: any;
+  let padding: number;
+  let cutLinePositionCoefficient: number;
+
+  if (options) {
+    chartw = options.chartw;
+    charth = options.charth;
+    margin = options.margin;
+    padding = options.padding;
+    cutLinePositionCoefficient = 55;
+  } else {
+    chartw = 700;
+    charth = 300;
+    margin = { top: 50, right: 30, bottom: 30, left: 40 };
+    padding = 0.3;
+    cutLinePositionCoefficient = 120;
+  }
+
   const width = chartw - margin.left - margin.right;
   const height = charth - margin.top - margin.bottom;
-  const padding = 0.3;
+
   // set the ranges
   const x = d3.scaleBand()
     .range([0, width])
@@ -147,14 +187,15 @@ function drawWaterflowChart(container: HTMLDivElement, data: any[]) {
     .attr('y2', function (d) { return y(d.end); });
 
   // draw break
+
   bar.filter(function (d) {
-    return (scaleStartVal > 0 && d.value >= scaleStartVal && (y(d.end) < charth - 120));
+    return (scaleStartVal > 0 && d.value >= scaleStartVal && (y(d.end) < charth - cutLinePositionCoefficient));
   }).append('svg:image')
-    .attr('xlink:href', function (d) { return ('/img/break2.svg'); })
+    .attr('xlink:href', function (d) { return ('/img/break.svg'); })
     .attr('height', '25')
-    .attr('width', '73')
-    .attr('x', '-10')
-    .attr('y', charth - 120);
+    .attr('width',  x.bandwidth() + 6 + '')
+    .attr('x', '-3')
+    .attr('y', charth - cutLinePositionCoefficient);
 
   // animation transition
   const t = d3.transition('animation-transition')

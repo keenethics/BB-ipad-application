@@ -66,20 +66,27 @@ $colors: (
 @import "{}/node_modules/ionicons/dist/scss/ionicons.scss";
 @import "./icons.scss";
 
-// Fonts
-// —------------------------------------------------
+* {
+  font-family: 'LatoWeb';
+}
 
-// @import "roboto";
-// @import "noto-sans";
+ion-segment-button.segment-button,
+button.bar-button .button-inner label,
+.button[ion-button],
+div.add-button-wrap span,
+ion-title h1,
+.marker text,
+ion-input input,
+ion-select .select-text
+ {
+  font-family: 'Nirmala UI';
+}
 
 ion-menu#filter-menu {
   &>div.menu-inner {
     width: 330px;
     ion-content {
       background-color: map-get($colors, 'light-blue');
-      &>.scroll-content{
-        // overflow: hidden;
-      }
     }
   }
 
@@ -124,74 +131,24 @@ ion-menu#filter-menu {
       }
     }
   }
-}
 
-ion-header {
-  &>header>ion-toolbar.toolbar {
-    min-height: 70px;
-    color: map-get($colors,'light');
-    ion-buttons {
-      button.bar-button {
-        font-size: 7px;
-        padding: 7px 15px 0;
-        ion-icon {
-          font-size: 22px;
-        }
-        &:hover {
-          color: map-get($colors,'light');
-        }
-
-        &:first-child {
-          padding-left: 30px;
-        }
-      }
-    }
-
-    ion-buttons[end] {
-      button.bar-button {
-         &:last-child {
-          padding-right: 30px;
-        }
-      }
-    }
-    ion-title {
-      padding: 7px 260px 1px;
-      ion-icon {
-        margin-right: 13px;
-      }
-    }
+  .ms & .menu-inner {
+    z-index: 10;
   }
-}
 
-ion-footer {
-  &>footer>ion-toolbar.toolbar {
-    background-color: map-get($colors,'ui-light');
-    min-height: 70px;
-    &>div.toolbar-background {
-      border: none;
-    }
-    ion-segment.segment {
-      padding: 0 20px;
-      height: 100%;
-      ion-segment-button.segment-button {
-        border: none;
-        display: flex;
-        height: 100%;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        max-width: 60px;
-        margin: 0 20px;
-        border-radius: 0;
-        ion-icon {
-          line-height: 24px;
-          font-size: 24px;
+  @media (max-width: 830px) {
+    ion-toolbar {
+      &.header {
+        height: 28px;
+        min-height: 28px;
+
+        ion-title {
+          padding: 2px 40px;
         }
-        &.segment-activated {
-          background: none;
-          color: map-get($colors, 'primary');
-          border-bottom: 2px solid map-get($colors, 'primary');
-        }
+      }
+
+      &.subheader {
+        display: none;
       }
     }
   }
@@ -245,9 +202,20 @@ ion-backdrop {
   }
 }
 
-@import '../imports/app/filters/bu-filter/bu-filter.component.scss';
-@import '../imports/app/filters/category-filter/category-filter.component.scss';
-@import '../imports/app/filters/main-filter/main-filter.component.scss';
+.item-ios.item-label-stacked .text-input, .item-ios.item-label-floating .text-input {
+  margin-top: 11px;
+  margin-bottom: 11px;
+  margin-left: 0;
+  width: calc(100% - 11px);
+}
+
+.ms .toast-wrapper.toast-bottom {
+  width: 100%;
+}
+
+@import '../imports/app/filter/bu-filter/bu-filter.component.scss';
+@import '../imports/app/filter/category-filter/category-filter.component.scss';
+@import '../imports/app/filter/main-filter/main-filter.component.scss';
 @import '../imports/app/sheets/overview-sheet.component.scss';
 @import '../imports/app/sheets/sheets.styles.scss';
 @import '../imports/app/sheets/fact-sheet.component.scss';

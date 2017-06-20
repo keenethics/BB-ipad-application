@@ -2,7 +2,7 @@
   <header [isButtonEnabled]="false"></header>
 </ion-header>
 <ion-content>
-  <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate padding>
+  <form vertical-center [formGroup]="loginForm" (ngSubmit)="login()" novalidate padding>
     <div>
       <h1>WELCOME BACK,</h1>
       <h2>Log into your account to start exploring and comparing markets across the globe</h2>
@@ -12,7 +12,7 @@
         <ion-item>
           <ion-label *ngIf="isError('email', 'required')" class="error" stacked>{{'error_email_required' | text}}</ion-label>
           <ion-label *ngIf="isError('email', 'pattern')" class="error" stacked>{{'email_invalid' | text}}</ion-label>
-          <ion-input [(ngModel)]="loginCredentials.email" formControlName='email' type="text" placeholder="E-mail"></ion-input>
+          <ion-input [(ngModel)]="loginCredentials.email" formControlName='email' type="email" placeholder="E-mail"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label *ngIf="isError('password', 'required')" class="error" stacked>{{'error_password_required' | text}}</ion-label>

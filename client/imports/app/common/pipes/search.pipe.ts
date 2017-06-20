@@ -4,9 +4,9 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'search'
 })
 export class SearchPipe implements PipeTransform {
-  transform(arr: string[], searchValue: string): any[] {
+  transform(arr: string[] = [], searchValue: string = ''): any[] {
     const res = arr.filter((item) => {
-      return item.toLowerCase()
+      return item && item.toLowerCase()
         .indexOf(searchValue.toLowerCase()) !== -1;
     });
     return res;
