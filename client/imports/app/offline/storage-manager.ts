@@ -28,8 +28,11 @@ export class StorageManager {
         .then((storageCollectionData: any) => {
           if (!storageCollectionData) return resolve(c);
 
+          const token = Meteor.user() ? Meteor.user().profile.token : null;
+          if (!token) return resolve(c);
+
           if (storageCollectionData.data.length && (collection.find().count() !== storageCollectionData.data.length)) {
-            const decryptedData = decryptData(storageCollectionData.data, Meteor.user().profile.token);
+            const decryptedData = decryptData(storageCollectionData.data, token);
 
             decryptedData.forEach((item) => {
               if (!c._collection._docs._map[item._id]) {
