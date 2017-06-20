@@ -20,7 +20,8 @@ import styles from './bu-filter.component.scss';
   encapsulation: ViewEncapsulation.None
 })
 export class BuFilterComponnet {
-  selectedBuTitles: string[] = [];
+  private selectedBuTitles: string[] = [];
+  private allBuTitles: string[];
 
   constructor(
     public buTitlesProvider: BuTitlesProvider,
@@ -29,6 +30,8 @@ export class BuFilterComponnet {
     filterCtrl.state$.subscribe(s => {
       this.selectedBuTitles = s.filters.businessUnits;
     });
+
+    this.allBuTitles = Array.from(buTitlesProvider.titlesMap.keys());
   }
 
   ngOnInit() { }
@@ -54,13 +57,16 @@ export class BuFilterComponnet {
       return;
     }
 
-    if (isInSelected(v, this.selectedBuTitles)) {
+    if (this.isInSelected(v)) {
+      const selectedBuTitles = this.selectedBuTitles[0] === 'Total' ? this.allBuTitles.slice(1) : this.selectedBuTitles.slice();
       this.filterCtrl.emit('BuFilterSelect', {
-        unitsTitles: this.selectedBuTitles.filter(t => t !== v)
+        unitsTitles: selectedBuTitles.filter(t => t !== v)
       });
     } else {
+      let selectedBuTitles = [...this.selectedBuTitles, v];
+      selectedBuTitles = selectedBuTitles.length === 10 ? ['Total'] : selectedBuTitles;
       this.filterCtrl.emit('BuFilterSelect', {
-        unitsTitles: [...this.selectedBuTitles, v]
+        unitsTitles: selectedBuTitles
       });
     }
   }
