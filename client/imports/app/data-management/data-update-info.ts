@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MeteorObservable } from 'meteor-rxjs';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { OfflineDataProvider } from '../offline/offline-data-provider';
 import { DataUpdates } from '../../../../both/data-management';
 
 @Injectable()
@@ -11,13 +12,16 @@ export class DataUpdateInfo {
     return this._info.asObservable();
   }
 
-  constructor() {
-    this._info = new BehaviorSubject(DataUpdates.findOne());
+  constructor(private _odp: OfflineDataProvider) {
+    this._info = new BehaviorSubject(null);
 
-    MeteorObservable.subscribe('dataUpdates').subscribe(() => {
-      MeteorObservable.autorun().subscribe(() => {
-        this._info.next(DataUpdates.findOne());
-      });
+    MeteorObservable.autorun().subscribe(() => {
+      // We need this find in collection for meteor reactivity
+      DataUpdates.find().fetch();
+      this._odp.findIn(DataUpdates, {}, 'dataUpdates')
+        .then((data) => {
+          this._info.next(data[0]);
+        });
     });
   }
 }
@@ -28,7 +32,8 @@ interface Info {
   lastDataUpdateText?: string;
   period?: string;
   fileNames?: {
-    current: string;
-    hist: string;
+    oxygenSubmission: string;
+    evolutionReport: string;
+    geocordinates: string;
   };
 };

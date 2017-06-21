@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/fo
 import { Subscription } from 'rxjs/Subscription';
 
 import { getEmailRegExp } from '../../../../../both/helpers/email-regexp';
+import { getPasswordRegExp } from '../../../../../both/helpers/password-regexp';
+
 import { ToastsManager } from '../../common/toasts-manager';
 import { LoadingManager } from '../../common/loading-manager';
 import { EqualValidator } from '../../common/validators/equal-validator';
@@ -70,7 +72,7 @@ export class CreateUserPage implements OnInit {
         [
           Validators.required,
           Validators.maxLength(40),
-          Validators.minLength(6),
+          Validators.pattern(getPasswordRegExp()),
           new EqualValidator('confPass', 'true')
         ]
       ],
@@ -78,6 +80,7 @@ export class CreateUserPage implements OnInit {
         this.newUserCredentials.confPass,
         [
           Validators.required,
+          Validators.pattern(getPasswordRegExp()),
           new EqualValidator('password', 'false')
         ]
       ],
@@ -124,6 +127,11 @@ export class CreateUserPage implements OnInit {
 
   close() {
     this.viewCtrl.dismiss();
+  }
+
+  isError(controlName: string, errorName: string) {
+    const control = this.newUserForm.controls[controlName];
+    return control.errors && control.errors[errorName] && control.touched && control.invalid;
   }
 }
 

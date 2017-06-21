@@ -5,7 +5,8 @@ import {
   Output,
   ViewEncapsulation,
   OnInit,
-  OnDestroy
+  OnDestroy,
+  HostListener
 } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
@@ -15,11 +16,11 @@ import styles from './header.component.scss';
 
 import { Authorization, RolesController } from '../../../authorization';
 import { DataUploader, DataUpdateInfo } from '../../../data-management';
-import { LoadingManager, ToastsManager } from '../../../common';
+import { LoadingManager, ToastsManager, WindowSize } from '../../../common';
 
 import { SigninPage, HomePage, PreferencesPage } from '../../index';
 
-import { FilterController } from '../../../filters';
+import { FilterController } from '../../../filter/filter-controller';
 
 @Component({
   selector: 'header',
@@ -42,7 +43,8 @@ export class HeaderComponent {
     private loadingCtrl: LoadingManager,
     private toastCtrl: ToastsManager,
     private filterCtrl: FilterController,
-    private updateInfo: DataUpdateInfo
+    private updateInfo: DataUpdateInfo,
+    private windowSize: WindowSize
   ) {
   }
 
@@ -50,6 +52,8 @@ export class HeaderComponent {
     this._subscr = this.updateInfo.info$.subscribe(info => {
       this.info = info;
     });
+
+    this.windowSize.checkSize();
   }
 
   ngOnDestroy() {
@@ -86,7 +90,6 @@ export class HeaderComponent {
     switch (name) {
       case 'home': {
         if (this.navCtrl.getActive().component === HomePage) {
-          // this.filterCtrl.resetFilter(); break;
           break;
         } else {
           this.navCtrl.setRoot(HomePage); break;
@@ -97,6 +100,7 @@ export class HeaderComponent {
   }
 
   resetFilters() {
-    this.filterCtrl.resetFilter();
+    this.filterCtrl.reset(['CategoryFilter']);
+    this.filterCtrl.filter();
   }
 }

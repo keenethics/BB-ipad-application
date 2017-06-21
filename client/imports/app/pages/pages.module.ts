@@ -6,8 +6,9 @@ import { CommonAppModule } from '../common/common-app.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DataManagementModule } from '../data-management';
 import { SheetsModule } from '../sheets';
-import { FiltersModule } from '../filters';
+import { FilterModule } from '../filter/fitler.module';
 import { SettingsModule } from '../settings';
+import { OfflineModule } from '../offline/offline.module';
 
 import { HomePage } from './home/home.page';
 import { SigninPage } from './signin/signin.page';
@@ -22,6 +23,8 @@ import { PreferencesPage } from './preferences/preferences.page';
 import { SplashscreenPage } from './splashscreen/splashscreen.page';
 import { InfoPage } from './info/info.page';
 import { FilterPage } from './filter/filter.page';
+
+import { PreferencesTabbarController } from './preferences/preferences-tab-bar-controller';
 
 import {
   FooterComponent,
@@ -51,6 +54,10 @@ const COMPONENTS = [
   PaginationComponent
 ];
 
+const SERVICES = [
+  PreferencesTabbarController
+];
+
 @NgModule({
   imports: [
     IonicModule,
@@ -61,8 +68,10 @@ const COMPONENTS = [
     DataManagementModule,
     SheetsModule,
     SettingsModule,
-    FiltersModule
+    OfflineModule,
+    FilterModule
   ],
+  providers: SERVICES,
   declarations: [...PAGES, ...COMPONENTS],
   exports: [...PAGES, ...COMPONENTS],
   entryComponents: PAGES

@@ -196,3 +196,33 @@
     font-weight: normal;
     text-rendering: optimizeLegibility;
 }
+
+@font-face {
+	font-family: 'Nirmala UI';
+	src: url('fonts/NirmalaUI.woff2') format('woff2'),
+		url('fonts/NirmalaUI.woff') format('woff'),
+        url('fonts/NirmalaUI.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+    text-rendering: optimizeLegibility;
+}
+
+@font-face {
+	font-family: 'Nirmala UI Semilight';
+	src: url('fonts/NirmalaUI-Semilight.woff2') format('woff2'),
+		url('fonts/NirmalaUI-Semilight.woff') format('woff'),
+        url('fonts/NirmalaUI-Semilight.ttf') format('truetype');
+	font-weight: 300;
+	font-style: normal;
+    text-rendering: optimizeLegibility;
+}
+
+@font-face {
+	font-family: 'Nirmala UI';
+	src: url('fonts/NirmalaUI-Bold.woff2') format('woff2'),
+		url('fonts/NirmalaUI-Bold.woff') format('woff'),
+        url('fonts/NirmalaUI-Bold.ttf') format('truetype');
+	font-weight: bold;
+	font-style: normal;
+    text-rendering: optimizeLegibility;
+}

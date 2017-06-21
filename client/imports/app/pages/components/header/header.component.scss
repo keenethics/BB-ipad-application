@@ -1,18 +1,30 @@
+
+$colors: (
+  primary: #0B409C,
+  secondary: #A7C1E3,
+  light: #E2E8F0,
+  dark: #47494D,
+  dark-blue: #173567,
+  light-blue: #3B65AD,
+  ui-light: #ECEFF4,
+  page-background: #F8F9FA
+);
+
 // TODO: add separate icon for reset filter button
 .reset-btn {
   &:after {
     content: '\2716';
     background-color: #fff;
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     border-radius: 9px;
     color: #0B409C;
     position: absolute;
     top: 14px;
-    left: 28px;
-    padding-left: 1px;
-    font-size: 12px;
-    line-height: 15px;
+    left: 25px;
+    padding-left: 0px;
+    font-size: 10px;
+    line-height: 13px;
   }
 
   &:hover:after {
@@ -21,17 +33,94 @@
 }
 
 header {
-  ion-title {
-    h1 {
-      font-size: 17px;
-      margin: 0;
-      font-weight: 600;
+  ion-toolbar.toolbar {
+    min-height: 70px;
+    color: map-get($colors,'light');
+    ion-buttons {
+      margin-top: 9px;
+      button.bar-button {
+        font-size: 7px;
+        padding: 7px 15px 0;
+
+        ion-icon {
+          font-size: 22px;
+        }
+
+        &.smaller ion-icon {
+          font-size: 16px;
+        }
+
+        &:hover {
+          color: map-get($colors,'light');
+        }
+
+        &:first-child {
+          padding-left: 30px;
+        }
+      }
     }
 
-    h2 {
-      font-size: 12px;
-      margin: 0;
-      margin-top: 6px;
+    ion-buttons[end] {
+      button.bar-button {
+         &:last-child {
+          padding-right: 30px;
+        }
+      }
+    }
+
+    ion-title {
+      padding: 7px 260px 1px;
+
+      h1 {
+        font-size: 14px;
+        margin: 0;
+        font-weight: 600;
+        letter-spacing: 2px;
+      }
+
+      h2 {
+        font-size: 12px;
+        margin: 0;
+        margin-top: 6px;
+      }
+
+      ion-icon {
+        font-size: 19px;
+        margin-right: 13px;
+      }
     }
   }
+
+  .ms & ion-toolbar.toolbar ion-buttons {
+    margin-top: 15px;
+    overflow: visible;
+    button[ion-button] {
+      overflow: visible;
+    }
+  }
+
+  @media (max-width: 830px) {
+    ion-toolbar.toolbar {
+      min-height: 50px;
+
+      ion-buttons, ion-buttons[end] {
+        margin-top: 0;
+
+        button.bar-button {
+          padding: 0px 10px 0px;
+          &:first-child, &:last-child {
+            padding: 0px 10px 0px;
+          }
+        }
+      }
+
+      ion-title {
+        padding: 0 160px;
+
+        h2 {
+          display: none;
+        }
+      }
+    }
+  } 
 }

@@ -48,9 +48,11 @@ overview-sheet, fact-sheet {
           font-size: 16px;
           margin: 0 20px;
           line-height: 66px;
+          font-family: 'Nirmala UI';
           span {
             color: map-get($colors,'light-blue');
             font-weight: bold;
+            font-family: inherit;
           }
         }
 
@@ -69,6 +71,7 @@ overview-sheet, fact-sheet {
             background-color: map-get($colors,'light');
             color: map-get($colors,'light-blue');
             box-shadow: none;
+            height: auto;
 
             &.active {
               background-color: map-get($colors,'light-blue');
@@ -105,5 +108,42 @@ overview-sheet, fact-sheet {
     height: 100vh;
     top: 0;
     left: 0;
+
+    .ms & {
+      background: rgba(0,0,0,0.0001);
+    }
+  }
+
+  @media (max-width: 830px) {
+    & {
+      ion-card.card {
+        border-radius: 0;
+        ion-card-header {
+          padding: 0;
+          div.card-header {
+            margin: 0;
+            border-radius: 0;
+            p {
+              line-height: 32px;
+              font-size: 0px;
+              height: 32px;
+              span {
+                font-size: 16px;
+              }
+            }
+            ion-buttons.bar-buttons {
+              button:last-child {
+                border-top-right-radius: 0px;
+                border-bottom-right-radius: 0px;
+              }
+            }
+          }
+        }
+        ion-card-content {
+          padding: 0;
+          overflow-x: auto;
+        }
+      }
+    }
   }
 }

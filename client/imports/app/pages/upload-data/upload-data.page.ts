@@ -7,7 +7,8 @@ import { MenuController, Platform } from 'ionic-angular';
 import { RolesController } from '../../authorization';
 
 import { ToastsManager, LoadingManager } from '../../common';
-import { DataUploader, DataUpdateInfo } from '../../data-management';
+import { DataUploader, DataUpdateInfo, DataProvider } from '../../data-management';
+import { StorageManager } from '../../offline/storage-manager';
 import { PickFileComponent } from '../../common/components/pick-file/pick-file.component';
 
 import styles from './upload-data.page.scss';
@@ -38,7 +39,10 @@ export class UploadDataPage implements OnDestroy, OnInit {
     private toastCtrl: ToastsManager,
     private formBuilder: FormBuilder,
     private roles: RolesController,
-    private dateInfo: DataUpdateInfo
+    private dateInfo: DataUpdateInfo,
+    private storage: StorageManager,
+    private dataProvider: DataProvider,
+    private platform: Platform
   ) { }
 
   ngOnInit() {
@@ -96,13 +100,13 @@ export class UploadDataPage implements OnDestroy, OnInit {
   }
 
   uploadData() {
-    const current = this._dataFiles.get('oxygen');
-    const hist = this._dataFiles.get('evolution');
+    const oxygenSubmission = this._dataFiles.get('oxygen');
+    const evolutionReport = this._dataFiles.get('evolution');
 
     this.dataUploader.uploadData(
-      current,
-      hist,
-      { ...this._dataForm.getRawValue(), fileNames: { current: current.name, hist: hist.name } })
+      oxygenSubmission,
+      evolutionReport,
+      { ...this._dataForm.getRawValue(), fileNames: { oxygenSubmission: oxygenSubmission.name, evolutionReport: evolutionReport.name } })
       .then((res: string) => {
         this.toastCtrl.okToast(res);
         this._dataFiles = new Map();
@@ -127,5 +131,43 @@ export class UploadDataPage implements OnDestroy, OnInit {
       .catch((err: any) => {
         this.toastCtrl.okToast(err.reason || err.message || err);
       });
+  }
+
+  syncLocalStorrage() {
+    this.loadingCtrl.loading('sync_data');
+    this.storage.fetchToStorage()
+      .then((result) => {
+        this.loadingCtrl.loadingInst.dismiss();
+        this.toastCtrl.okToast('all_data_saved');
+      })
+      .catch((err) => {
+        this.loadingCtrl.loadingInst.dismiss();
+        this.toastCtrl.okToast(err.message);
+      });
+
+  }
+
+  editPeriod() {
+    this.dataUploader.editField('period', this.infoData.period)
+      .then((res: string) => {
+        this.toastCtrl.okToast('Period changed');
+        this.infoData.period = '';
+      }).catch((err) => {
+        this.toastCtrl.okToast(err.message);
+      });
+  }
+
+  editLastDataUpdate() {
+    this.dataUploader.editField('lastDataUpdateText', this.infoData.lastDataUpdate)
+      .then((res: string) => {
+        this.toastCtrl.okToast('Last data update changed');
+        this.infoData.lastDataUpdate = '';
+      }).catch((err) => {
+        this.toastCtrl.okToast(err.message);
+      });
+  }
+
+  isCore() {
+    return this.platform.is('core');
   }
 };

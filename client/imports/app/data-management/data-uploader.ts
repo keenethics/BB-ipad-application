@@ -9,21 +9,21 @@ export class DataUploader {
 
   }
 
-  uploadData(current: any, hist: any, info: any) {
+  uploadData(oxygenSubmission: any, evolutionReport: any, info: any) {
     const params: any = {
-      current: null,
-      hist: null,
+      oxygenSubmission: null,
+      evolutionReport: null,
       info
     };
 
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => {
-        if (!params.current) {
-          params.current = reader.result;
-          reader.readAsText(hist);
+        if (!params.oxygenSubmission) {
+          params.oxygenSubmission = reader.result;
+          reader.readAsText(evolutionReport);
         } else {
-          params.hist = reader.result;
+          params.evolutionReport = reader.result;
           Meteor.call('data.upload', params, (err: Meteor.Error, res: string) => {
             if (err) {
               reject(err);
@@ -33,7 +33,7 @@ export class DataUploader {
           });
         }
       };
-      reader.readAsText(current);
+      reader.readAsText(oxygenSubmission);
     });
   }
 
@@ -42,7 +42,8 @@ export class DataUploader {
       const reader = new FileReader();
       reader.onload = () => {
         Meteor.call('data.uploadCoordinates', {
-          fileData: reader.result
+          fileData: reader.result,
+          fileName: file.name
         }, (err: Meteor.Error, res: string) => {
           const end = new Date();
           if (err) {
@@ -53,6 +54,15 @@ export class DataUploader {
         });
       };
       reader.readAsText(file);
+    });
+  }
+
+  editField(name: string, value: string) {
+    return new Promise((res, rej) => {
+      Meteor.call(
+        'data.editUpdateInfoField',
+        { fieldName: name, fieldValue: value },
+        (err: Meteor.Error, result: string) => err ? rej(err) : res(result));
     });
   }
 }

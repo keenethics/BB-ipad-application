@@ -89,36 +89,10 @@ overview-sheet {
       text-align: right;
       line-height: 19px;
       padding: 0 4px;
-    }
-
-    th, td {
-      // &.color-lable > h3 {
-      //   text-align: right;
-      //   &:before {
-      //     content: '';
-      //     width: 10px;
-      //     height: 10px;
-      //     border-radius: 10px;
-      //     background-color: transparent;
-      //     display: inline-block;
-      //     position: relative;
-      //     bottom: 0px;
-      //     right: 1%;
-      //     margin: auto;
-      //   }
-
-      //   &.yellow:before {
-      //     background-color: rgb(255,196,1);
-      //   }
-
-      //   &.red:before {
-      //     background-color: rgb(189,61,62);
-      //   }
-      // }
-
       width: 76px;
       min-width: 30px;
       max-width: 77px;
+      font-family: 'Nirmala UI';
     }
 
     th {
@@ -135,19 +109,6 @@ overview-sheet {
         background-color: #dbebf8;
       }
     }
-
-    // tr {
-    //   &:first-child {
-    //     th:first-child, th:last-child {
-    //       border-bottom: none;
-    //     }
-    //   }
-    //   &+tr{
-    //     th:first-child, th:last-child {
-    //       border-top: none;
-    //     }
-    //   }
-    // }
   }
 
   .colored:after {
@@ -188,6 +149,26 @@ overview-sheet {
       height: 8px;
       border-radius: 8px;
       bottom: -2px;
+    }
+  }
+
+  @media (max-width: 830px) {
+    & {
+      top: 0px;
+      position: fixed;
+      margin: 0px;
+      width: 100%;
+      height: calc(100% - 40px);
+
+      .overview-container {
+        border-radius: 0;
+        width: auto;
+        padding-bottom: 0;
+      }
+
+      table {
+        margin-left: auto;
+      }
     }
   }
 }

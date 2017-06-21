@@ -1,0 +1,7 @@
+<ion-toolbar>
+  <ion-buttons>
+    <button (click)="select(t.value)" [ngClass]="{ 'active': isInSelected(t.value) }" class="disable-hover" ion-button color="primary" *ngFor="let t of buTitlesProvider.buTitles$ | async">
+      <label>{{t.title}}</label>
+    </button>
+  </ion-buttons>
+</ion-toolbar>

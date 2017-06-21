@@ -24,6 +24,11 @@ user-management-page {
       align-items: center;
       padding: 15px 32px;
 
+      button.button[ion-button][icon-only] {
+        width: 44px;
+        height: 44px;
+      }
+
       &>span {
         font-size: 13px;
         font-weight: bold;
@@ -57,7 +62,10 @@ user-management-page {
 
         h2 {
           font-size: 14px;
-          color: map-get($colors, "ight-blue")
+          color: map-get($colors, "ight-blue");
+          span {
+            color: #173567;
+          }
         }
 
         div.item-inner {

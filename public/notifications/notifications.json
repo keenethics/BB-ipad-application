@@ -15,7 +15,7 @@
   "user_created": "User created successfully.",
   "no_user": "User doesn't exist.",
   "email_invalid": "Email is not valid.",
-  "password_invalid_min_length": "Password must contain minimum 6 symbols.",
+  "password_invalid": "Password must contain 8 digits: capital and small letters, numbers and special character required.",
   "no_role": "Role doesn't exist.",
   "user_updated": "User updated successfully.",
   "user_removed": "User removed successfully.",
@@ -28,5 +28,13 @@
   "up_data_calc_globals_totals": "Calculating global totals...",
   "up_data_insert_db": "Almost done! Inserting data in DB...",
   "up_data_err": "Something went wrong, restoring old data!",
-  "up_data_done": ""
+  "up_data_done": "",
+  "error_email_required": "Email is required!",
+  "error_password_required": "Password is required!",
+  "error_confirm_password": "Password doesn't match!",
+  "error_confirm_password_required": "Confirm password is required!",
+  "error_role_required": "Role is required!",
+  "sync_data": "Sync data...",
+  "all_data_saved": "All data saved to local storrage.",
+  "error_old_password_required": "Old password is required!"
 }

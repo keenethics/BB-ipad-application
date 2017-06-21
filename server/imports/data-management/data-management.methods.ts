@@ -3,6 +3,9 @@ import { exec, fork } from 'child_process';
 import * as Fiber from 'fibers';
 import * as fs from 'fs';
 import * as Baby from 'babyparse';
+import * as aes from 'crypto-js/aes';
+import * as Guid from 'guid';
+import * as utf8 from 'crypto-js/enc-utf8';
 import { toCamelCase } from '../../../both/helpers/to-camel-case';
 import { MarketCountries } from '../../../both/countries/market-countries.collection';
 import { AvailableCountries } from '../../../both/countries/available-countries.collection';
@@ -24,15 +27,15 @@ declare const __dirname: string;
 export const uploadFile = new ValidatedMethod({
   name: 'data.upload',
   validate: new SimpleSchema({
-    current: { type: String },
-    hist: { type: String },
+    oxygenSubmission: { type: String },
+    evolutionReport: { type: String },
     'info.period': { type: String },
     'info.lastDataUpdate': { type: String },
-    'info.fileNames.current': { type: String },
-    'info.fileNames.hist': { type: String }
+    'info.fileNames.oxygenSubmission': { type: String },
+    'info.fileNames.evolutionReport': { type: String }
   }).validator(),
-  run({ current, hist, info, fileNames }) {
-    if (!current || !hist) {
+  run({ oxygenSubmission, evolutionReport, info, fileNames }) {
+    if (!oxygenSubmission || !evolutionReport) {
       throw new Meteor.Error('wrong_upload_params', 'wrong_upload_params');
     }
 
@@ -66,10 +69,10 @@ export const uploadFile = new ValidatedMethod({
     if (fs.existsSync(currentDataFileURI)) throw new Meteor.Error('data uploading in process', 'data_calculation_in_process');
 
     exec(`ln -s -f ${babyparseLinkCommand} && ln -s -f ${mongodbLinkCommand}`, () => {
-      fs.writeFile(currentDataFileURI, current, function (err: any) {
+      fs.writeFile(currentDataFileURI, oxygenSubmission, function (err: any) {
         if (err) throw new Meteor.Error(err.message, err.message);
 
-        fs.writeFile(histDataFileURI, hist, function (err: any) {
+        fs.writeFile(histDataFileURI, evolutionReport, function (err: any) {
           console.time();
 
           const childProcess = fork(`${absoluteFilePath}`, [mongoUrl]);
@@ -118,12 +121,14 @@ export const uploadFile = new ValidatedMethod({
               console.timeEnd();
 
               const { period, fileNames } = info;
+              const coordinatesFileName = updateDateItem && updateDateItem.fileNames && updateDateItem.fileNames.geocordinates;
+
               DataUpdates.update({}, {
                 status: 'up_data_done',
                 lastDataUpdateDate: new Date(),
                 lastDataUpdateText: info.lastDataUpdate,
                 period,
-                fileNames
+                fileNames: { ...fileNames, geocordinates: coordinatesFileName }
               }, { upsert: true });
             }).run();
           });
@@ -154,8 +159,9 @@ export const uploadCoordinates = new ValidatedMethod({
   name: 'data.uploadCoordinates',
   validate: new SimpleSchema({
     fileData: { type: String },
+    fileName: { type: String }
   }).validator(),
-  run({ fileData }) {
+  run({ fileData, fileName }) {
     if (!this.userId) {
       throw new Meteor.Error('permission_denied', 'permission_denied');
     }
@@ -176,6 +182,10 @@ export const uploadCoordinates = new ValidatedMethod({
           doc[toCamelCase(key.toLowerCase())] = item[i];
         });
         GeoCoordinates.insert(doc);
+
+        const dataUpdateInfo = DataUpdates.findOne({}) || {};
+        dataUpdateInfo.fileNames = { ...dataUpdateInfo.fileNames, geocordinates: fileName };
+        DataUpdates.update({}, dataUpdateInfo, { upsert: true });
       }
     });
 
@@ -183,18 +193,56 @@ export const uploadCoordinates = new ValidatedMethod({
   }
 });
 
-export const maxRange = new ValidatedMethod({
-  name: 'data.getMaxPeriodRange',
+export const editUpdateInfoField = new ValidatedMethod({
+  name: 'data.editUpdateInfoField',
   validate: new SimpleSchema({
-    period: { type: String },
+    fieldName: {
+      type: String,
+      allowedValues: ['lastDataUpdateText', 'period']
+    },
+    fieldValue: {
+      type: String
+    }
   }).validator(),
-  run({ period }) {
-    return BusinessData.aggregate({
-      $group: {
-        _id: null,
-        max: { $max: `$periods.${period}` },
-        min: { $min: `$periods.${period}` }
-      }
+  run({ fieldName, fieldValue }) {
+    if (!Roles.userIsInRole(this.userId, ['DataUpload', 'Administrator'])) {
+      throw new Meteor.Error('permission_denied', 'permission_denied');
+    }
+
+    DataUpdates.update({}, { $set: { [fieldName]: fieldValue } });
+
+    return `${fieldName} changed.`;
+  }
+});
+
+export const fetchData = new ValidatedMethod({
+  name: 'data.fetch',
+  validate: new SimpleSchema({}).validator(),
+  run() {
+    if (!this.userId) {
+      throw new Meteor.Error('permission_denied', 'permission_denied');
+    }
+
+    const guid = Guid.raw();
+
+    Meteor.users.update(this.userId, {
+      $set: { 'profile.token': guid }
     });
+
+    const encryptData = (data: any[], key: string) => data.map((item) => aes.encrypt(JSON.stringify(item), key).toString());
+
+    const bussinessData = BusinessData.find().fetch();
+    const unitsTitles = UnitsTitles.find().fetch();
+    const dataUpdates = DataUpdates.find().fetch();
+    const availableCountries = AvailableCountries.find().fetch();
+    const marketCountries = MarketCountries.find({ _id: { $in: ['GCHN', 'NAM', 'LAT', 'INDIA', 'APJ', 'MEA', 'EUROPE'] } }).fetch();
+
+    return [
+      { name: (BusinessData as any)._name, data: encryptData(bussinessData, guid) },
+      { name: (UnitsTitles as any)._name, data: encryptData(unitsTitles, guid) },
+      { name: (DataUpdates as any)._name, data: encryptData(dataUpdates, guid) },
+      { name: (AvailableCountries as any)._name, data: encryptData(availableCountries, guid) },
+      { name: (MarketCountries as any)._name, data: encryptData(marketCountries, guid) }
+    ];
   }
 });

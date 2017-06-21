@@ -1,15 +1,21 @@
 <ion-content>
   <div class="buttons-container">
-    <form [formGroup]="_dataForm" (ngSubmit)="uploadData()" class="data-form" novalidate>
+    <form *ngIf="isCore()" [formGroup]="_dataForm" (ngSubmit)="uploadData()" class="data-form" novalidate>
       <p class="last-update" *ngIf="_updateDate">Last update date: {{_updateDate | date:'mediumDate'}}</p>
       <p class="update-status" *ngIf="_status">{{_status | text}}
         <ion-spinner style="margin-left: 10px" name="dots"></ion-spinner>
       </p>
       <div>
         <ion-input [(ngModel)]="infoData.period" formControlName='period' placeholder="Period" type="text"></ion-input>
+        <button type="button" (click)="editPeriod()" clear ion-button icon-only class="change-field-btn">
+          <ion-icon ios="md-create" md="md-create"></ion-icon>
+        </button>
       </div>
       <div>
         <ion-input [(ngModel)]="infoData.lastDataUpdate" formControlName='lastDataUpdate' placeholder="Last data update" type="text"></ion-input>
+        <button type="button" (click)="editLastDataUpdate()" clear ion-button icon-only class="change-field-btn">
+          <ion-icon ios="md-create" md="md-create"></ion-icon>
+        </button>
       </div>
       <div *ngIf="!_dataFiles[0]" class="upload-button-wrap">
         <button type="button" #dataButton ion-button round>
@@ -30,11 +36,16 @@
           UPLOAD
         </button>
       </div>
+      <div *ngIf="isCore()" class="upload-button-wrap">
+        <button type="button" #geoCordsButton ion-button round>
+          <pick-file fileType="text/csv" [emitterElement]="geoCordsButton" (onFileSelected)="uploadCoords($event)" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
+          COORDINATES
+        </button>
+      </div>
     </form>
-    <div class="upload-button-wrap" style="margin-top: 0px">
-      <button #geoCordsButton ion-button round>
-        <pick-file fileType="text/csv" [emitterElement]="geoCordsButton" (onFileSelected)="uploadCoords($event)" [validator]="isCsvFile" (onWrongType)="wrongFileType()"></pick-file>
-        COORDINATES
+    <div class="upload-button-wrap">
+      <button class="sync-button" type="button" (click)="syncLocalStorrage()" ion-button round>
+          SYNC DATA
       </button>
     </div>
   </div>

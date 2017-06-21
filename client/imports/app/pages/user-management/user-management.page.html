@@ -9,7 +9,12 @@
     <template ngFor let-u [ngForOf]="usersCtrl.users$ | async">
       <ion-item *ngIf="!isDeleting(u._id)" (click)="select(u)" [ngClass]="{ 'selected': isSelected(u._id) }">
         <h1>{{u.emails[0].address}}</h1>
-        <h2>{{u.roles[0]}}</h2>
+        <h2>Roles: <span>{{u.roles.join(' ')}}</span></h2>
+        <h2>
+          Logins: <span>{{u.profile?.logins || 0}}</span>
+          Failed logins: <span>{{u.profile?.failedLogins || 0}}</span>
+          Last login: <span>{{ (u.profile?.lastLoginDate | date:'medium') || 'None'}}</span>
+        </h2>
         <button *ngIf="isSelected(u._id)" (click)="editUser(u)" ion-button small clear item-right icon-only>
           <ion-icon class="icon-edit" name="icon-edit"></ion-icon>
         </button>

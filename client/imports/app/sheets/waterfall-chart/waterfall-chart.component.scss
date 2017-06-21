@@ -24,13 +24,13 @@ waterfall-chart {
 
   .bar text {
     fill: black;
-    font: 11px sans-serif;
+    font: 11px 'Nirmala UI';
     text-anchor: middle;
     display: none;
   }
 
   .tick text {
-    font: 11px sans-serif;
+    font: 11px 'Nirmala UI';
     fill: #193793;
   }
 
@@ -44,5 +44,11 @@ waterfall-chart {
   .waterfall-container {
     display: flex;
     justify-content: center;
+  }
+
+  @media (max-width: 830px) {
+    & {
+      
+    }
   }
 }

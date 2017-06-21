@@ -14,17 +14,30 @@ signin-page {
   ion-content {
 
     div.scroll-content {
-      display: flex;
-      align-items: center;
-      justify-content: center;
       background-color: #E4E8ED;
+      display: block;
+
+      // .ms & {
+      //   display: flex;
+      //   align-items: center;
+      //   justify-content: center;
+      // }
 
       form {
         width: 500px;
-        height: 420px;
         padding: 40px 50px !important;
         border-radius: 4px;
         background-color: map-get($colors, 'page-background');
+
+        // position: relative;
+        // top: 50vh;
+        margin: auto;
+        // margin-top: -25%;
+
+        .ms & {
+          position: static;
+          margin: auto;
+        }
 
         &>div:first-child {
           margin-left: 5px;
@@ -49,6 +62,38 @@ signin-page {
           overflow: hidden;
           margin-top: 30px;
 
+          ion-list.list {
+            margin: 0;
+          }
+
+          ion-item.item {
+            background-color: transparent;
+            border-top: none;
+            border-bottom: none;
+            padding: 0;
+
+            div.item-inner {
+              border-bottom: none;
+
+              .ms & div.input-wrapper {
+                display: block;
+
+                input {
+                  height: 28px;
+                }
+
+                button {
+                  width: inherit;
+                }
+              }
+            }
+          }
+
+          ion-label.error {
+            color: red;
+            white-space: normal;
+          }
+
           ion-input {
             width: 98%;
             font-size: 15px;
@@ -59,6 +104,20 @@ signin-page {
             border-radius: 4px;
             padding: 0 30px;
             box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.05);
+            border: none;
+            font-family: 'Nirmala UI';
+
+            &.ng-touched {
+              border-left: 4px solid;
+            }
+
+            &.ng-touched.ng-invalid {
+              border-left-color: red;
+            }
+
+            &.ng-touched.ng-valid {
+              border-left-color: green;
+            }
           }
 
           button {
@@ -71,6 +130,26 @@ signin-page {
             margin-top: 20px;
             float: left;
             margin: 10px;
+          }
+        }     
+      }
+    }
+  }
+
+  @media (max-width: 830px) {
+    ion-content {
+      div.scroll-content {
+        form {
+          width: 450px;
+          padding: 10px 10px !important;
+          h1, h2 {
+            display: none;
+          }
+          div.inputs {
+            margin-top: 0;
+          }
+          ion-label.label {
+            margin: 0;
           }
         }
       }

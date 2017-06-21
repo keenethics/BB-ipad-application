@@ -3,18 +3,21 @@
     <button (click)="openPage('home')" ion-button icon-only>
       <ion-icon class="icon-home" name="icon-home"></ion-icon>
     </button>
-    <button *ngIf="isButtonEnabled" (click)="emitButtonClick('filter-menu')" ion-button icon-only>
+    <button class="smaller" *ngIf="isButtonEnabled" (click)="emitButtonClick('filter-menu')" ion-button icon-only>
       <ion-icon class="icon-filter" name="icon-filter"></ion-icon>
       <filter-counter></filter-counter>
     </button>
-    <button class="reset-btn" *ngIf="isButtonEnabled" (click)="resetFilters()" ion-button icon-only>
+    <button class="smaller reset-btn" *ngIf="isButtonEnabled" (click)="resetFilters()" ion-button icon-only>
       <ion-icon class="icon-filter" name="icon-filter"></ion-icon>
     </button>
-    <button (click)="openPage('preferences')" ion-button icon-only>
+    <button *ngIf="!windowSize.isSmallDisplay" (click)="openPage('preferences')" ion-button icon-only>
       <ion-icon class="icon-preferences" name="icon-preferences"></ion-icon>
     </button>
   </ion-buttons>
   <ion-buttons *ngIf="isLoggedIn()" end>
+    <button *ngIf="windowSize.isSmallDisplay" (click)="openPage('preferences')" ion-button icon-only>
+      <ion-icon class="icon-preferences" name="icon-preferences"></ion-icon>
+    </button>
     <button (click)="logout()" ion-button icon-only>
       <ion-icon class="icon-logout" name="icon-logout"></ion-icon>
     </button>

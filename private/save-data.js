@@ -3,6 +3,7 @@
 const fs = require('fs');
 const Baby = require('babyparse');
 const mongoClient = require('mongodb').MongoClient;
+const objectId = require('objectid');
 
 const toCamelCase = (str) => {
   return str.replace(/^([A-Z])|[\s-_&/](\w)/g, (match, p1, p2) => {
@@ -290,10 +291,12 @@ mongoClient.connect(mongoUrl, (err, db) => {
         BusinessData.remove({});
 
         dataWithCords.forEach((d) => {
+          d._id = objectId().toString();
           BusinessData.insert(d);
         });
 
         sourcesDataWithCords.forEach((d) => {
+          d._id = objectId().toString();
           BusinessDataSources.insert(d);
         });
       } catch (e) {

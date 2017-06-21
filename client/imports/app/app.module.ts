@@ -6,8 +6,11 @@ import { File } from 'ionic-native';
 import { AuthorizationModule } from './authorization/authorization.module';
 import { DataManagementModule } from './data-management/data-management.module';
 import { SharedModule } from './shared/shared.module';
-import { FiltersModule } from './filters';
 import { NotificationsModule } from './notifications/notifications.module';
+import { OfflineModule } from './offline/offline.module';
+import { FilterModule } from './filter/fitler.module';
+
+import Routes from './app.routes';
 
 import { AppComponent } from './app.component';
 
@@ -18,12 +21,15 @@ import '../../stylesheets/global.scss';
     BrowserModule,
     IonicModule.forRoot(AppComponent, {
       mode: 'ios'
+    }, {
+      links: Routes
     }),
     AuthorizationModule,
     DataManagementModule,
     SharedModule,
-    FiltersModule,
-    NotificationsModule
+    OfflineModule,
+    NotificationsModule,
+    FilterModule
   ],
   declarations: [
     AppComponent,
@@ -40,8 +46,8 @@ import '../../stylesheets/global.scss';
   ],
   exports: [
     SharedModule,
-    FiltersModule,
-    NotificationsModule
+    NotificationsModule,
+    OfflineModule
   ]
 })
 export class AppModule { }

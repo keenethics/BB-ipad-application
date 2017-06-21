@@ -16,6 +16,7 @@ import {
 } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { Subscription } from 'rxjs';
+import 'classlist-polyfill';
 
 import * as d3 from 'd3';
 import * as d3proj from 'd3-geo-projection';
@@ -260,7 +261,7 @@ export class WorldMap implements OnChanges {
           });
 
         groupEnter.select('rect.label-bg')
-          .attr('height', (d: any) => (d.textSize.height + 8))
+          .attr('height', (d: any) => (d.textSize.height + 6))
           .attr('width', (d: any) => (d.textSize.width + 12))
           .attr('transform', function (d: any) {
             const { width, height } = this.getBoundingClientRect();
@@ -336,7 +337,7 @@ export class WorldMap implements OnChanges {
 
         groupEnter.select('rect')
           .attr('class', 'label-bg')
-          .attr('height', (d: any) => (d.textSize.height + 8))
+          .attr('height', (d: any) => (d.textSize.height + 6))
           .attr('width', (d: any) => (d.textSize.width + 12))
           .attr('transform', function (d: any) {
             const { width, height } = this.getBoundingClientRect();
@@ -417,7 +418,7 @@ export class WorldMap implements OnChanges {
 
       const correctZoomIdentity = () => {
         try {
-          const regExp = /\((.+?), (.+?)\).+\((.+?),/g;
+          const regExp = /\((.+?),? (.+?)\).+\((.+?)[,\)]/g;
           const transform = map.attr('transform');
           if (transform) {
             const maches = regExp.exec(transform);

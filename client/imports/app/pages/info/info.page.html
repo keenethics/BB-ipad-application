@@ -5,6 +5,11 @@
       <p>App version: <span>{{version}}</span> </p>
       <!--Oxygen 30.03.2017, P02 2017 actuals-->
       <p>Data update: <span *ngIf="info?.lastDataUpdateText">{{ info.lastDataUpdateText + ', ' + info.period }}</span></p>
+      <template [ngIf]="isUploader()">
+        <p>Oxygen submission file name: <span>{{info?.fileNames?.oxygenSubmission}}</span> </p>
+        <p>Evolution report file name: <span>{{info?.fileNames?.evolutionReport}}</span> </p>
+        <p>Geocordinates file name: <span>{{info?.fileNames?.geocordinates}}</span> </p>
+      </template>
     </div>
   </div>
 </ion-content>
