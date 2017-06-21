@@ -170,4 +170,8 @@ export class UploadDataPage implements OnDestroy, OnInit {
   isCore() {
     return this.platform.is('core');
   }
+
+  isInRole(roles: string[]) {
+    return this.roles.userIsInRole(Meteor.userId(), roles);
+  }
 };

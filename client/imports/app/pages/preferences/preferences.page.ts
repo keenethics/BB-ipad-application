@@ -65,7 +65,7 @@ export class PreferencesPage implements AfterViewInit {
         segment: 'data',
         selector: 'upload-data-page',
         component: UploadDataPage,
-        guard: () => (this._isInRole(['Administrator', 'DataUpload']) && this._isOnline())
+        guard: () => this._isOnline()
       },
       {
         icon: 'information-circle',

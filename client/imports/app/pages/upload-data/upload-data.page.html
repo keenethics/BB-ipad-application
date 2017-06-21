@@ -1,6 +1,6 @@
 <ion-content>
   <div class="buttons-container">
-    <form *ngIf="isCore()" [formGroup]="_dataForm" (ngSubmit)="uploadData()" class="data-form" novalidate>
+    <form *ngIf="isCore() && isInRole(['Administrator', 'DataUpload'])" [formGroup]="_dataForm" (ngSubmit)="uploadData()" class="data-form" novalidate>
       <p class="last-update" *ngIf="_updateDate">Last update date: {{_updateDate | date:'mediumDate'}}</p>
       <p class="update-status" *ngIf="_status">{{_status | text}}
         <ion-spinner style="margin-left: 10px" name="dots"></ion-spinner>
