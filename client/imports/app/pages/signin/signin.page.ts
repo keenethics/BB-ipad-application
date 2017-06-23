@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, MenuController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { getEmailRegExp } from '../../../../../both/helpers/email-regexp';
@@ -35,7 +35,8 @@ export class SigninPage implements OnInit {
     private auth: Authorization,
     private toasts: ToastsManager,
     private loadingManager: LoadingManager,
-    private windowSize: WindowSize
+    private windowSize: WindowSize,
+    private menuCtrl: MenuController
   ) {
     this.loginCredentials = {
       email: '',
@@ -49,6 +50,10 @@ export class SigninPage implements OnInit {
 
   ionViewCanEnter() {
     return !this.auth.isLoggedIn();
+  }
+
+  ionViewDidEnter() {
+    this.menuCtrl.enable(false, 'filter-menu');
   }
 
   buildLoginForm() {

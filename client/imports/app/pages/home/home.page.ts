@@ -58,7 +58,7 @@ export class HomePage implements AfterViewInit {
     private dataProvider: DataProvider,
     private sheetsCtrl: SheetsController,
     private filterCtrl: FilterController,
-    private countrySelector: CountrySelector
+    private countrySelector: CountrySelector,
   ) {
     this.mapSettings = JSON.parse(localStorage.getItem('mapSettings')) ||
       { charts: false, scaling: false, labels: false, values: false };
@@ -80,6 +80,10 @@ export class HomePage implements AfterViewInit {
 
   ionViewCanEnter() {
     return this.auth.isLoggedIn() || !!runAsync(() => this.navCtrl.setRoot('Signin'));
+  }
+
+  ionViewDidEnter() {
+    this.menuCtrl.enable(true, 'filter-menu');
   }
 
   menuToggle(id: string) {

@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, AfterViewInit } from '@angular/core';
-import { NavController, Platform } from 'ionic-angular';
+import { NavController, Platform, MenuController } from 'ionic-angular';
 
 import styles from './preferences.page.scss';
 import template from './preferences.page.html';
@@ -32,7 +32,8 @@ export class PreferencesPage implements AfterViewInit {
     private platform: Platform,
     private auth: Authorization,
     private navCtrl: NavController,
-    private tabbarCtrl: PreferencesTabbarController
+    private tabbarCtrl: PreferencesTabbarController,
+    private menuCtrl: MenuController
   ) {
     this.pages = [
       {
@@ -80,6 +81,10 @@ export class PreferencesPage implements AfterViewInit {
 
   ionViewCanEnter() {
     return this.auth.isLoggedIn() || !!runAsync(() => this.navCtrl.setRoot('Signin'));
+  }
+
+  ionViewDidEnter() {
+    this.menuCtrl.enable(false, 'filter-menu');
   }
 
   ngAfterViewInit() {
