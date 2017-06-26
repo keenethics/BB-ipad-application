@@ -30,6 +30,10 @@ export class PlacesFilter extends Selection implements ISelection<any, {}> {
     };
   }
 
+  initState(state: any) {
+    this._state = state;
+  }
+
   getQuery() {
     return this._state.reduce((query: any, item) => {
       const queryField = query[item.category.toLowerCase()];

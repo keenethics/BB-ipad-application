@@ -98,13 +98,6 @@ export class CreateUserPage implements OnInit {
         ]
       ]
     });
-
-    this.newUserForm.valueChanges
-      .subscribe(data => this.onValueChanged(data));
-  }
-
-  onValueChanged(data?: any) {
-    // TODO: Generate array of errors messages here
   }
 
   isFormValid(form: FormGroup): boolean {

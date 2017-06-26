@@ -30,6 +30,10 @@ export class RangeFilter extends Calculation implements ICalculation<{ range: IR
     };
   }
 
+  initState(state: any) {
+    this._state = state;
+  }
+
   calc(data: any[]) {
     const filteredData = calc(data, this._state.value);
     // this.setState({ range: getMinAndMaxValues(filteredData) as IRange });

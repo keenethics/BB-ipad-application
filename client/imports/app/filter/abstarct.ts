@@ -4,6 +4,7 @@ export interface IState<P, S> {
   setState(state: P): void;
   getState(): S;
   reset(): void;
+  initState(state: any): void;
 }
 
 export interface ICalculation<P, S> extends IState<P, S> {

@@ -192,8 +192,7 @@ function setFiltersStateFromStorrage(filters: TFilter[]) {
     const s = (stateString === 'undefined') || !stateString ? null : JSON.parse(stateString);
     if (s) {
       const key = Object.keys(s)[0];
-      // TODO: Edit this
-      f._state = s[key];
+      f.initState(s[key]);
     }
   });
 }

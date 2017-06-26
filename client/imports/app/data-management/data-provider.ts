@@ -18,9 +18,7 @@ export class DataProvider {
   private _data: BehaviorSubject<BusinessDataUnit[]> = new BehaviorSubject([]);
   public onDataChanged: EventEmitter<any> = new EventEmitter();
 
-  constructor(private _odp: OfflineDataProvider) {
-    // this._listenCollection();
-  }
+  constructor(private _odp: OfflineDataProvider) {}
 
   get data$() {
     return this._data.asObservable();

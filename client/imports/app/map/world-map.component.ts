@@ -125,9 +125,6 @@ export class WorldMap implements OnChanges {
       this.zoom = d3.zoom()
         .scaleExtent(this.zoomScaleExtend)
         .translateExtent([[0, 0], [this.svgWidth(), this.svgHeight()]])
-        // .filter(() => {
-        //   return true;
-        // })
         .on('zoom', () => {
           const { x, y, k } = d3.event.transform;
           this.mapTransform = d3.event.transform;

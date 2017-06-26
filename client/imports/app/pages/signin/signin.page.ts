@@ -73,13 +73,6 @@ export class SigninPage implements OnInit {
         ]
       ]
     });
-
-    this.loginForm.valueChanges
-      .subscribe(data => this.onValueChanged(data));
-  }
-
-  onValueChanged(data?: any) {
-    // TODO: Generate array of errors messages here
   }
 
   isFormValid(form: FormGroup): boolean {
@@ -104,14 +97,6 @@ export class SigninPage implements OnInit {
         this.toasts.okToast(err.reason);
       });
   }
-
-  // getFormMarginTop(form: HTMLFontElement) {
-  //   if (!form) return '0';
-
-  //   const formHeight = form.clientHeight;
-  //   const parrentHeight = form.parentElement.clientHeight;
-  //   return parrentHeight / 2 - formHeight / 2 + 'px';
-  // }
 }
 
 interface LoginCredentials {

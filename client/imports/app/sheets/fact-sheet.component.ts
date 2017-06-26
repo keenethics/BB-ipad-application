@@ -145,21 +145,7 @@ export class FactSheetComponent {
       },
       {
         title: '', class: 'head-grey grey', period: '2018', dataSources: { highLevelCategory: 'Landing point' }
-      },
-      // { title: 'RU', class: 'background-light l-border', dataSources: { period: '2019', highLevelCategory: 'Ramp up' } },
-      // { title: 'RD', class: 'background-light', dataSources: { period: '2019', highLevelCategory: 'Ramp down' } },
-      // {
-      //   title: 'OTHER',
-      //   class: 'background-light',
-      //   dataSources: { period: '2019', highLevelCategory: ['Other in', 'Other out', 'Transfer in', 'Transfer out'] },
-      //   calc: (inputs: any[]) => {
-      //     return inputs.reduce((acc, item) => {
-      //       acc.value = +acc.value + +item.value;
-      //       return acc;
-      //     }).value;
-      //   }
-      // },
-      // { title: 'LP', class: 'r-border', dataSources: { period: '2019', highLevelCategory: 'Landing point' } },
+      }
     ];
 
     this.lastColumnsDesc = {
@@ -190,17 +176,6 @@ export class FactSheetComponent {
     ];
   }
 
-  // getPeriods(data: BusinessDataUnit[]): string[] {
-  //   return data
-  //     .map(item => item.period)
-  //     .reduce((acc, item) => {
-  //       if (acc.indexOf(item) === -1) {
-  //         acc.push(item);
-  //       }
-  //       return acc;
-  //     }, []).sort();
-  // }
-
   getTableData() {
     this.entityKey = this.selectedItem.identifier.toLowerCase();
     const query = {
@@ -230,27 +205,6 @@ export class FactSheetComponent {
     } else {
       return '0';
     }
-
-
-    // Object.keys(asKeys)
-    //   .forEach(key => {
-    //     if (!Array.isArray(asKeys[key])) {
-    //       asKeys[key] = [asKeys[key]];
-    //     }
-    //   });
-
-    // const maches = this.businessData.reduce((acc, item) => {
-    //   const machItem = Object.keys(asKeys).reduce((matchArr, key) => {
-    //     matchArr.push(asKeys[key].indexOf(item[key]) !== -1);
-    //     return matchArr;
-    //   }, []).indexOf(false) === -1 ? item : null;
-    //   if (machItem) acc.push(machItem);
-    //   return acc;
-    // }, []);
-
-    // if (!this.businessData.length) return '-';
-    // if (!calc) return '-';
-    // return calc(this.businessData, asKeys) || '-';
   }
 
   openOverviewSheet() {

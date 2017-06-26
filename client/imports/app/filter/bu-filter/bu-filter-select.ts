@@ -21,6 +21,10 @@ export class BuFilterSelect extends Selection implements ISelection<{ unitsTitle
     };
   }
 
+  initState(state: any) {
+    this._state = state;
+  }
+
   getQuery() {
     return {
       n2: { $in: this._state }

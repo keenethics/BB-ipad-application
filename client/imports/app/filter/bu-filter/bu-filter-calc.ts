@@ -14,6 +14,8 @@ export class BuFilterCalc extends Calculation implements ICalculation<void, void
 
   getState() { }
 
+  initState() { }
+
   reset() { }
 
   calc(data: any[], state: any) {

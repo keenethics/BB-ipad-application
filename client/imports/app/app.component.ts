@@ -10,7 +10,6 @@ import { Authorization } from './authorization/authorization';
 import { DataProvider, SumBusinessUnitsPipe } from './data-management';
 import { ToastsManager } from '../app/common/toasts-manager';
 import { WindowSize } from '../app/common/window-size';
-// import { TextProvider } from './notifications';
 
 import { HomePage } from './pages/home/home.page';
 import { SigninPage } from './pages/signin/signin.page';

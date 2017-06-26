@@ -6,7 +6,7 @@ import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
 export class ColoredDirective {
   @Input('colored') colored: any;
 
-  constructor(private elRef: ElementRef) {}
+  constructor(private elRef: ElementRef) { }
 
   ngOnChanges(changes: any) {
     if (changes.colored.currentValue) {
@@ -22,9 +22,7 @@ export class ColoredDirective {
     } else if (value <= -25 && value > -50) {
       color = 'yellow';
     }
-    // } else if (value <= -10 && value > -25) {
-    //   color = 'yellow';
-    // }
+
     (this.elRef.nativeElement as HTMLElement).classList.add(color || 'transparent');
   }
 }

@@ -16,8 +16,9 @@ export class DataUpdateInfo {
     this._info = new BehaviorSubject(null);
 
     MeteorObservable.autorun().subscribe(() => {
-      // We need this find in collection for meteor reactivity
+      // It is necessary for reactivity
       DataUpdates.find().fetch();
+
       this._odp.findIn(DataUpdates, {}, 'dataUpdates')
         .then((data) => {
           this._info.next(data[0]);

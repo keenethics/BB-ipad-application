@@ -23,6 +23,10 @@ export class CategoryFilter extends Selection implements ISelection<string, { id
     return { identifier: this._state };
   }
 
+  initState(state: any) {
+    this._state = state;
+  }
+
   reset() {
     this._state = 'Global';
   }
