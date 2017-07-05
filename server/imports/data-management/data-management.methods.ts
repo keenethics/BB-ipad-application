@@ -56,6 +56,7 @@ export const uploadFile = new ValidatedMethod({
     const assetsPath = absoluteFilePath.substring(0, absoluteFilePath.indexOf('save-data.js'));
     const babyparseLinkCommand = `${rootPath}/npm/node_modules/babyparse ${assetsPath}node_modules/babyparse`;
     const mongodbLinkCommand = `${rootPath}/npm/node_modules/mongodb ${assetsPath}node_modules/mongodb`;
+    const objectIdLinkCommand = `${rootPath}/npm/node_modules/objectid ${assetsPath}node_modules/objectid`;
     const currentDataFileURI = `${absoluteFilePath.substring(0, absoluteFilePath.indexOf('save-data.js'))}temp1`;
     const histDataFileURI = `${absoluteFilePath.substring(0, absoluteFilePath.indexOf('save-data.js'))}temp2`;
     const mongoUrl = process.env.MONGO_URL;
@@ -68,7 +69,7 @@ export const uploadFile = new ValidatedMethod({
 
     if (fs.existsSync(currentDataFileURI)) throw new Meteor.Error('data uploading in process', 'data_calculation_in_process');
 
-    exec(`ln -s -f ${babyparseLinkCommand} && ln -s -f ${mongodbLinkCommand}`, () => {
+    exec(`ln -s -f ${babyparseLinkCommand} && ln -s -f ${mongodbLinkCommand} && ln -s -f ${objectIdLinkCommand}`, () => {
       fs.writeFile(currentDataFileURI, oxygenSubmission, function (err: any) {
         if (err) throw new Meteor.Error(err.message, err.message);
 
